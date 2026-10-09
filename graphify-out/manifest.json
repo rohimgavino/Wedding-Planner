@@ -124,5 +124,11 @@
     "seen": 1791542191.8006551,
     "ast_hash": "cffcf1b24a440c77d827561c7bd556b8",
     "semantic_hash": "cffcf1b24a440c77d827561c7bd556b8"
+  },
+  "src/app/login/page.tsx": {
+    "mtime": 1791542621.4822583,
+    "seen": 1791542694.174596,
+    "ast_hash": "06f9d19a9276caa8a5ff98ee2af7ebe4",
+    "semantic_hash": "06f9d19a9276caa8a5ff98ee2af7ebe4"
   }
 }

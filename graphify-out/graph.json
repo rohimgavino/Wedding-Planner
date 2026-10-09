@@ -4,6 +4,19 @@
   "graph": {},
   "nodes": [
     {
+      "id": "src_lib_whatsapp_whatsappmessageparams",
+      "label": "WhatsAppMessageParams",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Community 0",
+      "file_type": "code",
+      "norm_label": "whatsappmessageparams",
+      "source_file": "src/lib/whatsapp.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "src_context_workspacecontext_workspacecontexttype",
       "label": "WorkspaceContextType",
       "_callable": true,
@@ -173,17 +186,64 @@
       "source_location": "L12"
     },
     {
-      "id": "src_lib_whatsapp_whatsappmessageparams",
-      "label": "WhatsAppMessageParams",
+      "id": "src_app_dashboard_page_dashboardpage",
+      "label": "DashboardPage()",
       "_callable": true,
-      "_callable_class": true,
       "_origin": "ast",
-      "community": 3,
-      "community_name": "Community 3",
+      "community": 0,
+      "community_name": "Community 0",
       "file_type": "code",
-      "norm_label": "whatsappmessageparams",
-      "source_file": "src/lib/whatsapp.ts",
-      "source_location": "L1"
+      "norm_label": "dashboardpage()",
+      "source_file": "src/app/dashboard/page.tsx",
+      "source_location": "L15"
+    },
+    {
+      "id": "src_app_invite_token_page_invitelandingpage",
+      "label": "InviteLandingPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Community 0",
+      "file_type": "code",
+      "norm_label": "invitelandingpage()",
+      "source_file": "src/app/invite/[token]/page.tsx",
+      "source_location": "L9"
+    },
+    {
+      "id": "src_app_login_page_loginpage",
+      "label": "LoginPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Community 0",
+      "file_type": "code",
+      "norm_label": "loginpage()",
+      "source_file": "src/app/login/page.tsx",
+      "source_location": "L9"
+    },
+    {
+      "id": "src_app_onboarding_page_onboardingpage",
+      "label": "OnboardingPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Community 0",
+      "file_type": "code",
+      "norm_label": "onboardingpage()",
+      "source_file": "src/app/onboarding/page.tsx",
+      "source_location": "L9"
+    },
+    {
+      "id": "src_context_workspacecontext_useworkspace",
+      "label": "useWorkspace()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Community 0",
+      "file_type": "code",
+      "norm_label": "useworkspace()",
+      "source_file": "src/context/WorkspaceContext.tsx",
+      "source_location": "L322"
     },
     {
       "id": "src_lib_supabase_client_createclient",
@@ -198,60 +258,12 @@
       "source_location": "L3"
     },
     {
-      "id": "src_app_dashboard_page_dashboardpage",
-      "label": "DashboardPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "Community 3",
-      "file_type": "code",
-      "norm_label": "dashboardpage()",
-      "source_file": "src/app/dashboard/page.tsx",
-      "source_location": "L15"
-    },
-    {
-      "id": "src_app_invite_token_page_invitelandingpage",
-      "label": "InviteLandingPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "Community 3",
-      "file_type": "code",
-      "norm_label": "invitelandingpage()",
-      "source_file": "src/app/invite/[token]/page.tsx",
-      "source_location": "L9"
-    },
-    {
-      "id": "src_app_onboarding_page_onboardingpage",
-      "label": "OnboardingPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "Community 3",
-      "file_type": "code",
-      "norm_label": "onboardingpage()",
-      "source_file": "src/app/onboarding/page.tsx",
-      "source_location": "L9"
-    },
-    {
-      "id": "src_context_workspacecontext_useworkspace",
-      "label": "useWorkspace()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "Community 3",
-      "file_type": "code",
-      "norm_label": "useworkspace()",
-      "source_file": "src/context/WorkspaceContext.tsx",
-      "source_location": "L322"
-    },
-    {
       "id": "src_lib_utils_calculatedaysremaining",
       "label": "calculateDaysRemaining()",
       "_callable": true,
       "_origin": "ast",
-      "community": 3,
-      "community_name": "Community 3",
+      "community": 0,
+      "community_name": "Community 0",
       "file_type": "code",
       "norm_label": "calculatedaysremaining()",
       "source_file": "src/lib/utils.ts",
@@ -262,8 +274,8 @@
       "label": "cn()",
       "_callable": true,
       "_origin": "ast",
-      "community": 3,
-      "community_name": "Community 3",
+      "community": 0,
+      "community_name": "Community 0",
       "file_type": "code",
       "norm_label": "cn()",
       "source_file": "src/lib/utils.ts",
@@ -274,8 +286,8 @@
       "label": "formatDateID()",
       "_callable": true,
       "_origin": "ast",
-      "community": 3,
-      "community_name": "Community 3",
+      "community": 0,
+      "community_name": "Community 0",
       "file_type": "code",
       "norm_label": "formatdateid()",
       "source_file": "src/lib/utils.ts",
@@ -286,8 +298,8 @@
       "label": "formatRupiah()",
       "_callable": true,
       "_origin": "ast",
-      "community": 3,
-      "community_name": "Community 3",
+      "community": 0,
+      "community_name": "Community 0",
       "file_type": "code",
       "norm_label": "formatrupiah()",
       "source_file": "src/lib/utils.ts",
@@ -298,8 +310,8 @@
       "label": "generateWhatsAppLink()",
       "_callable": true,
       "_origin": "ast",
-      "community": 3,
-      "community_name": "Community 3",
+      "community": 0,
+      "community_name": "Community 0",
       "file_type": "code",
       "norm_label": "generatewhatsapplink()",
       "source_file": "src/lib/whatsapp.ts",
@@ -366,59 +378,48 @@
       "source_location": "L56"
     },
     {
-      "id": "package",
-      "label": "package.json",
+      "id": "src_app_dashboard_page",
+      "label": "dashboard/page.tsx",
       "_origin": "ast",
       "community": 0,
       "community_name": "Community 0",
       "file_type": "code",
-      "norm_label": "package.json",
-      "source_file": "package.json",
+      "norm_label": "dashboard/page.tsx",
+      "source_file": "src/app/dashboard/page.tsx",
       "source_location": "L1"
     },
     {
-      "id": "package_description",
-      "label": "description",
+      "id": "src_app_invite_token_page",
+      "label": "[token]/page.tsx",
       "_origin": "ast",
       "community": 0,
       "community_name": "Community 0",
       "file_type": "code",
-      "norm_label": "description",
-      "source_file": "package.json",
-      "source_location": "L5"
+      "norm_label": "[token]/page.tsx",
+      "source_file": "src/app/invite/[token]/page.tsx",
+      "source_location": "L1"
     },
     {
-      "id": "package_name",
-      "label": "name",
+      "id": "src_app_login_page",
+      "label": "login/page.tsx",
       "_origin": "ast",
       "community": 0,
       "community_name": "Community 0",
       "file_type": "code",
-      "norm_label": "name",
-      "source_file": "package.json",
-      "source_location": "L2"
+      "norm_label": "login/page.tsx",
+      "source_file": "src/app/login/page.tsx",
+      "source_location": "L1"
     },
     {
-      "id": "package_private",
-      "label": "private",
+      "id": "src_app_onboarding_page",
+      "label": "onboarding/page.tsx",
       "_origin": "ast",
       "community": 0,
       "community_name": "Community 0",
       "file_type": "code",
-      "norm_label": "private",
-      "source_file": "package.json",
-      "source_location": "L4"
-    },
-    {
-      "id": "package_version",
-      "label": "version",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Community 0",
-      "file_type": "code",
-      "norm_label": "version",
-      "source_file": "package.json",
-      "source_location": "L3"
+      "norm_label": "onboarding/page.tsx",
+      "source_file": "src/app/onboarding/page.tsx",
+      "source_location": "L1"
     },
     {
       "id": "src_lib_supabase_client",
@@ -432,59 +433,37 @@
       "source_location": "L1"
     },
     {
-      "id": "tailwind_config",
-      "label": "tailwind.config.ts",
+      "id": "src_lib_utils",
+      "label": "utils.ts",
       "_origin": "ast",
       "community": 0,
       "community_name": "Community 0",
       "file_type": "code",
-      "norm_label": "tailwind.config.ts",
-      "source_file": "tailwind.config.ts",
+      "norm_label": "utils.ts",
+      "source_file": "src/lib/utils.ts",
       "source_location": "L1"
     },
     {
-      "id": "tailwind_config_config",
-      "label": "config",
+      "id": "src_lib_whatsapp",
+      "label": "whatsapp.ts",
       "_origin": "ast",
       "community": 0,
       "community_name": "Community 0",
       "file_type": "code",
-      "norm_label": "config",
-      "source_file": "tailwind.config.ts",
-      "source_location": "L3"
+      "norm_label": "whatsapp.ts",
+      "source_file": "src/lib/whatsapp.ts",
+      "source_location": "L1"
     },
     {
-      "id": "ref_autoprefixer",
-      "label": "autoprefixer",
+      "id": "ref_clsx",
+      "label": "clsx",
       "_origin": "ast",
       "community": 0,
       "community_name": "Community 0",
       "file_type": "concept",
-      "norm_label": "autoprefixer",
+      "norm_label": "clsx",
       "source_file": "package.json",
-      "source_location": "L27"
-    },
-    {
-      "id": "ref_postcss",
-      "label": "postcss",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Community 0",
-      "file_type": "concept",
-      "norm_label": "postcss",
-      "source_file": "package.json",
-      "source_location": "L28"
-    },
-    {
-      "id": "ref_react_dom",
-      "label": "react-dom",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Community 0",
-      "file_type": "concept",
-      "norm_label": "react-dom",
-      "source_file": "package.json",
-      "source_location": "L20"
+      "source_location": "L16"
     },
     {
       "id": "ref_supabase_ssr",
@@ -498,70 +477,15 @@
       "source_location": "L14"
     },
     {
-      "id": "ref_supabase_supabase_js",
-      "label": "@supabase/supabase-js",
+      "id": "ref_tailwind_merge",
+      "label": "tailwind-merge",
       "_origin": "ast",
       "community": 0,
       "community_name": "Community 0",
       "file_type": "concept",
-      "norm_label": "@supabase/supabase-js",
+      "norm_label": "tailwind-merge",
       "source_file": "package.json",
-      "source_location": "L15"
-    },
-    {
-      "id": "ref_tailwindcss",
-      "label": "tailwindcss",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Community 0",
-      "file_type": "concept",
-      "norm_label": "tailwindcss",
-      "source_file": "package.json",
-      "source_location": "L29"
-    },
-    {
-      "id": "ref_types_node",
-      "label": "@types/node",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Community 0",
-      "file_type": "concept",
-      "norm_label": "@types/node",
-      "source_file": "package.json",
-      "source_location": "L24"
-    },
-    {
-      "id": "ref_types_react",
-      "label": "@types/react",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Community 0",
-      "file_type": "concept",
-      "norm_label": "@types/react",
-      "source_file": "package.json",
-      "source_location": "L25"
-    },
-    {
-      "id": "ref_types_react_dom",
-      "label": "@types/react-dom",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Community 0",
-      "file_type": "concept",
-      "norm_label": "@types/react-dom",
-      "source_file": "package.json",
-      "source_location": "L26"
-    },
-    {
-      "id": "ref_typescript",
-      "label": "typescript",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Community 0",
-      "file_type": "concept",
-      "norm_label": "typescript",
-      "source_file": "package.json",
-      "source_location": "L30"
+      "source_location": "L21"
     },
     {
       "id": "src_context_workspacecontext",
@@ -894,81 +818,180 @@
       "source_location": "L24"
     },
     {
-      "id": "src_app_dashboard_page",
-      "label": "dashboard/page.tsx",
+      "id": "package",
+      "label": "package.json",
       "_origin": "ast",
       "community": 3,
       "community_name": "Community 3",
       "file_type": "code",
-      "norm_label": "dashboard/page.tsx",
-      "source_file": "src/app/dashboard/page.tsx",
+      "norm_label": "package.json",
+      "source_file": "package.json",
       "source_location": "L1"
     },
     {
-      "id": "src_app_invite_token_page",
-      "label": "[token]/page.tsx",
+      "id": "package_description",
+      "label": "description",
       "_origin": "ast",
       "community": 3,
       "community_name": "Community 3",
       "file_type": "code",
-      "norm_label": "[token]/page.tsx",
-      "source_file": "src/app/invite/[token]/page.tsx",
-      "source_location": "L1"
+      "norm_label": "description",
+      "source_file": "package.json",
+      "source_location": "L5"
     },
     {
-      "id": "src_app_onboarding_page",
-      "label": "onboarding/page.tsx",
+      "id": "package_name",
+      "label": "name",
       "_origin": "ast",
       "community": 3,
       "community_name": "Community 3",
       "file_type": "code",
-      "norm_label": "onboarding/page.tsx",
-      "source_file": "src/app/onboarding/page.tsx",
-      "source_location": "L1"
+      "norm_label": "name",
+      "source_file": "package.json",
+      "source_location": "L2"
     },
     {
-      "id": "src_lib_utils",
-      "label": "utils.ts",
+      "id": "package_private",
+      "label": "private",
       "_origin": "ast",
       "community": 3,
       "community_name": "Community 3",
       "file_type": "code",
-      "norm_label": "utils.ts",
-      "source_file": "src/lib/utils.ts",
-      "source_location": "L1"
+      "norm_label": "private",
+      "source_file": "package.json",
+      "source_location": "L4"
     },
     {
-      "id": "src_lib_whatsapp",
-      "label": "whatsapp.ts",
+      "id": "package_version",
+      "label": "version",
       "_origin": "ast",
       "community": 3,
       "community_name": "Community 3",
       "file_type": "code",
-      "norm_label": "whatsapp.ts",
-      "source_file": "src/lib/whatsapp.ts",
+      "norm_label": "version",
+      "source_file": "package.json",
+      "source_location": "L3"
+    },
+    {
+      "id": "tailwind_config",
+      "label": "tailwind.config.ts",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Community 3",
+      "file_type": "code",
+      "norm_label": "tailwind.config.ts",
+      "source_file": "tailwind.config.ts",
       "source_location": "L1"
     },
     {
-      "id": "ref_clsx",
-      "label": "clsx",
+      "id": "tailwind_config_config",
+      "label": "config",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Community 3",
+      "file_type": "code",
+      "norm_label": "config",
+      "source_file": "tailwind.config.ts",
+      "source_location": "L3"
+    },
+    {
+      "id": "ref_autoprefixer",
+      "label": "autoprefixer",
       "_origin": "ast",
       "community": 3,
       "community_name": "Community 3",
       "file_type": "concept",
-      "norm_label": "clsx",
+      "norm_label": "autoprefixer",
       "source_file": "package.json",
-      "source_location": "L16"
+      "source_location": "L27"
     },
     {
-      "id": "ref_tailwind_merge",
-      "label": "tailwind-merge",
+      "id": "ref_postcss",
+      "label": "postcss",
       "_origin": "ast",
       "community": 3,
       "community_name": "Community 3",
       "file_type": "concept",
-      "norm_label": "tailwind-merge",
+      "norm_label": "postcss",
       "source_file": "package.json",
-      "source_location": "L21"
+      "source_location": "L28"
+    },
+    {
+      "id": "ref_react_dom",
+      "label": "react-dom",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Community 3",
+      "file_type": "concept",
+      "norm_label": "react-dom",
+      "source_file": "package.json",
+      "source_location": "L20"
+    },
+    {
+      "id": "ref_supabase_supabase_js",
+      "label": "@supabase/supabase-js",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Community 3",
+      "file_type": "concept",
+      "norm_label": "@supabase/supabase-js",
+      "source_file": "package.json",
+      "source_location": "L15"
+    },
+    {
+      "id": "ref_tailwindcss",
+      "label": "tailwindcss",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Community 3",
+      "file_type": "concept",
+      "norm_label": "tailwindcss",
+      "source_file": "package.json",
+      "source_location": "L29"
+    },
+    {
+      "id": "ref_types_node",
+      "label": "@types/node",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Community 3",
+      "file_type": "concept",
+      "norm_label": "@types/node",
+      "source_file": "package.json",
+      "source_location": "L24"
+    },
+    {
+      "id": "ref_types_react",
+      "label": "@types/react",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Community 3",
+      "file_type": "concept",
+      "norm_label": "@types/react",
+      "source_file": "package.json",
+      "source_location": "L25"
+    },
+    {
+      "id": "ref_types_react_dom",
+      "label": "@types/react-dom",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Community 3",
+      "file_type": "concept",
+      "norm_label": "@types/react-dom",
+      "source_file": "package.json",
+      "source_location": "L26"
+    },
+    {
+      "id": "ref_typescript",
+      "label": "typescript",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Community 3",
+      "file_type": "concept",
+      "norm_label": "typescript",
+      "source_file": "package.json",
+      "source_location": "L30"
     },
     {
       "id": "src_app_layout",
@@ -1618,6 +1641,30 @@
       "weight": 1.0
     },
     {
+      "source": "src_app_login_page_loginpage",
+      "target": "src_context_workspacecontext_useworkspace",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/app/login/page.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "src_app_login_page_loginpage",
+      "target": "src_lib_supabase_client_createclient",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/app/login/page.tsx",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
       "source": "src_app_onboarding_page_onboardingpage",
       "target": "src_context_workspacecontext_useworkspace",
       "relation": "calls",
@@ -1978,6 +2025,30 @@
       "weight": 1.0
     },
     {
+      "source": "src_app_login_page",
+      "target": "src_context_workspacecontext_useworkspace",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/app/login/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_app_login_page",
+      "target": "src_lib_supabase_client_createclient",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/app/login/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
       "source": "src_app_onboarding_page",
       "target": "src_context_workspacecontext_useworkspace",
       "relation": "imports",
@@ -2300,6 +2371,54 @@
       "context": "import",
       "source_file": "src/app/layout.tsx",
       "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_app_login_page",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/app/login/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_app_login_page",
+      "target": "src_context_workspacecontext",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/app/login/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_app_login_page",
+      "target": "src_lib_supabase_client",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/app/login/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "src_app_login_page",
+      "target": "ref_lucide_react",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/app/login/page.tsx",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -3005,6 +3124,17 @@
       "weight": 1.0
     },
     {
+      "source": "src_app_login_page",
+      "target": "src_app_login_page_loginpage",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/app/login/page.tsx",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
       "source": "src_app_onboarding_page",
       "target": "src_app_onboarding_page_onboardingpage",
       "relation": "contains",
@@ -3699,5 +3829,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "9f8b129cb0ebc7aac984eeb926c7bc4519c2ccea"
+  "built_at_commit": "f350c42287e586b4053439fe9cb85b53bfa6774e"
 }
