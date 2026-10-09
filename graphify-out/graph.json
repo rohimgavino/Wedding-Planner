@@ -243,7 +243,7 @@
       "file_type": "code",
       "norm_label": "useworkspace()",
       "source_file": "src/context/WorkspaceContext.tsx",
-      "source_location": "L322"
+      "source_location": "L263"
     },
     {
       "id": "src_lib_supabase_client_createclient",
@@ -1565,19 +1565,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/app/dashboard/page.tsx",
-      "source_location": "L131",
-      "weight": 1.0
-    },
-    {
-      "source": "src_app_dashboard_page_dashboardpage",
-      "target": "src_lib_utils_formatrupiah",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/app/dashboard/page.tsx",
-      "source_location": "L176",
+      "source_location": "L156",
       "weight": 1.0
     },
     {
@@ -1594,6 +1582,18 @@
     },
     {
       "source": "src_app_dashboard_page_dashboardpage",
+      "target": "src_lib_utils_formatrupiah",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/app/dashboard/page.tsx",
+      "source_location": "L201",
+      "weight": 1.0
+    },
+    {
+      "source": "src_app_dashboard_page_dashboardpage",
       "target": "src_lib_whatsapp_generatewhatsapplink",
       "relation": "calls",
       "_origin": "ast",
@@ -1601,7 +1601,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/app/dashboard/page.tsx",
-      "source_location": "L548",
+      "source_location": "L607",
       "weight": 1.0
     },
     {
@@ -1613,7 +1613,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/app/dashboard/page.tsx",
-      "source_location": "L63",
+      "source_location": "L88",
       "weight": 1.0
     },
     {
@@ -1661,7 +1661,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/app/login/page.tsx",
-      "source_location": "L31",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
@@ -3186,7 +3186,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/context/WorkspaceContext.tsx",
-      "source_location": "L322",
+      "source_location": "L263",
       "weight": 1.0
     },
     {
@@ -3829,5 +3829,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "f350c42287e586b4053439fe9cb85b53bfa6774e"
+  "built_at_commit": "39b144f3e5a00729f409c0b2c34ef9a235f2e39d"
 }

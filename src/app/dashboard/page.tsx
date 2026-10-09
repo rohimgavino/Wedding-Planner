@@ -60,6 +60,31 @@ export default function DashboardPage() {
     );
   }
 
+  if (!workspace) {
+    return (
+      <div className="min-h-screen flex flex-col justify-center items-center bg-[#FAF7F5] px-4 py-12 text-center">
+        <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-rose-100 shadow-xl shadow-rose-900/10">
+          <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-rose-500 via-rose-400 to-amber-300 text-white flex items-center justify-center font-bold text-2xl mx-auto mb-4 shadow-lg shadow-rose-200">
+            💍
+          </div>
+          <span className="text-xs uppercase tracking-wider font-bold text-rose-500">Ruang Perencanaan Masih Kosong</span>
+          <h2 className="text-2xl font-serif font-bold text-slate-900 mt-1 mb-2">
+            Mulai Buat Workspace Pernikahanmu
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-600 mb-6 leading-relaxed">
+            Belum ada data pernikahan yang tersimpan. Masukkan nama calon mempelai dan tanggal acara untuk mulai merencanakan berdua secara rapi.
+          </p>
+          <a
+            href="/onboarding"
+            className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-600 text-white font-semibold text-sm shadow-md hover:from-rose-600 hover:to-rose-700 transition block text-center"
+          >
+            Mulai Isi Data Pernikahan ✨
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   const daysRemaining = workspace ? calculateDaysRemaining(workspace.wedding_date) : 0;
   
   // Aggregate Metrics
@@ -406,6 +431,23 @@ export default function DashboardPage() {
                   </div>
                 </div>
               ))}
+
+              {budgets.length === 0 && (
+                <div className="col-span-full p-8 text-center bg-white rounded-3xl border border-dashed border-rose-200">
+                  <Wallet className="w-8 h-8 text-rose-300 mx-auto mb-2" />
+                  <h4 className="font-bold text-slate-800 text-sm mb-1">Pos Anggaran Masih Kosong</h4>
+                  <p className="text-xs text-slate-500 max-w-xs mx-auto mb-4">
+                    Belum ada pos alokasi biaya yang dicatat. Klik tombol di bawah untuk menambahkan pos anggaran pertama Anda.
+                  </p>
+                  <button
+                    onClick={() => setShowAddBudgetModal(true)}
+                    className="px-4 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs shadow-xs hover:bg-rose-600 transition inline-flex items-center gap-1.5"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Tambah Pos Anggaran Pertama</span>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -483,6 +525,23 @@ export default function DashboardPage() {
                     </button>
                   </div>
                 ))}
+
+              {tasks.length === 0 && (
+                <div className="p-8 text-center bg-white rounded-3xl border border-dashed border-rose-200">
+                  <CheckSquare className="w-8 h-8 text-rose-300 mx-auto mb-2" />
+                  <h4 className="font-bold text-slate-800 text-sm mb-1">Daftar Tugas Masih Kosong</h4>
+                  <p className="text-xs text-slate-500 max-w-xs mx-auto mb-4">
+                    Belum ada tugas atau dokumen yang dicatat. Klik tombol di bawah untuk menambahkan to-do list pertama.
+                  </p>
+                  <button
+                    onClick={() => setShowAddTaskModal(true)}
+                    className="px-4 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs shadow-xs hover:bg-rose-600 transition inline-flex items-center gap-1.5"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Tambah Tugas Pertama</span>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -618,9 +677,19 @@ export default function DashboardPage() {
                 })}
 
               {guests.length === 0 && (
-                <div className="p-8 text-center bg-white rounded-3xl border border-dashed border-slate-200">
-                  <Users className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-                  <p className="text-xs text-slate-500 font-medium">Belum ada tamu undangan yang dicatat.</p>
+                <div className="p-8 text-center bg-white rounded-3xl border border-dashed border-rose-200">
+                  <Users className="w-8 h-8 text-rose-300 mx-auto mb-2" />
+                  <h4 className="font-bold text-slate-800 text-sm mb-1">Daftar Tamu Masih Kosong</h4>
+                  <p className="text-xs text-slate-500 max-w-xs mx-auto mb-4">
+                    Belum ada tamu undangan yang dicatat. Klik tombol di bawah untuk mulai menyusun daftar tamu dan circle keluarga.
+                  </p>
+                  <button
+                    onClick={() => setShowAddGuestModal(true)}
+                    className="px-4 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs shadow-xs hover:bg-rose-600 transition inline-flex items-center gap-1.5"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Tambah Tamu Pertama</span>
+                  </button>
                 </div>
               )}
             </div>

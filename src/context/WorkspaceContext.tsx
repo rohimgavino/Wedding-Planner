@@ -51,7 +51,7 @@ interface WorkspaceContextType {
 
 const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
 
-const STORAGE_KEY = "wedding_planner_workspace_v1";
+const STORAGE_KEY = "wedding_planner_workspace_clean_v2";
 
 export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
@@ -61,7 +61,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
   const [inviteToken, setInviteToken] = useState<string>("");
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load from LocalStorage on mount
+  // Load from LocalStorage on mount (Kosongan secara default)
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -71,73 +71,14 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
         setBudgets(data.budgets || []);
         setTasks(data.tasks || []);
         setGuests(data.guests || []);
-        setInviteToken(data.inviteToken || "WEDD-" + Math.random().toString(36).substring(2, 8).toUpperCase());
+        setInviteToken(data.inviteToken || "");
       } else {
-        // Fallback default demo workspace jika belum pernah ada
-        const demoWorkspace: Workspace = {
-          id: "demo-ws-1",
-          title: "Pernikahan Rian & Dina",
-          wedding_date: "2026-11-20",
-          target_budget: 80000000,
-          target_savings: 60000000,
-          created_at: new Date().toISOString(),
-        };
-
-        const demoBudgets: BudgetItem[] = DEFAULT_BUDGET_CATEGORIES.map((c, i) => ({
-          id: `b-${i + 1}`,
-          workspace_id: "demo-ws-1",
-          category: c.category,
-          title: c.title,
-          allocated_amount: c.allocated,
-          spent_amount: i < 3 ? Math.round(c.allocated * 0.8) : 0,
-          payment_status: i === 0 ? "paid" : i === 1 ? "dp" : "unpaid",
-        }));
-
-        const demoTasks: TaskItem[] = INITIAL_KUA_AND_TIMELINE_TASKS.map((t, i) => ({
-          id: `t-${i + 1}`,
-          workspace_id: "demo-ws-1",
-          title: t.title,
-          phase: t.phase,
-          pic: t.pic,
-          is_completed: i < 3,
-        }));
-
-        const demoGuests: GuestItem[] = [
-          {
-            id: "g-1",
-            workspace_id: "demo-ws-1",
-            name: "Bpk. Hendro & Keluarga",
-            category: "keluarga_pria",
-            pax: 3,
-            phone: "081234567890",
-            rsvp_status: "attending",
-          },
-          {
-            id: "g-2",
-            workspace_id: "demo-ws-1",
-            name: "Maya & Suami (Teman Kuliah)",
-            category: "sahabat",
-            pax: 2,
-            phone: "081987654321",
-            rsvp_status: "sent",
-          },
-          {
-            id: "g-3",
-            workspace_id: "demo-ws-1",
-            name: "Tim Divisi Engineering Kantor",
-            category: "teman_kantor",
-            pax: 8,
-            phone: "085678901234",
-            rsvp_status: "uncontacted",
-          },
-        ];
-
-        const token = "WEDD-PASS2026";
-        setWorkspace(demoWorkspace);
-        setBudgets(demoBudgets);
-        setTasks(demoTasks);
-        setGuests(demoGuests);
-        setInviteToken(token);
+        // Kosongan secara default: belum ada dummy Rian & Dina
+        setWorkspace(null);
+        setBudgets([]);
+        setTasks([]);
+        setGuests([]);
+        setInviteToken("");
       }
     } catch (e) {
       console.error("Failed to load workspace data:", e);

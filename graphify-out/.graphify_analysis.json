@@ -221,34 +221,45 @@
       "degree": 6
     },
     {
-      "id": "src_app_onboarding_page_onboardingpage",
-      "label": "OnboardingPage()",
+      "id": "src_lib_utils_calculatedaysremaining",
+      "label": "calculateDaysRemaining()",
       "degree": 5
     },
     {
-      "id": "src_lib_utils_calculatedaysremaining",
-      "label": "calculateDaysRemaining()",
+      "id": "src_lib_utils_formatrupiah",
+      "label": "formatRupiah()",
       "degree": 5
     }
   ],
   "surprises": [
     {
-      "source": "LoginPage()",
-      "target": "createClient()",
+      "source": "InviteLandingPage()",
+      "target": "useWorkspace()",
       "source_files": [
-        "src/app/login/page.tsx",
-        "src/lib/supabase/client.ts"
+        "src/app/invite/[token]/page.tsx",
+        "src/context/WorkspaceContext.tsx"
       ],
       "confidence": "EXTRACTED",
       "relation": "calls",
       "why": "cross-file semantic connection"
     },
     {
-      "source": "DashboardPage()",
-      "target": "useWorkspace()",
+      "source": "InviteLandingPage()",
+      "target": "formatDateID()",
       "source_files": [
-        "src/app/dashboard/page.tsx",
-        "src/context/WorkspaceContext.tsx"
+        "src/app/invite/[token]/page.tsx",
+        "src/lib/utils.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    },
+    {
+      "source": "LoginPage()",
+      "target": "createClient()",
+      "source_files": [
+        "src/app/login/page.tsx",
+        "src/lib/supabase/client.ts"
       ],
       "confidence": "EXTRACTED",
       "relation": "calls",
@@ -266,21 +277,10 @@
       "why": "cross-file semantic connection"
     },
     {
-      "source": "DashboardPage()",
-      "target": "formatDateID()",
+      "source": "OnboardingPage()",
+      "target": "calculateDaysRemaining()",
       "source_files": [
-        "src/app/dashboard/page.tsx",
-        "src/lib/utils.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "cross-file semantic connection"
-    },
-    {
-      "source": "DashboardPage()",
-      "target": "formatRupiah()",
-      "source_files": [
-        "src/app/dashboard/page.tsx",
+        "src/app/onboarding/page.tsx",
         "src/lib/utils.ts"
       ],
       "confidence": "EXTRACTED",
@@ -306,7 +306,7 @@
     },
     {
       "type": "isolated_nodes",
-      "question": "What connects `WhatsAppMessageParams`, `WorkspaceContextType`, `GuestCategory` to the rest of the system?",
+      "question": "What connects `WhatsAppMessageParams`, `GuestCategory`, `Invitation` to the rest of the system?",
       "why": "73 weakly-connected nodes found - possible documentation gaps or missing edges."
     },
     {

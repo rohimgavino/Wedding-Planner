@@ -11,20 +11,20 @@ export default function OnboardingPage() {
   const { createWorkspace } = useWorkspace();
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [groomName, setGroomName] = useState("Rian");
-  const [brideName, setBrideName] = useState("Dina");
-  const [weddingDate, setWeddingDate] = useState("2026-12-25");
-  const [targetBudget, setTargetBudget] = useState(80000000);
-  const [targetSavings, setTargetSavings] = useState(60000000);
+  const [groomName, setGroomName] = useState("");
+  const [brideName, setBrideName] = useState("");
+  const [weddingDate, setWeddingDate] = useState("");
+  const [targetBudget, setTargetBudget] = useState<number | "">("");
+  const [targetSavings, setTargetSavings] = useState<number | "">("");
 
   const handleFinish = (e: React.FormEvent) => {
     e.preventDefault();
     createWorkspace({
       groom_name: groomName.trim() || "Mempelai Pria",
       bride_name: brideName.trim() || "Mempelai Wanita",
-      wedding_date: weddingDate,
-      target_budget: Number(targetBudget) || 50000000,
-      target_savings: Number(targetSavings) || 40000000,
+      wedding_date: weddingDate || new Date().toISOString().split("T")[0],
+      target_budget: Number(targetBudget) || 0,
+      target_savings: Number(targetSavings) || 0,
     });
     router.push("/dashboard");
   };
@@ -82,11 +82,11 @@ export default function OnboardingPage() {
           <div className="grid grid-cols-2 gap-3 pt-3 border-t border-white/15">
             <div>
               <div className="text-[10px] text-rose-100 font-medium">Target Tabungan</div>
-              <div className="text-sm font-bold">{formatRupiah(targetSavings)}</div>
+              <div className="text-sm font-bold">{formatRupiah(Number(targetSavings) || 0)}</div>
             </div>
             <div>
               <div className="text-[10px] text-rose-100 font-medium">Target Budget</div>
-              <div className="text-sm font-bold">{formatRupiah(targetBudget)}</div>
+              <div className="text-sm font-bold">{formatRupiah(Number(targetBudget) || 0)}</div>
             </div>
           </div>
         </div>
@@ -208,12 +208,13 @@ export default function OnboardingPage() {
                     type="number"
                     step="1000000"
                     required
+                    placeholder="Contoh: 80000000"
                     value={targetBudget}
-                    onChange={(e) => setTargetBudget(Number(e.target.value))}
+                    onChange={(e) => setTargetBudget(e.target.value ? Number(e.target.value) : "")}
                     className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-100 text-sm font-medium transition"
                   />
                   <span className="text-xs font-semibold text-rose-600 mt-1 block">
-                    {formatRupiah(targetBudget)}
+                    {formatRupiah(Number(targetBudget) || 0)}
                   </span>
                 </div>
 
@@ -225,12 +226,13 @@ export default function OnboardingPage() {
                     type="number"
                     step="1000000"
                     required
+                    placeholder="Contoh: 60000000"
                     value={targetSavings}
-                    onChange={(e) => setTargetSavings(Number(e.target.value))}
+                    onChange={(e) => setTargetSavings(e.target.value ? Number(e.target.value) : "")}
                     className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-100 text-sm font-medium transition"
                   />
                   <span className="text-xs font-semibold text-emerald-600 mt-1 block">
-                    {formatRupiah(targetSavings)}
+                    {formatRupiah(Number(targetSavings) || 0)}
                   </span>
                 </div>
 

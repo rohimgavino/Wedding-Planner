@@ -22,8 +22,12 @@ export default function LoginPage() {
     if (!isSupabaseConfigured) {
       // Mode demo / belum setup Supabase
       setTimeout(() => {
-        router.push("/dashboard");
-      }, 600);
+        if (!workspace) {
+          router.push("/onboarding");
+        } else {
+          router.push("/dashboard");
+        }
+      }, 500);
       return;
     }
 
@@ -49,10 +53,14 @@ export default function LoginPage() {
     setLoading(true);
     if (!isSupabaseConfigured) {
       // Mode demo / uji coba
-      setMessage("Masuk berhasil dalam Mode Uji Coba!");
+      setMessage("Masuk berhasil!");
       setTimeout(() => {
-        router.push("/dashboard");
-      }, 700);
+        if (!workspace) {
+          router.push("/onboarding");
+        } else {
+          router.push("/dashboard");
+        }
+      }, 500);
       return;
     }
 
