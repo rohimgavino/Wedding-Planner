@@ -33,7 +33,7 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-screen bg-[#FAF7F5] flex flex-col justify-center items-center px-4 sm:px-6 py-10 sm:py-14">
-      <div className="max-w-md w-full my-auto">
+      <div className="max-w-md lg:max-w-4xl w-full my-auto">
         
         {/* Brand Header */}
         <div className="text-center mb-6">
@@ -97,8 +97,65 @@ export default function OnboardingPage() {
           </div>
         </div>
 
-        {/* Main Card Form */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-rose-100/80 shadow-xl shadow-rose-950/5">
+        {/* Main Content Layout: Single Column on Mobile, 2 Columns on Desktop */}
+        <div className="grid lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
+          
+          {/* Left Panel: Desktop Romantic Showcase Card (Hidden on Mobile) */}
+          <div className="hidden lg:flex lg:col-span-5 flex-col justify-between p-8 rounded-3xl bg-gradient-to-br from-rose-500 via-rose-600 to-amber-700 text-white shadow-xl shadow-rose-950/10 relative overflow-hidden">
+            <div className="absolute -right-8 -bottom-8 w-36 h-36 rounded-full bg-white/10 blur-xl pointer-events-none" />
+
+            <div>
+              <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center font-bold text-lg mb-4 border border-white/25 shadow-xs">
+                💍
+              </div>
+              <span className="text-[10px] uppercase tracking-wider text-rose-100 font-bold block mb-1">
+                Ruang Perencanaan Bersama
+              </span>
+              <h3 className="font-serif font-bold text-2xl leading-tight">
+                {groomName.trim() || brideName.trim() 
+                  ? `${groomName.trim() || "Mempelai Pria"} & ${brideName.trim() || "Mempelai Wanita"}`
+                  : "Pernikahan Kita"}
+              </h3>
+              <p className="text-xs text-rose-100/80 mt-1">
+                {weddingDate ? formatDateID(weddingDate) : "Tentukan tanggal hari H"}
+              </p>
+
+              {/* Dynamic Live Badges on Desktop */}
+              <div className="mt-6 space-y-2.5">
+                {weddingDate && (
+                  <div className="p-3 bg-white/15 backdrop-blur-xs rounded-2xl border border-white/20 flex items-center gap-2.5 text-xs font-medium">
+                    <Calendar className="w-4 h-4 text-rose-200 shrink-0" />
+                    <span>{daysRemaining} Hari Menuju Hari H</span>
+                  </div>
+                )}
+                {targetBudget ? (
+                  <div className="p-3 bg-white/15 backdrop-blur-xs rounded-2xl border border-white/20 flex items-center gap-2.5 text-xs font-medium">
+                    <Wallet className="w-4 h-4 text-rose-200 shrink-0" />
+                    <span>Target Budget: {formatRupiah(Number(targetBudget) || 0)}</span>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+
+            {/* Feature Perks */}
+            <div className="pt-6 border-t border-white/15 space-y-2.5 text-xs text-rose-50 font-medium">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
+                <span>Sinkronisasi instan antar 2 HP</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
+                <span>Checklist berkas resmi KUA</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
+                <span>WhatsApp RSVP langsung tanpa biaya</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Panel: Active Form Card */}
+          <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-rose-100/80 shadow-xl shadow-rose-950/5 flex flex-col justify-center">
           <form onSubmit={step === 3 ? handleFinish : (e) => { e.preventDefault(); setStep((s) => (s + 1) as any); }}>
             
             {/* Step 1: Couple Names */}
@@ -258,6 +315,8 @@ export default function OnboardingPage() {
             )}
 
           </form>
+          </div>
+
         </div>
 
         {/* Back to Home Link */}

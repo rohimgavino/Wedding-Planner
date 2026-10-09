@@ -1697,7 +1697,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/app/onboarding/page.tsx",
-      "source_location": "L172",
+      "source_location": "L120",
       "weight": 1.0
     },
     {
@@ -1709,7 +1709,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/app/onboarding/page.tsx",
-      "source_location": "L219",
+      "source_location": "L134",
       "weight": 1.0
     },
     {
@@ -3852,5 +3852,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "f258034808e5e416f013941038323fd315072caa"
+  "built_at_commit": "002b96fd58a03904038a9fde54989bf45f592271"
 }
