@@ -225,13 +225,13 @@
       "degree": 6
     },
     {
-      "id": "src_lib_utils_calculatedaysremaining",
-      "label": "calculateDaysRemaining()",
+      "id": "src_app_onboarding_page_onboardingpage",
+      "label": "OnboardingPage()",
       "degree": 5
     },
     {
-      "id": "src_lib_utils_formatrupiah",
-      "label": "formatRupiah()",
+      "id": "src_lib_utils_calculatedaysremaining",
+      "label": "calculateDaysRemaining()",
       "degree": 5
     }
   ],

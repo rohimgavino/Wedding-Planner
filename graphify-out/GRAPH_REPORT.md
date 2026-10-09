@@ -1,4 +1,4 @@
-# Graph Report - wedding-planner  (2026-10-09)
+# Graph Report - wedding-planner  (2026-10-10)
 
 ## Corpus Check
 - cluster-only mode — file stats not available
@@ -9,7 +9,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `002b96fd`
+- Built from commit: `d98bd46b`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -38,8 +38,8 @@
 6. `public.workspaces` - 7 edges
 7. `DashboardPage()` - 6 edges
 8. `scripts` - 6 edges
-9. `calculateDaysRemaining()` - 5 edges
-10. `formatRupiah()` - 5 edges
+9. `OnboardingPage()` - 5 edges
+10. `calculateDaysRemaining()` - 5 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `LoginPage()` --calls--> `useWorkspace()`  [EXTRACTED]

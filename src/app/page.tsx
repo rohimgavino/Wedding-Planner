@@ -84,7 +84,7 @@ export default function Home() {
               href="/onboarding"
               className="text-xs sm:text-sm font-semibold px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-rose-500 to-rose-600 text-white shadow-md shadow-rose-200 hover:shadow-rose-300 hover:from-rose-600 hover:to-rose-700 active:scale-95 transition"
             >
-              Mulai Gratis
+              Mulai Sekarang
             </a>
           </div>
         </div>

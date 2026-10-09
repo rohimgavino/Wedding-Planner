@@ -184,7 +184,7 @@ export default function LoginPage() {
             href="/onboarding"
             className="w-full py-2.5 px-4 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold text-xs transition block"
           >
-            Buat Workspace Baru (Gratis)
+            Buat Workspace Baru
           </a>
         </div>
 
