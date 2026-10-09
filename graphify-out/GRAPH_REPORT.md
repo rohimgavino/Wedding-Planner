@@ -4,12 +4,12 @@
 - cluster-only mode — file stats not available
 
 ## Summary
-- 119 nodes · 119 edges · 14 communities (9 shown, 5 thin omitted)
+- 115 nodes · 116 edges · 14 communities (9 shown, 5 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `cd0a8dd2`
+- Built from commit: `e131f686`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -50,8 +50,8 @@
 ## Communities (14 total, 5 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.09
-Nodes (17): description, name, private, version, autoprefixer, lucide-react, postcss, react (+9 more)
+Cohesion: 0.11
+Nodes (15): description, name, private, version, autoprefixer, lucide-react, postcss, react (+7 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.11
@@ -87,21 +87,21 @@ Nodes (3): next, metadata, viewport
 
 ## Knowledge Gaps
 - **74 isolated node(s):** `WhatsAppMessageParams`, `BudgetItem`, `GuestCategory`, `GuestItem`, `Invitation` (+69 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 87 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 85 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `dependencies` connect `Community 4` to `Community 0`?**
-  _High betweenness centrality (0.061) - this node is a cross-community bridge._
+  _High betweenness centrality (0.065) - this node is a cross-community bridge._
 - **Why does `devDependencies` connect `Community 6` to `Community 0`?**
-  _High betweenness centrality (0.054) - this node is a cross-community bridge._
+  _High betweenness centrality (0.058) - this node is a cross-community bridge._
 - **Why does `scripts` connect `Community 8` to `Community 0`?**
-  _High betweenness centrality (0.039) - this node is a cross-community bridge._
+  _High betweenness centrality (0.042) - this node is a cross-community bridge._
 - **What connects `WhatsAppMessageParams`, `BudgetItem`, `GuestCategory` to the rest of the system?**
   _74 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._

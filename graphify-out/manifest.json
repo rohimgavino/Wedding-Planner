@@ -5,12 +5,6 @@
     "ast_hash": "6108a45419465681baa99585a0d6cb56",
     "semantic_hash": "6108a45419465681baa99585a0d6cb56"
   },
-  "next-env.d.ts": {
-    "mtime": 1791537919.9370973,
-    "seen": 1791537943.8469572,
-    "ast_hash": "187b4b5b507c358a018aeeadd81abe57",
-    "semantic_hash": "187b4b5b507c358a018aeeadd81abe57"
-  },
   "next.config.mjs": {
     "mtime": 1791537747.696268,
     "seen": 1791537943.8469572,
@@ -36,10 +30,10 @@
     "semantic_hash": "27dae2ac0dd440f15c0353bca013a207"
   },
   "src/app/page.tsx": {
-    "mtime": 1791537848.121414,
-    "seen": 1791537943.8469572,
-    "ast_hash": "1b291dbf3a4107c6351f9b76a1b29463",
-    "semantic_hash": "1b291dbf3a4107c6351f9b76a1b29463"
+    "mtime": 1791538702.3376431,
+    "seen": 1791538742.1195738,
+    "ast_hash": "f12e71bd2f5466fd742f490e3a0a3374",
+    "semantic_hash": "f12e71bd2f5466fd742f490e3a0a3374"
   },
   "src/lib/supabase/client.ts": {
     "mtime": 1791537803.1547792,
