@@ -23,7 +23,6 @@ export default function Home() {
       (entries, obs) => {
         entries.forEach((en) => {
           if (en.isIntersecting) {
-            en.target.classList.remove("pending");
             en.target.classList.add("visible");
             obs.unobserve(en.target);
           }
@@ -34,7 +33,6 @@ export default function Home() {
 
     document.querySelectorAll(".reveal").forEach((el) => {
       io.observe(el);
-      el.classList.add("pending");
     });
 
     return () => {
@@ -101,25 +99,25 @@ export default function Home() {
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             
             {/* Left Column: Value Proposition & Copywriting */}
-            <div className="lg:col-span-7 text-center lg:text-left reveal">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-100/80 border border-rose-200/60 text-rose-800 text-xs font-semibold mb-5 shadow-xs">
+            <div className="lg:col-span-7 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-100/80 border border-rose-200/60 text-rose-800 text-xs font-semibold mb-5 shadow-xs anim-fade-up-1">
                 <Sparkles className="w-3.5 h-3.5 text-rose-600 animate-pulse" />
                 <span>Wedding Planner Khusus Pasangan Indonesia</span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-slate-900 leading-[1.15] mb-4">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-slate-900 leading-[1.15] mb-4 anim-fade-up-2">
                 Nikahnya Berdua. <br />
                 <span className="bg-gradient-to-r from-rose-600 via-rose-500 to-amber-600 bg-clip-text text-transparent italic">
                   Planning-nya juga.
                 </span>
               </h1>
 
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto lg:mx-0 mb-7">
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto lg:mx-0 mb-7 anim-fade-up-3">
                 Semua persiapan di satu tempat: kendalikan tabungan bersama, alokasi budget vendor, checklist berkas resmi KUA, hingga manajemen tamu & WhatsApp RSVP instan. Sinkron real-time antar HP berdua.
               </p>
 
               {/* Bullet Features */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto lg:mx-0 mb-8 text-left">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto lg:mx-0 mb-8 text-left anim-fade-up-3">
                 <div className="flex items-center gap-2.5 text-xs sm:text-sm text-slate-700">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
                   <span>Shared Workspace real-time</span>
@@ -139,7 +137,7 @@ export default function Home() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 max-w-md mx-auto lg:mx-0">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 max-w-md mx-auto lg:mx-0 anim-fade-up-4">
                 <a
                   href="/onboarding"
                   className="w-full sm:w-auto py-3.5 px-7 rounded-2xl bg-gradient-to-r from-rose-500 via-rose-600 to-rose-700 text-white font-semibold text-sm shadow-lg shadow-rose-300/60 hover:shadow-rose-400 hover:from-rose-600 hover:to-rose-700 active:scale-98 transition flex items-center justify-center gap-2"
@@ -154,14 +152,14 @@ export default function Home() {
               </div>
 
               {/* Azbology Scroll Cue Indicator */}
-              <div className="hidden lg:block mt-12">
+              <div className="hidden lg:block mt-12 anim-fade-up-4">
                 <a href="#fitur" className="scroll-cue" aria-label="Gulir ke bawah untuk melihat fitur"></a>
               </div>
             </div>
 
             {/* Right Column: Device Frame / Interactive Live App Mockup */}
-            <div className="lg:col-span-5 flex justify-center reveal reveal-delay-2">
-              <div className="w-full max-w-sm">
+            <div className="lg:col-span-5 flex justify-center anim-fade-up-2">
+              <div className="w-full max-w-sm anim-float">
                 
                 {/* Phone Shell for Desktop Viewing */}
                 <div className="relative rounded-[2.5rem] p-3 bg-slate-900 shadow-2xl shadow-rose-900/20 border-4 border-slate-800">

@@ -30,10 +30,10 @@
     "semantic_hash": "a30379796893e5d77cf540a01a66e211"
   },
   "src/app/page.tsx": {
-    "mtime": 1791540650.2951677,
-    "seen": 1791540727.0422645,
-    "ast_hash": "414f5ab65e4974414b8e89d78eadda13",
-    "semantic_hash": "414f5ab65e4974414b8e89d78eadda13"
+    "mtime": 1791541127.4951541,
+    "seen": 1791541225.8978655,
+    "ast_hash": "6a81f88fabf3da2a8390a8602e5c9443",
+    "semantic_hash": "6a81f88fabf3da2a8390a8602e5c9443"
   },
   "src/lib/supabase/client.ts": {
     "mtime": 1791537803.1547792,
