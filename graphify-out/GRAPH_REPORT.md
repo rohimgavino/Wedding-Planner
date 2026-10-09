@@ -4,27 +4,42 @@
 - cluster-only mode — file stats not available
 
 ## Summary
-- 41 nodes · 40 edges · 4 communities
+- 119 nodes · 119 edges · 14 communities (9 shown, 5 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `cd0a8dd2`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - Community 0
 - Community 1
 - Community 2
 - Community 3
+- Community 4
+- Community 5
+- Community 6
+- Community 7
+- Community 8
+- Community 9
+- Community 10
+- Community 11
+- Community 12
+- Community 13
 
 ## God Nodes (most connected - your core abstractions)
-1. `scripts` - 6 edges
-2. `private` - 1 edges
-3. `clsx` - 1 edges
-4. `lucide-react` - 1 edges
-5. `next` - 1 edges
-6. `postcss` - 1 edges
-7. `react` - 1 edges
-8. `react-dom` - 1 edges
-9. `@supabase/ssr` - 1 edges
-10. `@supabase/supabase-js` - 1 edges
+1. `compilerOptions` - 15 edges
+2. `public.workspaces` - 7 edges
+3. `scripts` - 6 edges
+4. `public.workspace_members` - 4 edges
+5. `lucide-react` - 2 edges
+6. `react` - 2 edges
+7. `@supabase/ssr` - 2 edges
+8. `tailwindcss` - 2 edges
+9. `public.budgets` - 2 edges
+10. `public.guests` - 2 edges
 
 ## Surprising Connections (you probably didn't know these)
 - None detected - all connections are within the same source files.
@@ -32,38 +47,61 @@
 ## Import Cycles
 - None detected.
 
-## Communities (4 total, 0 thin omitted)
+## Communities (14 total, 5 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.11
-Nodes (18): description, name, private, version, clsx, lucide-react, next, postcss (+10 more)
+Cohesion: 0.09
+Nodes (17): description, name, private, version, autoprefixer, lucide-react, postcss, react (+9 more)
 
 ### Community 1 - "Community 1"
+Cohesion: 0.11
+Nodes (17): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+9 more)
+
+### Community 2 - "Community 2"
+Cohesion: 0.15
+Nodes (12): BudgetItem, GuestCategory, GuestItem, Invitation, MemberRole, PaymentStatus, RSVPStatus, TaskItem (+4 more)
+
+### Community 3 - "Community 3"
+Cohesion: 0.36
+Nodes (9): auth.users, public.budgets, public.guests, public.invitations, public.is_workspace_member(), public.savings_accounts, public.tasks, public.workspace_members (+1 more)
+
+### Community 4 - "Community 4"
 Cohesion: 0.22
 Nodes (9): dependencies, clsx, lucide-react, next, react, react-dom, @supabase/ssr, @supabase/supabase-js (+1 more)
 
-### Community 2 - "Community 2"
-Cohesion: 0.29
-Nodes (7): devDependencies, postcss, tailwindcss, @types/node, @types/react, @types/react-dom, typescript
+### Community 5 - "Community 5"
+Cohesion: 0.22
+Nodes (8): background_color, description, display, icons, name, short_name, start_url, theme_color
 
-### Community 3 - "Community 3"
+### Community 6 - "Community 6"
+Cohesion: 0.25
+Nodes (8): devDependencies, autoprefixer, postcss, tailwindcss, @types/node, @types/react, @types/react-dom, typescript
+
+### Community 8 - "Community 8"
 Cohesion: 0.33
 Nodes (6): scripts, build, dev, graphify, lint, start
 
+### Community 9 - "Community 9"
+Cohesion: 0.40
+Nodes (3): next, metadata, viewport
+
 ## Knowledge Gaps
-- **37 isolated node(s):** `description`, `name`, `private`, `version`, `clsx` (+32 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 37 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **74 isolated node(s):** `WhatsAppMessageParams`, `BudgetItem`, `GuestCategory`, `GuestItem`, `Invitation` (+69 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 87 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `dependencies` connect `Community 1` to `Community 0`?**
-  _High betweenness centrality (0.364) - this node is a cross-community bridge._
-- **Why does `devDependencies` connect `Community 2` to `Community 0`?**
-  _High betweenness centrality (0.281) - this node is a cross-community bridge._
-- **Why does `scripts` connect `Community 3` to `Community 0`?**
-  _High betweenness centrality (0.237) - this node is a cross-community bridge._
-- **What connects `description`, `name`, `private` to the rest of the system?**
-  _37 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Why does `dependencies` connect `Community 4` to `Community 0`?**
+  _High betweenness centrality (0.061) - this node is a cross-community bridge._
+- **Why does `devDependencies` connect `Community 6` to `Community 0`?**
+  _High betweenness centrality (0.054) - this node is a cross-community bridge._
+- **Why does `scripts` connect `Community 8` to `Community 0`?**
+  _High betweenness centrality (0.039) - this node is a cross-community bridge._
+- **What connects `WhatsAppMessageParams`, `BudgetItem`, `GuestCategory` to the rest of the system?**
+  _74 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
+- **Should `Community 1` be split into smaller, more focused modules?**
+  _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._
