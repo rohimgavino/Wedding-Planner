@@ -25,8 +25,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
-      <body className="font-sans antialiased bg-wedding-50 text-gray-900 selection:bg-wedding-200">
-        <main className="min-h-screen max-w-md mx-auto bg-white shadow-xl flex flex-col relative">
+      <body className="font-sans antialiased bg-[#FAF7F5] text-slate-800 selection:bg-rose-100">
+        <main className="min-h-screen flex flex-col relative">
           {children}
         </main>
       </body>

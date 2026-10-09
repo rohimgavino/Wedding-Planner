@@ -182,7 +182,7 @@
       "file_type": "code",
       "norm_label": "home()",
       "source_file": "src/app/page.tsx",
-      "source_location": "L10"
+      "source_location": "L11"
     },
     {
       "id": "src_lib_supabase_client_createclient",
@@ -2018,7 +2018,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/app/page.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -2606,5 +2606,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "e131f686c640820399a686543989aab56f219600"
+  "built_at_commit": "759d308abdefbb88802f8f3f82d881963139f736"
 }
