@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: "Meet to Marry — Wedding Planner Kolaboratif",
@@ -26,9 +27,11 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body className="font-sans antialiased bg-[#FAF7F5] text-slate-800 selection:bg-rose-100">
-        <main className="min-h-screen flex flex-col relative">
-          {children}
-        </main>
+        <Providers>
+          <main className="min-h-screen flex flex-col relative">
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );
