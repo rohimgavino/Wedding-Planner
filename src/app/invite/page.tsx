@@ -1,19 +1,18 @@
 "use client";
 
-import React from "react";
-import { useParams, useRouter } from "next/navigation";
+import React, { Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useWorkspace } from "@/context/WorkspaceContext";
-import { Heart, Calendar, CheckCircle2, ArrowRight, Sparkles } from "lucide-react";
+import { Calendar, CheckCircle2, Sparkles } from "lucide-react";
 import { formatDateID } from "@/lib/utils";
 
-export default function InviteLandingPage() {
-  const params = useParams();
+function InviteContent() {
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const token = params?.token as string;
+  const token = searchParams.get("token") || "WEDD-VALID";
   const { workspace } = useWorkspace();
 
   const handleAccept = () => {
-    // Di tahap MVP / lokal, langsung mengarahkan pasangan ke dashboard bersama
     router.push("/dashboard");
   };
 
@@ -66,9 +65,21 @@ export default function InviteLandingPage() {
         </button>
 
         <div className="mt-4 text-[10px] text-slate-400 font-mono">
-          Token: {token || "PASS-VALID"}
+          Token: {token}
         </div>
       </div>
     </div>
+  );
+}
+
+export default function InviteLandingPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-[#FAF7F5] text-slate-500 text-xs">
+        Memuat undangan pasangan...
+      </div>
+    }>
+      <InviteContent />
+    </Suspense>
   );
 }

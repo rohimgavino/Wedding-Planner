@@ -1,20 +1,18 @@
 {
   "communities": {
     "0": [
-      "ref_clsx",
-      "ref_supabase_ssr",
-      "ref_tailwind_merge",
+      "ref_lucide_react",
+      "ref_react",
       "src_app_dashboard_page",
       "src_app_dashboard_page_dashboardpage",
-      "src_app_invite_token_page",
-      "src_app_invite_token_page_invitelandingpage",
-      "src_app_login_page",
-      "src_app_login_page_loginpage",
+      "src_app_invite_page",
+      "src_app_invite_page_invitecontent",
+      "src_app_invite_page_invitelandingpage",
       "src_app_onboarding_page",
       "src_app_onboarding_page_onboardingpage",
+      "src_app_page",
+      "src_app_page_home",
       "src_context_workspacecontext_useworkspace",
-      "src_lib_supabase_client",
-      "src_lib_supabase_client_createclient",
       "src_lib_utils",
       "src_lib_utils_calculatedaysremaining",
       "src_lib_utils_cn",
@@ -46,6 +44,26 @@
       "src_types_index_workspacemember"
     ],
     "2": [
+      "package",
+      "package_description",
+      "package_name",
+      "package_private",
+      "package_version",
+      "ref_autoprefixer",
+      "ref_clsx",
+      "ref_postcss",
+      "ref_react_dom",
+      "ref_supabase_supabase_js",
+      "ref_tailwind_merge",
+      "ref_tailwindcss",
+      "ref_types_node",
+      "ref_types_react",
+      "ref_types_react_dom",
+      "ref_typescript",
+      "tailwind_config",
+      "tailwind_config_config"
+    ],
+    "3": [
       "tsconfig",
       "tsconfig_compileroptions",
       "tsconfig_compileroptions_allowjs",
@@ -65,41 +83,7 @@
       "tsconfig_exclude",
       "tsconfig_include"
     ],
-    "3": [
-      "package",
-      "package_description",
-      "package_name",
-      "package_private",
-      "package_version",
-      "ref_autoprefixer",
-      "ref_postcss",
-      "ref_react_dom",
-      "ref_supabase_supabase_js",
-      "ref_tailwindcss",
-      "ref_types_node",
-      "ref_types_react",
-      "ref_types_react_dom",
-      "ref_typescript",
-      "tailwind_config",
-      "tailwind_config_config"
-    ],
     "4": [
-      "ref_lucide_react",
-      "ref_next",
-      "ref_react",
-      "src_app_layout",
-      "src_app_layout_metadata",
-      "src_app_layout_rootlayout",
-      "src_app_layout_viewport",
-      "src_app_page",
-      "src_app_page_home",
-      "src_components_installpwabanner",
-      "src_components_installpwabanner_installpwabanner",
-      "src_components_providers",
-      "src_components_providers_providers",
-      "src_context_workspacecontext_workspaceprovider"
-    ],
-    "5": [
       "auth_users",
       "supabase_schema",
       "supabase_schema_public_budgets",
@@ -110,6 +94,18 @@
       "supabase_schema_public_tasks",
       "supabase_schema_public_workspace_members",
       "supabase_schema_public_workspaces"
+    ],
+    "5": [
+      "ref_next",
+      "src_app_layout",
+      "src_app_layout_metadata",
+      "src_app_layout_rootlayout",
+      "src_app_layout_viewport",
+      "src_components_installpwabanner",
+      "src_components_installpwabanner_installpwabanner",
+      "src_components_providers",
+      "src_components_providers_providers",
+      "src_context_workspacecontext_workspaceprovider"
     ],
     "6": [
       "package_dependencies",
@@ -152,32 +148,41 @@
       "package_scripts_start"
     ],
     "10": [
+      "ref_supabase_ssr",
+      "src_app_login_page",
+      "src_app_login_page_loginpage",
+      "src_lib_supabase_client",
+      "src_lib_supabase_client_createclient"
+    ],
+    "11": [
+      "next",
       "next_config",
       "next_config_nextconfig"
     ],
-    "11": [
+    "12": [
       "postcss_config",
       "postcss_config_config"
     ],
-    "12": [
+    "13": [
       "public_sw",
       "public_sw_assets_to_cache"
     ]
   },
   "cohesion": {
-    "0": 0.19480519480519481,
+    "0": 0.23684210526315788,
     "1": 0.16374269005847952,
     "2": 0.1111111111111111,
-    "3": 0.125,
-    "4": 0.18681318681318682,
-    "5": 0.35555555555555557,
+    "3": 0.1111111111111111,
+    "4": 0.35555555555555557,
+    "5": 0.24444444444444444,
     "6": 0.2222222222222222,
     "7": 0.2222222222222222,
     "8": 0.25,
     "9": 0.3333333333333333,
-    "10": 1.0,
-    "11": 1.0,
-    "12": 1.0
+    "10": 0.6,
+    "11": 0.6666666666666666,
+    "12": 1.0,
+    "13": 1.0
   },
   "gods": [
     {
@@ -221,56 +226,34 @@
       "degree": 6
     },
     {
-      "id": "src_lib_utils_calculatedaysremaining",
-      "label": "calculateDaysRemaining()",
+      "id": "src_app_onboarding_page_onboardingpage",
+      "label": "OnboardingPage()",
       "degree": 5
     },
     {
-      "id": "src_lib_utils_formatrupiah",
-      "label": "formatRupiah()",
+      "id": "src_lib_utils_calculatedaysremaining",
+      "label": "calculateDaysRemaining()",
       "degree": 5
     }
   ],
   "surprises": [
     {
-      "source": "InviteLandingPage()",
+      "source": "LoginPage()",
       "target": "useWorkspace()",
       "source_files": [
-        "src/app/invite/[token]/page.tsx",
+        "src/app/login/page.tsx",
         "src/context/WorkspaceContext.tsx"
       ],
       "confidence": "EXTRACTED",
       "relation": "calls",
-      "why": "cross-file semantic connection"
+      "why": "bridges separate communities"
     },
     {
-      "source": "InviteLandingPage()",
-      "target": "formatDateID()",
+      "source": "OnboardingPage()",
+      "target": "useWorkspace()",
       "source_files": [
-        "src/app/invite/[token]/page.tsx",
-        "src/lib/utils.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "cross-file semantic connection"
-    },
-    {
-      "source": "LoginPage()",
-      "target": "createClient()",
-      "source_files": [
-        "src/app/login/page.tsx",
-        "src/lib/supabase/client.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "cross-file semantic connection"
-    },
-    {
-      "source": "DashboardPage()",
-      "target": "calculateDaysRemaining()",
-      "source_files": [
-        "src/app/dashboard/page.tsx",
-        "src/lib/utils.ts"
+        "src/app/onboarding/page.tsx",
+        "src/context/WorkspaceContext.tsx"
       ],
       "confidence": "EXTRACTED",
       "relation": "calls",
@@ -286,27 +269,49 @@
       "confidence": "EXTRACTED",
       "relation": "calls",
       "why": "cross-file semantic connection"
+    },
+    {
+      "source": "OnboardingPage()",
+      "target": "formatDateID()",
+      "source_files": [
+        "src/app/onboarding/page.tsx",
+        "src/lib/utils.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    },
+    {
+      "source": "OnboardingPage()",
+      "target": "formatRupiah()",
+      "source_files": [
+        "src/app/onboarding/page.tsx",
+        "src/lib/utils.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
     }
   ],
   "questions": [
     {
       "type": "bridge_node",
-      "question": "Why does `react` connect `Community 4` to `Community 0`, `Community 1`, `Community 3`?",
-      "why": "High betweenness centrality (0.137) - this node is a cross-community bridge."
+      "question": "Why does `react` connect `Community 0` to `Community 1`, `Community 2`, `Community 10`, `Community 5`?",
+      "why": "High betweenness centrality (0.136) - this node is a cross-community bridge."
     },
     {
       "type": "bridge_node",
-      "question": "Why does `dependencies` connect `Community 6` to `Community 3`?",
-      "why": "High betweenness centrality (0.077) - this node is a cross-community bridge."
+      "question": "Why does `dependencies` connect `Community 6` to `Community 2`?",
+      "why": "High betweenness centrality (0.076) - this node is a cross-community bridge."
     },
     {
       "type": "bridge_node",
-      "question": "Why does `devDependencies` connect `Community 8` to `Community 3`?",
-      "why": "High betweenness centrality (0.068) - this node is a cross-community bridge."
+      "question": "Why does `devDependencies` connect `Community 8` to `Community 2`?",
+      "why": "High betweenness centrality (0.067) - this node is a cross-community bridge."
     },
     {
       "type": "isolated_nodes",
-      "question": "What connects `WhatsAppMessageParams`, `GuestCategory`, `Invitation` to the rest of the system?",
+      "question": "What connects `WhatsAppMessageParams`, `WorkspaceContextType`, `GuestCategory` to the rest of the system?",
       "why": "73 weakly-connected nodes found - possible documentation gaps or missing edges."
     },
     {
@@ -317,7 +322,7 @@
     {
       "type": "low_cohesion",
       "question": "Should `Community 3` be split into smaller, more focused modules?",
-      "why": "Cohesion score 0.125 - nodes in this community are weakly interconnected."
+      "why": "Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected."
     }
   ]
 }

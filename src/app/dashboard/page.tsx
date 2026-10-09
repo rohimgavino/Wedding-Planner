@@ -101,8 +101,8 @@ export default function DashboardPage() {
     .reduce((acc, g) => acc + (g.pax || 1), 0);
 
   const inviteLink = typeof window !== "undefined" 
-    ? `${window.location.origin}/invite/${inviteToken}` 
-    : `https://mins-permitted-speech-such.trycloudflare.com/invite/${inviteToken}`;
+    ? `${window.location.origin}/invite?token=${inviteToken}` 
+    : `https://mins-permitted-speech-such.trycloudflare.com/invite?token=${inviteToken}`;
 
   const handleCopyInviteLink = () => {
     navigator.clipboard.writeText(inviteLink);
