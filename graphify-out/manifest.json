@@ -96,10 +96,10 @@
     "semantic_hash": "603945f202b6ad45bd381a7c4bbfa7dc"
   },
   "src/components/Providers.tsx": {
-    "mtime": 1791539907.9796097,
-    "seen": 1791540183.2650487,
-    "ast_hash": "0b88ef491ff7c4c6f0e0d9000909ef26",
-    "semantic_hash": "0b88ef491ff7c4c6f0e0d9000909ef26"
+    "mtime": 1791542109.0561185,
+    "seen": 1791542191.8006551,
+    "ast_hash": "8549ab53ae58d5b8a4b5fa9c36b1aba6",
+    "semantic_hash": "8549ab53ae58d5b8a4b5fa9c36b1aba6"
   },
   "src/context/WorkspaceContext.tsx": {
     "mtime": 1791539895.5960612,
@@ -112,5 +112,17 @@
     "seen": 1791540183.2650487,
     "ast_hash": "fc531ba511b4225287c43a95181c545f",
     "semantic_hash": "fc531ba511b4225287c43a95181c545f"
+  },
+  "public/sw.js": {
+    "mtime": 1791542061.523342,
+    "seen": 1791542191.8006551,
+    "ast_hash": "78acf3a3270911fe8285016637ea2696",
+    "semantic_hash": "78acf3a3270911fe8285016637ea2696"
+  },
+  "src/components/InstallPwaBanner.tsx": {
+    "mtime": 1791542087.0297754,
+    "seen": 1791542191.8006551,
+    "ast_hash": "cffcf1b24a440c77d827561c7bd556b8",
+    "semantic_hash": "cffcf1b24a440c77d827561c7bd556b8"
   }
 }
