@@ -177,13 +177,13 @@
       "degree": 15
     },
     {
-      "id": "src_lib_utils_formatdateid",
-      "label": "formatDateID()",
+      "id": "src_context_workspacecontext_useworkspace",
+      "label": "useWorkspace()",
       "degree": 7
     },
     {
-      "id": "src_context_workspacecontext_useworkspace",
-      "label": "useWorkspace()",
+      "id": "src_lib_utils_formatdateid",
+      "label": "formatDateID()",
       "degree": 7
     },
     {
@@ -207,6 +207,11 @@
       "degree": 6
     },
     {
+      "id": "src_app_onboarding_page_onboardingpage",
+      "label": "OnboardingPage()",
+      "degree": 5
+    },
+    {
       "id": "src_lib_utils_calculatedaysremaining",
       "label": "calculateDaysRemaining()",
       "degree": 5
@@ -215,64 +220,59 @@
       "id": "src_lib_utils_formatrupiah",
       "label": "formatRupiah()",
       "degree": 5
-    },
-    {
-      "id": "src_app_onboarding_page_onboardingpage",
-      "label": "OnboardingPage()",
-      "degree": 5
     }
   ],
   "surprises": [
+    {
+      "source": "DashboardPage()",
+      "target": "useWorkspace()",
+      "source_files": [
+        "src/app/dashboard/page.tsx",
+        "src/context/WorkspaceContext.tsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    },
+    {
+      "source": "DashboardPage()",
+      "target": "calculateDaysRemaining()",
+      "source_files": [
+        "src/app/dashboard/page.tsx",
+        "src/lib/utils.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    },
+    {
+      "source": "DashboardPage()",
+      "target": "formatDateID()",
+      "source_files": [
+        "src/app/dashboard/page.tsx",
+        "src/lib/utils.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    },
+    {
+      "source": "DashboardPage()",
+      "target": "formatRupiah()",
+      "source_files": [
+        "src/app/dashboard/page.tsx",
+        "src/lib/utils.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    },
     {
       "source": "DashboardPage()",
       "target": "generateWhatsAppLink()",
       "source_files": [
         "src/app/dashboard/page.tsx",
         "src/lib/whatsapp.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "cross-file semantic connection"
-    },
-    {
-      "source": "DashboardPage()",
-      "target": "calculateDaysRemaining()",
-      "source_files": [
-        "src/app/dashboard/page.tsx",
-        "src/lib/utils.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "cross-file semantic connection"
-    },
-    {
-      "source": "OnboardingPage()",
-      "target": "calculateDaysRemaining()",
-      "source_files": [
-        "src/app/onboarding/page.tsx",
-        "src/lib/utils.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "cross-file semantic connection"
-    },
-    {
-      "source": "DashboardPage()",
-      "target": "formatDateID()",
-      "source_files": [
-        "src/app/dashboard/page.tsx",
-        "src/lib/utils.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "cross-file semantic connection"
-    },
-    {
-      "source": "InviteLandingPage()",
-      "target": "formatDateID()",
-      "source_files": [
-        "src/app/invite/[token]/page.tsx",
-        "src/lib/utils.ts"
       ],
       "confidence": "EXTRACTED",
       "relation": "calls",
@@ -297,7 +297,7 @@
     },
     {
       "type": "isolated_nodes",
-      "question": "What connects `WhatsAppMessageParams`, `GuestCategory`, `Invitation` to the rest of the system?",
+      "question": "What connects `WhatsAppMessageParams`, `WorkspaceContextType`, `GuestCategory` to the rest of the system?",
       "why": "72 weakly-connected nodes found - possible documentation gaps or missing edges."
     },
     {

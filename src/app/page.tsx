@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Heart, Calendar, Users, Wallet, CheckSquare, MessageCircle, 
   ArrowRight, Sparkles, ChevronRight, Share2, Check, Clock, 
@@ -10,13 +10,49 @@ import {
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<"overview" | "budget" | "tasks" | "guests">("overview");
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    // 1. Header scroll state (seperti azbology.id)
+    const onScroll = () => setIsScrolled(window.scrollY > 30);
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // 2. IntersectionObserver Fade-in Reveal on Scroll (seperti azbology.id)
+    if (typeof IntersectionObserver !== "function") return;
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((en) => {
+          if (en.isIntersecting) {
+            en.target.classList.remove("pending");
+            en.target.classList.add("visible");
+            obs.unobserve(en.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    document.querySelectorAll(".reveal").forEach((el) => {
+      io.observe(el);
+      el.classList.add("pending");
+    });
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      io.disconnect();
+    };
+  }, []);
 
   return (
     <div className="flex-1 flex flex-col bg-[#FAF7F5] min-h-screen text-slate-800 antialiased selection:bg-rose-100">
       
       {/* Top Responsive Glass Header */}
-      <header className="border-b border-rose-100/70 bg-white/90 backdrop-blur-md sticky top-0 z-40 transition-all">
-        <div className="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
+      <header className={`border-b transition-all duration-300 sticky top-0 z-40 ${
+        isScrolled 
+          ? "bg-white/95 backdrop-blur-md border-rose-200/80 shadow-md shadow-rose-900/5 py-3" 
+          : "bg-white/80 backdrop-blur-sm border-rose-100/60 py-4"
+      }`}>
+        <div className="max-w-6xl mx-auto px-5 sm:px-8 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-500 via-rose-400 to-amber-300 text-white flex items-center justify-center font-bold text-lg shadow-md shadow-rose-200">
               💍
@@ -65,7 +101,7 @@ export default function Home() {
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             
             {/* Left Column: Value Proposition & Copywriting */}
-            <div className="lg:col-span-7 text-center lg:text-left">
+            <div className="lg:col-span-7 text-center lg:text-left reveal">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-100/80 border border-rose-200/60 text-rose-800 text-xs font-semibold mb-5 shadow-xs">
                 <Sparkles className="w-3.5 h-3.5 text-rose-600 animate-pulse" />
                 <span>Wedding Planner Khusus Pasangan Indonesia</span>
@@ -116,10 +152,15 @@ export default function Home() {
                   <span>Bisa dibuka di Laptop & HP (PWA)</span>
                 </div>
               </div>
+
+              {/* Azbology Scroll Cue Indicator */}
+              <div className="hidden lg:block mt-12">
+                <a href="#fitur" className="scroll-cue" aria-label="Gulir ke bawah untuk melihat fitur"></a>
+              </div>
             </div>
 
             {/* Right Column: Device Frame / Interactive Live App Mockup */}
-            <div className="lg:col-span-5 flex justify-center">
+            <div className="lg:col-span-5 flex justify-center reveal reveal-delay-2">
               <div className="w-full max-w-sm">
                 
                 {/* Phone Shell for Desktop Viewing */}
@@ -295,7 +336,7 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-          <div className="p-6 rounded-2xl bg-white border border-rose-100 shadow-sm hover:shadow-md transition">
+          <div className="p-6 rounded-2xl bg-white border border-rose-100 shadow-sm card-lift reveal reveal-delay-1">
             <div className="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4">
               <Heart className="w-6 h-6 fill-rose-500" />
             </div>
@@ -305,7 +346,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white border border-rose-100 shadow-sm hover:shadow-md transition">
+          <div className="p-6 rounded-2xl bg-white border border-rose-100 shadow-sm card-lift reveal reveal-delay-2">
             <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4">
               <Wallet className="w-6 h-6" />
             </div>
@@ -315,7 +356,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white border border-rose-100 shadow-sm hover:shadow-md transition">
+          <div className="p-6 rounded-2xl bg-white border border-rose-100 shadow-sm card-lift reveal reveal-delay-3">
             <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
               <FileText className="w-6 h-6" />
             </div>
@@ -325,7 +366,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white border border-rose-100 shadow-sm hover:shadow-md transition">
+          <div className="p-6 rounded-2xl bg-white border border-rose-100 shadow-sm card-lift reveal reveal-delay-4">
             <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
               <MessageCircle className="w-6 h-6" />
             </div>
@@ -340,7 +381,7 @@ export default function Home() {
       {/* Cara Kerja (How it Works) */}
       <section id="cara-kerja" className="py-12 sm:py-16 bg-white border-y border-rose-100/60">
         <div className="max-w-6xl mx-auto px-5 sm:px-8">
-          <div className="text-center max-w-xl mx-auto mb-12">
+          <div className="text-center max-w-xl mx-auto mb-12 reveal">
             <span className="text-xs font-bold text-rose-600 uppercase tracking-widest">Alur Sederhana</span>
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900 mt-1">
               Mulai Dalam 3 Langkah Praktis
@@ -348,7 +389,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-5">
+            <div className="text-center p-5 card-lift rounded-2xl bg-slate-50/50 border border-slate-100/80 reveal reveal-delay-1">
               <div className="w-12 h-12 rounded-2xl bg-rose-500 text-white font-bold text-lg flex items-center justify-center mx-auto mb-4 shadow-md shadow-rose-200">
                 1
               </div>
@@ -358,7 +399,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="text-center p-5">
+            <div className="text-center p-5 card-lift rounded-2xl bg-slate-50/50 border border-slate-100/80 reveal reveal-delay-2">
               <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white font-bold text-lg flex items-center justify-center mx-auto mb-4 shadow-md shadow-amber-200">
                 2
               </div>
@@ -368,7 +409,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="text-center p-5">
+            <div className="text-center p-5 card-lift rounded-2xl bg-slate-50/50 border border-slate-100/80 reveal reveal-delay-3">
               <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white font-bold text-lg flex items-center justify-center mx-auto mb-4 shadow-md shadow-emerald-200">
                 3
               </div>

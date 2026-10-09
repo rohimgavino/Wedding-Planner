@@ -9,7 +9,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `e37542b3`
+- Built from commit: `1d225d02`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -29,27 +29,27 @@
 
 ## God Nodes (most connected - your core abstractions)
 1. `compilerOptions` - 15 edges
-2. `formatDateID()` - 7 edges
-3. `useWorkspace()` - 7 edges
+2. `useWorkspace()` - 7 edges
+3. `formatDateID()` - 7 edges
 4. `react` - 7 edges
 5. `public.workspaces` - 7 edges
 6. `DashboardPage()` - 6 edges
 7. `scripts` - 6 edges
-8. `calculateDaysRemaining()` - 5 edges
-9. `formatRupiah()` - 5 edges
-10. `OnboardingPage()` - 5 edges
+8. `OnboardingPage()` - 5 edges
+9. `calculateDaysRemaining()` - 5 edges
+10. `formatRupiah()` - 5 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `DashboardPage()` --calls--> `generateWhatsAppLink()`  [EXTRACTED]
-  src/app/dashboard/page.tsx → src/lib/whatsapp.ts
+- `DashboardPage()` --calls--> `useWorkspace()`  [EXTRACTED]
+  src/app/dashboard/page.tsx → src/context/WorkspaceContext.tsx
 - `DashboardPage()` --calls--> `calculateDaysRemaining()`  [EXTRACTED]
   src/app/dashboard/page.tsx → src/lib/utils.ts
-- `OnboardingPage()` --calls--> `calculateDaysRemaining()`  [EXTRACTED]
-  src/app/onboarding/page.tsx → src/lib/utils.ts
 - `DashboardPage()` --calls--> `formatDateID()`  [EXTRACTED]
   src/app/dashboard/page.tsx → src/lib/utils.ts
-- `InviteLandingPage()` --calls--> `formatDateID()`  [EXTRACTED]
-  src/app/invite/[token]/page.tsx → src/lib/utils.ts
+- `DashboardPage()` --calls--> `formatRupiah()`  [EXTRACTED]
+  src/app/dashboard/page.tsx → src/lib/utils.ts
+- `DashboardPage()` --calls--> `generateWhatsAppLink()`  [EXTRACTED]
+  src/app/dashboard/page.tsx → src/lib/whatsapp.ts
 
 ## Import Cycles
 - None detected.
@@ -97,7 +97,7 @@ Cohesion: 0.33
 Nodes (6): scripts, build, dev, graphify, lint, start
 
 ## Knowledge Gaps
-- **72 isolated node(s):** `WhatsAppMessageParams`, `GuestCategory`, `Invitation`, `MemberRole`, `PaymentStatus` (+67 more)
+- **72 isolated node(s):** `WhatsAppMessageParams`, `WorkspaceContextType`, `GuestCategory`, `Invitation`, `MemberRole` (+67 more)
   These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 79 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **2 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -110,7 +110,7 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.081) - this node is a cross-community bridge._
 - **Why does `devDependencies` connect `Community 7` to `Community 1`?**
   _High betweenness centrality (0.071) - this node is a cross-community bridge._
-- **What connects `WhatsAppMessageParams`, `GuestCategory`, `Invitation` to the rest of the system?**
+- **What connects `WhatsAppMessageParams`, `WorkspaceContextType`, `GuestCategory` to the rest of the system?**
   _72 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._
