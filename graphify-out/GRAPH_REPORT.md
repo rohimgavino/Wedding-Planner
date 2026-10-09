@@ -4,12 +4,12 @@
 - cluster-only mode — file stats not available
 
 ## Summary
-- 139 nodes · 200 edges · 14 communities (11 shown, 3 thin omitted)
+- 138 nodes · 199 edges · 14 communities (11 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `63c62130`
+- Built from commit: `f2580348`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -38,20 +38,20 @@
 6. `public.workspaces` - 7 edges
 7. `DashboardPage()` - 6 edges
 8. `scripts` - 6 edges
-9. `OnboardingPage()` - 5 edges
-10. `calculateDaysRemaining()` - 5 edges
+9. `calculateDaysRemaining()` - 5 edges
+10. `formatRupiah()` - 5 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `LoginPage()` --calls--> `useWorkspace()`  [EXTRACTED]
   src/app/login/page.tsx → src/context/WorkspaceContext.tsx
-- `OnboardingPage()` --calls--> `useWorkspace()`  [EXTRACTED]
-  src/app/onboarding/page.tsx → src/context/WorkspaceContext.tsx
-- `OnboardingPage()` --calls--> `calculateDaysRemaining()`  [EXTRACTED]
-  src/app/onboarding/page.tsx → src/lib/utils.ts
-- `OnboardingPage()` --calls--> `formatDateID()`  [EXTRACTED]
-  src/app/onboarding/page.tsx → src/lib/utils.ts
-- `OnboardingPage()` --calls--> `formatRupiah()`  [EXTRACTED]
-  src/app/onboarding/page.tsx → src/lib/utils.ts
+- `LoginPage()` --calls--> `createClient()`  [EXTRACTED]
+  src/app/login/page.tsx → src/lib/supabase/client.ts
+- `DashboardPage()` --calls--> `useWorkspace()`  [EXTRACTED]
+  src/app/dashboard/page.tsx → src/context/WorkspaceContext.tsx
+- `DashboardPage()` --calls--> `calculateDaysRemaining()`  [EXTRACTED]
+  src/app/dashboard/page.tsx → src/lib/utils.ts
+- `DashboardPage()` --calls--> `formatDateID()`  [EXTRACTED]
+  src/app/dashboard/page.tsx → src/lib/utils.ts
 
 ## Import Cycles
 - None detected.
@@ -59,28 +59,28 @@
 ## Communities (14 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.24
-Nodes (11): lucide-react, react, DashboardPage(), InviteContent(), OnboardingPage(), useWorkspace(), calculateDaysRemaining(), formatDateID() (+3 more)
-
-### Community 1 - "Community 1"
 Cohesion: 0.16
 Nodes (16): WorkspaceContext, WorkspaceContextType, DEFAULT_BUDGET_CATEGORIES, INITIAL_KUA_AND_TIMELINE_TASKS, BudgetItem, GuestCategory, GuestItem, Invitation (+8 more)
 
-### Community 2 - "Community 2"
+### Community 1 - "Community 1"
 Cohesion: 0.11
 Nodes (16): description, name, private, version, autoprefixer, clsx, postcss, react-dom (+8 more)
 
-### Community 3 - "Community 3"
+### Community 2 - "Community 2"
 Cohesion: 0.11
 Nodes (17): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+9 more)
 
+### Community 3 - "Community 3"
+Cohesion: 0.29
+Nodes (10): lucide-react, DashboardPage(), InviteContent(), OnboardingPage(), useWorkspace(), calculateDaysRemaining(), formatDateID(), formatRupiah() (+2 more)
+
 ### Community 4 - "Community 4"
-Cohesion: 0.36
-Nodes (9): auth.users, public.budgets, public.guests, public.invitations, public.is_workspace_member(), public.savings_accounts, public.tasks, public.workspace_members (+1 more)
+Cohesion: 0.19
+Nodes (7): next, react, metadata, viewport, InstallPwaBanner(), Providers(), WorkspaceProvider()
 
 ### Community 5 - "Community 5"
-Cohesion: 0.24
-Nodes (6): next, metadata, viewport, InstallPwaBanner(), Providers(), WorkspaceProvider()
+Cohesion: 0.36
+Nodes (9): auth.users, public.budgets, public.guests, public.invitations, public.is_workspace_member(), public.savings_accounts, public.tasks, public.workspace_members (+1 more)
 
 ### Community 6 - "Community 6"
 Cohesion: 0.22
@@ -103,22 +103,22 @@ Cohesion: 0.60
 Nodes (3): @supabase/ssr, LoginPage(), createClient()
 
 ## Knowledge Gaps
-- **73 isolated node(s):** `WhatsAppMessageParams`, `WorkspaceContextType`, `GuestCategory`, `Invitation`, `MemberRole` (+68 more)
+- **73 isolated node(s):** `WorkspaceContextType`, `GuestCategory`, `Invitation`, `MemberRole`, `PaymentStatus` (+68 more)
   These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 81 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `react` connect `Community 0` to `Community 1`, `Community 2`, `Community 10`, `Community 5`?**
-  _High betweenness centrality (0.136) - this node is a cross-community bridge._
-- **Why does `dependencies` connect `Community 6` to `Community 2`?**
-  _High betweenness centrality (0.076) - this node is a cross-community bridge._
-- **Why does `devDependencies` connect `Community 8` to `Community 2`?**
-  _High betweenness centrality (0.067) - this node is a cross-community bridge._
-- **What connects `WhatsAppMessageParams`, `WorkspaceContextType`, `GuestCategory` to the rest of the system?**
+- **Why does `react` connect `Community 4` to `Community 0`, `Community 1`, `Community 10`, `Community 3`?**
+  _High betweenness centrality (0.138) - this node is a cross-community bridge._
+- **Why does `dependencies` connect `Community 6` to `Community 1`?**
+  _High betweenness centrality (0.077) - this node is a cross-community bridge._
+- **Why does `devDependencies` connect `Community 8` to `Community 1`?**
+  _High betweenness centrality (0.068) - this node is a cross-community bridge._
+- **What connects `WorkspaceContextType`, `GuestCategory`, `Invitation` to the rest of the system?**
   _73 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Community 2` be split into smaller, more focused modules?**
+- **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._
-- **Should `Community 3` be split into smaller, more focused modules?**
+- **Should `Community 2` be split into smaller, more focused modules?**
   _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._

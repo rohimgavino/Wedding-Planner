@@ -32,91 +32,81 @@ export default function OnboardingPage() {
   const daysRemaining = calculateDaysRemaining(weddingDate);
 
   return (
-    <div className="min-h-screen bg-[#FAF7F5] flex flex-col justify-center px-4 sm:px-6 py-10">
-      <div className="max-w-xl mx-auto w-full">
+    <div className="min-h-screen bg-[#FAF7F5] flex flex-col justify-center items-center px-4 sm:px-6 py-10 sm:py-14">
+      <div className="max-w-md w-full my-auto">
         
         {/* Brand Header */}
-        <div className="text-center mb-8">
-          <a href="/" className="inline-flex items-center gap-2.5 mb-3 group">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-500 via-rose-400 to-amber-300 text-white flex items-center justify-center font-bold text-lg shadow-md shadow-rose-200">
+        <div className="text-center mb-6">
+          <a href="/" className="inline-flex items-center gap-2 mb-2.5 group">
+            <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-rose-500 via-rose-400 to-amber-300 text-white flex items-center justify-center font-bold text-base shadow-sm">
               💍
             </div>
             <span className="font-serif font-bold text-slate-900 tracking-tight text-xl">
               Meet to Marry
             </span>
           </a>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900">
-            Mulai Perjalanan Pernikahan Berdua
+          <h1 className="text-2xl font-serif font-bold text-slate-900 leading-tight">
+            {step === 1 && "Siapa Nama Kedua Mempelai?"}
+            {step === 2 && "Kapan Hari Bahagia Kalian?"}
+            {step === 3 && "Rencana Anggaran & Tabungan"}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 mt-1">
-            Langkah awal membuat ruang kerja bersama yang rapi dan terhubung real-time.
+          <p className="text-xs sm:text-sm text-slate-500 mt-1.5 leading-relaxed">
+            {step === 1 && "Langkah awal membuat ruang kerja bersama yang rapi dan terhubung."}
+            {step === 2 && "Sistem otomatis menyusun jadwal mundur persiapan & dokumen KUA."}
+            {step === 3 && "Atur target bersama agar pengeluaran terkendali sampai hari H."}
           </p>
         </div>
 
-        {/* Live Preview Card */}
-        <div className="mb-8 p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-rose-500 via-rose-600 to-amber-700 text-white shadow-xl shadow-rose-900/10 relative overflow-hidden transition-all">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2.5">
-              <div className="flex -space-x-1.5">
-                <div className="w-8 h-8 rounded-full bg-white/20 border border-white/40 flex items-center justify-center text-xs font-bold">
-                  {groomName.charAt(0).toUpperCase() || "P"}
-                </div>
-                <div className="w-8 h-8 rounded-full bg-rose-300 border border-white/40 flex items-center justify-center text-xs font-bold text-rose-900">
-                  {brideName.charAt(0).toUpperCase() || "W"}
-                </div>
-              </div>
-              <div>
-                <span className="text-[10px] uppercase tracking-wider text-rose-100 font-medium">Wedding Workspace</span>
-                <h3 className="font-serif font-bold text-base tracking-wide">
-                  {groomName || "Mempelai Pria"} & {brideName || "Mempelai Wanita"}
-                </h3>
-              </div>
-            </div>
-
-            <div className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-semibold flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-rose-200" />
-              <span>{daysRemaining} Hari Lagi</span>
-            </div>
+        {/* Stepper Progress Indicator */}
+        <div className="flex items-center justify-center gap-2 mb-6">
+          <div className="flex items-center gap-1.5">
+            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition ${
+              step >= 1 ? "bg-rose-500 text-white shadow-xs" : "bg-slate-200 text-slate-600"
+            }`}>
+              1
+            </span>
+            <span className={`text-[11px] font-semibold ${step >= 1 ? "text-rose-600" : "text-slate-400"}`}>
+              Mempelai
+            </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 pt-3 border-t border-white/15">
-            <div>
-              <div className="text-[10px] text-rose-100 font-medium">Target Tabungan</div>
-              <div className="text-sm font-bold">{formatRupiah(Number(targetSavings) || 0)}</div>
-            </div>
-            <div>
-              <div className="text-[10px] text-rose-100 font-medium">Target Budget</div>
-              <div className="text-sm font-bold">{formatRupiah(Number(targetBudget) || 0)}</div>
-            </div>
+          <div className={`w-8 h-0.5 rounded transition ${step >= 2 ? "bg-rose-400" : "bg-slate-200"}`} />
+
+          <div className="flex items-center gap-1.5">
+            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition ${
+              step >= 2 ? "bg-rose-500 text-white shadow-xs" : "bg-slate-200 text-slate-600"
+            }`}>
+              2
+            </span>
+            <span className={`text-[11px] font-semibold ${step >= 2 ? "text-rose-600" : "text-slate-400"}`}>
+              Tanggal
+            </span>
+          </div>
+
+          <div className={`w-8 h-0.5 rounded transition ${step >= 3 ? "bg-rose-400" : "bg-slate-200"}`} />
+
+          <div className="flex items-center gap-1.5">
+            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition ${
+              step >= 3 ? "bg-rose-500 text-white shadow-xs" : "bg-slate-200 text-slate-600"
+            }`}>
+              3
+            </span>
+            <span className={`text-[11px] font-semibold ${step >= 3 ? "text-rose-600" : "text-slate-400"}`}>
+              Anggaran
+            </span>
           </div>
         </div>
 
-        {/* Step Wizard Container */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-rose-100 shadow-xl shadow-slate-200/50">
-          
-          {/* Progress Indicator */}
-          <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-            <div className="flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-rose-500 text-white text-xs font-bold flex items-center justify-center">
-                {step}
-              </span>
-              <span className="text-xs font-semibold text-slate-700">
-                {step === 1 && "Nama Calon Mempelai"}
-                {step === 2 && "Tanggal Acara Pernikahan"}
-                {step === 3 && "Rencana Anggaran & Tabungan"}
-              </span>
-            </div>
-            <span className="text-xs text-slate-400 font-medium">Langkah {step} dari 3</span>
-          </div>
-
+        {/* Main Card Form */}
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-rose-100/80 shadow-xl shadow-rose-950/5">
           <form onSubmit={step === 3 ? handleFinish : (e) => { e.preventDefault(); setStep((s) => (s + 1) as any); }}>
             
             {/* Step 1: Couple Names */}
             {step === 1 && (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                    Nama Panggilan Calon Pengantin Pria
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    Nama Panggilan Mempelai Pria
                   </label>
                   <input
                     type="text"
@@ -124,13 +114,13 @@ export default function OnboardingPage() {
                     value={groomName}
                     onChange={(e) => setGroomName(e.target.value)}
                     placeholder="Contoh: Rian"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-100 text-sm font-medium transition"
+                    className="w-full px-4 py-3.5 rounded-2xl border border-slate-300 focus:outline-none focus:border-rose-500 focus:ring-4 focus:ring-rose-100 text-sm font-medium transition shadow-xs placeholder:text-slate-400"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                    Nama Panggilan Calon Pengantin Wanita
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    Nama Panggilan Mempelai Wanita
                   </label>
                   <input
                     type="text"
@@ -138,13 +128,25 @@ export default function OnboardingPage() {
                     value={brideName}
                     onChange={(e) => setBrideName(e.target.value)}
                     placeholder="Contoh: Dina"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-100 text-sm font-medium transition"
+                    className="w-full px-4 py-3.5 rounded-2xl border border-slate-300 focus:outline-none focus:border-rose-500 focus:ring-4 focus:ring-rose-100 text-sm font-medium transition shadow-xs placeholder:text-slate-400"
                   />
                 </div>
 
+                {/* Gentle Pair Preview Badge */}
+                {(groomName.trim() || brideName.trim()) && (
+                  <div className="p-3 bg-rose-50/70 border border-rose-200/60 rounded-2xl flex items-center gap-2.5 animate-fade-up">
+                    <div className="w-8 h-8 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                      💍
+                    </div>
+                    <div className="text-xs text-slate-700">
+                      Ruang Perencanaan: <span className="font-bold text-rose-700">{groomName.trim() || "..."} & {brideName.trim() || "..."}</span>
+                    </div>
+                  </div>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full mt-4 py-3.5 px-6 rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 text-white font-semibold text-sm shadow-md hover:from-rose-600 hover:to-rose-700 transition flex items-center justify-center gap-2"
+                  className="w-full mt-2 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-500 via-rose-600 to-rose-700 text-white font-semibold text-sm shadow-md hover:from-rose-600 hover:to-rose-700 transition flex items-center justify-center gap-2 active:scale-98"
                 >
                   <span>Lanjut ke Tanggal Acara</span>
                   <ArrowRight className="w-4 h-4" />
@@ -256,6 +258,13 @@ export default function OnboardingPage() {
             )}
 
           </form>
+        </div>
+
+        {/* Back to Home Link */}
+        <div className="text-center mt-6">
+          <a href="/" className="text-xs text-slate-400 hover:text-rose-600 transition font-medium">
+            ← Kembali ke Beranda
+          </a>
         </div>
 
       </div>
