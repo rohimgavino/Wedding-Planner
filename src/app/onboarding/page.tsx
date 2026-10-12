@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useWorkspace } from "@/context/WorkspaceContext";
 import { Heart, Calendar, Wallet, ArrowRight, ArrowLeft, Sparkles, CheckCircle2 } from "lucide-react";
@@ -37,14 +38,14 @@ export default function OnboardingPage() {
         
         {/* Brand Header */}
         <div className="text-center mb-6">
-          <a href="/" className="inline-flex items-center gap-2 mb-2.5 group">
+          <Link href="/" className="inline-flex items-center gap-2 mb-2.5 group">
             <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-rose-500 via-rose-400 to-amber-300 text-white flex items-center justify-center font-bold text-base shadow-sm">
               💍
             </div>
             <span className="font-serif font-bold text-slate-900 tracking-tight text-xl">
               EverRae
             </span>
-          </a>
+          </Link>
           <h1 className="text-2xl font-serif font-bold text-slate-900 leading-tight">
             {step === 1 && "Siapa Nama Kedua Mempelai?"}
             {step === 2 && "Kapan Hari Bahagia Kalian?"}
@@ -321,9 +322,9 @@ export default function OnboardingPage() {
 
         {/* Back to Home Link */}
         <div className="text-center mt-6">
-          <a href="/" className="text-xs text-slate-400 hover:text-rose-600 transition font-medium">
+          <Link href="/" className="text-xs text-slate-400 hover:text-rose-600 transition font-medium">
             ← Kembali ke Beranda
-          </a>
+          </Link>
         </div>
 
       </div>

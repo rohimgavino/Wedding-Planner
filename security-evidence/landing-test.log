@@ -1,0 +1,58 @@
+[
+  {
+    "route": "/",
+    "status": 200
+  },
+  {
+    "route": "/demo",
+    "status": 200
+  },
+  {
+    "route": "/legal",
+    "status": 200
+  },
+  {
+    "route": "/login",
+    "status": 200
+  },
+  {
+    "route": "/onboarding",
+    "status": 200
+  },
+  {
+    "route": "/dashboard",
+    "status": 200
+  },
+  {
+    "route": "/invite",
+    "status": 200
+  },
+  {
+    "viewport": 360,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "overflow": false
+  },
+  {
+    "viewport": 430,
+    "overflow": false
+  },
+  {
+    "viewport": 768,
+    "overflow": false
+  },
+  {
+    "viewport": 1440,
+    "overflow": false
+  },
+  {
+    "demo_tabs": "passed",
+    "demo_checklist": "passed",
+    "demo_storage_unchanged": true,
+    "runtime_errors": [],
+    "reduced_motion": "passed",
+    "zoom": "enabled"
+  }
+]

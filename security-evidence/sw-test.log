@@ -1,0 +1,10 @@
+REPRO: legacy cached homepage -> deleted CSS 404 -> "Times New Roman"
+{
+  "legacy_font": "\"Times New Roman\"",
+  "updated_font": "Arial, Helvetica, sans-serif",
+  "offline_home": "styled",
+  "uncached_offline": 503,
+  "unrelated_cache": "preserved",
+  "public_get": 200,
+  "public_stylesheets": 200
+}

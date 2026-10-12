@@ -6,7 +6,7 @@ Archive: `D:/backups/wedding-planner-before-everrae-20261012-114201` contains ol
 
 Migration: valid same-origin `wedding_planner_workspace_clean_v2` is copied only when `everrae_workspace_v1` is absent. The legacy key is retained and current data wins. Unsupported/malformed schemas remain untouched, with saving disabled and a visible alert. Reset writes an empty current workspace to prevent re-import. No cross-origin migration or cloud backup.
 
-Security limit: npm audit reports 12 inherited dependency issues (2 moderate, 9 high, 1 critical). This Next 14.2.35 release is static output only, without a Next server, Server Actions, middleware or image optimizer endpoint. Upgrade the framework/toolchain before activating a backend or exposing a Next server; no force-upgrade applied here.
+Security audit after remediation: production dependencies 0; all dependencies 7 high development-tooling issues rooted in braces 3.0.3 with no published patch. Next is pinned to 15.5.27 with reviewed PostCSS/selector-parser patches. Static output only; no backend activation. See docs/DEPENDENCY-SECURITY.md for exact remaining advisory, compatibility choices, evidence and rollback.
 
 ## Run and verify
 - `npm ci`

@@ -1,0 +1,113 @@
+{
+  "url": "http://localhost:4190",
+  "routes": {
+    "/": {
+      "status": 200,
+      "type": "text/html",
+      "cache": null
+    },
+    "/dashboard": {
+      "status": 200,
+      "type": "text/html",
+      "cache": null
+    },
+    "/onboarding": {
+      "status": 200,
+      "type": "text/html",
+      "cache": null
+    },
+    "/login": {
+      "status": 200,
+      "type": "text/html",
+      "cache": null
+    },
+    "/demo": {
+      "status": 200,
+      "type": "text/html",
+      "cache": null
+    },
+    "/legal": {
+      "status": 200,
+      "type": "text/html",
+      "cache": null
+    },
+    "/invite": {
+      "status": 200,
+      "type": "text/html",
+      "cache": null
+    },
+    "/templates/template-tamu.csv": {
+      "status": 200,
+      "type": "application/vnd.ms-excel",
+      "cache": null
+    },
+    "/sw.js": {
+      "status": 200,
+      "type": "text/javascript",
+      "cache": null
+    },
+    "/manifest.json": {
+      "status": 200,
+      "type": "application/json",
+      "cache": null
+    },
+    "/images/landscape-lake.jpg": {
+      "status": 200,
+      "type": "image/jpeg",
+      "cache": null
+    },
+    "/images/wedding-flowers.jpg": {
+      "status": 200,
+      "type": "image/jpeg",
+      "cache": null
+    },
+    "/icons/icon-192.png": {
+      "status": 200,
+      "type": "image/png",
+      "cache": null
+    },
+    "/icons/icon-512.png": {
+      "status": 200,
+      "type": "image/png",
+      "cache": null
+    },
+    "/apple-touch-icon.png": {
+      "status": 200,
+      "type": "image/png",
+      "cache": null
+    },
+    "/favicon.ico": {
+      "status": 200,
+      "type": "image/x-icon",
+      "cache": null
+    }
+  },
+  "browser": [
+    {
+      "width": 360,
+      "styled": true,
+      "images": true,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "styled": true,
+      "images": true,
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "styled": true,
+      "images": true,
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "styled": true,
+      "images": true,
+      "overflow": false
+    }
+  ],
+  "migration": "same-origin legacy data copied, retained and persisted",
+  "errors": []
+}

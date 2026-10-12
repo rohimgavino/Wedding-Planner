@@ -1,0 +1,37 @@
+
+> everrae@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.27
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 11.3s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/10) ...
+   Generating static pages (2/10) 
+   Generating static pages (4/10) 
+   Generating static pages (7/10) 
+ ✓ Generating static pages (10/10)
+   Finalizing page optimization ...
+   Collecting build traces ...
+   Exporting (0/2) ...
+ ✓ Exporting (2/2)
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    2.48 kB         115 kB
+├ ○ /_not-found                            993 B         104 kB
+├ ○ /dashboard                           11.8 kB         122 kB
+├ ○ /demo                                1.96 kB         115 kB
+├ ○ /invite                              1.37 kB         108 kB
+├ ○ /legal                                 160 B         106 kB
+├ ○ /login                               73.7 kB         180 kB
+└ ○ /onboarding                          3.13 kB         113 kB
++ First Load JS shared by all             103 kB
+  ├ chunks/255-9acdc15b78d766e6.js       46.6 kB
+  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+  └ other shared chunks (total)          2.01 kB
+
+
+○  (Static)  prerendered as static content
+

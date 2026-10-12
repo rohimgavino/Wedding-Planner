@@ -1,0 +1,1 @@
+{"result": "PASS", "checks": ["template download", "UTF-8 BOM upload and preview", "no mutation before confirmation/cancel", "malformed and duplicate rejection", "confirmed append preserves old guest including notes and IDs", "unique UUIDs", "reload persistence", "export quoted phone/comma", "360/390/430/1440px no overflow", "no page errors"]}

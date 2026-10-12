@@ -1,0 +1,8 @@
+[graphify watch] community set changed since labeling (30 saved labels, 30 communities now; renamed 6 community(ies) by their hub). Run `graphify label` to refresh names with the LLM.
+Re-extracting code files in . (no LLM needed)...
+[graphify watch] 21 file(s) not classified (no supported extension or shebang), skipped: .env.example, .gitignore, build-final.log, csv-browser-test.log, dashboard-test.log, dashboard.css (+15 more)
+[graphify] backed up curated graph (5 files) -> 2026-10-12/
+[graphify watch] Rebuilt: 284 nodes, 396 edges, 30 communities
+[graphify watch] graph.json, graph.html and GRAPH_REPORT.md updated in graphify-out
+Code graph updated. For doc/paper/image changes run /graphify --update in your AI assistant.
+Tip: set GEMINI_API_KEY or GOOGLE_API_KEY to use Gemini for semantic extraction.

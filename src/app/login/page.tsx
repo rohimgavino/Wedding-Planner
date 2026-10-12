@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useWorkspace } from "@/context/WorkspaceContext";
 import { createClient } from "@/lib/supabase/client";
@@ -87,14 +88,14 @@ export default function LoginPage() {
         
         {/* Brand Header */}
         <div className="text-center mb-8">
-          <a href="/" className="inline-flex items-center gap-2.5 mb-3 group">
+          <Link href="/" className="inline-flex items-center gap-2.5 mb-3 group">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-500 via-rose-400 to-amber-300 text-white flex items-center justify-center font-bold text-lg shadow-md shadow-rose-200">
               💍
             </div>
             <span className="font-serif font-bold text-slate-900 tracking-tight text-xl">
               EverRae
             </span>
-          </a>
+          </Link>
           <h1 className="text-2xl font-serif font-bold text-slate-900">
             Masuk ke Workspace
           </h1>

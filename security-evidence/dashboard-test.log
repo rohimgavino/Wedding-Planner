@@ -1,0 +1,13 @@
+[
+  "fresh browser: no workspace or mock records",
+  "empty workspace: budget/task/guest empty states",
+  "dialog: initial focus, keyboard containment, Escape, return focus",
+  "create task/budget/guest, complete task, RSVP update, search, WhatsApp link, CSV download, reload persistence, negative budget and zero pax rejection",
+  "no overflow 360px: all 5 dashboard views",
+  "no overflow 390px: all 5 dashboard views",
+  "no overflow 430px: all 5 dashboard views",
+  "no overflow 1440px: all 5 dashboard views",
+  "task toggle reversal and task/budget/guest deletion persist after reload",
+  "partner dialog, clipboard, workspace reset cancel/confirm",
+  "zero browser console/page errors; no dashboard imagery added"
+]

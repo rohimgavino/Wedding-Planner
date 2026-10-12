@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import "./dashboard.css";
 import { PlannerDialog } from "@/components/everrae/planner-dialog";
 import { GuestCSVImport } from "@/components/everrae/guest-csv-import";
@@ -131,10 +132,10 @@ export default function DashboardPage() {
   return (
     <div className="planner-shell">
       <aside className="planner-sidebar">
-        <a className="planner-brand" href="/">EverRae<span>WEDDING PLANNER</span></a>
+        <Link className="planner-brand" href="/">EverRae<span>WEDDING PLANNER</span></Link>
         <p className="planner-nav-caption">RUANG PERENCANAAN</p>
         <nav aria-label="Navigasi workspace">{([['overview','Dashboard',Sparkles],['tasks','Timeline & Checklist',CheckSquare],['budget','Budget & Biaya',Wallet],['guests','Buku Tamu',Users],['pairing','Pengaturan & Pasangan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={18}/>{label}</button>)}</nav>
-        <div className="planner-sidebar-note"><ShieldCheck size={22}/><strong>Rencana milikmu.</strong><p>Data tersimpan di browser ini. Belum ada sinkronisasi cloud.</p><a href="/">Kembali ke beranda →</a></div>
+        <div className="planner-sidebar-note"><ShieldCheck size={22}/><strong>Rencana milikmu.</strong><p>Data tersimpan di browser ini. Belum ada sinkronisasi cloud.</p><Link href="/">Kembali ke beranda →</Link></div>
       </aside>
       <div className="planner-body">
         <header className="planner-topbar"><span className="planner-topbar-brand">EverRae</span><span className="planner-breadcrumb">Workspace / {activeTab === 'overview' ? 'Dashboard' : activeTab === 'pairing' ? 'Pengaturan' : activeTab === 'tasks' ? 'Timeline' : activeTab === 'guests' ? 'Buku Tamu' : 'Budget'}</span><button onClick={() => setShowInviteModal(true)}><Share2 size={16}/><span>Tautan pasangan</span></button></header>
