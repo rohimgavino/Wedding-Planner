@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./everrae.css";
 import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
-  title: "Meet to Marry — Wedding Planner Kolaboratif",
-  description: "Nikahnya Berdua. Planning-nya Juga. Wedding planner terintegrasi untuk pasangan Indonesia.",
+  title: "EverRae — Plan Your Dream Wedding, Effortlessly",
+  description: "Rencanakan pernikahan dengan lebih tenang. Checklist, anggaran, dan daftar tamu dalam prototype wedding planner EverRae.",
   manifest: "/manifest.json",
   icons: {
     icon: "/favicon.ico",
@@ -14,9 +15,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-  themeColor: "#D97762",
+  themeColor: "#233D32",
 };
 
 export default function RootLayout({

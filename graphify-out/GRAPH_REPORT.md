@@ -1,53 +1,69 @@
-# Graph Report - wedding-planner  (2026-10-10)
+# Graph Report - wedding-planner  (2026-10-12)
 
 ## Corpus Check
-- cluster-only mode — file stats not available
+- 56 files · ~49,490 words
+- Verdict: corpus is large enough that graph structure adds value.
+- Unclassified: 8 file(s) not represented in the graph (top: .css 4, .example 1, (none) 1)
 
 ## Summary
-- 138 nodes · 199 edges · 14 communities (11 shown, 3 thin omitted)
+- 273 nodes · 386 edges · 30 communities (17 shown, 11 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d98bd46b`
+- Built from commit: `9b0a77a1`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- Community 0
-- Community 1
-- Community 2
-- Community 3
-- Community 4
-- Community 5
-- Community 6
-- Community 7
-- Community 8
-- Community 9
-- Community 10
-- Community 11
-- Community 12
-- Community 13
+- WorkspaceContext.tsx
+- package.json
+- compilerOptions
+- dashboard/page.tsx
+- react
+- schema.sql
+- dependencies
+- manifest.json
+- app/page.tsx
+- Panduan AI Agent — Wedding Planner PWA
+- Wedding Planner & Collaborative Workspace PWA
+- next.config.mjs
+- postcss.config.mjs
+- sw.js
+- test-guest-csv.cjs
+- guest-csv-import.tsx
+- EverRae — implementation audit
+- EverRae visual preferences
+- Handler
+- Mobile CSS loss after rebuild
+- test-guest-csv-browser.py
+- .eslintrc.json
+- test-dashboard.py
+- BACKEND-NEXT-STAGE.md
+- IMAGE-ATTRIBUTION.md
+- legacy-sw.js
+- test-preview.py
+- test-service-worker.py
 
 ## God Nodes (most connected - your core abstractions)
 1. `compilerOptions` - 15 edges
-2. `useWorkspace()` - 9 edges
-3. `react` - 9 edges
-4. `formatDateID()` - 7 edges
-5. `lucide-react` - 7 edges
-6. `public.workspaces` - 7 edges
-7. `DashboardPage()` - 6 edges
-8. `scripts` - 6 edges
-9. `OnboardingPage()` - 5 edges
-10. `calculateDaysRemaining()` - 5 edges
+2. `react` - 13 edges
+3. `lucide-react` - 12 edges
+4. `useWorkspace()` - 11 edges
+5. `GuestItem` - 8 edges
+6. `DashboardPage()` - 7 edges
+7. `formatDateID()` - 7 edges
+8. `BudgetItem` - 7 edges
+9. `TaskItem` - 7 edges
+10. `public.workspaces` - 7 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `LoginPage()` --calls--> `useWorkspace()`  [EXTRACTED]
-  src/app/login/page.tsx → src/context/WorkspaceContext.tsx
-- `LoginPage()` --calls--> `createClient()`  [EXTRACTED]
-  src/app/login/page.tsx → src/lib/supabase/client.ts
+- `GuestCSVImport()` --calls--> `useWorkspace()`  [EXTRACTED]
+  src/components/everrae/guest-csv-import.tsx → src/context/WorkspaceContext.tsx
 - `DashboardPage()` --calls--> `useWorkspace()`  [EXTRACTED]
   src/app/dashboard/page.tsx → src/context/WorkspaceContext.tsx
+- `DashboardPage()` --calls--> `serializeGuestCSV()`  [EXTRACTED]
+  src/app/dashboard/page.tsx → src/lib/guest-csv.ts
 - `DashboardPage()` --calls--> `calculateDaysRemaining()`  [EXTRACTED]
   src/app/dashboard/page.tsx → src/lib/utils.ts
 - `DashboardPage()` --calls--> `formatDateID()`  [EXTRACTED]
@@ -56,69 +72,95 @@
 ## Import Cycles
 - None detected.
 
-## Communities (14 total, 3 thin omitted)
+## Communities (30 total, 11 thin omitted)
 
-### Community 0 - "Community 0"
-Cohesion: 0.16
-Nodes (16): WorkspaceContext, WorkspaceContextType, DEFAULT_BUDGET_CATEGORIES, INITIAL_KUA_AND_TIMELINE_TASKS, BudgetItem, GuestCategory, GuestItem, Invitation (+8 more)
+### Community 0 - "WorkspaceContext.tsx"
+Cohesion: 0.13
+Nodes (28): WorkspaceContext, WorkspaceContextType, WorkspaceProvider(), DEFAULT_BUDGET_CATEGORIES, INITIAL_KUA_AND_TIMELINE_TASKS, empty(), LEGACY_KEY, loadWorkspace() (+20 more)
 
-### Community 1 - "Community 1"
-Cohesion: 0.11
-Nodes (16): description, name, private, version, autoprefixer, clsx, postcss, react-dom (+8 more)
+### Community 1 - "package.json"
+Cohesion: 0.06
+Nodes (31): description, devDependencies, autoprefixer, eslint, eslint-config-next, postcss, tailwindcss, @types/node (+23 more)
 
-### Community 2 - "Community 2"
+### Community 2 - "compilerOptions"
 Cohesion: 0.11
 Nodes (17): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+9 more)
 
-### Community 3 - "Community 3"
-Cohesion: 0.29
-Nodes (10): lucide-react, DashboardPage(), InviteContent(), OnboardingPage(), useWorkspace(), calculateDaysRemaining(), formatDateID(), formatRupiah() (+2 more)
+### Community 3 - "dashboard/page.tsx"
+Cohesion: 0.16
+Nodes (16): clsx, @supabase/ssr, tailwind-merge, DashboardPage(), InviteContent(), LoginPage(), OnboardingPage(), PlannerDialog() (+8 more)
 
-### Community 4 - "Community 4"
-Cohesion: 0.19
-Nodes (7): next, react, metadata, viewport, InstallPwaBanner(), Providers(), WorkspaceProvider()
+### Community 4 - "react"
+Cohesion: 0.27
+Nodes (6): next, react, metadata, viewport, InstallPwaBanner(), Providers()
 
-### Community 5 - "Community 5"
+### Community 5 - "schema.sql"
 Cohesion: 0.36
 Nodes (9): auth.users, public.budgets, public.guests, public.invitations, public.is_workspace_member(), public.savings_accounts, public.tasks, public.workspace_members (+1 more)
 
-### Community 6 - "Community 6"
+### Community 6 - "dependencies"
 Cohesion: 0.22
 Nodes (9): dependencies, clsx, lucide-react, next, react, react-dom, @supabase/ssr, @supabase/supabase-js (+1 more)
 
-### Community 7 - "Community 7"
+### Community 7 - "manifest.json"
 Cohesion: 0.22
 Nodes (8): background_color, description, display, icons, name, short_name, start_url, theme_color
 
-### Community 8 - "Community 8"
+### Community 8 - "app/page.tsx"
+Cohesion: 0.13
+Nodes (17): lucide-react, Features, Showcase(), Hero(), FAQ(), faqs, Footer(), HowItWorks() (+9 more)
+
+### Community 9 - "Panduan AI Agent — Wedding Planner PWA"
+Cohesion: 0.29
+Nodes (6): 1. Prinsip Utama Proyek, 2. Standar Workflow Graphify (Wajib di Setiap Project), 3. Aturan Coding & Arsitektur, Panduan AI Agent — Wedding Planner PWA, Saat Sesi Baru Dimulai:, Setelah Mengubah Kode / Menambah Fitur:
+
+### Community 10 - "Wedding Planner & Collaborative Workspace PWA"
 Cohesion: 0.25
-Nodes (8): devDependencies, autoprefixer, postcss, tailwindcss, @types/node, @types/react, @types/react-dom, typescript
+Nodes (7): Dokumentasi Proyek, EverRae — canonical Wedding Planner, Fitur Tahap 1 (MVP), Historical baseline documentation (not proof of active cloud features), Menjalankan Secara Lokal, Run and verify, Wedding Planner & Collaborative Workspace PWA
 
-### Community 9 - "Community 9"
+### Community 14 - "test-guest-csv.cjs"
+Cohesion: 0.11
+Nodes (16): typescript, assert, fs, guest, mod, Module, source, template (+8 more)
+
+### Community 15 - "guest-csv-import.tsx"
+Cohesion: 0.42
+Nodes (7): GuestCSVImport(), GUEST_CATEGORIES, GUEST_CSV_HEADERS, GUEST_RSVP, GuestCSVRow, guestDuplicateError(), parseGuestCSV()
+
+### Community 16 - "EverRae — implementation audit"
+Cohesion: 0.29
+Nodes (6): Accessibility and verification, Active versus planned, Composition, EverRae — implementation audit, Isolation and baseline, Scope limitations
+
+### Community 17 - "EverRae visual preferences"
 Cohesion: 0.33
-Nodes (6): scripts, build, dev, graphify, lint, start
+Nodes (5): Asset review checklist, Current imagery, EverRae visual preferences, Implementation choice, Scope
 
-### Community 10 - "Community 10"
-Cohesion: 0.60
-Nodes (3): @supabase/ssr, LoginPage(), createClient()
+### Community 18 - "Handler"
+Cohesion: 0.47
+Nodes (3): Handler, Local static-export preview with clean route rewrites, no deployment., SimpleHTTPRequestHandler
+
+### Community 19 - "Mobile CSS loss after rebuild"
+Cohesion: 0.40
+Nodes (4): Cause and proof, Fix, Mobile CSS loss after rebuild, Verification
 
 ## Knowledge Gaps
-- **73 isolated node(s):** `WorkspaceContextType`, `GuestCategory`, `Invitation`, `MemberRole`, `PaymentStatus` (+68 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 81 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **122 isolated node(s):** `extends`, `next/core-web-vitals`, `nextConfig`, `name`, `version` (+117 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 153 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `react` connect `Community 4` to `Community 0`, `Community 1`, `Community 10`, `Community 3`?**
-  _High betweenness centrality (0.138) - this node is a cross-community bridge._
-- **Why does `dependencies` connect `Community 6` to `Community 1`?**
-  _High betweenness centrality (0.077) - this node is a cross-community bridge._
-- **Why does `devDependencies` connect `Community 8` to `Community 1`?**
-  _High betweenness centrality (0.068) - this node is a cross-community bridge._
-- **What connects `WorkspaceContextType`, `GuestCategory`, `Invitation` to the rest of the system?**
-  _73 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._
-- **Should `Community 2` be split into smaller, more focused modules?**
+- **Why does `react` connect `react` to `WorkspaceContext.tsx`, `package.json`, `dashboard/page.tsx`, `app/page.tsx`, `guest-csv-import.tsx`?**
+  _High betweenness centrality (0.114) - this node is a cross-community bridge._
+- **Why does `lucide-react` connect `app/page.tsx` to `package.json`, `dashboard/page.tsx`, `react`, `guest-csv-import.tsx`?**
+  _High betweenness centrality (0.101) - this node is a cross-community bridge._
+- **Why does `typescript` connect `test-guest-csv.cjs` to `package.json`?**
+  _High betweenness centrality (0.074) - this node is a cross-community bridge._
+- **What connects `extends`, `next/core-web-vitals`, `nextConfig` to the rest of the system?**
+  _122 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `WorkspaceContext.tsx` be split into smaller, more focused modules?**
+  _Cohesion score 0.12903225806451613 - nodes in this community are weakly interconnected._
+- **Should `package.json` be split into smaller, more focused modules?**
+  _Cohesion score 0.06060606060606061 - nodes in this community are weakly interconnected._
+- **Should `compilerOptions` be split into smaller, more focused modules?**
   _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._

@@ -42,7 +42,7 @@ export default function OnboardingPage() {
               💍
             </div>
             <span className="font-serif font-bold text-slate-900 tracking-tight text-xl">
-              Meet to Marry
+              EverRae
             </span>
           </a>
           <h1 className="text-2xl font-serif font-bold text-slate-900 leading-tight">

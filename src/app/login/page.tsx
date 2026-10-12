@@ -53,7 +53,7 @@ export default function LoginPage() {
     setLoading(true);
     if (!isSupabaseConfigured) {
       // Mode demo / uji coba
-      setMessage("Masuk berhasil!");
+      setMessage("Membuka workspace lokal; tidak ada autentikasi cloud atau email terkirim.");
       setTimeout(() => {
         if (!workspace) {
           router.push("/onboarding");
@@ -92,14 +92,14 @@ export default function LoginPage() {
               💍
             </div>
             <span className="font-serif font-bold text-slate-900 tracking-tight text-xl">
-              Meet to Marry
+              EverRae
             </span>
           </a>
           <h1 className="text-2xl font-serif font-bold text-slate-900">
             Masuk ke Workspace
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 mt-1">
-            Lanjutkan perencanaan pernikahan bersama pasanganmu.
+            Prototype lokal. Data tersimpan di browser ini, belum tersinkron dengan pasangan.
           </p>
         </div>
 
@@ -113,7 +113,7 @@ export default function LoginPage() {
             {/* Google OAuth Button */}
             <button
               onClick={handleGoogleLogin}
-              disabled={loading}
+              disabled={loading || !isSupabaseConfigured}
               className="w-full py-3.5 px-4 rounded-2xl bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm shadow-xs transition flex items-center justify-center gap-3 active:scale-98"
             >
               {/* Google SVG Logo */}
@@ -135,7 +135,7 @@ export default function LoginPage() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                 />
               </svg>
-              <span>{loading ? "Menghubungkan..." : "Lanjutkan dengan Google"}</span>
+              <span>{loading ? "Menghubungkan..." : (isSupabaseConfigured ? "Lanjutkan dengan Google" : "Google OAuth belum tersedia")}</span>
             </button>
 
             <div className="flex items-center gap-3 my-2">
@@ -168,7 +168,7 @@ export default function LoginPage() {
                 disabled={loading}
                 className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 text-white font-semibold text-xs sm:text-sm shadow-md hover:from-rose-600 hover:to-rose-700 transition flex items-center justify-center gap-2 active:scale-98"
               >
-                <span>{loading ? "Memproses..." : "Kirim Tautan Masuk"}</span>
+                <span>{loading ? "Memproses..." : (isSupabaseConfigured ? "Kirim Tautan Masuk" : "Lanjutkan secara lokal")}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>

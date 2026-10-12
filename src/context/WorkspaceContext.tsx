@@ -51,7 +51,7 @@ interface WorkspaceContextType {
 
 const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
 
-const STORAGE_KEY = "wedding_planner_workspace_clean_v2";
+import { STORAGE_KEY, loadWorkspace } from '@/lib/workspace-storage';
 
 export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
@@ -61,35 +61,21 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
   const [inviteToken, setInviteToken] = useState<string>("");
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load from LocalStorage on mount (Kosongan secara default)
+  const [canSave, setCanSave] = useState(false);
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const data = JSON.parse(saved);
-        setWorkspace(data.workspace || null);
-        setBudgets(data.budgets || []);
-        setTasks(data.tasks || []);
-        setGuests(data.guests || []);
-        setInviteToken(data.inviteToken || "");
-      } else {
-        // Kosongan secara default: belum ada dummy Rian & Dina
-        setWorkspace(null);
-        setBudgets([]);
-        setTasks([]);
-        setGuests([]);
-        setInviteToken("");
-      }
-    } catch (e) {
-      console.error("Failed to load workspace data:", e);
-    } finally {
-      setIsLoaded(true);
-    }
+    const loaded = loadWorkspace(localStorage);
+    setWorkspace(loaded.data.workspace);
+    setBudgets(loaded.data.budgets);
+    setTasks(loaded.data.tasks);
+    setGuests(loaded.data.guests);
+    setInviteToken(loaded.data.inviteToken);
+    setCanSave(loaded.canSave);
+    setIsLoaded(true);
   }, []);
 
   // Save to LocalStorage whenever state changes
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded || !canSave) return;
     try {
       const dataToSave = {
         workspace,
@@ -102,7 +88,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
     } catch (e) {
       console.error("Failed to save workspace data:", e);
     }
-  }, [workspace, budgets, tasks, guests, inviteToken, isLoaded]);
+  }, [workspace, budgets, tasks, guests, inviteToken, isLoaded, canSave]);
 
   const createWorkspace = (params: {
     groom_name: string;
@@ -213,7 +199,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
   }) => {
     if (!workspace) return;
     const newGuest: GuestItem = {
-      id: "g-" + Date.now(),
+      id: "g-" + crypto.randomUUID(),
       workspace_id: workspace.id,
       ...item,
     };
@@ -229,7 +215,8 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
   };
 
   const resetData = () => {
-    localStorage.removeItem(STORAGE_KEY);
+    if (!canSave) return;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({workspace:null,budgets:[],tasks:[],guests:[],inviteToken:''}));
     window.location.reload();
   };
 
@@ -255,6 +242,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
         resetData,
       }}
     >
+      {isLoaded && !canSave && <div role="alert" className="p-4 bg-amber-50 text-amber-950">Data tersimpan tidak dapat dibaca dengan aman. Data asli tetap disimpan; perubahan sementara tidak akan tersimpan. Cadangkan data browser sebelum membuat workspace baru atau melakukan reset.</div>}
       {children}
     </WorkspaceContext.Provider>
   );

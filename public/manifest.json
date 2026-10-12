@@ -1,11 +1,11 @@
 {
-  "name": "Meet to Marry — Wedding Planner",
-  "short_name": "WeddingPlanner",
-  "description": "Perencanaan pernikahan berdua, tersinkronisasi real-time.",
+  "name": "EverRae — Wedding Planner",
+  "short_name": "EverRae",
+  "description": "Prototype perencanaan pernikahan lokal. Sinkronisasi cloud belum tersedia.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FDF8F5",
-  "theme_color": "#D97762",
+  "background_color": "#F8F5EF",
+  "theme_color": "#233D32",
   "icons": [
     {
       "src": "/icons/icon-192.png",

@@ -1,12 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
+import "./dashboard.css";
+import { PlannerDialog } from "@/components/everrae/planner-dialog";
+import { GuestCSVImport } from "@/components/everrae/guest-csv-import";
+import { serializeGuestCSV } from "@/lib/guest-csv";
 import { useWorkspace } from "@/context/WorkspaceContext";
 import { 
   Heart, Calendar, Wallet, CheckSquare, Users, Plus, 
-  MessageCircle, Share2, Check, Trash2, Edit3, ArrowLeft,
-  Sparkles, Download, CheckCircle2, AlertCircle, Copy, ExternalLink,
-  Filter, Search, UserCheck, ShieldCheck
+  MessageCircle, Share2, Check, Trash2,
+  Sparkles, Download, CheckCircle2, Copy,
+  Search, ShieldCheck
 } from "lucide-react";
 import { formatRupiah, calculateDaysRemaining, formatDateID } from "@/lib/utils";
 import { generateWhatsAppLink } from "@/lib/whatsapp";
@@ -51,7 +55,7 @@ export default function DashboardPage() {
 
   if (!isLoaded) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FAF7F5] text-slate-500">
+      <div className="min-h-screen flex items-center justify-center planner-empty bg-[#FAF7F5] text-slate-500">
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-rose-500 animate-spin" />
           <span className="text-sm font-medium">Memuat Wedding Workspace...</span>
@@ -62,10 +66,10 @@ export default function DashboardPage() {
 
   if (!workspace) {
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-[#FAF7F5] px-4 py-12 text-center">
+      <div className="min-h-screen flex flex-col justify-center items-center planner-empty bg-[#FAF7F5] px-4 py-12 text-center">
         <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-rose-100 shadow-xl shadow-rose-900/10">
           <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-rose-500 via-rose-400 to-amber-300 text-white flex items-center justify-center font-bold text-2xl mx-auto mb-4 shadow-lg shadow-rose-200">
-            💍
+            EverRae
           </div>
           <span className="text-xs uppercase tracking-wider font-bold text-rose-500">Ruang Perencanaan Masih Kosong</span>
           <h2 className="text-2xl font-serif font-bold text-slate-900 mt-1 mb-2">
@@ -78,7 +82,7 @@ export default function DashboardPage() {
             href="/onboarding"
             className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-600 text-white font-semibold text-sm shadow-md hover:from-rose-600 hover:to-rose-700 transition block text-center"
           >
-            Mulai Isi Data Pernikahan ✨
+            Mulai Isi Data Pernikahan
           </a>
         </div>
       </div>
@@ -115,16 +119,7 @@ export default function DashboardPage() {
       alert("Belum ada tamu untuk di-export.");
       return;
     }
-    const headers = ["Nama Tamu", "Kategori Circle", "Jumlah Pax", "Nomor WhatsApp", "Status RSVP"];
-    const rows = guests.map((g) => [
-      `"${g.name}"`,
-      `"${g.category}"`,
-      g.pax,
-      `"${g.phone || '-'}"`,
-      `"${g.rsvp_status}"`,
-    ]);
-    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
-    const encodedUri = encodeURI(csvContent);
+    const encodedUri = URL.createObjectURL(new Blob([serializeGuestCSV(guests)], { type: "text/csv;charset=utf-8" }));
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", `Daftar_Tamu_${workspace?.title.replace(/\s+/g, "_") || "Wedding"}.csv`);
@@ -134,244 +129,36 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-[#FAF7F5] min-h-screen text-slate-800 pb-20 sm:pb-12">
-      
-      {/* Top Navbar */}
-      <header className="border-b border-rose-100 bg-white/90 backdrop-blur-md sticky top-0 z-30">
-        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <a href="/" className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-rose-500 to-amber-300 text-white flex items-center justify-center font-bold text-base shadow-sm">
-              💍
-            </a>
-            <div>
-              <h1 className="font-serif font-bold text-slate-900 text-base sm:text-lg leading-tight">
-                {workspace?.title || "Wedding Workspace"}
-              </h1>
-              <div className="flex items-center gap-2 text-[11px] text-slate-500 font-medium">
-                <span className="flex items-center gap-1 text-emerald-600 font-semibold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Tersinkron Berdua
-                </span>
-                <span>•</span>
-                <span>{workspace ? formatDateID(workspace.wedding_date) : "-"}</span>
-              </div>
+    <div className="planner-shell">
+      <aside className="planner-sidebar">
+        <a className="planner-brand" href="/">EverRae<span>WEDDING PLANNER</span></a>
+        <p className="planner-nav-caption">RUANG PERENCANAAN</p>
+        <nav aria-label="Navigasi workspace">{([['overview','Dashboard',Sparkles],['tasks','Timeline & Checklist',CheckSquare],['budget','Budget & Biaya',Wallet],['guests','Buku Tamu',Users],['pairing','Pengaturan & Pasangan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={18}/>{label}</button>)}</nav>
+        <div className="planner-sidebar-note"><ShieldCheck size={22}/><strong>Rencana milikmu.</strong><p>Data tersimpan di browser ini. Belum ada sinkronisasi cloud.</p><a href="/">Kembali ke beranda →</a></div>
+      </aside>
+      <div className="planner-body">
+        <header className="planner-topbar"><span className="planner-topbar-brand">EverRae</span><span className="planner-breadcrumb">Workspace / {activeTab === 'overview' ? 'Dashboard' : activeTab === 'pairing' ? 'Pengaturan' : activeTab === 'tasks' ? 'Timeline' : activeTab === 'guests' ? 'Buku Tamu' : 'Budget'}</span><button onClick={() => setShowInviteModal(true)}><Share2 size={16}/><span>Tautan pasangan</span></button></header>
+        <main className="planner-main">
+          <section className="planner-heading"><div><span className="planner-eyebrow">RENCANA PERNIKAHANMU</span><h1>Halo, {workspace.title.replace(/^Pernikahan\s+/i, '')}.</h1><p>Satu langkah lebih dekat ke hari bahagia.</p></div><div className="planner-date"><Calendar size={20}/><div><strong>{formatDateID(workspace.wedding_date)}</strong><span>{daysRemaining > 0 ? `${daysRemaining} hari lagi` : daysRemaining === 0 ? 'Hari pernikahanmu' : 'Tanggal pernikahan telah berlalu'}</span></div></div></section>
+          <div className="planner-mobile-progress"><div><span>Progres persiapan</span><strong>{taskProgressPercent}%</strong></div><progress max="100" value={taskProgressPercent}/></div>
+          <nav className="planner-shortcuts" aria-label="Pintasan workspace">{([['overview','Ringkasan',Sparkles],['tasks','Timeline',CheckSquare],['budget','Budget',Wallet],['guests','Tamu',Users],['pairing','Pengaturan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={19}/><span>{label}</span></button>)}</nav>
+          {activeTab === 'overview' && <div className="planner-overview">
+            <section className="planner-metrics" aria-label="Ringkasan rencana">
+              <button onClick={() => setActiveTab('tasks')}><span>Timeline <CheckSquare size={17}/></span><strong>{totalCompletedTasks}<small> / {totalTasksCount}</small></strong><p>Tugas selesai · {taskProgressPercent}%</p><progress value={taskProgressPercent} max="100"/></button>
+              <button onClick={() => setActiveTab('budget')}><span>Budget <Wallet size={17}/></span><strong className="planner-money">{formatRupiah(totalSpentBudget)}</strong><p>{workspace.target_budget > 0 ? `${Math.round(totalSpentBudget / workspace.target_budget * 100)}% dari ${formatRupiah(workspace.target_budget)}` : 'Target anggaran belum diatur'}</p><progress value={Math.min(100, workspace.target_budget > 0 ? totalSpentBudget / workspace.target_budget * 100 : 0)} max="100"/></button>
+              <button onClick={() => setActiveTab('guests')}><span>Tamu <Users size={17}/></span><strong>{totalConfirmedPax}<small> pax hadir</small></strong><p>{totalGuestsCount} undangan · {totalPaxCount} pax total</p><progress value={totalPaxCount > 0 ? totalConfirmedPax / totalPaxCount * 100 : 0} max="100"/></button>
+            </section>
+            <div className="planner-panels">
+              <section className="planner-panel"><div className="planner-panel-heading"><div><h2>Langkah berikutnya</h2><p>Tugas belum selesai, diurutkan menurut fase.</p></div><button onClick={() => setActiveTab('tasks')}>Lihat semua →</button></div>
+                {tasks.filter(t => !t.is_completed).sort((a,b) => ['Dokumen KUA','H-6 Bulan','H-3 Bulan','H-1 Bulan','H-1 Minggu','Hari H'].indexOf(a.phase) - ['Dokumen KUA','H-6 Bulan','H-3 Bulan','H-1 Bulan','H-1 Minggu','Hari H'].indexOf(b.phase)).slice(0,5).map(task => <div key={task.id} className="planner-next-task"><button aria-label={`Selesaikan ${task.title}`} onClick={() => toggleTask(task.id)}><Check size={16}/></button><div><strong>{task.title}</strong><span>{task.phase} · {task.pic === 'both' ? 'Berdua' : task.pic === 'groom' ? 'Calon pengantin pria' : 'Calon pengantin wanita'}</span></div><span className="planner-task-status">Belum selesai</span></div>)}
+                {!tasks.some(t => !t.is_completed) && <div className="planner-empty-inline"><CheckCircle2 size={26}/><h3>{tasks.length ? 'Semua tugas selesai' : 'Mulai dari satu langkah kecil'}</h3><p>{tasks.length ? 'Kamu dapat menambahkan tugas berikutnya kapan saja.' : 'Belum ada tugas. Tambahkan persiapan pertamamu.'}</p><button onClick={() => setShowAddTaskModal(true)}>Tambah tugas</button></div>}
+              </section>
+              <section className="planner-panel planner-actions"><h2>Aksi cepat</h2><p>Catat detail, lanjutkan rencana.</p><button onClick={() => setShowAddTaskModal(true)}><Plus size={18}/>Tambah tugas</button><button onClick={() => setShowAddBudgetModal(true)}><Wallet size={18}/>Tambah pos anggaran</button><button onClick={() => setShowAddGuestModal(true)}><Users size={18}/>Tambah tamu</button><button onClick={() => setActiveTab('tasks')}><Calendar size={18}/>Lihat timeline</button></section>
             </div>
-          </div>
+            <section className="planner-budget-note"><Wallet size={20}/><div><strong>Ruang untuk setiap kebutuhan</strong><p>Alokasi {formatRupiah(totalAllocatedBudget)} · Sisa target {formatRupiah(workspace.target_budget - totalSpentBudget)}</p></div><button onClick={() => setActiveTab('budget')}>Kelola budget →</button></section>
+            <p className="planner-local-note">Tersimpan secara lokal di browser ini. RSVP dicatat manual; WhatsApp membuka pesan, bukan mengirim otomatis.</p>
+          </div>}
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setShowInviteModal(true)}
-              className="text-xs font-semibold px-3 sm:px-4 py-2 rounded-full bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200/60 transition flex items-center gap-1.5 shadow-xs"
-            >
-              <Share2 className="w-3.5 h-3.5 text-rose-600" />
-              <span className="hidden sm:inline">Undang Pasangan</span>
-              <span className="sm:hidden">Invite</span>
-            </button>
-            <a
-              href="/"
-              className="text-xs text-slate-400 hover:text-slate-600 px-2 py-2"
-              title="Kembali ke Beranda"
-            >
-              Beranda
-            </a>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Container */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 pt-6 w-full flex-1 flex flex-col">
-        
-        {/* Workspace Hero Highlight Card */}
-        <div className="mb-6 p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-rose-500 via-rose-600 to-amber-700 text-white shadow-xl shadow-rose-900/10 relative overflow-hidden">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
-            <div>
-              <span className="text-[11px] uppercase tracking-wider text-rose-100 font-semibold">Ruang Perencanaan Bersama</span>
-              <h2 className="text-xl sm:text-2xl font-serif font-bold">{workspace?.title}</h2>
-              <p className="text-xs text-rose-100/90 mt-0.5">Hari Bahagia: {workspace ? formatDateID(workspace.wedding_date) : "-"}</p>
-            </div>
-            <div className="px-4 py-2 rounded-2xl bg-white/20 backdrop-blur-md text-white font-semibold text-sm border border-white/20 flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-rose-200" />
-              <span>{daysRemaining} Hari Lagi</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-white/15 text-left">
-            <div className="bg-white/10 p-3 rounded-2xl backdrop-blur-xs">
-              <div className="text-[10px] text-rose-100">Target Budget</div>
-              <div className="text-sm sm:text-base font-bold">{formatRupiah(workspace?.target_budget || 0)}</div>
-            </div>
-            <div className="bg-white/10 p-3 rounded-2xl backdrop-blur-xs">
-              <div className="text-[10px] text-rose-100">Realisasi Biaya</div>
-              <div className="text-sm sm:text-base font-bold">{formatRupiah(totalSpentBudget)}</div>
-            </div>
-            <div className="bg-white/10 p-3 rounded-2xl backdrop-blur-xs">
-              <div className="text-[10px] text-rose-100">Checklist Selesai</div>
-              <div className="text-sm sm:text-base font-bold">{totalCompletedTasks} / {totalTasksCount} ({taskProgressPercent}%)</div>
-            </div>
-            <div className="bg-white/10 p-3 rounded-2xl backdrop-blur-xs">
-              <div className="text-[10px] text-rose-100">Tamu Konfirmasi</div>
-              <div className="text-sm sm:text-base font-bold">{totalConfirmedPax} Pax ({totalPaxCount} Total)</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Navigation Tabs */}
-        <div className="flex bg-white p-1.5 rounded-2xl border border-rose-100 shadow-sm mb-6 overflow-x-auto text-xs sm:text-sm font-semibold">
-          <button
-            onClick={() => setActiveTab("overview")}
-            className={`flex-1 min-w-[90px] py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 ${
-              activeTab === "overview" ? "bg-rose-50 text-rose-700 shadow-xs" : "text-slate-500 hover:text-slate-900"
-            }`}
-          >
-            <Sparkles className="w-4 h-4" />
-            <span>Ringkasan</span>
-          </button>
-          <button
-            onClick={() => setActiveTab("budget")}
-            className={`flex-1 min-w-[90px] py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 ${
-              activeTab === "budget" ? "bg-rose-50 text-rose-700 shadow-xs" : "text-slate-500 hover:text-slate-900"
-            }`}
-          >
-            <Wallet className="w-4 h-4" />
-            <span>Budget & Biaya</span>
-          </button>
-          <button
-            onClick={() => setActiveTab("tasks")}
-            className={`flex-1 min-w-[90px] py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 ${
-              activeTab === "tasks" ? "bg-rose-50 text-rose-700 shadow-xs" : "text-slate-500 hover:text-slate-900"
-            }`}
-          >
-            <CheckSquare className="w-4 h-4" />
-            <span>Checklist & KUA</span>
-          </button>
-          <button
-            onClick={() => setActiveTab("guests")}
-            className={`flex-1 min-w-[90px] py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 ${
-              activeTab === "guests" ? "bg-rose-50 text-rose-700 shadow-xs" : "text-slate-500 hover:text-slate-900"
-            }`}
-          >
-            <Users className="w-4 h-4" />
-            <span>Buku Tamu</span>
-          </button>
-          <button
-            onClick={() => setActiveTab("pairing")}
-            className={`flex-1 min-w-[90px] py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 ${
-              activeTab === "pairing" ? "bg-rose-50 text-rose-700 shadow-xs" : "text-slate-500 hover:text-slate-900"
-            }`}
-          >
-            <Heart className="w-4 h-4" />
-            <span>Pasangan</span>
-          </button>
-        </div>
-
-        {/* Tab 1: OVERVIEW */}
-        {activeTab === "overview" && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              
-              {/* Financial Progress Card */}
-              <div className="bg-white p-5 rounded-3xl border border-rose-100 shadow-sm">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-                    <Wallet className="w-4 h-4 text-rose-500" />
-                    Status Anggaran (Budget)
-                  </h3>
-                  <button 
-                    onClick={() => setActiveTab("budget")}
-                    className="text-xs font-semibold text-rose-600 hover:underline"
-                  >
-                    Kelola
-                  </button>
-                </div>
-
-                <div className="space-y-3">
-                  <div>
-                    <div className="flex justify-between text-xs mb-1 font-medium">
-                      <span className="text-slate-500">Terpakai: {formatRupiah(totalSpentBudget)}</span>
-                      <span className="text-slate-800 font-bold">{Math.round((totalSpentBudget / (workspace?.target_budget || 1)) * 100)}% dari Plafon</span>
-                    </div>
-                    <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                      <div 
-                        className={`h-full rounded-full ${totalSpentBudget > (workspace?.target_budget || 0) ? 'bg-rose-600' : 'bg-rose-500'}`}
-                        style={{ width: `${Math.min(100, Math.round((totalSpentBudget / (workspace?.target_budget || 1)) * 100))}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-100">
-                    <div className="p-2.5 rounded-xl bg-slate-50">
-                      <span className="text-slate-400 block text-[10px]">Sisa Plafon Anggaran</span>
-                      <span className="font-bold text-slate-800">{formatRupiah((workspace?.target_budget || 0) - totalSpentBudget)}</span>
-                    </div>
-                    <div className="p-2.5 rounded-xl bg-slate-50">
-                      <span className="text-slate-400 block text-[10px]">Total Pos Dialokasikan</span>
-                      <span className="font-bold text-slate-800">{formatRupiah(totalAllocatedBudget)}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Checklist Progress Card */}
-              <div className="bg-white p-5 rounded-3xl border border-rose-100 shadow-sm">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-                    <CheckSquare className="w-4 h-4 text-emerald-500" />
-                    Tugas & Dokumen Terdekat
-                  </h3>
-                  <button 
-                    onClick={() => setActiveTab("tasks")}
-                    className="text-xs font-semibold text-rose-600 hover:underline"
-                  >
-                    Lihat Semua
-                  </button>
-                </div>
-
-                <div className="space-y-2">
-                  {tasks.filter((t) => !t.is_completed).slice(0, 4).map((task) => (
-                    <div key={task.id} className="p-2.5 rounded-xl bg-slate-50 flex items-center gap-2.5 text-xs">
-                      <button
-                        onClick={() => toggleTask(task.id)}
-                        className="w-4 h-4 rounded border border-slate-300 hover:border-emerald-500 shrink-0"
-                      />
-                      <span className="flex-1 font-medium text-slate-700">{task.title}</span>
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${
-                        task.pic === 'groom' ? 'bg-amber-100 text-amber-800' :
-                        task.pic === 'bride' ? 'bg-pink-100 text-pink-800' : 'bg-slate-200 text-slate-700'
-                      }`}>
-                        {task.pic === 'groom' ? 'Pria' : task.pic === 'bride' ? 'Wanita' : 'Bersama'}
-                      </span>
-                    </div>
-                  ))}
-                  {tasks.filter((t) => !t.is_completed).length === 0 && (
-                    <div className="p-4 text-center text-xs text-emerald-600 font-medium">
-                      🎉 Luar biasa! Semua tugas dan berkas telah selesai.
-                    </div>
-                  )}
-                </div>
-              </div>
-
-            </div>
-
-            {/* Quick Guest Confirmation Bar */}
-            <div className="bg-white p-5 rounded-3xl border border-rose-100 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
-                  <MessageCircle className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-slate-900 text-sm">Konfirmasi Tamu via WhatsApp</h4>
-                  <p className="text-xs text-slate-500">Kirim pesan undangan personal langsung dari HP masing-masing pengantin.</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setActiveTab("guests")}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-semibold text-xs shadow-md hover:bg-emerald-700 transition"
-              >
-                Buka Buku Tamu ({totalGuestsCount} Tamu)
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* Tab 2: BUDGET & EXPENSES */}
         {activeTab === "budget" && (
@@ -495,6 +282,8 @@ export default function DashboardPage() {
                     }`}
                   >
                     <button
+                      aria-label={`Tandai ${task.title}`}
+                      aria-pressed={task.is_completed}
                       onClick={() => toggleTask(task.id)}
                       className={`w-5 h-5 rounded-md flex items-center justify-center transition shrink-0 ${
                         task.is_completed ? "bg-emerald-500 text-white" : "border-2 border-slate-300 hover:border-emerald-500"
@@ -572,6 +361,8 @@ export default function DashboardPage() {
               </div>
             </div>
 
+            <GuestCSVImport />
+
             {/* Filter Category & Search */}
             <div className="flex flex-col sm:flex-row gap-2.5">
               <div className="relative flex-1">
@@ -630,8 +421,9 @@ export default function DashboardPage() {
                       <div className="flex items-center gap-2">
                         {/* Status Select */}
                         <select
+                          aria-label={`RSVP ${guest.name}`}
                           value={guest.rsvp_status}
-                          onChange={(e) => updateGuest(guest.id, { rsvp_status: e.target.value as any })}
+                          onChange={(e) => updateGuest(guest.id, { rsvp_status: e.target.value as GuestItem["rsvp_status"] })}
                           className={`text-[11px] font-semibold px-2 py-1 rounded-lg border-0 cursor-pointer ${
                             guest.rsvp_status === 'attending' ? 'bg-emerald-100 text-emerald-800' :
                             guest.rsvp_status === 'declined' ? 'bg-rose-100 text-rose-800' :
@@ -666,6 +458,7 @@ export default function DashboardPage() {
                         )}
 
                         <button
+                          aria-label={`Hapus ${guest.name}`}
                           onClick={() => deleteGuest(guest.id)}
                           className="text-slate-300 hover:text-rose-500 p-1"
                         >
@@ -704,7 +497,7 @@ export default function DashboardPage() {
             </div>
             <h3 className="font-serif font-bold text-slate-900 text-xl">Koneksi Pasangan</h3>
             <p className="text-xs sm:text-sm text-slate-600 mt-1 mb-6">
-              Undang pasangan agar dapat mengakses dan memperbarui to-do list serta pos keuangan yang sama secara real-time.
+              Kolaborasi cloud belum tersedia. Tautan ini adalah prototype lokal, bukan akses bersama atau sinkronisasi real-time.
             </p>
 
             <div className="p-4 rounded-2xl bg-rose-50/80 border border-rose-100 text-left mb-6">
@@ -738,326 +531,329 @@ export default function DashboardPage() {
               </a>
 
               <button
-                onClick={resetData}
+                onClick={() => { if (confirm("Hapus seluruh data workspace dari browser ini?")) resetData(); }}
                 className="text-xs text-rose-500 hover:underline pt-4 block mx-auto"
               >
-                Reset Data Workspace ke Format Default
+                Hapus Data Workspace Lokal
               </button>
             </div>
           </div>
         )}
 
+        </main>
       </div>
 
       {/* Modal: Invite Partner */}
       {showInviteModal && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-rose-100">
-            <h3 className="font-serif font-bold text-slate-900 text-lg mb-2 text-center">Undang Pasangan</h3>
-            <p className="text-xs text-slate-600 text-center mb-4 leading-relaxed">
-              Kirim tautan ini ke WhatsApp pasanganmu agar bisa langsung membuka dan merencanakan berdua:
-            </p>
+              <PlannerDialog title="Tautan pasangan" onClose={() => setShowInviteModal(false)}>
+                <div className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-rose-100">
+                  <h3 className="font-serif font-bold text-slate-900 text-lg mb-2 text-center">Undang Pasangan</h3>
+                  <p className="text-xs text-slate-600 text-center mb-4 leading-relaxed">
+                    Tautan prototype lokal. Data hanya ada di browser ini; membuka tautan di perangkat lain tidak membagikan workspace. Sinkronisasi cloud belum tersedia.
+                  </p>
 
-            <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs font-mono break-all text-slate-700 mb-4 select-all">
-              {inviteLink}
-            </div>
+                  <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs font-mono break-all text-slate-700 mb-4 select-all">
+                    {inviteLink}
+                  </div>
 
-            <div className="flex flex-col gap-2">
-              <button
-                onClick={handleCopyInviteLink}
-                className="w-full py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs hover:bg-rose-600 transition flex items-center justify-center gap-1.5"
-              >
-                {copiedLink ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                <span>{copiedLink ? "Tautan Berhasil Disalin!" : "Salin Tautan"}</span>
-              </button>
-              <button
-                onClick={() => setShowInviteModal(false)}
-                className="w-full py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-50 transition"
-              >
-                Tutup
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+                  <div className="flex flex-col gap-2">
+                    <button
+                      onClick={handleCopyInviteLink}
+                      className="w-full py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs hover:bg-rose-600 transition flex items-center justify-center gap-1.5"
+                    >
+                      {copiedLink ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                      <span>{copiedLink ? "Tautan Berhasil Disalin!" : "Salin Tautan"}</span>
+                    </button>
+                    <button
+                      onClick={() => setShowInviteModal(false)}
+                      className="w-full py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-50 transition"
+                    >
+                      Tutup
+                    </button>
+                  </div>
+                </div>
+              </PlannerDialog>
+            )}
 
       {/* Modal: Add Budget */}
       {showAddBudgetModal && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-rose-100">
-            <h3 className="font-serif font-bold text-slate-900 text-lg mb-4">Tambah Pos Anggaran</h3>
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              addBudget({
-                category: newBudgetCategory,
-                title: newBudgetTitle || newBudgetCategory,
-                allocated_amount: Number(newBudgetAllocated) || 0,
-                spent_amount: Number(newBudgetSpent) || 0,
-                payment_status: newBudgetStatus,
-              });
-              setShowAddBudgetModal(false);
-              setNewBudgetTitle("");
-            }}>
-              <div className="space-y-3 text-xs font-semibold text-slate-700">
-                <div>
-                  <label className="block mb-1">Kategori Pos</label>
-                  <select 
-                    value={newBudgetCategory}
-                    onChange={(e) => setNewBudgetCategory(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
-                  >
-                    <option value="Venue & Gedung">Venue & Gedung</option>
-                    <option value="Katering">Katering</option>
-                    <option value="Rias & Busana">Rias & Busana</option>
-                    <option value="Dekorasi">Dekorasi</option>
-                    <option value="Dokumentasi">Dokumentasi</option>
-                    <option value="Undangan & Souvenir">Undangan & Souvenir</option>
-                    <option value="Mahar & Seserahan">Mahar & Seserahan</option>
-                    <option value="Hiburan / MC">Hiburan / MC</option>
-                    <option value="Lain-lain">Lain-lain</option>
-                  </select>
-                </div>
+              <PlannerDialog title="Tambah Pos Anggaran" onClose={() => setShowAddBudgetModal(false)}>
+                <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-rose-100">
+                  <h3 className="font-serif font-bold text-slate-900 text-lg mb-4">Tambah Pos Anggaran</h3>
+                  <form onSubmit={(e) => {
+                    e.preventDefault();
+                    addBudget({
+                      category: newBudgetCategory,
+                      title: newBudgetTitle || newBudgetCategory,
+                      allocated_amount: Number(newBudgetAllocated) || 0,
+                      spent_amount: Number(newBudgetSpent) || 0,
+                      payment_status: newBudgetStatus,
+                    });
+                    setShowAddBudgetModal(false);
+                    setNewBudgetTitle("");
+                  }}>
+                    <div className="space-y-3 text-xs font-semibold text-slate-700">
+                      <div>
+                        <label htmlFor="planner-field-0" className="block mb-1">Kategori Pos</label>
+                                                <select id="planner-field-0"
+                          value={newBudgetCategory}
+                          onChange={(e) => setNewBudgetCategory(e.target.value)}
+                          className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
+                        >
+                          <option value="Venue & Gedung">Venue & Gedung</option>
+                          <option value="Katering">Katering</option>
+                          <option value="Rias & Busana">Rias & Busana</option>
+                          <option value="Dekorasi">Dekorasi</option>
+                          <option value="Dokumentasi">Dokumentasi</option>
+                          <option value="Undangan & Souvenir">Undangan & Souvenir</option>
+                          <option value="Mahar & Seserahan">Mahar & Seserahan</option>
+                          <option value="Hiburan / MC">Hiburan / MC</option>
+                          <option value="Lain-lain">Lain-lain</option>
+                        </select>
+                      </div>
 
-                <div>
-                  <label className="block mb-1">Nama / Keterangan Pos</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Contoh: Katering Akad 200 Pax"
-                    value={newBudgetTitle}
-                    onChange={(e) => setNewBudgetTitle(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
-                  />
-                </div>
+                      <div>
+                        <label htmlFor="planner-field-1" className="block mb-1">Nama / Keterangan Pos</label>
+                                                <input id="planner-field-1"
+                          type="text"
+                          required
+                          placeholder="Contoh: Katering Akad 200 Pax"
+                          value={newBudgetTitle}
+                          onChange={(e) => setNewBudgetTitle(e.target.value)}
+                          className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
+                        />
+                      </div>
 
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block mb-1">Plafon Alokasi (Rp)</label>
-                    <input
-                      type="number"
-                      step="500000"
-                      value={newBudgetAllocated}
-                      onChange={(e) => setNewBudgetAllocated(Number(e.target.value))}
-                      className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-1">Pengeluaran Riil (Rp)</label>
-                    <input
-                      type="number"
-                      step="500000"
-                      value={newBudgetSpent}
-                      onChange={(e) => setNewBudgetSpent(Number(e.target.value))}
-                      className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
-                    />
-                  </div>
-                </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label htmlFor="planner-field-2" className="block mb-1">Plafon Alokasi (Rp)</label>
+                                                    <input id="planner-field-2"
+                            type="number"
+                                                        min="0"
+                                                        step="1"
+                            value={newBudgetAllocated}
+                            onChange={(e) => setNewBudgetAllocated(Number(e.target.value))}
+                            className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="planner-field-3" className="block mb-1">Pengeluaran Riil (Rp)</label>
+                                                    <input id="planner-field-3"
+                            type="number"
+                                                        min="0"
+                                                        step="1"
+                            value={newBudgetSpent}
+                            onChange={(e) => setNewBudgetSpent(Number(e.target.value))}
+                            className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
+                          />
+                        </div>
+                      </div>
 
-                <div>
-                  <label className="block mb-1">Status Pembayaran</label>
-                  <select
-                    value={newBudgetStatus}
-                    onChange={(e) => setNewBudgetStatus(e.target.value as any)}
-                    className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
-                  >
-                    <option value="unpaid">Belum DP</option>
-                    <option value="dp">Sudah Bayar DP</option>
-                    <option value="paid">Lunas</option>
-                  </select>
-                </div>
-              </div>
+                      <div>
+                        <label htmlFor="planner-field-4" className="block mb-1">Status Pembayaran</label>
+                                                <select id="planner-field-4"
+                          value={newBudgetStatus}
+                          onChange={(e) => setNewBudgetStatus(e.target.value as BudgetItem["payment_status"])}
+                          className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
+                        >
+                          <option value="unpaid">Belum DP</option>
+                          <option value="dp">Sudah Bayar DP</option>
+                          <option value="paid">Lunas</option>
+                        </select>
+                      </div>
+                    </div>
 
-              <div className="flex gap-2 mt-6">
-                <button
-                  type="button"
-                  onClick={() => setShowAddBudgetModal(false)}
-                  className="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs"
-                >
-                  Batal
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs hover:bg-rose-600 transition"
-                >
-                  Simpan Pos
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+                    <div className="flex gap-2 mt-6">
+                      <button
+                        type="button"
+                        onClick={() => setShowAddBudgetModal(false)}
+                        className="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs"
+                      >
+                        Batal
+                      </button>
+                      <button
+                        type="submit"
+                        className="flex-1 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs hover:bg-rose-600 transition"
+                      >
+                        Simpan Pos
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </PlannerDialog>
+            )}
 
       {/* Modal: Add Task */}
       {showAddTaskModal && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-rose-100">
-            <h3 className="font-serif font-bold text-slate-900 text-lg mb-4">Tambah Tugas / Checklist</h3>
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              addTask({
-                title: newTaskTitle,
-                phase: newTaskPhase,
-                pic: newTaskPic,
-              });
-              setShowAddTaskModal(false);
-              setNewTaskTitle("");
-            }}>
-              <div className="space-y-3 text-xs font-semibold text-slate-700">
-                <div>
-                  <label className="block mb-1">Nama Tugas</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Contoh: Booking MUA Akad"
-                    value={newTaskTitle}
-                    onChange={(e) => setNewTaskTitle(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
-                  />
-                </div>
+              <PlannerDialog title="Tambah Tugas" onClose={() => setShowAddTaskModal(false)}>
+                <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-rose-100">
+                  <h3 className="font-serif font-bold text-slate-900 text-lg mb-4">Tambah Tugas / Checklist</h3>
+                  <form onSubmit={(e) => {
+                    e.preventDefault();
+                    addTask({
+                      title: newTaskTitle,
+                      phase: newTaskPhase,
+                      pic: newTaskPic,
+                    });
+                    setShowAddTaskModal(false);
+                    setNewTaskTitle("");
+                  }}>
+                    <div className="space-y-3 text-xs font-semibold text-slate-700">
+                      <div>
+                        <label htmlFor="planner-field-5" className="block mb-1">Nama Tugas</label>
+                                                <input id="planner-field-5"
+                          type="text"
+                          required
+                          placeholder="Contoh: Booking MUA Akad"
+                          value={newTaskTitle}
+                          onChange={(e) => setNewTaskTitle(e.target.value)}
+                          className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
+                        />
+                      </div>
 
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block mb-1">Fase Waktu</label>
-                    <select
-                      value={newTaskPhase}
-                      onChange={(e) => setNewTaskPhase(e.target.value as any)}
-                      className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
-                    >
-                      <option value="Dokumen KUA">Dokumen KUA</option>
-                      <option value="H-6 Bulan">H-6 Bulan</option>
-                      <option value="H-3 Bulan">H-3 Bulan</option>
-                      <option value="H-1 Bulan">H-1 Bulan</option>
-                      <option value="H-1 Minggu">H-1 Minggu</option>
-                      <option value="Hari H">Hari H</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block mb-1">PIC Penanggung Jawab</label>
-                    <select
-                      value={newTaskPic}
-                      onChange={(e) => setNewTaskPic(e.target.value as any)}
-                      className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
-                    >
-                      <option value="both">Berdua Bersama</option>
-                      <option value="groom">Calon Pengantin Pria</option>
-                      <option value="bride">Calon Pengantin Wanita</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label htmlFor="planner-field-6" className="block mb-1">Fase Waktu</label>
+                                                    <select id="planner-field-6"
+                            value={newTaskPhase}
+                            onChange={(e) => setNewTaskPhase(e.target.value as TaskItem["phase"])}
+                            className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
+                          >
+                            <option value="Dokumen KUA">Dokumen KUA</option>
+                            <option value="H-6 Bulan">H-6 Bulan</option>
+                            <option value="H-3 Bulan">H-3 Bulan</option>
+                            <option value="H-1 Bulan">H-1 Bulan</option>
+                            <option value="H-1 Minggu">H-1 Minggu</option>
+                            <option value="Hari H">Hari H</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label htmlFor="planner-field-7" className="block mb-1">PIC Penanggung Jawab</label>
+                                                    <select id="planner-field-7"
+                            value={newTaskPic}
+                            onChange={(e) => setNewTaskPic(e.target.value as TaskItem["pic"])}
+                            className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
+                          >
+                            <option value="both">Berdua Bersama</option>
+                            <option value="groom">Calon Pengantin Pria</option>
+                            <option value="bride">Calon Pengantin Wanita</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
 
-              <div className="flex gap-2 mt-6">
-                <button
-                  type="button"
-                  onClick={() => setShowAddTaskModal(false)}
-                  className="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs"
-                >
-                  Batal
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs hover:bg-rose-600 transition"
-                >
-                  Simpan Tugas
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+                    <div className="flex gap-2 mt-6">
+                      <button
+                        type="button"
+                        onClick={() => setShowAddTaskModal(false)}
+                        className="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs"
+                      >
+                        Batal
+                      </button>
+                      <button
+                        type="submit"
+                        className="flex-1 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs hover:bg-rose-600 transition"
+                      >
+                        Simpan Tugas
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </PlannerDialog>
+            )}
 
       {/* Modal: Add Guest */}
       {showAddGuestModal && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-rose-100">
-            <h3 className="font-serif font-bold text-slate-900 text-lg mb-4">Tambah Tamu Undangan</h3>
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              addGuest({
-                name: newGuestName,
-                category: newGuestCategory,
-                pax: Number(newGuestPax) || 1,
-                phone: newGuestPhone.trim(),
-                rsvp_status: "uncontacted",
-              });
-              setShowAddGuestModal(false);
-              setNewGuestName("");
-              setNewGuestPhone("");
-              setNewGuestPax(1);
-            }}>
-              <div className="space-y-3 text-xs font-semibold text-slate-700">
-                <div>
-                  <label className="block mb-1">Nama Tamu / Keluarga</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Contoh: Bpk. Joko & Istri"
-                    value={newGuestName}
-                    onChange={(e) => setNewGuestName(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
-                  />
-                </div>
+              <PlannerDialog title="Tambah Tamu" onClose={() => setShowAddGuestModal(false)}>
+                <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-rose-100">
+                  <h3 className="font-serif font-bold text-slate-900 text-lg mb-4">Tambah Tamu Undangan</h3>
+                  <form onSubmit={(e) => {
+                    e.preventDefault();
+                    addGuest({
+                      name: newGuestName,
+                      category: newGuestCategory,
+                      pax: Number(newGuestPax) || 1,
+                      phone: newGuestPhone.trim(),
+                      rsvp_status: "uncontacted",
+                    });
+                    setShowAddGuestModal(false);
+                    setNewGuestName("");
+                    setNewGuestPhone("");
+                    setNewGuestPax(1);
+                  }}>
+                    <div className="space-y-3 text-xs font-semibold text-slate-700">
+                      <div>
+                        <label htmlFor="planner-field-8" className="block mb-1">Nama Tamu / Keluarga</label>
+                                                <input id="planner-field-8"
+                          type="text"
+                          required
+                          placeholder="Contoh: Bpk. Joko & Istri"
+                          value={newGuestName}
+                          onChange={(e) => setNewGuestName(e.target.value)}
+                          className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
+                        />
+                      </div>
 
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block mb-1">Circle / Kelompok</label>
-                    <select
-                      value={newGuestCategory}
-                      onChange={(e) => setNewGuestCategory(e.target.value as any)}
-                      className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
-                    >
-                      <option value="keluarga_pria">Keluarga Pria</option>
-                      <option value="keluarga_wanita">Keluarga Wanita</option>
-                      <option value="teman_kantor">Teman Kantor</option>
-                      <option value="sahabat">Sahabat</option>
-                      <option value="vip">VIP</option>
-                      <option value="lainnya">Lainnya</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block mb-1">Jumlah Pax</label>
-                    <input
-                      type="number"
-                      min="1"
-                      max="10"
-                      value={newGuestPax}
-                      onChange={(e) => setNewGuestPax(Number(e.target.value))}
-                      className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
-                    />
-                  </div>
-                </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label htmlFor="planner-field-9" className="block mb-1">Circle / Kelompok</label>
+                                                    <select id="planner-field-9"
+                            value={newGuestCategory}
+                            onChange={(e) => setNewGuestCategory(e.target.value as GuestItem["category"])}
+                            className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
+                          >
+                            <option value="keluarga_pria">Keluarga Pria</option>
+                            <option value="keluarga_wanita">Keluarga Wanita</option>
+                            <option value="teman_kantor">Teman Kantor</option>
+                            <option value="sahabat">Sahabat</option>
+                            <option value="vip">VIP</option>
+                            <option value="lainnya">Lainnya</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label htmlFor="guest-pax" className="block mb-1">Jumlah Pax</label>
+                          <input id="guest-pax"
+                            type="number"
+                            min="1"
+                            max="10"
+                            value={newGuestPax}
+                            onChange={(e) => setNewGuestPax(Number(e.target.value))}
+                            className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
+                          />
+                        </div>
+                      </div>
 
-                <div>
-                  <label className="block mb-1">No. WhatsApp (Awalan 08xxx atau 628xxx)</label>
-                  <input
-                    type="tel"
-                    placeholder="081234567890"
-                    value={newGuestPhone}
-                    onChange={(e) => setNewGuestPhone(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
-                  />
-                </div>
-              </div>
+                      <div>
+                        <label htmlFor="guest-phone" className="block mb-1">No. WhatsApp (Awalan 08xxx atau 628xxx)</label>
+                        <input id="guest-phone"
+                          type="tel"
+                          placeholder="081234567890"
+                          value={newGuestPhone}
+                          onChange={(e) => setNewGuestPhone(e.target.value)}
+                          className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
+                        />
+                      </div>
+                    </div>
 
-              <div className="flex gap-2 mt-6">
-                <button
-                  type="button"
-                  onClick={() => setShowAddGuestModal(false)}
-                  className="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs"
-                >
-                  Batal
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs hover:bg-rose-600 transition"
-                >
-                  Simpan Tamu
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+                    <div className="flex gap-2 mt-6">
+                      <button
+                        type="button"
+                        onClick={() => setShowAddGuestModal(false)}
+                        className="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs"
+                      >
+                        Batal
+                      </button>
+                      <button
+                        type="submit"
+                        className="flex-1 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs hover:bg-rose-600 transition"
+                      >
+                        Simpan Tamu
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </PlannerDialog>
+            )}
 
     </div>
   );
