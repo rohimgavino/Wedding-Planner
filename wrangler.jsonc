@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "everrae",
+  "account_id": "4c9d871a80b70e0c2275773bcd51db84",
+  "compatibility_date": "2026-10-13",
+  "assets": {
+    "directory": "./out",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}
