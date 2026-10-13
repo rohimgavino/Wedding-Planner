@@ -9,11 +9,11 @@ import { formatDateID } from "@/lib/utils";
 function InviteContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const token = searchParams.get("token") || "WEDD-VALID";
-  const { workspace } = useWorkspace();
+  const token = searchParams.get("token") || "";
+  const { acceptInvite, busy } = useWorkspace();
 
-  const handleAccept = () => {
-    router.push("/dashboard");
+  const handleAccept = async () => {
+    if (await acceptInvite(token)) { window.history.replaceState(null, "", "/invite"); router.push("/dashboard"); }
   };
 
   return (
@@ -35,22 +35,8 @@ function InviteContent() {
         </h1>
 
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
-          Pasanganmu telah membuat ruang kerja perencanaan bersama untuk:
+          Masuk dan terima undangan untuk mengakses rencana pasangan. Detail workspace hanya tersedia setelah berhasil bergabung.
         </p>
-
-        {/* Wedding Card Details */}
-        <div className="p-4 rounded-2xl bg-gradient-to-br from-rose-50 to-champagne-50 border border-rose-100 text-left mb-6">
-          <span className="text-[10px] uppercase tracking-wider text-rose-700 font-bold block mb-1">
-            Ruang Perencanaan Bersama
-          </span>
-          <h3 className="font-serif font-bold text-slate-900 text-base mb-1">
-            {workspace?.title || "Pernikahan Kita"}
-          </h3>
-          <div className="flex items-center gap-1.5 text-xs text-slate-500">
-            <Calendar className="w-3.5 h-3.5 text-rose-500" />
-            <span>{workspace ? formatDateID(workspace.wedding_date) : "2026"}</span>
-          </div>
-        </div>
 
         <p className="text-xs text-slate-500 mb-6 leading-relaxed">
           Dengan bergabung, kamu bisa melihat dan mengelola pos anggaran bersama, checklist persiapan, dan daftar tamu dari HP-mu.
@@ -58,15 +44,14 @@ function InviteContent() {
 
         <button
           onClick={handleAccept}
+          disabled={busy || !/^[a-f0-9]{64}$/.test(token)}
           className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-500 via-rose-600 to-rose-700 text-white font-semibold text-sm shadow-md hover:from-rose-600 hover:to-rose-700 transition flex items-center justify-center gap-2"
         >
           <CheckCircle2 className="w-4 h-4" />
-          <span>Buka Dasbor Bersama Sekarang</span>
+          <span>Terima Undangan Pasangan</span>
         </button>
 
-        <div className="mt-4 text-[10px] text-slate-400 font-mono">
-          Token: {token}
-        </div>
+        {!/^[a-f0-9]{64}$/.test(token) && <p role="alert">Undangan tidak valid atau tidak ditemukan.</p>}
       </div>
     </div>
   );

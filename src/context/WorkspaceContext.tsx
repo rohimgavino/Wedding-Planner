@@ -1,257 +1,89 @@
 "use client";
-
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { Workspace, BudgetItem, TaskItem, GuestItem } from "@/types";
-import { DEFAULT_BUDGET_CATEGORIES, INITIAL_KUA_AND_TIMELINE_TASKS } from "@/lib/seed-data";
-
-interface WorkspaceContextType {
-  workspace: Workspace | null;
-  budgets: BudgetItem[];
-  tasks: TaskItem[];
-  guests: GuestItem[];
-  inviteToken: string;
-  isLoaded: boolean;
-  createWorkspace: (params: {
-    groom_name: string;
-    bride_name: string;
-    wedding_date: string;
-    target_budget: number;
-    target_savings: number;
-  }) => void;
-  addBudget: (item: {
-    category: string;
-    title: string;
-    allocated_amount: number;
-    spent_amount: number;
-    payment_status: BudgetItem["payment_status"];
-    notes?: string;
-  }) => void;
-  updateBudget: (id: string, updates: Partial<BudgetItem>) => void;
-  deleteBudget: (id: string) => void;
-  toggleTask: (id: string) => void;
-  addTask: (item: {
-    title: string;
-    phase: TaskItem["phase"];
-    pic: TaskItem["pic"];
-    due_date?: string;
-  }) => void;
-  deleteTask: (id: string) => void;
-  addGuest: (item: {
-    name: string;
-    category: GuestItem["category"];
-    pax: number;
-    phone?: string;
-    rsvp_status: GuestItem["rsvp_status"];
-    notes?: string;
-  }) => void;
-  updateGuest: (id: string, updates: Partial<GuestItem>) => void;
-  deleteGuest: (id: string) => void;
-  resetData: () => void;
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import type { BudgetItem, TaskItem, GuestItem } from '@/types';
+import { CloudWorkspace, CloudSnapshot, WorkspaceParams } from '@/lib/cloud-workspace';
+import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/context/auth-context';
+import { STORAGE_KEY, LEGACY_KEY } from '@/lib/workspace-storage';
+type NewGuest = Omit<GuestItem,'id'|'workspace_id'>;
+interface WorkspaceContextType extends CloudSnapshot {
+ inviteToken: string; isLoaded: boolean; error: string; busy: boolean;
+ createWorkspace: (params: WorkspaceParams) => Promise<boolean>;
+ addBudget: (item: Omit<BudgetItem,'id'|'workspace_id'>) => Promise<boolean>;
+ updateBudget: (id: string, updates: Partial<BudgetItem>) => Promise<boolean>;
+ deleteBudget: (id: string) => Promise<boolean>;
+ toggleTask: (id: string) => Promise<boolean>;
+ addTask: (item: Omit<TaskItem,'id'|'workspace_id'|'is_completed'>) => Promise<boolean>;
+ deleteTask: (id: string) => Promise<boolean>;
+ addGuest: (item: NewGuest) => Promise<boolean>;
+ addGuests: (items: NewGuest[]) => Promise<boolean>;
+ updateGuest: (id: string, updates: Partial<GuestItem>) => Promise<boolean>;
+ deleteGuest: (id: string) => Promise<boolean>;
+ issueInvite: () => Promise<boolean>;
+ acceptInvite: (token: string) => Promise<boolean>;
+ reload: () => Promise<boolean>;
 }
-
+const empty = (): CloudSnapshot => ({workspace:null,budgets:[],tasks:[],guests:[],members:[]});
 const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
-
-import { STORAGE_KEY, loadWorkspace } from '@/lib/workspace-storage';
-
-export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
-  const [workspace, setWorkspace] = useState<Workspace | null>(null);
-  const [budgets, setBudgets] = useState<BudgetItem[]>([]);
-  const [tasks, setTasks] = useState<TaskItem[]>([]);
-  const [guests, setGuests] = useState<GuestItem[]>([]);
-  const [inviteToken, setInviteToken] = useState<string>("");
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  const [canSave, setCanSave] = useState(false);
-  useEffect(() => {
-    const loaded = loadWorkspace(localStorage);
-    setWorkspace(loaded.data.workspace);
-    setBudgets(loaded.data.budgets);
-    setTasks(loaded.data.tasks);
-    setGuests(loaded.data.guests);
-    setInviteToken(loaded.data.inviteToken);
-    setCanSave(loaded.canSave);
-    setIsLoaded(true);
-  }, []);
-
-  // Save to LocalStorage whenever state changes
-  useEffect(() => {
-    if (!isLoaded || !canSave) return;
-    try {
-      const dataToSave = {
-        workspace,
-        budgets,
-        tasks,
-        guests,
-        inviteToken,
-      };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
-    } catch (e) {
-      console.error("Failed to save workspace data:", e);
-    }
-  }, [workspace, budgets, tasks, guests, inviteToken, isLoaded, canSave]);
-
-  const createWorkspace = (params: {
-    groom_name: string;
-    bride_name: string;
-    wedding_date: string;
-    target_budget: number;
-    target_savings: number;
-  }) => {
-    const wsId = "ws-" + Date.now();
-    const newWs: Workspace = {
-      id: wsId,
-      title: `Pernikahan ${params.groom_name} & ${params.bride_name}`,
-      wedding_date: params.wedding_date,
-      target_budget: params.target_budget,
-      target_savings: params.target_savings,
-      created_at: new Date().toISOString(),
-    };
-
-    const initialBudgets: BudgetItem[] = DEFAULT_BUDGET_CATEGORIES.map((c, i) => ({
-      id: `b-${wsId}-${i}`,
-      workspace_id: wsId,
-      category: c.category,
-      title: c.title,
-      allocated_amount: c.allocated,
-      spent_amount: 0,
-      payment_status: "unpaid",
-    }));
-
-    const initialTasks: TaskItem[] = INITIAL_KUA_AND_TIMELINE_TASKS.map((t, i) => ({
-      id: `t-${wsId}-${i}`,
-      workspace_id: wsId,
-      title: t.title,
-      phase: t.phase,
-      pic: t.pic,
-      is_completed: false,
-    }));
-
-    const token = "WEDD-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-
-    setWorkspace(newWs);
-    setBudgets(initialBudgets);
-    setTasks(initialTasks);
-    setGuests([]);
-    setInviteToken(token);
-  };
-
-  const addBudget = (item: {
-    category: string;
-    title: string;
-    allocated_amount: number;
-    spent_amount: number;
-    payment_status: BudgetItem["payment_status"];
-    notes?: string;
-  }) => {
-    if (!workspace) return;
-    const newBudget: BudgetItem = {
-      id: "b-" + Date.now(),
-      workspace_id: workspace.id,
-      ...item,
-    };
-    setBudgets((prev) => [newBudget, ...prev]);
-  };
-
-  const updateBudget = (id: string, updates: Partial<BudgetItem>) => {
-    setBudgets((prev) => prev.map((b) => (b.id === id ? { ...b, ...updates } : b)));
-  };
-
-  const deleteBudget = (id: string) => {
-    setBudgets((prev) => prev.filter((b) => b.id !== id));
-  };
-
-  const toggleTask = (id: string) => {
-    setTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, is_completed: !t.is_completed } : t))
-    );
-  };
-
-  const addTask = (item: {
-    title: string;
-    phase: TaskItem["phase"];
-    pic: TaskItem["pic"];
-    due_date?: string;
-  }) => {
-    if (!workspace) return;
-    const newTask: TaskItem = {
-      id: "t-" + Date.now(),
-      workspace_id: workspace.id,
-      title: item.title,
-      phase: item.phase,
-      pic: item.pic,
-      is_completed: false,
-      due_date: item.due_date,
-    };
-    setTasks((prev) => [newTask, ...prev]);
-  };
-
-  const deleteTask = (id: string) => {
-    setTasks((prev) => prev.filter((t) => t.id !== id));
-  };
-
-  const addGuest = (item: {
-    name: string;
-    category: GuestItem["category"];
-    pax: number;
-    phone?: string;
-    rsvp_status: GuestItem["rsvp_status"];
-    notes?: string;
-  }) => {
-    if (!workspace) return;
-    const newGuest: GuestItem = {
-      id: "g-" + crypto.randomUUID(),
-      workspace_id: workspace.id,
-      ...item,
-    };
-    setGuests((prev) => [newGuest, ...prev]);
-  };
-
-  const updateGuest = (id: string, updates: Partial<GuestItem>) => {
-    setGuests((prev) => prev.map((g) => (g.id === id ? { ...g, ...updates } : g)));
-  };
-
-  const deleteGuest = (id: string) => {
-    setGuests((prev) => prev.filter((g) => g.id !== id));
-  };
-
-  const resetData = () => {
-    if (!canSave) return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({workspace:null,budgets:[],tasks:[],guests:[],inviteToken:''}));
-    window.location.reload();
-  };
-
-  return (
-    <WorkspaceContext.Provider
-      value={{
-        workspace,
-        budgets,
-        tasks,
-        guests,
-        inviteToken,
-        isLoaded,
-        createWorkspace,
-        addBudget,
-        updateBudget,
-        deleteBudget,
-        toggleTask,
-        addTask,
-        deleteTask,
-        addGuest,
-        updateGuest,
-        deleteGuest,
-        resetData,
-      }}
-    >
-      {isLoaded && !canSave && <div role="alert" className="p-4 bg-amber-50 text-amber-950">Data tersimpan tidak dapat dibaca dengan aman. Data asli tetap disimpan; perubahan sementara tidak akan tersimpan. Cadangkan data browser sebelum membuat workspace baru atau melakukan reset.</div>}
-      {children}
-    </WorkspaceContext.Provider>
-  );
+export function WorkspaceProvider({children}: {children: React.ReactNode}) {
+ const {user,ready,configured} = useAuth();
+ const [snapshot,setSnapshot] = useState<CloudSnapshot>(empty);
+ const [loaded,setLoaded] = useState(false), [error,setError] = useState(''), [busy,setBusy] = useState(false);
+ const [inviteToken,setInviteToken] = useState(''), [legacy,setLegacy] = useState(false);
+ const identity = useRef(user?.id); identity.current = user?.id;
+ const lock = useRef(false), generation = useRef(0), owner = useRef<string>(), activeId = useRef<string>();
+ const visible = owner.current === user?.id && !!user ? snapshot : empty();
+ const reload = async () => {
+  const uid = identity.current, epoch = ++generation.current;
+  if (!uid || !configured) return false;
+  try {
+   const data = await new CloudWorkspace(createClient()).load(activeId.current);
+   if (uid !== identity.current || epoch !== generation.current) return false;
+   owner.current = uid;setSnapshot(data);setError('');setLoaded(true);return true;
+  } catch {if(uid === identity.current && epoch === generation.current){setError('Workspace cloud tidak dapat dimuat. Tidak ada fallback ke data lokal. Coba muat ulang.');setLoaded(true);}return false;}
+ };
+ useEffect(()=>{try {setLegacy(localStorage.getItem(STORAGE_KEY)!==null || localStorage.getItem(LEGACY_KEY)!==null);} catch {setLegacy(true);}},[]);
+ useEffect(()=>{
+  ++generation.current;owner.current=undefined;activeId.current=undefined;
+  setSnapshot(empty());setInviteToken('');setError('');setLoaded(false);
+  if (ready && user && configured) void reload(); else if (ready) setLoaded(true);
+  if (!user) return;
+  const timer = window.setInterval(()=>{if(!lock.current)void reload();},30000);
+  const focus = ()=>{if(!lock.current)void reload();};window.addEventListener('focus',focus);
+  // Cancellation counters are not DOM refs; cleanup intentionally invalidates pending async work.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  return ()=>{++generation.current;window.clearInterval(timer);window.removeEventListener('focus',focus);};
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ },[user?.id,ready,configured]);
+ const run = async (action: (cloud: CloudWorkspace, id: string) => Promise<unknown>, requireWorkspace = true) => {
+  if (lock.current) return false;
+  const uid=identity.current;
+  if (!uid || !configured || (requireWorkspace && !visible.workspace)) {setError('Login dan workspace cloud diperlukan.');return false;}
+  lock.current=true;setBusy(true);setError('');
+  try {await action(new CloudWorkspace(createClient()),visible.workspace?.id || '');if(uid !== identity.current)return false;return await reload();}
+  catch (err) {if(uid === identity.current)setError(err instanceof Error ? err.message : 'Operasi cloud gagal. Silakan coba lagi.');return false;}
+  finally {lock.current=false;setBusy(false);}
+ };
+ const value: WorkspaceContextType = {
+  ...visible,inviteToken: user && owner.current===user.id ? inviteToken : '',isLoaded:ready && loaded,error,busy,reload,
+  createWorkspace: params=>run(async cloud=>{activeId.current=await cloud.create(params);},false),
+  addBudget: item=>run((cloud,id)=>cloud.insert('budgets',id,{...item})),
+  updateBudget: (key,item)=>run((cloud,id)=>cloud.update('budgets',id,key,{...item})),
+  deleteBudget: key=>run((cloud,id)=>cloud.remove('budgets',id,key)),
+  addTask: item=>run((cloud,id)=>cloud.insert('tasks',id,{...item,is_completed:false})),
+  toggleTask: key=>run((cloud,id)=>{const task=visible.tasks.find(t=>t.id===key);if(!task)throw new Error('Tugas tidak ditemukan.');return cloud.update('tasks',id,key,{is_completed:!task.is_completed});}),
+  deleteTask: key=>run((cloud,id)=>cloud.remove('tasks',id,key)),
+  addGuest: item=>run((cloud,id)=>cloud.insert('guests',id,{...item})),
+  addGuests: items=>run((cloud,id)=>cloud.insertGuests(id,items.map(item=>({...item})))),
+  updateGuest: (key,item)=>run((cloud,id)=>cloud.update('guests',id,key,{...item})),
+  deleteGuest: key=>run((cloud,id)=>cloud.remove('guests',id,key)),
+  issueInvite: ()=>run(async (cloud,id)=>{const token=await cloud.issue(id);if(user && identity.current===user.id)setInviteToken(token);}),
+  acceptInvite: token=>run(async cloud=>{activeId.current=await cloud.accept(token);setInviteToken('');},false),
+ };
+ return <WorkspaceContext.Provider value={value}>
+  {legacy && user && <div role="status" className="p-3 bg-amber-50 text-amber-950 text-sm">Data rencana lama tetap disimpan di browser ini, tidak digunakan sebagai workspace cloud dan tidak diunggah otomatis. Cadangkan data situs sebelum menghapusnya.</div>}
+  {error && user && <div role="alert" className="p-3 bg-rose-50 text-rose-900 text-sm">{error} <button onClick={()=>void reload()} className="underline">Muat ulang</button></div>}
+  {busy && user && <div role="status" className="p-2 text-sm">Menyimpan ke cloud…</div>}{children}
+ </WorkspaceContext.Provider>;
 }
-
-export function useWorkspace() {
-  const context = useContext(WorkspaceContext);
-  if (!context) {
-    throw new Error("useWorkspace must be used within a WorkspaceProvider");
-  }
-  return context;
-}
+export function useWorkspace(){const value=useContext(WorkspaceContext);if(!value)throw new Error('WorkspaceProvider required');return value;}

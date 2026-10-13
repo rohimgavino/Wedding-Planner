@@ -9,7 +9,7 @@ import { formatRupiah, calculateDaysRemaining, formatDateID } from "@/lib/utils"
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { createWorkspace } = useWorkspace();
+  const { createWorkspace, busy } = useWorkspace();
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [groomName, setGroomName] = useState("");
@@ -18,16 +18,16 @@ export default function OnboardingPage() {
   const [targetBudget, setTargetBudget] = useState<number | "">("");
   const [targetSavings, setTargetSavings] = useState<number | "">("");
 
-  const handleFinish = (e: React.FormEvent) => {
+  const handleFinish = async (e: React.FormEvent) => {
     e.preventDefault();
-    createWorkspace({
+    const ok = await createWorkspace({
       groom_name: groomName.trim() || "Mempelai Pria",
       bride_name: brideName.trim() || "Mempelai Wanita",
       wedding_date: weddingDate || new Date().toISOString().split("T")[0],
       target_budget: Number(targetBudget) || 0,
       target_savings: Number(targetSavings) || 0,
     });
-    router.push("/dashboard");
+    if (ok) router.push("/dashboard");
   };
 
   const daysRemaining = calculateDaysRemaining(weddingDate);
@@ -157,7 +157,7 @@ export default function OnboardingPage() {
 
           {/* Right Panel: Active Form Card */}
           <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-rose-100/80 shadow-xl shadow-rose-950/5 flex flex-col justify-center">
-          <form onSubmit={step === 3 ? handleFinish : (e) => { e.preventDefault(); setStep((s) => (s + 1) as any); }}>
+          <form aria-busy={busy} onSubmit={step === 3 ? handleFinish : (e) => { e.preventDefault(); setStep((s) => (s + 1) as any); }}>
             
             {/* Step 1: Couple Names */}
             {step === 1 && (
@@ -203,7 +203,7 @@ export default function OnboardingPage() {
                 )}
 
                 <button
-                  type="submit"
+                  type="submit" disabled={busy}
                   className="w-full mt-2 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-500 via-rose-600 to-rose-700 text-white font-semibold text-sm shadow-md hover:from-rose-600 hover:to-rose-700 transition flex items-center justify-center gap-2 active:scale-98"
                 >
                   <span>Lanjut ke Tanggal Acara</span>
@@ -247,7 +247,7 @@ export default function OnboardingPage() {
                     Kembali
                   </button>
                   <button
-                    type="submit"
+                    type="submit" disabled={busy}
                     className="flex-1 py-3.5 px-6 rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 text-white font-semibold text-sm shadow-md hover:from-rose-600 hover:to-rose-700 transition flex items-center justify-center gap-2"
                   >
                     <span>Lanjut ke Anggaran</span>
@@ -305,7 +305,7 @@ export default function OnboardingPage() {
                     Kembali
                   </button>
                   <button
-                    type="submit"
+                    type="submit" disabled={busy}
                     className="flex-1 py-3.5 px-6 rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 text-white font-semibold text-sm shadow-md hover:from-rose-600 hover:to-rose-700 transition flex items-center justify-center gap-2"
                   >
                     <CheckCircle2 className="w-4 h-4" />

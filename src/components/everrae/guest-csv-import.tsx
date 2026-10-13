@@ -5,7 +5,7 @@ import { useWorkspace } from "@/context/WorkspaceContext";
 import { GUEST_CATEGORIES, GUEST_RSVP, GuestCSVRow, guestDuplicateError, parseGuestCSV } from "@/lib/guest-csv";
 
 export function GuestCSVImport() {
-  const { guests, addGuest } = useWorkspace();
+  const { guests, addGuests, busy } = useWorkspace();
   const [preview, setPreview] = useState<GuestCSVRow[]>([]);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -49,10 +49,10 @@ export function GuestCSVImport() {
     {preview.length > 0 && <div className="bg-white border border-slate-200 rounded-xl p-3 space-y-3">
       <h4 className="font-semibold text-sm">Pratinjau: {preview.length} tamu akan ditambahkan</h4>
       <div className="max-h-64 overflow-auto text-xs"><table className="w-full text-left"><thead><tr>{["Nama", "Kategori", "Pax", "WhatsApp", "RSVP"].map(h => <th className="p-2" key={h}>{h}</th>)}</tr></thead><tbody>{preview.map((g,i) => <tr key={i}><td className="p-2">{g.name}</td><td className="p-2">{g.category}</td><td className="p-2">{g.pax}</td><td className="p-2">{g.phone || "—"}</td><td className="p-2">{g.rsvp_status}</td></tr>)}</tbody></table></div>
-      <div className="flex flex-wrap gap-2"><button className={buttonClass} onClick={() => { setPreview([]); setError(""); }}>Batal Impor</button><button className={buttonClass} disabled={!!duplicate || reading} onClick={() => {
+      <div className="flex flex-wrap gap-2"><button className={buttonClass} onClick={() => { setPreview([]); setError(""); }}>Batal Impor</button><button className={buttonClass} disabled={!!duplicate || reading || busy} onClick={async () => {
         const conflict = guestDuplicateError(preview, guests);
         if (conflict) { setError(conflict); return; }
-        preview.forEach(g => addGuest(g));
+        if (!await addGuests(preview)) {setError("Impor cloud gagal. Data pratinjau tetap tersedia untuk dicoba lagi.");return;}
         setNotice(`${preview.length} tamu ditambahkan. Data lama tetap tersimpan.`); setPreview([]);
       }}>Tambahkan {preview.length} Tamu</button></div>
     </div>}

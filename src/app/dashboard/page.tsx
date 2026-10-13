@@ -7,6 +7,7 @@ import { PlannerDialog } from "@/components/everrae/planner-dialog";
 import { GuestCSVImport } from "@/components/everrae/guest-csv-import";
 import { serializeGuestCSV } from "@/lib/guest-csv";
 import { useWorkspace } from "@/context/WorkspaceContext";
+import { useAuth } from "@/context/auth-context";
 import { 
   Heart, Calendar, Wallet, CheckSquare, Users, Plus, 
   MessageCircle, Share2, Check, Trash2,
@@ -18,10 +19,11 @@ import { generateWhatsAppLink } from "@/lib/whatsapp";
 import { TaskItem, GuestItem, BudgetItem } from "@/types";
 
 export default function DashboardPage() {
+  const { user } = useAuth();
   const { 
     workspace, budgets, tasks, guests, inviteToken, isLoaded,
     addBudget, deleteBudget, toggleTask, addTask, deleteTask,
-    addGuest, updateGuest, deleteGuest, resetData
+    addGuest, updateGuest, deleteGuest, issueInvite, members, busy
   } = useWorkspace();
 
   const [activeTab, setActiveTab] = useState<"overview" | "budget" | "tasks" | "guests" | "pairing">("overview");
@@ -105,12 +107,11 @@ export default function DashboardPage() {
     .filter((g) => g.rsvp_status === "attending")
     .reduce((acc, g) => acc + (g.pax || 1), 0);
 
-  const inviteLink = typeof window !== "undefined" 
-    ? `${window.location.origin}/invite?token=${inviteToken}` 
-    : `https://mins-permitted-speech-such.trycloudflare.com/invite?token=${inviteToken}`;
+  const inviteLink = inviteToken && typeof window !== "undefined" ? `${window.location.origin}/invite?token=${inviteToken}` : "";
 
   const handleCopyInviteLink = () => {
-    navigator.clipboard.writeText(inviteLink);
+    if (!inviteLink) return;
+    void navigator.clipboard.writeText(inviteLink);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2500);
   };
@@ -138,7 +139,7 @@ export default function DashboardPage() {
         <div className="planner-sidebar-note"><ShieldCheck size={22}/><strong>Rencana milikmu.</strong><p>Data tersimpan di browser ini. Belum ada sinkronisasi cloud.</p><Link href="/">Kembali ke beranda →</Link></div>
       </aside>
       <div className="planner-body">
-        <header className="planner-topbar"><span className="planner-topbar-brand">EverRae</span><span className="planner-breadcrumb">Workspace / {activeTab === 'overview' ? 'Dashboard' : activeTab === 'pairing' ? 'Pengaturan' : activeTab === 'tasks' ? 'Timeline' : activeTab === 'guests' ? 'Buku Tamu' : 'Budget'}</span><button onClick={() => setShowInviteModal(true)}><Share2 size={16}/><span>Tautan pasangan</span></button></header>
+        <header className="planner-topbar"><span className="planner-topbar-brand">EverRae</span><span className="planner-breadcrumb">Workspace / {activeTab === 'overview' ? 'Dashboard' : activeTab === 'pairing' ? 'Pengaturan' : activeTab === 'tasks' ? 'Timeline' : activeTab === 'guests' ? 'Buku Tamu' : 'Budget'}</span><button onClick={async () => { if (await issueInvite()) setShowInviteModal(true); }}><Share2 size={16}/><span>Tautan pasangan</span></button></header>
         <main className="planner-main">
           <section className="planner-heading"><div><span className="planner-eyebrow">RENCANA PERNIKAHANMU</span><h1>Halo, {workspace.title.replace(/^Pernikahan\s+/i, '')}.</h1><p>Satu langkah lebih dekat ke hari bahagia.</p></div><div className="planner-date"><Calendar size={20}/><div><strong>{formatDateID(workspace.wedding_date)}</strong><span>{daysRemaining > 0 ? `${daysRemaining} hari lagi` : daysRemaining === 0 ? 'Hari pernikahanmu' : 'Tanggal pernikahan telah berlalu'}</span></div></div></section>
           <div className="planner-mobile-progress"><div><span>Progres persiapan</span><strong>{taskProgressPercent}%</strong></div><progress max="100" value={taskProgressPercent}/></div>
@@ -157,7 +158,7 @@ export default function DashboardPage() {
               <section className="planner-panel planner-actions"><h2>Aksi cepat</h2><p>Catat detail, lanjutkan rencana.</p><button onClick={() => setShowAddTaskModal(true)}><Plus size={18}/>Tambah tugas</button><button onClick={() => setShowAddBudgetModal(true)}><Wallet size={18}/>Tambah pos anggaran</button><button onClick={() => setShowAddGuestModal(true)}><Users size={18}/>Tambah tamu</button><button onClick={() => setActiveTab('tasks')}><Calendar size={18}/>Lihat timeline</button></section>
             </div>
             <section className="planner-budget-note"><Wallet size={20}/><div><strong>Ruang untuk setiap kebutuhan</strong><p>Alokasi {formatRupiah(totalAllocatedBudget)} · Sisa target {formatRupiah(workspace.target_budget - totalSpentBudget)}</p></div><button onClick={() => setActiveTab('budget')}>Kelola budget →</button></section>
-            <p className="planner-local-note">Tersimpan secara lokal di browser ini. RSVP dicatat manual; WhatsApp membuka pesan, bukan mengirim otomatis.</p>
+            <p className="planner-local-note">Data dimuat dari workspace cloud. RSVP dicatat manual; WhatsApp membuka pesan, bukan mengirim otomatis.</p>
           </div>}
 
 
@@ -498,9 +499,11 @@ export default function DashboardPage() {
             </div>
             <h3 className="font-serif font-bold text-slate-900 text-xl">Koneksi Pasangan</h3>
             <p className="text-xs sm:text-sm text-slate-600 mt-1 mb-6">
-              Kolaborasi cloud belum tersedia. Tautan ini adalah prototype lokal, bukan akses bersama atau sinkronisasi real-time.
+              Undangan berlaku 24 jam untuk satu pasangan. Membuat tautan baru membatalkan undangan sebelumnya. Workspace dimuat ulang saat kembali ke aplikasi dan setiap 30 detik.
             </p>
 
+            <button disabled={busy || members.length >= 2 || !members.some(m => m.role === "owner" && m.user_id === user?.id)} onClick={()=>void issueInvite()} className="px-4 py-3 mb-4 rounded-xl bg-rose-500 text-white">Buat / Perbarui Tautan Pasangan</button>
+            <p className="text-xs mb-3">{members.length} dari 2 anggota terhubung</p>
             <div className="p-4 rounded-2xl bg-rose-50/80 border border-rose-100 text-left mb-6">
               <span className="text-[10px] font-bold text-rose-700 uppercase tracking-wider">Tautan Pairing Unik:</span>
               <div className="flex items-center gap-2 mt-1.5">
@@ -511,7 +514,7 @@ export default function DashboardPage() {
                   className="flex-1 bg-white px-3 py-2 rounded-xl text-xs border border-rose-200 text-slate-600 font-mono select-all"
                 />
                 <button
-                  onClick={handleCopyInviteLink}
+                  disabled={!inviteLink || busy} onClick={handleCopyInviteLink}
                   className="px-3.5 py-2 rounded-xl bg-rose-500 text-white text-xs font-semibold hover:bg-rose-600 transition flex items-center gap-1 shrink-0"
                 >
                   {copiedLink ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
@@ -531,12 +534,7 @@ export default function DashboardPage() {
                 <span>Kirim Tautan ke WhatsApp Pasangan</span>
               </a>
 
-              <button
-                onClick={() => { if (confirm("Hapus seluruh data workspace dari browser ini?")) resetData(); }}
-                className="text-xs text-rose-500 hover:underline pt-4 block mx-auto"
-              >
-                Hapus Data Workspace Lokal
-              </button>
+
             </div>
           </div>
         )}
@@ -550,7 +548,7 @@ export default function DashboardPage() {
                 <div className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-rose-100">
                   <h3 className="font-serif font-bold text-slate-900 text-lg mb-2 text-center">Undang Pasangan</h3>
                   <p className="text-xs text-slate-600 text-center mb-4 leading-relaxed">
-                    Tautan prototype lokal. Data hanya ada di browser ini; membuka tautan di perangkat lain tidak membagikan workspace. Sinkronisasi cloud belum tersedia.
+                    Tautan aman untuk pasangan, berlaku 24 jam. Jangan bagikan secara publik.
                   </p>
 
                   <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs font-mono break-all text-slate-700 mb-4 select-all">
@@ -559,7 +557,7 @@ export default function DashboardPage() {
 
                   <div className="flex flex-col gap-2">
                     <button
-                      onClick={handleCopyInviteLink}
+                      disabled={!inviteLink || busy} onClick={handleCopyInviteLink}
                       className="w-full py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs hover:bg-rose-600 transition flex items-center justify-center gap-1.5"
                     >
                       {copiedLink ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
@@ -581,15 +579,16 @@ export default function DashboardPage() {
               <PlannerDialog title="Tambah Pos Anggaran" onClose={() => setShowAddBudgetModal(false)}>
                 <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-rose-100">
                   <h3 className="font-serif font-bold text-slate-900 text-lg mb-4">Tambah Pos Anggaran</h3>
-                  <form onSubmit={(e) => {
+                  <form onSubmit={async (e) => {
                     e.preventDefault();
-                    addBudget({
+                    const ok = await addBudget({
                       category: newBudgetCategory,
                       title: newBudgetTitle || newBudgetCategory,
                       allocated_amount: Number(newBudgetAllocated) || 0,
                       spent_amount: Number(newBudgetSpent) || 0,
                       payment_status: newBudgetStatus,
                     });
+                    if (!ok) return;
                     setShowAddBudgetModal(false);
                     setNewBudgetTitle("");
                   }}>
@@ -673,7 +672,7 @@ export default function DashboardPage() {
                         Batal
                       </button>
                       <button
-                        type="submit"
+                        type="submit" disabled={busy}
                         className="flex-1 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs hover:bg-rose-600 transition"
                       >
                         Simpan Pos
@@ -689,13 +688,14 @@ export default function DashboardPage() {
               <PlannerDialog title="Tambah Tugas" onClose={() => setShowAddTaskModal(false)}>
                 <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-rose-100">
                   <h3 className="font-serif font-bold text-slate-900 text-lg mb-4">Tambah Tugas / Checklist</h3>
-                  <form onSubmit={(e) => {
+                  <form onSubmit={async (e) => {
                     e.preventDefault();
-                    addTask({
+                    const ok = await addTask({
                       title: newTaskTitle,
                       phase: newTaskPhase,
                       pic: newTaskPic,
                     });
+                    if (!ok) return;
                     setShowAddTaskModal(false);
                     setNewTaskTitle("");
                   }}>
@@ -752,7 +752,7 @@ export default function DashboardPage() {
                         Batal
                       </button>
                       <button
-                        type="submit"
+                        type="submit" disabled={busy}
                         className="flex-1 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs hover:bg-rose-600 transition"
                       >
                         Simpan Tugas
@@ -768,15 +768,16 @@ export default function DashboardPage() {
               <PlannerDialog title="Tambah Tamu" onClose={() => setShowAddGuestModal(false)}>
                 <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-rose-100">
                   <h3 className="font-serif font-bold text-slate-900 text-lg mb-4">Tambah Tamu Undangan</h3>
-                  <form onSubmit={(e) => {
+                  <form onSubmit={async (e) => {
                     e.preventDefault();
-                    addGuest({
+                    const ok = await addGuest({
                       name: newGuestName,
                       category: newGuestCategory,
                       pax: Number(newGuestPax) || 1,
                       phone: newGuestPhone.trim(),
                       rsvp_status: "uncontacted",
                     });
+                    if (!ok) return;
                     setShowAddGuestModal(false);
                     setNewGuestName("");
                     setNewGuestPhone("");
@@ -845,7 +846,7 @@ export default function DashboardPage() {
                         Batal
                       </button>
                       <button
-                        type="submit"
+                        type="submit" disabled={busy}
                         className="flex-1 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs hover:bg-rose-600 transition"
                       >
                         Simpan Tamu

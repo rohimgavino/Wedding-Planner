@@ -1,85 +1,27 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useWorkspace } from "@/context/WorkspaceContext";
+import { useAuth } from "@/context/auth-context";
+import { safeNext } from "@/lib/auth-policy";
 import { createClient } from "@/lib/supabase/client";
 import { Heart, Sparkles, ArrowRight, Mail, ShieldCheck, CheckCircle2 } from "lucide-react";
 
 export default function LoginPage() {
+  const {configured, user, ready} = useAuth();
   const router = useRouter();
-  const { workspace } = useWorkspace();
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
-
-  const isSupabaseConfigured = 
-    process.env.NEXT_PUBLIC_SUPABASE_URL && 
-    !process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder");
-
+  const [loading,setLoading] = useState(false);
+  const [message,setMessage] = useState<string | null>(null);
+  useEffect(()=>{if(ready && user)router.replace(safeNext(new URLSearchParams(window.location.search).get('next')));},[user,ready,router]);
   const handleGoogleLogin = async () => {
-    setLoading(true);
-    if (!isSupabaseConfigured) {
-      // Mode demo / belum setup Supabase
-      setTimeout(() => {
-        if (!workspace) {
-          router.push("/onboarding");
-        } else {
-          router.push("/dashboard");
-        }
-      }, 500);
-      return;
-    }
-
+    if(!configured) {setMessage('Login cloud belum dikonfigurasi. Tidak ada akses demo.');return;}
+    setLoading(true);setMessage(null);
     try {
-      const supabase = createClient();
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`,
-        },
-      });
-      if (error) throw error;
-    } catch (err: any) {
-      alert("Gagal masuk via Google: " + (err.message || err));
-      setLoading(false);
-    }
-  };
-
-  const handleEmailLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-
-    setLoading(true);
-    if (!isSupabaseConfigured) {
-      // Mode demo / uji coba
-      setMessage("Membuka workspace lokal; tidak ada autentikasi cloud atau email terkirim.");
-      setTimeout(() => {
-        if (!workspace) {
-          router.push("/onboarding");
-        } else {
-          router.push("/dashboard");
-        }
-      }, 500);
-      return;
-    }
-
-    try {
-      const supabase = createClient();
-      const { error } = await supabase.auth.signInWithOtp({
-        email: email.trim(),
-        options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
-        },
-      });
-      if (error) throw error;
-      setMessage("Tautan login (Magic Link) telah dikirim ke email Anda!");
-    } catch (err: any) {
-      alert("Gagal mengirim email: " + (err.message || err));
-    } finally {
-      setLoading(false);
-    }
+      const next=safeNext(new URLSearchParams(window.location.search).get('next'));
+      const {error}=await createClient().auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+'/auth/callback?next='+encodeURIComponent(next)}});
+      if(error)throw error;
+    } catch {setMessage('Gagal masuk dengan Google. Silakan coba lagi.');setLoading(false);}
   };
 
   return (
@@ -100,21 +42,22 @@ export default function LoginPage() {
             Masuk ke Workspace
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 mt-1">
-            Prototype lokal. Data tersimpan di browser ini, belum tersinkron dengan pasangan.
+            Masuk dengan Google untuk mengakses workspace cloud pribadi dan pasangan.
           </p>
         </div>
 
-        {message ? (
+        {message && (
           <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-center space-y-2">
             <CheckCircle2 className="w-8 h-8 text-emerald-600 mx-auto" />
             <p className="text-xs font-semibold">{message}</p>
           </div>
-        ) : (
+        )}
+        {(
           <div className="space-y-4">
             {/* Google OAuth Button */}
             <button
               onClick={handleGoogleLogin}
-              disabled={loading || !isSupabaseConfigured}
+              disabled={loading || !configured}
               className="w-full py-3.5 px-4 rounded-2xl bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm shadow-xs transition flex items-center justify-center gap-3 active:scale-98"
             >
               {/* Google SVG Logo */}
@@ -136,58 +79,13 @@ export default function LoginPage() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                 />
               </svg>
-              <span>{loading ? "Menghubungkan..." : (isSupabaseConfigured ? "Lanjutkan dengan Google" : "Google OAuth belum tersedia")}</span>
+              <span>{loading ? "Menghubungkan..." : (configured ? "Lanjutkan dengan Google" : "Google OAuth belum tersedia")}</span>
             </button>
 
-            <div className="flex items-center gap-3 my-2">
-              <div className="flex-1 h-px bg-slate-200" />
-              <span className="text-[11px] text-slate-400 uppercase font-semibold">atau email</span>
-              <div className="flex-1 h-px bg-slate-200" />
-            </div>
-
-            {/* Email OTP Form */}
-            <form onSubmit={handleEmailLogin} className="space-y-3">
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Alamat Email
-                </label>
-                <div className="relative">
-                  <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="nama@email.com"
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-100 text-xs sm:text-sm font-medium transition"
-                  />
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 text-white font-semibold text-xs sm:text-sm shadow-md hover:from-rose-600 hover:to-rose-700 transition flex items-center justify-center gap-2 active:scale-98"
-              >
-                <span>{loading ? "Memproses..." : (isSupabaseConfigured ? "Kirim Tautan Masuk" : "Lanjutkan secara lokal")}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </form>
           </div>
         )}
 
-        {/* Demo Fast Track Card */}
-        <div className="mt-8 pt-5 border-t border-slate-100 text-center">
-          <p className="text-[11px] text-slate-500 mb-2.5">
-            Belum punya workspace bersama?
-          </p>
-          <a
-            href="/onboarding"
-            className="w-full py-2.5 px-4 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold text-xs transition block"
-          >
-            Buat Workspace Baru
-          </a>
-        </div>
+        {!configured && <p role="alert" className="text-sm text-rose-800 mt-4">Login cloud belum dikonfigurasi. Workspace dinonaktifkan; data lama tidak diunggah.</p>}
 
       </div>
     </div>
