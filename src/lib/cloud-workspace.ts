@@ -30,6 +30,44 @@ export class CloudWorkspace {
   const id = checked(await this.db.rpc('create_workspace',{p_title:`Pernikahan ${params.groom_name} & ${params.bride_name}`,p_wedding_date:params.wedding_date}));
   // RPC is atomic for workspace + owner. Metadata is a separate authorized update.
   checked(await this.db.from('workspaces').update(params).eq('id',id).select('id').single());
+
+  // Auto-seed template bawaan (contoh pengisian aktif) agar user langsung paham
+  try {
+    const defaultBudgets = [
+      { category: "Venue & Gedung", title: "Sewa Gedung Resepsi", allocated: 25000000, actual_paid: 0 },
+      { category: "Katering", title: "Paket Katering 500 Pax", allocated: 35000000, actual_paid: 0 },
+      { category: "Rias & Busana", title: "MUA Akad & Resepsi + Sewa Gaun/Jas", allocated: 10000000, actual_paid: 0 },
+      { category: "Dekorasi", title: "Dekorasi Pelaminan & Lorong Masuk", allocated: 12000000, actual_paid: 0 },
+      { category: "Dokumentasi", title: "Foto & Video Cinematic Hari H", allocated: 7500000, actual_paid: 0 },
+      { category: "Undangan & Souvenir", title: "Cetak Undangan Fisik & 300 Souvenir", allocated: 3500000, actual_paid: 0 },
+      { category: "Mahar & Seserahan", title: "Perlengkapan Mahar & Kotak Seserahan", allocated: 5000000, actual_paid: 0 },
+      { category: "Dana Darurat", title: "Cadangan Biaya Tak Terduga", allocated: 4000000, actual_paid: 0 }
+    ];
+    const defaultTasks = [
+      { title: "Minta Surat Pengantar RT/RW untuk Nikah", phase: "Dokumen KUA", pic: "both", is_completed: false, notes: "Bawa KTP dan KK asli serta fotokopi." },
+      { title: "Urus Surat Model N1, N2, dan N4 di Kelurahan", phase: "Dokumen KUA", pic: "both", is_completed: false, notes: "Surat pengantar kelurahan menuju KUA setempat." },
+      { title: "Cek Kesehatan & Imunisasi TT di Puskesmas", phase: "Dokumen KUA", pic: "bride", is_completed: false, notes: "Sertifikat layak kawin (Elsimil / Puskesmas)." },
+      { title: "Pertemuan Keluarga & Kesepakatan Tanggal", phase: "H-6 Bulan", pic: "both", is_completed: false },
+      { title: "Survey & Booking Gedung / Lokasi Acara", phase: "H-6 Bulan", pic: "both", is_completed: false },
+      { title: "Test Food & Booking Katering", phase: "H-6 Bulan", pic: "both", is_completed: false },
+      { title: "Booking MUA & Pilihan Busana Pengantin", phase: "H-3 Bulan", pic: "bride", is_completed: false },
+      { title: "Booking Fotografer & Tim Video", phase: "H-3 Bulan", pic: "groom", is_completed: false }
+    ];
+    const defaultGuests = [
+      { name: "Keluarga Besar Pihak Pria", count_pax: 20, is_rsvp_sent: false, rsvp_status: "attending", contact_phone: "" },
+      { name: "Keluarga Besar Pihak Wanita", count_pax: 20, is_rsvp_sent: false, rsvp_status: "attending", contact_phone: "" },
+      { name: "Teman Kerja & Sahabat", count_pax: 10, is_rsvp_sent: false, rsvp_status: "pending", contact_phone: "" }
+    ];
+
+    await Promise.allSettled([
+      this.db.from('budgets').insert(defaultBudgets.map(b => ({ ...b, workspace_id: id }))),
+      this.db.from('tasks').insert(defaultTasks.map(t => ({ ...t, workspace_id: id }))),
+      this.db.from('guests').insert(defaultGuests.map(g => ({ ...g, workspace_id: id })))
+    ]);
+  } catch (err) {
+    console.warn('Gagal inject template bawaan:', err);
+  }
+
   return id as string;
  }
  async insert(table: Table, workspaceId: string, item: Record<string,unknown>) {

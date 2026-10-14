@@ -145,8 +145,7 @@ export default function DashboardPage() {
       <div className="planner-body">
         <header className="planner-topbar"><span className="planner-topbar-brand">EverRae</span><span className="planner-breadcrumb">Workspace / {activeTab === 'overview' ? 'Dashboard' : activeTab === 'pairing' ? 'Pengaturan' : activeTab === 'tasks' ? 'Timeline' : activeTab === 'guests' ? 'Buku Tamu' : activeTab === 'savings' ? 'Tabungan' : 'Budget'}</span><button onClick={async () => { if (await issueInvite()) setShowInviteModal(true); }}><Share2 size={16}/><span>Tautan pasangan</span></button></header>
         <main className="planner-main">
-          <FillingExample />
-          {(activeTab === 'overview' || activeTab === 'pairing') && <PlanningReset />}
+          {activeTab === 'pairing' && <PlanningReset />}
           <section className="planner-heading"><div><span className="planner-eyebrow">RENCANA PERNIKAHANMU</span><h1>Halo, {workspace.title.replace(/^Pernikahan\s+/i, '')}.</h1><p>Satu langkah lebih dekat ke hari bahagia.</p></div><div className="planner-date"><Calendar size={20}/><div><strong>{formatDateID(workspace.wedding_date)}</strong><span>{daysRemaining > 0 ? `${daysRemaining} hari lagi` : daysRemaining === 0 ? 'Hari pernikahanmu' : 'Tanggal pernikahan telah berlalu'}</span></div></div></section>
           <div className="planner-mobile-progress"><div><span>Progres persiapan</span><strong>{taskProgressPercent}%</strong></div><progress max="100" value={taskProgressPercent}/></div>
           <nav className="planner-shortcuts" aria-label="Pintasan workspace">{([['overview','Ringkasan',Sparkles],['tasks','Timeline',CheckSquare],['budget','Budget',Wallet],['guests','Tamu',Users],['savings','Tabungan',Wallet],['pairing','Pengaturan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={19}/><span>{label}</span></button>)}</nav>
