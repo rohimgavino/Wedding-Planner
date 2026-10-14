@@ -18,7 +18,7 @@ import {
   Search, ShieldCheck
 } from "lucide-react";
 import { formatRupiah, calculateDaysRemaining, formatDateID } from "@/lib/utils";
-import { generateWhatsAppLink } from "@/lib/whatsapp";
+import { WhatsAppInvitation } from "@/components/everrae/whatsapp-invitation";
 import { TaskItem, GuestItem, BudgetItem } from "@/types";
 
 export default function DashboardPage() {
@@ -403,13 +403,6 @@ export default function DashboardPage() {
                 .filter((g) => guestCategoryFilter === "all" || g.category === guestCategoryFilter)
                 .filter((g) => !guestSearch || g.name.toLowerCase().includes(guestSearch.toLowerCase()))
                 .map((guest) => {
-                  const waLink = generateWhatsAppLink({
-                    phone: guest.phone || "",
-                    guestName: guest.name,
-                    coupleName: workspace?.title || "Mempelai",
-                    weddingDate: workspace ? formatDateID(workspace.wedding_date) : "-",
-                  });
-
                   return (
                     <div key={guest.id} className="p-3.5 rounded-2xl bg-white border border-rose-100 shadow-xs flex items-center justify-between gap-3">
                       <div className="flex-1">
@@ -446,15 +439,7 @@ export default function DashboardPage() {
 
                         {/* WhatsApp Direct Action Button */}
                         {guest.phone ? (
-                          <a
-                            href={waLink}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="p-2 rounded-xl bg-emerald-500 text-white hover:bg-emerald-600 transition shadow-xs flex items-center gap-1"
-                            title="Kirim pesan WhatsApp"
-                          >
-                            <MessageCircle className="w-4 h-4" />
-                          </a>
+                          <WhatsAppInvitation phone={guest.phone} guestName={guest.name} coupleName={[workspace.groom_name,workspace.bride_name].filter(Boolean).join(' & ') || workspace.title} weddingDate={formatDateID(workspace.wedding_date)} />
                         ) : (
                           <button
                             disabled

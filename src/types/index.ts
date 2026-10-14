@@ -1,6 +1,8 @@
 export interface Workspace {
   id: string;
   title: string;
+  groom_name?: string | null;
+  bride_name?: string | null;
   wedding_date: string;
   target_budget: number;
   target_savings: number;
