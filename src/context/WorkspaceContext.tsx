@@ -24,6 +24,7 @@ interface WorkspaceContextType extends CloudSnapshot {
  addSaving: (item: Omit<SavingsContribution,'id'|'workspace_id'>) => Promise<boolean>;
  updateSaving: (id: string, item: Partial<SavingsContribution>) => Promise<boolean>;
  deleteSaving: (id: string) => Promise<boolean>;
+ applyStarterTemplate: () => Promise<boolean>;
  resetPlanningContent: (confirmation: string) => Promise<boolean>;
  reload: () => Promise<boolean>;
 }
@@ -84,6 +85,7 @@ export function WorkspaceProvider({children}: {children: React.ReactNode}) {
   addSaving: item=>run((cloud,id)=>cloud.insert('savings_contributions',id,{...item})),
   updateSaving: (key,item)=>run((cloud,id)=>cloud.update('savings_contributions',id,key,{...item})),
   deleteSaving: key=>run((cloud,id)=>cloud.remove('savings_contributions',id,key)),
+  applyStarterTemplate: ()=>run((cloud,id)=>cloud.applyStarterTemplate(id)),
   resetPlanningContent: confirmation=>run(async (cloud,id)=>{
    const resetUid=identity.current;
    await cloud.resetPlanningContent(id,confirmation);
