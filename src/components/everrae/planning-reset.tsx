@@ -24,8 +24,8 @@ export function PlanningReset() {
   {isOwner ? <button type="button" disabled={busy || pending} className="mt-3 min-h-11 rounded-xl border border-rose-700 p-3 text-rose-800 disabled:opacity-50" onClick={()=>{setMessage('');setConfirmation('');setOpen(true);}}>Reset rencana dari nol</button> : <p className="mt-3">Hanya owner workspace yang dapat mereset rencana.</p>}
   {message && <p role="status" className="mt-3">{message}</p>}
   {open && <PlannerDialog title="Reset rencana dari nol" onClose={close}>
-   <div className="w-full max-w-lg max-h-[85vh] overflow-y-auto p-5 space-y-4 text-sm">
-    <h2 className="text-xl font-semibold">Reset rencana dari nol</h2>
+   <div className="w-full max-w-lg max-h-[85vh] overflow-y-auto p-6 space-y-4 text-sm bg-white text-stone-900 rounded-2xl shadow-2xl border border-stone-200">
+    <h2 className="text-xl font-semibold text-rose-950">Reset rencana dari nol</h2>
     <p><strong>Owner dan pasangan sama-sama terdampak.</strong> Data berikut di workspace ini akan dihapus permanen sekaligus:</p>
     <ul className="list-disc pl-5"><li>Semua pos anggaran dan pengeluaran (budgets).</li><li>Semua tugas/checklist dan timeline (tasks).</li><li>Semua tamu, RSVP dan nomor kontak (guests).</li><li>Semua catatan kontribusi tabungan (savings_contributions).</li></ul>
     <p>Tetap disimpan: akun login, workspace, keanggotaan/pasangan, undangan, nama mempelai, tanggal pernikahan, target anggaran dan tabungan, rekening tabungan lama (savings_accounts), akses paket/entitlement, permintaan pembelian, referensi transaksi dan audit. Reset tidak membatalkan pembayaran atau memindahkan uang.</p>
