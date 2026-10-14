@@ -80,3 +80,7 @@ export interface GuestItem {
   rsvp_status: RSVPStatus;
   notes?: string;
 }
+
+export interface SavingsContribution {
+ id: string; workspace_id: string; contributor_id: string; amount: number; contributed_on: string; notes: string; created_at?: string;
+}

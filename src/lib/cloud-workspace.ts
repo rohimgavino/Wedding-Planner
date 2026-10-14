@@ -1,9 +1,10 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { Workspace, BudgetItem, TaskItem, GuestItem, WorkspaceMember } from '@/types';
-type Table = 'budgets' | 'tasks' | 'guests';
+import type { Workspace, BudgetItem, TaskItem, GuestItem, WorkspaceMember, SavingsContribution } from '@/types';
+type Table = 'budgets' | 'tasks' | 'guests' | 'savings_contributions';
 export interface WorkspaceParams { groom_name: string; bride_name: string; wedding_date: string; target_budget: number; target_savings: number }
-export interface CloudSnapshot { workspace: Workspace | null; budgets: BudgetItem[]; tasks: TaskItem[]; guests: GuestItem[]; members: WorkspaceMember[] }
+export interface CloudSnapshot { workspace: Workspace | null; budgets: BudgetItem[]; tasks: TaskItem[]; guests: GuestItem[]; members: WorkspaceMember[]; savings: SavingsContribution[] }
 const fields: Record<Table, string[]> = {
+ savings_contributions: ['contributor_id','amount','contributed_on','notes'],
  budgets: ['category','title','allocated_amount','spent_amount','payment_status','notes'],
  tasks: ['title','phase','pic','is_completed','due_date','notes'],
  guests: ['name','category','pax','phone','rsvp_status','notes'],
@@ -19,9 +20,9 @@ export class CloudWorkspace {
   if (id) query = query.eq('id',id);
   const rows = checked(await query) as Workspace[];
   const workspace = rows[0] || null;
-  if (!workspace) return {workspace:null,budgets:[],tasks:[],guests:[],members:[]};
-  const [budgets,tasks,guests,members] = await Promise.all(['budgets','tasks','guests','workspace_members'].map(table=>this.db.from(table).select('*').eq('workspace_id',workspace.id).order('created_at',{ascending:true})));
-  return {workspace,budgets:checked(budgets) || [],tasks:checked(tasks) || [],guests:checked(guests) || [],members:checked(members) || []};
+  if (!workspace) return {workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[]};
+  const [budgets,tasks,guests,members,savings] = await Promise.all(['budgets','tasks','guests','workspace_members','savings_contributions'].map(table=>this.db.from(table).select('*').eq('workspace_id',workspace.id).order('created_at',{ascending:true})));
+  return {workspace,budgets:checked(budgets) || [],tasks:checked(tasks) || [],guests:checked(guests) || [],members:checked(members) || [],savings:checked(savings) || []};
  }
  async create(params: WorkspaceParams) {
   await this.requireUser();
@@ -47,6 +48,13 @@ export class CloudWorkspace {
   await this.requireUser();
   const rows = checked(await this.db.from(table).delete().eq('workspace_id',workspaceId).eq('id',id).select('id'));
   if (!rows?.length) throw new Error('Data tidak ditemukan atau akses telah berubah. Muat ulang workspace.');
+ }
+ async resetPlanningContent(workspaceId: string, confirmation: string) {
+  if (confirmation !== 'RESET RENCANA') throw new Error('Ketik konfirmasi RESET RENCANA dengan tepat.');
+  await this.requireUser();
+  const result = await this.db.rpc('reset_planning_content',{p_workspace_id:workspaceId,p_confirmation:confirmation});
+  if (result.error) throw new Error('Reset belum berhasil dikonfirmasi. Pastikan Anda owner, koneksi tersedia, dan migration reset sudah diterapkan. Muat ulang sebelum mencoba lagi.');
+  return result.data;
  }
  async issue(workspaceId: string) {
   await this.requireUser();

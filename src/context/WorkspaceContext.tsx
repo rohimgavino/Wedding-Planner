@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
-import type { BudgetItem, TaskItem, GuestItem } from '@/types';
+import type { BudgetItem, TaskItem, GuestItem, SavingsContribution } from '@/types';
 import { CloudWorkspace, CloudSnapshot, WorkspaceParams } from '@/lib/cloud-workspace';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/context/auth-context';
@@ -21,9 +21,13 @@ interface WorkspaceContextType extends CloudSnapshot {
  deleteGuest: (id: string) => Promise<boolean>;
  issueInvite: () => Promise<boolean>;
  acceptInvite: (token: string) => Promise<boolean>;
+ addSaving: (item: Omit<SavingsContribution,'id'|'workspace_id'>) => Promise<boolean>;
+ updateSaving: (id: string, item: Partial<SavingsContribution>) => Promise<boolean>;
+ deleteSaving: (id: string) => Promise<boolean>;
+ resetPlanningContent: (confirmation: string) => Promise<boolean>;
  reload: () => Promise<boolean>;
 }
-const empty = (): CloudSnapshot => ({workspace:null,budgets:[],tasks:[],guests:[],members:[]});
+const empty = (): CloudSnapshot => ({workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[]});
 const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
 export function WorkspaceProvider({children}: {children: React.ReactNode}) {
  const {user,ready,configured} = useAuth();
@@ -77,6 +81,16 @@ export function WorkspaceProvider({children}: {children: React.ReactNode}) {
   addGuests: items=>run((cloud,id)=>cloud.insertGuests(id,items.map(item=>({...item})))),
   updateGuest: (key,item)=>run((cloud,id)=>cloud.update('guests',id,key,{...item})),
   deleteGuest: key=>run((cloud,id)=>cloud.remove('guests',id,key)),
+  addSaving: item=>run((cloud,id)=>cloud.insert('savings_contributions',id,{...item})),
+  updateSaving: (key,item)=>run((cloud,id)=>cloud.update('savings_contributions',id,key,{...item})),
+  deleteSaving: key=>run((cloud,id)=>cloud.remove('savings_contributions',id,key)),
+  resetPlanningContent: confirmation=>run(async (cloud,id)=>{
+   const resetUid=identity.current;
+   await cloud.resetPlanningContent(id,confirmation);
+   // RPC has committed. Clear stale planner rows even if the following refresh
+   // fails; retain identity/commerce and ignore any pre-reset load response.
+   if(resetUid===identity.current && owner.current===resetUid) {++generation.current;setSnapshot(current=>({...current,budgets:[],tasks:[],guests:[],savings:[]}));}
+  }),
   issueInvite: ()=>run(async (cloud,id)=>{const token=await cloud.issue(id);if(user && identity.current===user.id)setInviteToken(token);}),
   acceptInvite: token=>run(async cloud=>{activeId.current=await cloud.accept(token);setInviteToken('');},false),
  };

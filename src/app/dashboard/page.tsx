@@ -4,6 +4,9 @@ import React, { useState } from "react";
 import Link from "next/link";
 import "./dashboard.css";
 import { PlannerDialog } from "@/components/everrae/planner-dialog";
+import { FillingExample } from "@/components/everrae/filling-example";
+import { PlanningReset } from "@/components/everrae/planning-reset";
+import { SharedSavings } from "@/components/everrae/shared-savings";
 import { GuestCSVImport } from "@/components/everrae/guest-csv-import";
 import { serializeGuestCSV } from "@/lib/guest-csv";
 import { useWorkspace } from "@/context/WorkspaceContext";
@@ -26,7 +29,7 @@ export default function DashboardPage() {
     addGuest, updateGuest, deleteGuest, issueInvite, members, busy
   } = useWorkspace();
 
-  const [activeTab, setActiveTab] = useState<"overview" | "budget" | "tasks" | "guests" | "pairing">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "budget" | "tasks" | "guests" | "savings" | "pairing">("overview");
 
   // Modals state
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -87,6 +90,7 @@ export default function DashboardPage() {
           >
             Mulai Isi Data Pernikahan
           </a>
+          <FillingExample />
         </div>
       </div>
     );
@@ -135,15 +139,18 @@ export default function DashboardPage() {
       <aside className="planner-sidebar">
         <Link className="planner-brand" href="/">EverRae<span>WEDDING PLANNER</span></Link>
         <p className="planner-nav-caption">RUANG PERENCANAAN</p>
-        <nav aria-label="Navigasi workspace">{([['overview','Dashboard',Sparkles],['tasks','Timeline & Checklist',CheckSquare],['budget','Budget & Biaya',Wallet],['guests','Buku Tamu',Users],['pairing','Pengaturan & Pasangan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={18}/>{label}</button>)}</nav>
-        <div className="planner-sidebar-note"><ShieldCheck size={22}/><strong>Rencana milikmu.</strong><p>Data tersimpan di browser ini. Belum ada sinkronisasi cloud.</p><Link href="/">Kembali ke beranda →</Link></div>
+        <nav aria-label="Navigasi workspace">{([['overview','Dashboard',Sparkles],['tasks','Timeline & Checklist',CheckSquare],['budget','Budget & Biaya',Wallet],['guests','Buku Tamu',Users],['savings','Tabungan Bersama',Wallet],['pairing','Pengaturan & Pasangan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={18}/>{label}</button>)}</nav>
+        <div className="planner-sidebar-note"><ShieldCheck size={22}/><strong>Rencana milikmu.</strong><p>Data tersimpan di workspace cloud dengan akses khusus pasangan.</p><Link href="/">Kembali ke beranda →</Link></div>
       </aside>
       <div className="planner-body">
-        <header className="planner-topbar"><span className="planner-topbar-brand">EverRae</span><span className="planner-breadcrumb">Workspace / {activeTab === 'overview' ? 'Dashboard' : activeTab === 'pairing' ? 'Pengaturan' : activeTab === 'tasks' ? 'Timeline' : activeTab === 'guests' ? 'Buku Tamu' : 'Budget'}</span><button onClick={async () => { if (await issueInvite()) setShowInviteModal(true); }}><Share2 size={16}/><span>Tautan pasangan</span></button></header>
+        <header className="planner-topbar"><span className="planner-topbar-brand">EverRae</span><span className="planner-breadcrumb">Workspace / {activeTab === 'overview' ? 'Dashboard' : activeTab === 'pairing' ? 'Pengaturan' : activeTab === 'tasks' ? 'Timeline' : activeTab === 'guests' ? 'Buku Tamu' : activeTab === 'savings' ? 'Tabungan' : 'Budget'}</span><button onClick={async () => { if (await issueInvite()) setShowInviteModal(true); }}><Share2 size={16}/><span>Tautan pasangan</span></button></header>
         <main className="planner-main">
+          <FillingExample />
+          {(activeTab === 'overview' || activeTab === 'pairing') && <PlanningReset />}
           <section className="planner-heading"><div><span className="planner-eyebrow">RENCANA PERNIKAHANMU</span><h1>Halo, {workspace.title.replace(/^Pernikahan\s+/i, '')}.</h1><p>Satu langkah lebih dekat ke hari bahagia.</p></div><div className="planner-date"><Calendar size={20}/><div><strong>{formatDateID(workspace.wedding_date)}</strong><span>{daysRemaining > 0 ? `${daysRemaining} hari lagi` : daysRemaining === 0 ? 'Hari pernikahanmu' : 'Tanggal pernikahan telah berlalu'}</span></div></div></section>
           <div className="planner-mobile-progress"><div><span>Progres persiapan</span><strong>{taskProgressPercent}%</strong></div><progress max="100" value={taskProgressPercent}/></div>
-          <nav className="planner-shortcuts" aria-label="Pintasan workspace">{([['overview','Ringkasan',Sparkles],['tasks','Timeline',CheckSquare],['budget','Budget',Wallet],['guests','Tamu',Users],['pairing','Pengaturan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={19}/><span>{label}</span></button>)}</nav>
+          <nav className="planner-shortcuts" aria-label="Pintasan workspace">{([['overview','Ringkasan',Sparkles],['tasks','Timeline',CheckSquare],['budget','Budget',Wallet],['guests','Tamu',Users],['savings','Tabungan',Wallet],['pairing','Pengaturan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={19}/><span>{label}</span></button>)}</nav>
+          {activeTab === 'savings' && <SharedSavings />}
           {activeTab === 'overview' && <div className="planner-overview">
             <section className="planner-metrics" aria-label="Ringkasan rencana">
               <button onClick={() => setActiveTab('tasks')}><span>Timeline <CheckSquare size={17}/></span><strong>{totalCompletedTasks}<small> / {totalTasksCount}</small></strong><p>Tugas selesai · {taskProgressPercent}%</p><progress value={taskProgressPercent} max="100"/></button>
