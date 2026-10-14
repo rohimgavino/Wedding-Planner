@@ -10,4 +10,6 @@ const missing=buildInvitationMessage({guestName:'Tamu',coupleName:'Pasangan',wed
 const link=new URL(invitationLink('081234567890','Teks & salam\nLokasi'));assert.equal(link.searchParams.get('phone'),'6281234567890');assert.equal(link.searchParams.get('text'),'Teks & salam\nLokasi');
 assert.throws(()=>invitationLink('abc','x'));assert.throws(()=>invitationLink('081234567890',' '));
 assert.ok(!buildInvitationMessage({...p,mapsUrl:'javascript:alert(1)',style:'formal'}).includes('javascript:'));
+assert.equal(typeof m.exports.renderInvitationTemplate,'function');
+assert.equal(m.exports.renderInvitationTemplate('Halo {nama_tamu}, {pasangan} pada {tanggal}',{guestName:'Ayu',coupleName:'A & B',weddingDate:'Jumat'}),'Halo Ayu, A & B pada Jumat');
 console.log('PASS invitation styles, real details, missing values, safe Maps, phone and exact encoding');

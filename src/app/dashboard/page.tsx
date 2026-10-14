@@ -18,10 +18,11 @@ import {
   Search, ShieldCheck
 } from "lucide-react";
 import { formatRupiah, calculateDaysRemaining, formatDateID } from "@/lib/utils";
-import { WhatsAppInvitation } from "@/components/everrae/whatsapp-invitation";
+import { WhatsAppInvitation, WhatsAppTemplateProvider } from "@/components/everrae/whatsapp-invitation";
 import { TaskItem, GuestItem, BudgetItem } from "@/types";
 
-export default function DashboardPage() {
+export default function DashboardPage() { return <WhatsAppTemplateProvider><DashboardContent/></WhatsAppTemplateProvider>; }
+function DashboardContent() {
   const { user } = useAuth();
   const { 
     workspace, budgets, tasks, guests, inviteToken, isLoaded,
@@ -349,6 +350,7 @@ export default function DashboardPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <h3 className="font-bold text-slate-900 text-base">Manajemen Buku Tamu & WhatsApp RSVP</h3>
+                <section className="my-3 rounded-xl border bg-white p-4"><h4>Template WhatsApp utama untuk semua tamu</h4><p>Atur teks dan detail acara sekali. Tombol WA per tamu memakai template ini dan tetap dapat disesuaikan.</p><WhatsAppInvitation main phone="" guestName="{nama_tamu}" coupleName="{pasangan}" weddingDate="{tanggal}" /></section>
                 <p className="text-xs text-slate-500">Total Tamu: {totalGuestsCount} Undangan ({totalPaxCount} Pax) • {totalConfirmedPax} Pax Terkonfirmasi</p>
               </div>
               <div className="flex gap-2">

@@ -1,3 +1,7 @@
+export function renderInvitationTemplate(text: string, p: {guestName:string;coupleName:string;weddingDate:string}) {
+ const values: Record<string,string>={nama_tamu:p.guestName,pasangan:p.coupleName,tanggal:p.weddingDate};
+ return text.replace(/\{(nama_tamu|pasangan|tanggal)\}/g,(_,key:string)=>values[key]);
+}
 export type InvitationStyle = 'islami' | 'formal' | 'santai';
 export interface InvitationParams {
  guestName: string; coupleName: string; weddingDate: string; style?: InvitationStyle;
