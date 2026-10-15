@@ -1,4 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { validateBudget } from './budget-validation';
 import type { Workspace, BudgetItem, TaskItem, GuestItem, WorkspaceMember, SavingsContribution, Vendor, VendorInstallment, VendorPayment } from '@/types';
 export type Table = 'budgets' | 'tasks' | 'guests' | 'savings_contributions' | 'vendors' | 'vendor_installments' | 'vendor_payments';
 export interface WorkspaceParams { groom_name: string; bride_name: string; wedding_date: string; target_budget: number; target_savings: number }
@@ -13,6 +14,7 @@ const fields: Record<Table, string[]> = {
  guests: ['name','category','pax','phone','rsvp_status','notes'],
 };
 function clean(table: Table, item: Record<string, unknown>) {
+ if (table === 'budgets') validateBudget(item);
  if (['vendors','vendor_installments','vendor_payments'].includes(table)) {
   for (const key of ['contract_total','amount']) if (item[key]!==undefined && (!Number.isSafeInteger(item[key]) || Number(item[key])<(key==='contract_total'?0:1))) throw new Error('Jumlah Rupiah tidak valid.');
   for (const key of ['due_date','paid_on']) if (item[key]!==undefined) {

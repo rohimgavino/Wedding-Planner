@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import "./dashboard.css";
+import { BudgetEditor } from "@/components/everrae/budget-editor";
 import { PlannerDialog } from "@/components/everrae/planner-dialog";
 import { FillingExample } from "@/components/everrae/filling-example";
 import { PlanningReset } from "@/components/everrae/planning-reset";
@@ -36,6 +37,7 @@ function DashboardContent() {
   // Modals state
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
+  const [editingBudget, setEditingBudget] = useState<BudgetItem | null>(null);
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
   const [showAddGuestModal, setShowAddGuestModal] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
@@ -201,7 +203,8 @@ function DashboardContent() {
                       </span>
                       <h4 className="font-bold text-slate-900 text-sm mt-1">{item.title}</h4>
                     </div>
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex flex-wrap items-center justify-end gap-1.5">
+                      <button type="button" aria-label={`Edit ${item.title}`} onClick={() => setEditingBudget(item)} className="min-h-11 min-w-11 rounded-xl border px-3 text-xs font-semibold">Edit</button>
                       <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
                         item.payment_status === 'paid' ? 'bg-emerald-100 text-emerald-800' :
                         item.payment_status === 'dp' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'
@@ -680,6 +683,8 @@ function DashboardContent() {
                 </div>
               </PlannerDialog>
             )}
+
+      {editingBudget && <BudgetEditor key={editingBudget.id} item={editingBudget} onClose={() => setEditingBudget(null)}/> }
 
       {/* Modal: Add Task */}
       {showAddTaskModal && (

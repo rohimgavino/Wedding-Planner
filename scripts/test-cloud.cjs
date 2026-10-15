@@ -2,7 +2,8 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const ts = require('typescript');
 const Module = require('node:module');
-function load(path) { const m = new Module(path, module); m.paths = module.paths; m._compile(ts.transpileModule(fs.readFileSync(path,'utf8'), {compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,path); return m.exports; }
+require.extensions['.ts'] = (m,p) => m._compile(ts.transpileModule(fs.readFileSync(p,'utf8'), {compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,p);
+function load(path) { path = require('node:path').resolve(path); const m = new Module(path, module); m.filename = path; m.paths = Module._nodeModulePaths(require('node:path').dirname(path)); m._compile(ts.transpileModule(fs.readFileSync(path,'utf8'), {compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,path); return m.exports; }
 global.sessionStorage={getItem:()=>null,setItem:()=>{},removeItem:()=>{}};
 (async () => {
  const {safeNext, validConfig, completeCallback} = load('src/lib/auth-policy.ts');

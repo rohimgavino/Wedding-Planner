@@ -11,7 +11,7 @@ export function PlannerDialog({ children, onClose, title }: { children: React.Re
     const previous = document.activeElement as HTMLElement | null;
     const bodyOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const elements = () => Array.from(ref.current?.querySelectorAll<HTMLElement>('button:not(:disabled), input, select, a[href], [tabindex="0"]') || []);
+    const elements = () => Array.from(ref.current?.querySelectorAll<HTMLElement>('button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), a[href], [tabindex="0"]') || []);
     (elements()[0] || ref.current)?.focus();
     const key = (event: KeyboardEvent) => {
       if (event.key === "Escape") close.current();
