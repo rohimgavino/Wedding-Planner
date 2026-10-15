@@ -1,0 +1,14 @@
+import {PGlite} from '@electric-sql/pglite';import {readFileSync,readdirSync} from 'node:fs';import assert from 'node:assert/strict';
+const db=new PGlite();await db.exec(`CREATE ROLE anon;CREATE ROLE authenticated;CREATE SCHEMA auth;CREATE TABLE auth.users(id uuid PRIMARY KEY);CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $$ SELECT nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;GRANT USAGE ON SCHEMA public,auth TO anon,authenticated;`);
+for(const f of readdirSync('supabase/migrations').filter(f=>f.endsWith('.sql')).sort())await db.exec(readFileSync('supabase/migrations/'+f,'utf8'));
+await db.exec(`INSERT INTO auth.users VALUES ('00000000-0000-0000-0000-000000000001'),('00000000-0000-0000-0000-000000000002'),('00000000-0000-0000-0000-000000000003');SET ROLE authenticated;SET request.jwt.claim.sub='00000000-0000-0000-0000-000000000001';`);
+const ws=(await db.query("SELECT public.create_workspace('WA','2027-01-01') id")).rows[0].id;
+const v={style:'formal',time:'09.00',zone:'WIB',venue:'Venue',address:'Address',maps:'',edited:'Halo {nama_tamu}'};
+await db.query('UPDATE public.workspaces SET wa_template=$1 WHERE id=$2',[JSON.stringify(v),ws]);
+assert.deepEqual((await db.query('SELECT wa_template FROM public.workspaces WHERE id=$1',[ws])).rows[0].wa_template,v);
+await db.exec(`RESET ROLE;INSERT INTO public.workspace_members(workspace_id,user_id,role) VALUES ('${ws}','00000000-0000-0000-0000-000000000002','partner');SET ROLE authenticated;SET request.jwt.claim.sub='00000000-0000-0000-0000-000000000002';`);
+assert.deepEqual((await db.query('SELECT wa_template FROM public.workspaces WHERE id=$1',[ws])).rows[0].wa_template,v);
+await assert.rejects(db.query(`UPDATE public.workspaces SET wa_template='{"style":"bad"}' WHERE id=$1`,[ws]),/check constraint/);
+await db.exec(`SET request.jwt.claim.sub='00000000-0000-0000-0000-000000000003';`);assert.equal((await db.query('SELECT wa_template FROM public.workspaces WHERE id=$1',[ws])).rows.length,0);
+assert.equal((await db.query('UPDATE public.workspaces SET wa_template=$1 WHERE id=$2 RETURNING id',[JSON.stringify(v),ws])).rows.length,0);
+console.log('PASS actual SQL cloud template persistence, partner read, invalid shape rejected, outsider isolation');await db.close();

@@ -35,7 +35,10 @@ with sync_playwright() as p:
    assert payload=={'p_workspace_id':ws};samples.append(payload);sampled=True;data=ws
   elif '/rpc/has_developer_test_access' in r.url:data=False
   elif '/auth/v1/user' in r.url:data=user
-  elif '/rest/v1/workspaces' in r.url:data=[] if creation and not created else [workspace]
+  elif '/rest/v1/workspaces' in r.url:
+   if r.method=='PATCH':
+    assert set(payload)=={'wa_template'};workspace['wa_template']=payload['wa_template'];data={'id':ws}
+   else:data=[] if creation and not created else [workspace]
   elif '/rest/v1/workspace_members' in r.url:data=[{'workspace_id':ws,'user_id':uid,'role':'owner' if owner else 'partner','display_name':'Fixture'}]
   elif '/rest/v1/workspace_entitlements' in r.url:data=[{'workspace_id':ws,'feature':'core','expires_at':None,'revoked_at':None}]
   elif '/rest/v1/budgets' in r.url:data=[] if cleared or (empty_existing and not sampled) else [{'id':'budget','workspace_id':ws,'category':'Venue','title':'Fixture Venue','allocated_amount':100,'spent_amount':0,'payment_status':'unpaid'}]
@@ -49,7 +52,7 @@ with sync_playwright() as p:
  main=page.get_by_role('dialog');main.get_by_label('Gaya undangan',exact=True).select_option('islami')
  main.get_by_label('Waktu acara',exact=True).fill('10.00');main.get_by_label('Nama tempat',exact=True).fill('Tempat Bersama');main.get_by_label('Alamat lengkap',exact=True).fill('Alamat Bersama')
  main.get_by_label('Pratinjau teks undangan').fill('Halo {nama_tamu}, undangan {pasangan} pada {tanggal}. Acara 10.00 di Tempat Bersama, Alamat Bersama.')
- main.get_by_role('button',name='Simpan template utama',exact=True).click();main.get_by_text('Template utama tersimpan di browser ini.',exact=True).wait_for();main.get_by_role('button',name='Batal',exact=True).click()
+ main.get_by_role('button',name='Simpan template utama',exact=True).click();main.get_by_text('Template utama tersimpan di cloud workspace.',exact=True).wait_for();main.get_by_role('button',name='Batal',exact=True).click()
  page.reload();page.get_by_role('button',name='Tamu',exact=True).click()
  page.get_by_role('button',name='Susun undangan WhatsApp Tamu Uji').click()
  assert page.get_by_role('dialog').get_by_label('Waktu acara',exact=True).input_value()=='10.00'
@@ -68,6 +71,8 @@ with sync_playwright() as p:
  for width in [360,390,430,1280]:
   page.set_viewport_size({'width':width,'height':844});assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
  d.get_by_role('button',name='Batal',exact=True).click()
- assert not any(c[0]!='GET' and '/rpc/has_developer_test_access' not in c[1] for c in calls),calls
+ assert sum(c[0]=='PATCH' for c in calls)==1
+ assert not any(c[0]!='GET' and c[0]!='PATCH' and '/rpc/has_developer_test_access' not in c[1] for c in calls),calls
+ assert page.evaluate("Object.keys(localStorage).filter(k=>k.startsWith('everrae:wa-template:')).length")==0
  browser.close()
 server.shutdown();print('PASS WA templates auto text, missing detail guard, Maps, exact encoded editable draft, manual-edit confirmation, responsive360/390/430/1280 and ZERO mutations')

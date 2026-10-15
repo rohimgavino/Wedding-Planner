@@ -1,6 +1,7 @@
 export interface Workspace {
   id: string;
   title: string;
+  wa_template?: {style:"formal"|"islami"|"santai";time:string;zone:string;venue:string;address:string;maps:string;edited:string|null} | null;
   groom_name?: string | null;
   bride_name?: string | null;
   wedding_date: string;

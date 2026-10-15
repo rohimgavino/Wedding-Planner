@@ -34,6 +34,10 @@ export class CloudWorkspace {
   sessionStorage.removeItem(key);
   return id as string;
  }
+ async saveWhatsAppTemplate(workspaceId: string, template: NonNullable<Workspace['wa_template']>) {
+  await this.requireUser();
+  return checked(await this.db.from('workspaces').update({wa_template:template}).eq('id',workspaceId).select('id').single());
+ }
  async applyStarterTemplate(workspaceId: string) {
   await this.requireUser();
   return checked(await this.db.rpc('use_starter_template',{p_workspace_id:workspaceId}));
