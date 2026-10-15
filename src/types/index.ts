@@ -84,6 +84,15 @@ export interface GuestItem {
   notes?: string;
 }
 
+export interface Vendor {
+ id: string; workspace_id: string; name: string; contact_name: string; contact_phone: string; contract_notes: string; contract_total: number;
+}
+export interface VendorInstallment {
+ id: string; workspace_id: string; vendor_id: string; title: string; amount: number; due_date: string;
+}
+export interface VendorPayment {
+ id: string; workspace_id: string; installment_id: string; amount: number; paid_on: string; notes: string;
+}
 export interface SavingsContribution {
  id: string; workspace_id: string; contributor_id: string; amount: number; contributed_on: string; notes: string; created_at?: string;
 }

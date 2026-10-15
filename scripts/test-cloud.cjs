@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const ts = require('typescript');
 const Module = require('node:module');
 function load(path) { const m = new Module(path, module); m.paths = module.paths; m._compile(ts.transpileModule(fs.readFileSync(path,'utf8'), {compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,path); return m.exports; }
+global.sessionStorage={getItem:()=>null,setItem:()=>{},removeItem:()=>{}};
 (async () => {
  const {safeNext, validConfig, completeCallback} = load('src/lib/auth-policy.ts');
  assert.equal(safeNext('//evil.test'), '/dashboard');
@@ -38,10 +39,17 @@ function load(path) { const m = new Module(path, module); m.paths = module.paths
  assert(calls.some(c=>c[1]==='eq'&&c[2]==='workspace_id'&&c[3]==='ws'));
  calls.length=0;await cloud.remove('tasks','ws','t');assert(calls.some(c=>c[1]==='eq'&&c[2]==='workspace_id'));
  calls.length=0;await cloud.create({groom_name:'A',bride_name:'B',wedding_date:'2027-01-01',target_budget:10,target_savings:0});
- assert.deepEqual(calls.find(c=>c[0]==='rpc'),['rpc','create_workspace',{p_title:'Pernikahan A & B',p_wedding_date:'2027-01-01'}]);
+ const creation=calls.find(c=>c[0]==='rpc');assert.equal(creation[1],'create_starter_workspace');assert.deepEqual({...creation[2],p_request_id:'request'},{p_request_id:'request',p_groom_name:'A',p_bride_name:'B',p_wedding_date:'2027-01-01',p_target_budget:10,p_target_savings:0});
  assert(!calls.some(c=>['workspace_members','invitations'].includes(c[0])));
  calls.length=0;await cloud.insertGuests('ws',[{name:'A',workspace_id:'evil'},{name:'B'}]);
  assert.deepEqual(calls.find(c=>c[1]==='insert')[2],[{name:'A',workspace_id:'ws'},{name:'B',workspace_id:'ws'}]);
+ for(const [table,item] of [['vendors',{name:'Venue',contract_total:100}],['vendor_installments',{vendor_id:'v',title:'DP',amount:100,due_date:'2026-10-15'}],['vendor_payments',{installment_id:'i',amount:30,paid_on:'2026-10-15',notes:''}]]) {
+ calls.length=0;await cloud.insert(table,'ws',{...item,id:'evil',workspace_id:'evil',spent_amount:999});
+ assert.deepEqual(calls.find(c=>c[1]==='insert')[2],{...item,workspace_id:'ws'});
+ calls.length=0;await cloud.update(table,'ws','x',{...item,id:'evil',workspace_id:'evil'});
+ assert.deepEqual(calls.find(c=>c[1]==='update')[2],item);assert(calls.some(c=>c[1]==='eq'&&c[2]==='workspace_id'&&c[3]==='ws'));
+}
+ for(const item of [{amount:-1},{amount:1.5},{amount:Number.MAX_SAFE_INTEGER+1},{paid_on:'2026-02-30'}])await assert.rejects(()=>cloud.insert('vendor_payments','ws',item),/valid/);
  calls.length=0;await cloud.issue('ws');assert.deepEqual(calls[0],['rpc','create_partner_invitation',{p_workspace_id:'ws'}]);
  calls.length=0;await cloud.accept('a'.repeat(64));assert.deepEqual(calls[0],['rpc','accept_partner_invitation',{p_token:'a'.repeat(64)}]);
  await assert.rejects(()=>cloud.accept('WEDD-VALID'),/Undangan/);

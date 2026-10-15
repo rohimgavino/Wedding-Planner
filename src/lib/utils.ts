@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatRupiah(amount: number): string {
+export function formatRupiah(amount: number | bigint): string {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",

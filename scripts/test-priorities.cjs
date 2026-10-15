@@ -1,0 +1,16 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),ts=require('typescript'),Module=require('node:module');
+const m=new Module('vendor-planning');m._compile(ts.transpileModule(fs.readFileSync('src/lib/vendor-planning.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,'vendor-planning');
+const {weeklyPriorities,installmentPaid,vendorTotals,indonesiaDate}=m.exports;
+assert.equal(indonesiaDate(new Date('2026-10-14T18:00:00Z')),'2026-10-15');
+const tasks=[{id:'old',title:'old',due_date:'2026-10-01',is_completed:false},{id:'done',due_date:'2026-10-01',is_completed:true},{id:'none',phase:'Hari H'}, {id:'edge',title:'edge',due_date:'2026-10-22'}, {id:'late',due_date:'2026-10-23'}];
+const installments=[{id:'i',vendor_id:'v',title:'DP',amount:100,due_date:'2026-10-14'},{id:'paid',amount:10,due_date:'2026-10-01'}],payments=[{installment_id:'i',amount:30},{installment_id:'i',amount:20},{installment_id:'paid',amount:10}];
+assert.equal(installmentPaid('i',payments),50);
+assert.deepEqual(weeklyPriorities(tasks,installments,payments,'2026-10-15').map(x=>x.id),['old','i','edge']);
+assert.equal(weeklyPriorities(Array.from({length:8},(_,i)=>({id:String(i),due_date:'2026-10-15'})),[],[],'2026-10-15').length,5);
+assert.deepEqual(vendorTotals({id:'v',contract_total:200},installments,payments),{contract:200,scheduled:100,paid:50,remaining:150});
+assert.deepEqual(weeklyPriorities([],[],[],'2026-10-15'),[]);
+const max=Number.MAX_SAFE_INTEGER;
+assert.equal(installmentPaid('huge',[{installment_id:'huge',amount:max},{installment_id:'huge',amount:max},{installment_id:'huge',amount:1}]).toString(),'18014398509481983');
+assert.deepEqual(weeklyPriorities([{id:'bad',due_date:42},{id:'impossible',due_date:'2026-02-30'},{id:'empty',due_date:'nonsense'}],[],[],'2026-10-15'),[]);
+assert.deepEqual(weeklyPriorities([],[],[],'invalid'),[]);
+console.log('PASS actual due dates, partial payments, overdue/date ordering, inclusive +7 boundary, completed/undated exclusion, max5, WIB, separate totals');

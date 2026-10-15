@@ -6,6 +6,7 @@ import "./dashboard.css";
 import { PlannerDialog } from "@/components/everrae/planner-dialog";
 import { FillingExample } from "@/components/everrae/filling-example";
 import { PlanningReset } from "@/components/everrae/planning-reset";
+import {VendorPlanning,WeeklyPriorities} from '@/components/everrae/vendor-planning';
 import { SharedSavings } from "@/components/everrae/shared-savings";
 import { GuestCSVImport } from "@/components/everrae/guest-csv-import";
 import { serializeGuestCSV } from "@/lib/guest-csv";
@@ -30,7 +31,7 @@ function DashboardContent() {
     addGuest, updateGuest, deleteGuest, issueInvite, members, busy
   } = useWorkspace();
 
-  const [activeTab, setActiveTab] = useState<"overview" | "budget" | "tasks" | "guests" | "savings" | "pairing">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "budget" | "tasks" | "guests" | "savings" | "vendors" | "pairing">("overview");
 
   // Modals state
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -46,6 +47,7 @@ function DashboardContent() {
   const [newBudgetSpent, setNewBudgetSpent] = useState(0);
   const [newBudgetStatus, setNewBudgetStatus] = useState<BudgetItem["payment_status"]>("unpaid");
 
+  const [newTaskDue, setNewTaskDue] = useState("");
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskPhase, setNewTaskPhase] = useState<TaskItem["phase"]>("H-3 Bulan");
   const [newTaskPic, setNewTaskPic] = useState<TaskItem["pic"]>("both");
@@ -150,6 +152,9 @@ function DashboardContent() {
           <section className="planner-heading"><div><span className="planner-eyebrow">RENCANA PERNIKAHANMU</span><h1>Halo, {workspace.title.replace(/^Pernikahan\s+/i, '')}.</h1><p>Satu langkah lebih dekat ke hari bahagia.</p></div><div className="planner-date"><Calendar size={20}/><div><strong>{formatDateID(workspace.wedding_date)}</strong><span>{daysRemaining > 0 ? `${daysRemaining} hari lagi` : daysRemaining === 0 ? 'Hari pernikahanmu' : 'Tanggal pernikahan telah berlalu'}</span></div></div></section>
           <div className="planner-mobile-progress"><div><span>Progres persiapan</span><strong>{taskProgressPercent}%</strong></div><progress max="100" value={taskProgressPercent}/></div>
           <nav className="planner-shortcuts" aria-label="Pintasan workspace">{([['overview','Ringkasan',Sparkles],['tasks','Timeline',CheckSquare],['budget','Budget',Wallet],['guests','Tamu',Users],['savings','Tabungan',Wallet],['pairing','Pengaturan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={19}/><span>{label}</span></button>)}</nav>
+          <button type="button" className="min-h-11 my-3 rounded-xl border bg-white p-3" onClick={()=>setActiveTab('vendors')}>Vendor &amp; Pembayaran</button>
+          {activeTab==='vendors' && <VendorPlanning/>}
+          {activeTab==='overview' && <WeeklyPriorities navigate={setActiveTab}/>}
           {activeTab === 'savings' && <SharedSavings />}
           {activeTab === 'overview' && <div className="planner-overview">
             <section className="planner-metrics" aria-label="Ringkasan rencana">
@@ -687,13 +692,15 @@ function DashboardContent() {
                       title: newTaskTitle,
                       phase: newTaskPhase,
                       pic: newTaskPic,
+                      due_date: newTaskDue || undefined,
                     });
                     if (!ok) return;
                     setShowAddTaskModal(false);
-                    setNewTaskTitle("");
+                    setNewTaskTitle("");setNewTaskDue("");
                   }}>
                     <div className="space-y-3 text-xs font-semibold text-slate-700">
                       <div>
+                        <label className="block mb-3">Tenggat tugas (opsional, WIB)<input type="date" min="1900-01-01" max="9999-12-31" className="block w-full p-2.5 rounded-xl border" value={newTaskDue} onChange={e=>setNewTaskDue(e.target.value)}/></label>
                         <label htmlFor="planner-field-5" className="block mb-1">Nama Tugas</label>
                                                 <input id="planner-field-5"
                           type="text"

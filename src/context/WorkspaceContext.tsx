@@ -1,7 +1,7 @@
 "use client";
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import type { BudgetItem, TaskItem, GuestItem, SavingsContribution } from '@/types';
-import { CloudWorkspace, CloudSnapshot, WorkspaceParams } from '@/lib/cloud-workspace';
+import { CloudWorkspace, CloudSnapshot, WorkspaceParams, Table } from '@/lib/cloud-workspace';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/context/auth-context';
 import { STORAGE_KEY, LEGACY_KEY } from '@/lib/workspace-storage';
@@ -27,9 +27,11 @@ interface WorkspaceContextType extends CloudSnapshot {
  applyStarterTemplate: () => Promise<boolean>;
  resetPlanningContent: (confirmation: string) => Promise<boolean>;
  saveWhatsAppTemplate: (template: NonNullable<NonNullable<CloudSnapshot["workspace"]>["wa_template"]>) => Promise<boolean>;
+ saveVendorRecord: (table: 'vendors'|'vendor_installments'|'vendor_payments', item: Record<string,unknown>, id?: string) => Promise<boolean>;
+ deleteVendorRecord: (table: 'vendors'|'vendor_installments'|'vendor_payments', id: string) => Promise<boolean>;
  reload: () => Promise<boolean>;
 }
-const empty = (): CloudSnapshot => ({workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[]});
+const empty = (): CloudSnapshot => ({workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],vendors:[],installments:[],payments:[]});
 const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
 export function WorkspaceProvider({children}: {children: React.ReactNode}) {
  const {user,ready,configured} = useAuth();
@@ -73,6 +75,8 @@ export function WorkspaceProvider({children}: {children: React.ReactNode}) {
  const value: WorkspaceContextType = {
   ...visible,inviteToken: user && owner.current===user.id ? inviteToken : '',isLoaded:ready && loaded,error,busy,reload,
   createWorkspace: params=>run(async cloud=>{activeId.current=await cloud.create(params);},false),
+  saveVendorRecord: (table,item,key)=>run((cloud,id)=>key?cloud.update(table as Table,id,key,item):cloud.insert(table as Table,id,item)),
+  deleteVendorRecord: (table,key)=>run((cloud,id)=>cloud.remove(table,id,key)),
   addBudget: item=>run((cloud,id)=>cloud.insert('budgets',id,{...item})),
   updateBudget: (key,item)=>run((cloud,id)=>cloud.update('budgets',id,key,{...item})),
   deleteBudget: key=>run((cloud,id)=>cloud.remove('budgets',id,key)),
@@ -93,7 +97,7 @@ export function WorkspaceProvider({children}: {children: React.ReactNode}) {
    await cloud.resetPlanningContent(id,confirmation);
    // RPC has committed. Clear stale planner rows even if the following refresh
    // fails; retain identity/commerce and ignore any pre-reset load response.
-   if(resetUid===identity.current && owner.current===resetUid) {++generation.current;setSnapshot(current=>({...current,budgets:[],tasks:[],guests:[],savings:[]}));}
+   if(resetUid===identity.current && owner.current===resetUid) {++generation.current;setSnapshot(current=>({...current,budgets:[],tasks:[],guests:[],savings:[],vendors:[],installments:[],payments:[]}));}
   }),
   issueInvite: ()=>run(async (cloud,id)=>{const token=await cloud.issue(id);if(user && identity.current===user.id)setInviteToken(token);}),
   acceptInvite: token=>run(async cloud=>{activeId.current=await cloud.accept(token);setInviteToken('');},false),
