@@ -10,6 +10,7 @@ export function AuthProvider({children}: {children: ReactNode}) {
  const [error,setError] = useState('');
  const configured = isSupabaseConfigured();
  const version = useRef(0);
+ const loggingOut = useRef(false);
  const refresh = async () => {
   const epoch = ++version.current;
   if (!configured) {setReady(true);return;}
@@ -27,7 +28,7 @@ export function AuthProvider({children}: {children: ReactNode}) {
   // Callback explicitly exchanges PKCE code, then validates identity.
   if (window.location.pathname !== '/auth/callback' && window.location.pathname !== '/auth/callback/') void refresh();
   const {data:{subscription}} = client.auth.onAuthStateChange((event)=>{
-   if (event === 'INITIAL_SESSION') return;
+   if (event === 'INITIAL_SESSION' || loggingOut.current) return;
    ++version.current;setUser(null);setReady(false);
    if (event === 'SIGNED_OUT') {setReady(true);return;}
    // Do not call auth methods inside Supabase's locked event callback.
@@ -39,9 +40,24 @@ export function AuthProvider({children}: {children: ReactNode}) {
  // eslint-disable-next-line react-hooks/exhaustive-deps
  },[configured]);
  const logout = async () => {
-  ++version.current;setUser(null);setReady(true);
-  try { const {error} = await createClient().auth.signOut({scope:'local'}); if(error)throw error; window.location.replace('/login'); }
-  catch {setError('Keluar gagal. Coba lagi sebelum menggunakan perangkat bersama.');}
+  if (loggingOut.current) return;
+  const client = createClient();
+  const {data:{session}} = await client.auth.getSession();
+  loggingOut.current = true;
+  try {
+   const {error:logoutError} = await client.auth.signOut({scope:'local'});
+   if(logoutError) {
+    // Current SDK removes its local session even when revocation fails.
+    // Restore through the SDK (which validates the token), never storage writes.
+    if(session) {
+     const {error:restoreError} = await client.auth.setSession({access_token:session.access_token,refresh_token:session.refresh_token});
+     if(restoreError) {setUser(null);setReady(true);}
+    }
+    throw logoutError;
+   }
+   ++version.current;setUser(null);setReady(true);setError('');
+   window.location.replace('/login');
+  } finally { loggingOut.current = false; }
  };
  return <AuthContext.Provider value={{user,ready,configured,error,logout,refresh}}>{children}</AuthContext.Provider>;
 }
