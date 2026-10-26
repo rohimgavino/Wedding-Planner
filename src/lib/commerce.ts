@@ -20,15 +20,16 @@ export class Commerce {
  async setAdmin(id:string,role:'developer'|'operator'|null,reason:string) {if(!reason.trim())throw new Error('Alasan wajib.');const {data,error}=await this.client.rpc('set_site_admin',{p_user_id:id,p_role:role,p_reason:reason.trim()});return checked(data,error);}
  async testAccess(workspace:string,days:string,reason:string) {if(!reason.trim())throw new Error('Alasan wajib.');const {data,error}=await this.client.rpc('grant_developer_test_access',{p_workspace_id:workspace,p_days:integer(days,30),p_reason:reason.trim()});return checked(data,error);}
  async revokeTestAccess(workspace:string,reason:string) {if(!reason.trim())throw new Error('Alasan wajib.');const {data,error}=await this.client.rpc('revoke_developer_test_access',{p_workspace_id:workspace,p_reason:reason.trim()});return checked(data,error);}
+ async overview(offset=0): Promise<{workspace_id:string;member_count:number;access_status:string;expires_at:string|null}[]> {const {data,error}=await this.client.rpc('admin_workspace_overview',{p_limit:50,p_offset:offset});return checked(data || [],error);}
  async admin() {const {data,error}=await this.client.rpc('is_site_admin');return checked(data,error)===true;}
  async settings(): Promise<SiteSettings> {const {data,error}=await this.client.from('site_settings').select('support_email,price_idr,duration_days,lynk_url,sales_enabled').single();const result=checked(data,error);if(!result)throw new Error('Pengaturan belum tersedia.');return result;}
  async purchases(workspace?: string): Promise<PurchaseRequest[]> {let q=this.client.from('purchase_requests').select('*').order('created_at',{ascending:false});if(workspace)q=q.eq('workspace_id',workspace);const {data,error}=await q;return checked(data || [],error);}
  async audit(): Promise<AuditEntry[]> {const {data,error}=await this.client.from('admin_audit').select('*').order('created_at',{ascending:false}).limit(100);return checked(data || [],error);}
- async save(email: string,price: string,days: string,url: string,enabled: boolean) {const args=parsePackage(email,price,days,url,enabled);const {data,error}=await this.client.rpc('save_site_settings',args);return checked(data,error);}
+ async save(email: string,price: string,days: string,url: string,enabled: boolean) {if(enabled)throw new Error('DOKU belum terintegrasi; penjualan tetap ditutup.');const args=parsePackage(email,price,days,url,enabled);const {data,error}=await this.client.rpc('save_site_settings',args);return checked(data,error);}
  async request(workspace: string): Promise<string> {const {data,error}=await this.client.rpc('request_core_purchase',{ws_id:workspace});return checked(data,error);}
  async verify(id: string,reference: string,amount: string,confirmed: boolean,note: string) {
- reference=reference.trim().toUpperCase();note=note.trim();if(!confirmed || !/^[A-Z0-9][A-Z0-9._:/-]{0,254}$/.test(reference) || !note || note.length>500)throw new Error('Konfirmasi transaksi lunas, produk dan workspace dari dashboard Lynk.id; isi referensi dan catatan.');
- const {data,error}=await this.client.rpc('verify_core_purchase',{request_id:id,reference,paid_amount:integer(amount,Number.MAX_SAFE_INTEGER),dashboard_confirmed:confirmed,note});return checked(data,error);
+ void [id,reference,amount,confirmed,note];
+ throw new Error('DOKU belum terintegrasi; verifikasi pembayaran tidak tersedia.');
  }
  async reject(id: string,note: string) {if(!note.trim() || note.trim().length>500)throw new Error('Isi alasan penolakan maksimal 500 karakter.');const {data,error}=await this.client.rpc('reject_core_purchase',{request_id:id,note:note.trim()});return checked(data,error);}
 }

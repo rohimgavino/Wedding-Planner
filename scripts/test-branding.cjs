@@ -1,0 +1,9 @@
+const assert=require('node:assert/strict');const fs=require('node:fs');const path=require('node:path');
+let checks=0;function check(ok,label){assert(ok,label);checks++;}
+const manifest=JSON.parse(fs.readFileSync('public/manifest.json','utf8'));check(manifest.short_name==='Pocket Planner','PWA name');check(manifest.name==='Pocket Planner — Wedding Planner','full PWA name');
+for(const file of ['src/app/layout.tsx','src/app/admin/layout.tsx','src/app/legal/page.tsx','src/components/everrae/hero.tsx','src/components/admin-shell.tsx']){const s=fs.readFileSync(file,'utf8');check(s.includes('Pocket Planner')||s.includes('BrandLogo'),'brand '+file);check(!/EverRae|PocketWedding|EVERRAE|POCKETWEDDING/.test(s),'no old visible brand '+file);}
+check(fs.readFileSync('src/lib/workspace-storage.ts','utf8').includes("'everrae_workspace_v1'"),'retain local data key');check(JSON.parse(fs.readFileSync('wrangler.jsonc','utf8')).name==='everrae','retain technical Worker');
+const sw=fs.readFileSync('public/sw.js','utf8');check(sw.includes("'everrae-public-v3'"),'invalidate prior cached manifest/icons');check(sw.includes("url.pathname === '/' && !url.search"),'no caching private navigation');check(sw.includes('Pocket Planner is offline'),'offline brand');
+for(const asset of ['public/images/pocket-planner-source.jpg','public/images/pocket-planner-logo.png','public/icons/icon-192.png','public/icons/icon-512.png','public/favicon.ico','public/apple-touch-icon.png'])check(fs.statSync(asset).size>100,'asset '+asset);
+for(const file of ['src/components/everrae/navigation.tsx','src/app/login/page.tsx','src/components/admin-shell.tsx','src/app/dashboard/page.tsx'])check(fs.readFileSync(file,'utf8').includes('<BrandLogo'),'supplied logo '+file);
+console.log(`PASS ${checks} canonical branding regression checks`);

@@ -12,7 +12,7 @@ export function SharedSavings() {
  const reset=()=>{setEditing('');setContributor('');setAmount('');setDate('');setNotes('');};
  return <section className="bg-white rounded-3xl p-5 border border-rose-100 space-y-4" aria-label="Tabungan bersama">
   <h2 className="font-serif text-xl font-bold">Tabungan Bersama</h2>
-  <p className="text-sm text-slate-600">Catatan kontribusi berdua, bukan rekening atau penitipan dana. EverRae tidak menerima, menyimpan, atau memindahkan uang tabungan.</p>
+  <p className="text-sm text-slate-600">Catatan kontribusi berdua, bukan rekening atau penitipan dana. Pocket Planner tidak menerima, menyimpan, atau memindahkan uang tabungan.</p>
   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
    <p>Total tercatat <strong className="block">{formatRupiah(summary.total)}</strong></p>
    <p>Target <strong className="block">{formatRupiah(Number(workspace.target_savings))}</strong></p>

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { FillingExample } from "@/components/everrae/filling-example";
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand-logo";
 import { useRouter } from "next/navigation";
 import { useWorkspace } from "@/context/WorkspaceContext";
 import { Heart, Calendar, Wallet, ArrowRight, ArrowLeft, Sparkles, CheckCircle2 } from "lucide-react";
@@ -44,7 +45,7 @@ export default function OnboardingPage() {
               💍
             </div>
             <span className="font-serif font-bold text-slate-900 tracking-tight text-xl">
-              EverRae
+              Pocket Planner
             </span>
           </Link>
           <h1 className="text-2xl font-serif font-bold text-slate-900 leading-tight">

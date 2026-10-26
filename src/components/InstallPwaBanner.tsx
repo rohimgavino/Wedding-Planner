@@ -74,7 +74,7 @@ export function InstallPwaBanner() {
             💍
           </div>
           <div>
-            <h4 className="text-xs font-bold text-slate-900">Pasang Aplikasi di HP</h4>
+            <h4 className="text-xs font-bold text-slate-900">Pasang Pocket Planner</h4>
             <p className="text-[11px] text-slate-500">Buka cepat seperti aplikasi native tanpa repot.</p>
           </div>
         </div>
@@ -105,7 +105,7 @@ export function InstallPwaBanner() {
             <Share className="w-4 h-4" />
           </div>
           <div>
-            <h4 className="text-xs font-bold text-slate-900">Pasang di iPhone / iPad</h4>
+            <h4 className="text-xs font-bold text-slate-900">Pasang Pocket Planner di iPhone / iPad</h4>
             <p className="text-[11px] text-slate-600 leading-tight mt-0.5">
               Ketuk ikon <span className="font-semibold text-rose-600">Share [kotak panah]</span> di bawah browser, lalu pilih <span className="font-semibold text-slate-900">&quot;Add to Home Screen&quot;</span>.
             </p>

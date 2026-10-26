@@ -1,4 +1,11 @@
-# EverRae — canonical Wedding Planner
+# PocketWedding — canonical Wedding Planner
+
+## Satu proyek, satu sumber kerja
+- Nama produk yang dipilih: **PocketWedding**; domain yang dipilih: **pocketwedding.id**. Ini keputusan identitas, bukan bukti DNS/deployment/domain sudah aktif.
+- Seluruh pekerjaan permanen dilakukan di `D:/wedding-planner`. `D:/everrae` adalah salinan desain legacy, bukan proyek kedua yang dikembangkan. Jangan merge, hapus atau pindahkan kode/data/credentials dari sana tanpa perbandingan dan persetujuan.
+- Ada ingatan dua UI/UX berbeda; keputusan desain menunggu perbandingan read-only. Tampilan publik dan storage key EverRae sengaja dipertahankan untuk menjaga desain/data. Tidak ada rebrand visual massal.
+- Admin lokal `/admin`: lihat `docs/POCKETWEDDING-ADMIN-IMPLEMENTATION.md`. Paket yang disepakati Rp250.000 / 1 tahun / satu workspace pasangan. DOKU dipilih untuk website langsung, **belum terintegrasi**; bukan Lynk.id. Dokumen pembayaran Lynk di bawah adalah riwayat rancangan, bukan kontrak pembayaran saat ini.
+- Tidak ada provisioning admin, migration hosted, deployment atau DNS yang dijalankan pada tahap admin lokal ini.
 
 Canonical repository: `D:/wedding-planner`, remote `rohimgavino/Wedding-Planner`, branch `main`. `D:/everrae` remains the design copy; future work belongs here. Public Pages project: `wedding-planner`, https://wedding-planner-a8z.pages.dev. Publish only `out`, never source, credentials or archives.
 
@@ -19,7 +26,7 @@ Security audit after remediation: production dependencies 0; all dependencies 7 
 
 Routes: `/`, `/demo` (memory-only fictional data), `/legal`, inherited local `/login`, `/onboarding`, `/dashboard`, `/invite`.
 See docs/DESIGN-AUDIT.md, docs/BACKEND-NEXT-STAGE.md, docs/IMAGE-ATTRIBUTION.md and docs/TEST-RESULTS.json.
-Vendor management, invitations, cloud collaboration, production auth and subscriptions are planned, not active. Lynk.id integration is planned, with no active payments or purchase prices. Deployment publishes only the static export.
+Status publik historis (bukan bukti fitur hosted terkini): vendor management, invitations, cloud collaboration, production auth dan subscriptions belum diverifikasi aktif. Keputusan pembayaran terbaru: DOKU langsung di website, belum terintegrasi; paket Rp250.000 / 1 tahun / satu workspace pasangan. Lynk.id hanya schema/rancangan legacy yang belum dimigrasikan. Deployment tetap memerlukan persetujuan terpisah dan hanya static export non-fixture.
 
 ## Historical baseline documentation (not proof of active cloud features)
 

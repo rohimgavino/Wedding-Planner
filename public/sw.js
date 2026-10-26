@@ -1,6 +1,6 @@
 // Never keep stale HTML pointing to deleted Next.js build hashes.
-const CACHE_NAME = 'everrae-public-v2';
-const PUBLIC_ASSETS = ['/manifest.json', '/favicon.ico', '/icons/icon-192.png', '/icons/icon-512.png', '/apple-touch-icon.png'];
+const CACHE_NAME = 'everrae-public-v4';
+const PUBLIC_ASSETS = ['/manifest.json', '/favicon.ico', '/icons/icon-192.png', '/icons/icon-512.png', '/apple-touch-icon.png', '/icons/icon-maskable-512.png'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(PUBLIC_ASSETS)).then(() => self.skipWaiting()));
@@ -30,7 +30,7 @@ self.addEventListener('fetch', (event) => {
         return response;
       } catch {
         const cached = publicNavigation ? await cache.match(request) : undefined;
-        return cached || new Response('EverRae is offline. Reconnect to open this page.', {
+        return cached || new Response('Pocket Planner is offline. Reconnect to open this page.', {
           status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' }
         });
       }

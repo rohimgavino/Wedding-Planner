@@ -10,13 +10,3 @@
 .er-footer-top a:not(.er-button){min-height:44px;align-content:center}
 @media(max-width:760px){.er-hero-facts span{font-size:10px}.er-hero-note{font-size:10px;max-width:330px}.er-eyebrow{font-size:10px}.er-preview-muted{font-size:10px!important}.er-preview-task small{font-size:10px}.er-showcase-note{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.everrae *{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
-
-
-/* Pocket Planner logo styles */
-.pp-logo { display: inline-flex !important; align-items: center; justify-content: center; background: transparent; border-radius: 0; padding: 4px 9px; line-height: 1; vertical-align: middle; flex-shrink: 0; max-width: 100%; }
-.pp-logo img { display: block !important; width: 140px !important; height: auto !important; object-fit: contain; }
-.pp-logo-default { display: none !important; }
-.pp-logo-light { display: inline-flex !important; }
-@media (max-width: 760px) {
-  .pp-logo img { width: 110px !important; }
-}

@@ -1,0 +1,24 @@
+import {PGlite} from '@electric-sql/pglite';
+import {readFileSync} from 'node:fs';
+import assert from 'node:assert/strict';
+const db=new PGlite();
+await db.exec(`CREATE ROLE anon;CREATE ROLE authenticated;CREATE SCHEMA auth;CREATE TABLE auth.users(id uuid PRIMARY KEY);CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $$SELECT nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;GRANT USAGE ON SCHEMA public,auth TO anon,authenticated;GRANT EXECUTE ON FUNCTION auth.uid() TO anon,authenticated;INSERT INTO auth.users SELECT ('00000000-0000-0000-0000-00000000000'||n)::uuid FROM generate_series(1,3)n;`);
+for(const p of ['202610120001_secure_foundation.sql','202610140001_workspace_entitlements_savings.sql','202610140002_admin_manual_purchases.sql','202610140004_developer_operator_roles.sql'])await db.exec(readFileSync('supabase/migrations/'+p,'utf8'));
+const user=async n=>db.exec(`RESET ROLE;SET ROLE authenticated;SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-00000000000${n}',false)`);
+await user(1);const ws=(await db.query("select public.create_workspace('Private couple','2027-01-01') id")).rows[0].id;
+await db.exec("RESET ROLE;INSERT INTO public.site_admins(user_id,role)VALUES('00000000-0000-0000-0000-000000000002','operator')");
+try{await db.exec(readFileSync('supabase/migrations/202610210001_admin_workspace_overview.sql','utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}
+await user(2);let rows=(await db.query('select * from public.admin_workspace_overview(50,0)')).rows;
+assert.equal(rows.length,1);assert.equal(rows[0].workspace_id,ws);assert.equal(rows[0].member_count,1);assert.equal(rows[0].access_status,'unentitled');assert.equal('title' in rows[0],false);
+assert.equal((await db.query('select * from public.workspaces')).rows.length,0,'admin does not become planner member');
+await assert.rejects(db.query('select * from public.admin_workspace_overview(501,0)'),/invalid pagination/);
+await user(1);await assert.rejects(db.query('select * from public.admin_workspace_overview(50,0)'),/admin required/);
+await db.exec('RESET ROLE;SET ROLE anon');await assert.rejects(db.query('select * from public.admin_workspace_overview(50,0)'),/permission denied/);
+await db.exec('RESET ROLE');await db.query("insert into public.workspace_entitlements(workspace_id,feature,payment_reference,verified_by,expires_at)values($1,'core','HISTORICAL','local test',now()-interval '1 day')",[ws]);
+await user(2);assert.equal((await db.query('select * from public.admin_workspace_overview(50,0)')).rows[0].access_status,'expired');
+await db.exec('RESET ROLE');await db.query("update public.workspace_entitlements set expires_at=now()+interval '1 day',revoked_at=now() where workspace_id=$1",[ws]);
+await user(2);assert.equal((await db.query('select * from public.admin_workspace_overview(50,0)')).rows[0].access_status,'revoked');
+await db.exec('RESET ROLE');await db.query('update public.workspace_entitlements set revoked_at=null where workspace_id=$1',[ws]);
+await user(2);assert.equal((await db.query('select * from public.admin_workspace_overview(50,0)')).rows[0].access_status,'active');
+await db.exec("RESET ROLE;DELETE FROM public.site_admins WHERE role='operator'");await user(2);await assert.rejects(db.query('select * from public.admin_workspace_overview(50,0)'),/admin required/);
+await db.close();console.log('PASS local SQL overview operator/read-only/no planner data, ordinary+anon+revoked denial, bounded pagination, expired/revoked/active historical entitlement');

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand-logo";
 import "./dashboard.css";
 import { PlannerDialog } from "@/components/everrae/planner-dialog";
 import { FillingExample } from "@/components/everrae/filling-example";
@@ -76,7 +77,7 @@ export default function DashboardPage() {
       <div className="min-h-screen flex flex-col justify-center items-center planner-empty bg-[#FAF7F5] px-4 py-12 text-center">
         <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-rose-100 shadow-xl shadow-rose-900/10">
           <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-rose-500 via-rose-400 to-amber-300 text-white flex items-center justify-center font-bold text-2xl mx-auto mb-4 shadow-lg shadow-rose-200">
-            EverRae
+            Pocket Planner
           </div>
           <span className="text-xs uppercase tracking-wider font-bold text-rose-500">Ruang Perencanaan Masih Kosong</span>
           <h2 className="text-2xl font-serif font-bold text-slate-900 mt-1 mb-2">
@@ -142,13 +143,13 @@ export default function DashboardPage() {
   return (
     <div className="planner-shell">
       <aside className="planner-sidebar">
-        <Link className="planner-brand" href="/">EverRae<span>WEDDING PLANNER</span></Link>
+        <Link className="planner-brand" href="/"><BrandLogo /><span>WEDDING PLANNER</span></Link>
         <p className="planner-nav-caption">RUANG PERENCANAAN</p>
         <nav aria-label="Navigasi workspace">{([['overview','Dashboard',Sparkles],['tasks','Timeline & Checklist',CheckSquare],['budget','Budget & Biaya',Wallet],['guests','Buku Tamu',Users],['savings','Tabungan Bersama',Wallet],['pairing','Pengaturan & Pasangan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={18}/>{label}</button>)}</nav>
         <div className="planner-sidebar-note"><ShieldCheck size={22}/><strong>Rencana milikmu.</strong><p>Data tersimpan di workspace cloud dengan akses khusus pasangan.</p><Link href="/">Kembali ke beranda →</Link></div>
       </aside>
       <div className="planner-body">
-        <header className="planner-topbar"><span className="planner-topbar-brand">EverRae</span><span className="planner-breadcrumb">Workspace / {activeTab === 'overview' ? 'Dashboard' : activeTab === 'pairing' ? 'Pengaturan' : activeTab === 'tasks' ? 'Timeline' : activeTab === 'guests' ? 'Buku Tamu' : 'Budget'}</span><button onClick={async () => { if (await issueInvite()) setShowInviteModal(true); }}><Share2 size={16}/><span>Tautan pasangan</span></button></header>
+        <header className="planner-topbar"><span className="planner-topbar-brand"><BrandLogo /></span><span className="planner-breadcrumb">Workspace / {activeTab === 'overview' ? 'Dashboard' : activeTab === 'pairing' ? 'Pengaturan' : activeTab === 'tasks' ? 'Timeline' : activeTab === 'guests' ? 'Buku Tamu' : 'Budget'}</span><button onClick={async () => { if (await issueInvite()) setShowInviteModal(true); }}><Share2 size={16}/><span>Tautan pasangan</span></button></header>
         <main className="planner-main">
           <FillingExample />
           {(activeTab === 'overview' || activeTab === 'pairing') && <PlanningReset />}

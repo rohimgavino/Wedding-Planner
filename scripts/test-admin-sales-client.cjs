@@ -1,0 +1,6 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),ts=require('typescript'),Module=require('module');
+const m=new Module('sales');m._compile(ts.transpile(fs.existsSync('src/lib/admin-sales.ts')?fs.readFileSync('src/lib/admin-sales.ts','utf8'):'',{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}),'sales.js');
+assert.equal(typeof m.exports.formatSalesRupiah,'function','exact reporting formatter required');
+assert.equal(m.exports.formatSalesRupiah('558446353793941442').replace(/\s/g,''),'Rp558.446.353.793.941.442');
+assert.throws(()=>m.exports.formatSalesRupiah('1.5'));
+(async()=>{let calls=[];const c={rpc:async(...args)=>{calls.push(args);return{data:{gross_idr:'0',sale_count:0,rows:[]},error:null}}};await m.exports.readSales(c,{from:'2026-10-01',to:'2026-10-21',search:' REF '});assert.deepEqual(calls,[['admin_sales_report',{p_from:'2026-10-01',p_to:'2026-10-21',p_search:'REF'}]]);await assert.rejects(m.exports.readSales(c,{from:'2026-10-22',to:'2026-10-21',search:''}));assert.equal(calls.length,1);await assert.rejects(m.exports.readSales({rpc:async()=>({data:null,error:{message:'admin required'}})},{from:'',to:'',search:''}),/admin required/);console.log('PASS exact IDR formatting, filter bounds, exact read-only RPC, backend denial propagated');})().catch(e=>{console.error(e);process.exitCode=1});
