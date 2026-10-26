@@ -1,0 +1,137 @@
+"""Dashboard regression against the actual production export, isolated Chrome storage."""
+import json
+from pathlib import Path
+from playwright.sync_api import sync_playwright
+BASE='http://localhost:4190/dashboard'
+SCRATCH=Path('C:/Users/PC/AppData/Local/hermes/cache/scratch')
+results=[]
+with sync_playwright() as p:
+    browser=p.chromium.launch(channel='chrome',headless=True)
+    context=browser.new_context(viewport={'width':1440,'height':1000})
+    page=context.new_page()
+    errors=[]
+    page.on('pageerror',lambda e:errors.append(str(e)))
+    page.on('console',lambda m:errors.append(m.text) if m.type=='error' else None)
+    page.goto(BASE,wait_until='networkidle')
+    assert page.get_by_text('Mulai Buat Workspace Pernikahanmu',exact=True).is_visible()
+    data=page.evaluate('JSON.parse(localStorage.everrae_workspace_v1)')
+    assert data['workspace'] is None and not data['budgets'] and not data['tasks'] and not data['guests']
+    results.append('fresh browser: no workspace or mock records')
+    fixture={'workspace':{'id':'test','title':'Pernikahan Ayu & Bima','wedding_date':'2027-06-12','target_budget':185000000,'target_savings':0,'created_at':'2026-10-10'},'tasks':[],'budgets':[],'guests':[],'inviteToken':'TEST'}
+    page.evaluate('(d)=>localStorage.setItem("everrae_workspace_v1",JSON.stringify(d))',fixture)
+    page.reload(wait_until='networkidle')
+    assert page.get_by_text('Mulai dari satu langkah kecil',exact=True).is_visible()
+    def tab(name):
+        viewport=page.viewport_size
+        assert viewport is not None
+        nav=page.locator('.planner-sidebar nav') if viewport['width']>800 else page.locator('.planner-shortcuts')
+        nav.get_by_role('button',name=name,exact=True).click()
+        page.wait_for_timeout(180)  # Let the 150ms color transition settle before screenshots.
+    for label,empty in [('Budget & Biaya','Pos Anggaran Masih Kosong'),('Timeline & Checklist','Daftar Tugas Masih Kosong'),('Buku Tamu','Daftar Tamu Masih Kosong')]:
+        tab(label)
+        assert page.get_by_text(empty,exact=True).is_visible()
+    results.append('empty workspace: budget/task/guest empty states')
+    tab('Dashboard')
+    page.get_by_role('button',name='Tambah tugas',exact=True).first.click()
+    dialog=page.get_by_role('dialog')
+    assert dialog.is_visible()
+    assert dialog.evaluate('(d)=>d.contains(document.activeElement)')
+    page.keyboard.press('Shift+Tab')
+    assert dialog.evaluate('(d)=>d.contains(document.activeElement)')
+    page.keyboard.press('Tab')
+    assert dialog.evaluate('(d)=>d.contains(document.activeElement)')
+    page.keyboard.press('Escape')
+    assert not dialog.count()
+    assert page.evaluate('document.activeElement.textContent')=='Tambah tugas'
+    results.append('dialog: initial focus, keyboard containment, Escape, return focus')
+    page.get_by_role('button',name='Tambah tugas',exact=True).first.click()
+    page.get_by_label('Nama Tugas',exact=True).fill('Booking venue uji')
+    page.get_by_role('button',name='Simpan Tugas',exact=True).click()
+    assert page.get_by_text('Booking venue uji',exact=True).is_visible()
+    page.get_by_role('button',name='Selesaikan Booking venue uji',exact=True).click()
+    assert page.evaluate('JSON.parse(localStorage.everrae_workspace_v1).tasks[0].is_completed')
+    page.reload(wait_until='networkidle')
+    assert page.get_by_text('Semua tugas selesai',exact=True).is_visible()
+    page.get_by_role('button',name='Tambah pos anggaran',exact=True).click()
+    page.get_by_label('Nama / Keterangan Pos',exact=True).fill('Venue uji')
+    page.get_by_label('Plafon Alokasi (Rp)',exact=True).fill('-1')
+    page.get_by_role('button',name='Simpan Pos',exact=True).click()
+    assert page.get_by_role('dialog').is_visible()
+    assert not page.get_by_label('Plafon Alokasi (Rp)',exact=True).evaluate('(e)=>e.validity.valid')
+    page.get_by_label('Plafon Alokasi (Rp)',exact=True).fill('10000000')
+    page.get_by_label('Pengeluaran Riil (Rp)',exact=True).fill('2500000')
+    page.get_by_role('button',name='Simpan Pos',exact=True).click()
+    assert page.evaluate('JSON.parse(localStorage.everrae_workspace_v1).budgets[0].spent_amount')==2500000
+    page.get_by_role('button',name='Tambah tamu',exact=True).click()
+    page.get_by_label('Nama Tamu / Keluarga',exact=True).fill('Tamu Uji')
+    page.get_by_label('Jumlah Pax',exact=True).fill('0')
+    page.get_by_role('button',name='Simpan Tamu',exact=True).click()
+    assert page.get_by_role('dialog').is_visible()
+    page.get_by_label('Jumlah Pax',exact=True).fill('2')
+    page.get_by_label('No. WhatsApp',exact=False).fill('081234567890')
+    page.get_by_role('button',name='Simpan Tamu',exact=True).click()
+    tab('Buku Tamu')
+    page.get_by_label('RSVP Tamu Uji',exact=True).select_option('attending')
+    page.get_by_placeholder('Cari nama tamu...').fill('tidak ada')
+    assert not page.get_by_text('Tamu Uji',exact=True).count()
+    page.get_by_placeholder('Cari nama tamu...').fill('Tamu')
+    assert page.get_by_text('Tamu Uji',exact=True).is_visible()
+    href=page.locator('a[title="Kirim pesan WhatsApp"]').get_attribute('href')
+    assert href is not None and href.startswith('https://api.whatsapp.com/send')
+    with page.expect_download() as dl:
+        page.get_by_role('button',name='Export CSV',exact=True).click()
+    assert dl.value.suggested_filename.endswith('.csv')
+    page.reload(wait_until='networkidle')
+    data=page.evaluate('JSON.parse(localStorage.everrae_workspace_v1)')
+    assert len(data['tasks'])==len(data['budgets'])==len(data['guests'])==1 and data['guests'][0]['rsvp_status']=='attending'
+    results.append('create task/budget/guest, complete task, RSVP update, search, WhatsApp link, CSV download, reload persistence, negative budget and zero pax rejection')
+    # Screenshots use real UI-created records in this isolated test context, never seeded into default state.
+    page.get_by_role('button',name='Tambah tugas',exact=True).first.click()
+    page.get_by_label('Nama Tugas',exact=True).fill('Siapkan berkas KUA')
+    page.get_by_label('Fase Waktu',exact=True).select_option('Dokumen KUA')
+    page.get_by_role('button',name='Simpan Tugas',exact=True).click()
+    for width in [360,390,430,1440]:
+        page.set_viewport_size({'width':width,'height':1000 if width==1440 else 844})
+        for name in (['Dashboard','Timeline & Checklist','Budget & Biaya','Buku Tamu','Pengaturan & Pasangan'] if width>800 else ['Ringkasan','Timeline','Budget','Tamu','Pengaturan']):
+            tab(name)
+            assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,name,page.evaluate('document.documentElement.scrollWidth'))
+        tab('Dashboard' if width>800 else 'Ringkasan')
+        if width in [390,1440]:
+            page.screenshot(path=str(SCRATCH/('everrae-dashboard-new-desktop.png' if width==1440 else 'everrae-dashboard-new-mobile.png')),full_page=True)
+        results.append(f'no overflow {width}px: all 5 dashboard views')
+    tab('Timeline & Checklist')
+    page.get_by_role('button',name='Tandai Booking venue uji',exact=True).click()
+    assert not page.evaluate('JSON.parse(localStorage.everrae_workspace_v1).tasks.find(t=>t.title=="Booking venue uji").is_completed')
+    for _ in range(2): page.get_by_title('Hapus tugas',exact=True).first.click()
+    assert page.get_by_text('Daftar Tugas Masih Kosong',exact=True).is_visible()
+    tab('Budget & Biaya')
+    page.get_by_title('Hapus pos',exact=True).click()
+    assert page.get_by_text('Pos Anggaran Masih Kosong',exact=True).is_visible()
+    tab('Buku Tamu')
+    page.get_by_role('button',name='Hapus Tamu Uji',exact=True).click()
+    assert page.get_by_text('Daftar Tamu Masih Kosong',exact=True).is_visible()
+    page.reload(wait_until='networkidle')
+    data=page.evaluate('JSON.parse(localStorage.everrae_workspace_v1)')
+    assert not data['tasks'] and not data['budgets'] and not data['guests']
+    results.append('task toggle reversal and task/budget/guest deletion persist after reload')
+    tab('Pengaturan & Pasangan')
+    page.get_by_role('button',name='Tautan pasangan',exact=True).click()
+    assert page.get_by_role('dialog',name='Tautan pasangan').is_visible()
+    page.keyboard.press('Escape')
+    context.grant_permissions(['clipboard-read','clipboard-write'])
+    page.get_by_role('button',name='Salin',exact=True).click()
+    assert page.get_by_role('button',name='Tersalin!',exact=True).is_visible()
+    assert page.evaluate('navigator.clipboard.readText()').endswith('/invite?token=TEST')
+    page.once('dialog',lambda d:d.dismiss())
+    page.get_by_role('button',name='Hapus Data Workspace Lokal',exact=True).click()
+    assert page.evaluate('JSON.parse(localStorage.everrae_workspace_v1).workspace') is not None
+    page.once('dialog',lambda d:d.accept())
+    page.get_by_role('button',name='Hapus Data Workspace Lokal',exact=True).click()
+    page.wait_for_load_state('networkidle')
+    assert page.get_by_text('Mulai Buat Workspace Pernikahanmu',exact=True).is_visible()
+    results.append('partner dialog, clipboard, workspace reset cancel/confirm')
+    assert errors==[],errors
+    results.append('zero browser console/page errors; no dashboard imagery added')
+    browser.close()
+Path('docs/DASHBOARD-TEST-RESULTS.json').write_text(json.dumps(results,indent=2),encoding='utf-8')
+print(json.dumps(results,indent=2))

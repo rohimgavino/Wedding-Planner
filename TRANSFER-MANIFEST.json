@@ -1,0 +1,775 @@
+{
+  "files": [
+    {
+      "path": "Wedding-Planner/.env.example",
+      "bytes": 127,
+      "sha256": "dd52b81acf2358ae58ce4593ea29201194ebd2c9650898a1ee8759fe25da4e3a"
+    },
+    {
+      "path": "Wedding-Planner/.eslintrc.json",
+      "bytes": 35,
+      "sha256": "e89fcd3df76da25ea0f7bcb1e8a6287ad86027467c654ab56bd2686941a0ac6d"
+    },
+    {
+      "path": "Wedding-Planner/.gitignore",
+      "bytes": 261,
+      "sha256": "61cf1f4a237b7fd727caa85a0cf251b401bc4b5d71f4583ea0fa48563defdda3"
+    },
+    {
+      "path": "Wedding-Planner/AGENTS.md",
+      "bytes": 2298,
+      "sha256": "e9adad1c67786c03a8e6cf316a30062eef165cc983789870859c23f8a228760c"
+    },
+    {
+      "path": "Wedding-Planner/next-env.d.ts",
+      "bytes": 268,
+      "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+    },
+    {
+      "path": "Wedding-Planner/next.config.mjs",
+      "bytes": 177,
+      "sha256": "745812ed7ef75874c318f7086b86b728cfed26f3376763687a0a905258dd9bc9"
+    },
+    {
+      "path": "Wedding-Planner/package-lock.json",
+      "bytes": 230906,
+      "sha256": "237bf5c1b492b4bbc2ea8e34b1df3b4f7de7e4d48ade4bd4535191bf8033ee5d"
+    },
+    {
+      "path": "Wedding-Planner/package.json",
+      "bytes": 1104,
+      "sha256": "9e62c695674840de34a5c91c0561ea9e9d7d864758763afb4c806df64bd73052"
+    },
+    {
+      "path": "Wedding-Planner/postcss.config.mjs",
+      "bytes": 156,
+      "sha256": "e4f3a038cda8599394ce70e4b025d2c241827919cbd0ba608ab424f8d184c696"
+    },
+    {
+      "path": "Wedding-Planner/README.md",
+      "bytes": 3694,
+      "sha256": "3d44fe41af17819cd9666e0f07aa095c1dc19e085b83c8203fa1fc31db0867ca"
+    },
+    {
+      "path": "Wedding-Planner/tailwind.config.ts",
+      "bytes": 1063,
+      "sha256": "29656f6bbdfd55f152ceb5dcf1c9f0039524c566a6a0bc304032843a1f4ba423"
+    },
+    {
+      "path": "Wedding-Planner/tsconfig.json",
+      "bytes": 671,
+      "sha256": "9be8e4283ba64c0c659686db7856f58fafb49fc4ab29efe08d4cbf39a9b3898b"
+    },
+    {
+      "path": "Wedding-Planner/wrangler.jsonc",
+      "bytes": 297,
+      "sha256": "2091fea4d96205799c510d3c85ac6ff75c16f4bbb8979ec972ae19bc58f680e6"
+    },
+    {
+      "path": "Wedding-Planner/docs/ADMIN-EXPAND-REPORT.md",
+      "bytes": 8100,
+      "sha256": "22bd9e3816797d40c759d3fd452cb377358efa45a3b7f432b1c6ba9c6236e57a"
+    },
+    {
+      "path": "Wedding-Planner/docs/ADMIN-STAGE-REPORT.md",
+      "bytes": 10436,
+      "sha256": "166c23da20f80b2249390551a7337093fe5ac408af0c2141c0a8821e4143841c"
+    },
+    {
+      "path": "Wedding-Planner/docs/ARCHITECTURE-ACCESS.md",
+      "bytes": 5822,
+      "sha256": "df8678463b607f8ac6fc2eb5ec20e0924b392bda9494f437cb598bd1057ee821"
+    },
+    {
+      "path": "Wedding-Planner/docs/BACKEND-FOUNDATION-REPORT.md",
+      "bytes": 6861,
+      "sha256": "de3f3b7d860dbbbe10fa98ccd96ffd4e922b8fd2d6e05937516ea02c712fc27d"
+    },
+    {
+      "path": "Wedding-Planner/docs/BACKEND-NEXT-STAGE.md",
+      "bytes": 2456,
+      "sha256": "fa83f9a81acfcecfb78f308c6937ef5075d0737bdf5db2d4787f218a83886132"
+    },
+    {
+      "path": "Wedding-Planner/docs/CLOUD-INTEGRATION-REPORT.md",
+      "bytes": 5744,
+      "sha256": "5f3cbefb336b1d0fafaa2ac8166a04f20dc1bbcfdbf2e388c3f41f8462369c6d"
+    },
+    {
+      "path": "Wedding-Planner/docs/DASHBOARD-TEST-RESULTS.json",
+      "bytes": 734,
+      "sha256": "c4213bdfb8ed720227dcf85db5cda9d790512f5f6f117668bfc2431f962360d0"
+    },
+    {
+      "path": "Wedding-Planner/docs/DEPENDENCY-SECURITY.md",
+      "bytes": 3183,
+      "sha256": "10028c555d493ea2e63a75553fe77c81a20ce5dc65df4bffaa96dd470f0c9327"
+    },
+    {
+      "path": "Wedding-Planner/docs/DESIGN-AUDIT.md",
+      "bytes": 3210,
+      "sha256": "2fec84e01e632a6fd098f71b562a1b23fbf611727685e3c5d37cbe47231b2a75"
+    },
+    {
+      "path": "Wedding-Planner/docs/DEVELOPER-OPERATOR-REPORT.md",
+      "bytes": 8136,
+      "sha256": "8dd95cf3903c5168feca1b89aa347cd2c5e7c6e9e2ca46a512165ff0d61f6b93"
+    },
+    {
+      "path": "Wedding-Planner/docs/EMPTY-WORKSPACE-UI-REPORT.md",
+      "bytes": 3736,
+      "sha256": "9cc7436ed4437790f16cbe7cc56c92d3805072addc4f210eeed8d284fe0db3a2"
+    },
+    {
+      "path": "Wedding-Planner/docs/EMPTY-WORKSPACE-UI.patch",
+      "bytes": 22690,
+      "sha256": "9097a90a4ae67cb4a62462ea07ecca4e08154ddde8d89d4492b3e954089614ff"
+    },
+    {
+      "path": "Wedding-Planner/docs/GUEST-CSV-TEST-RESULTS.json",
+      "bytes": 1817,
+      "sha256": "d12283533a5fcd29ba9309e13d03d6139ad434ad05e6bd29661e9018a11ef235"
+    },
+    {
+      "path": "Wedding-Planner/docs/IMAGE-ATTRIBUTION.md",
+      "bytes": 1407,
+      "sha256": "3165f925917bffb974777fc87f33c566476db3b6f362a8786f883d945111fdb2"
+    },
+    {
+      "path": "Wedding-Planner/docs/PAID-STAGE-REPORT.md",
+      "bytes": 3725,
+      "sha256": "3ac790f7bc6a142ff6c8f02bee57d0223b25c4b5f9fe14adc168a6621449e6b1"
+    },
+    {
+      "path": "Wedding-Planner/docs/PRD.md",
+      "bytes": 7479,
+      "sha256": "80a420453c69f22a882f8bf1f8e90348cee819ced994605c6ca2568c4ad60916"
+    },
+    {
+      "path": "Wedding-Planner/docs/SERVICE-WORKER-CSS-FIX.md",
+      "bytes": 2920,
+      "sha256": "5eab73359547fe16cafabc807e33ecd24652c33884fa641a2e7528f6e3af0606"
+    },
+    {
+      "path": "Wedding-Planner/docs/SERVICE-WORKER-TEST.json",
+      "bytes": 239,
+      "sha256": "fa23d03fee5565de6ebb0440e9e45ff40b3521c915793585b97a91c72b5a2d1b"
+    },
+    {
+      "path": "Wedding-Planner/docs/STAGED-ROLLOUT.md",
+      "bytes": 16564,
+      "sha256": "f36ded31199eb3ac8f08a27150e121a3861aa2f77084e1d2161f6529a0e5a464"
+    },
+    {
+      "path": "Wedding-Planner/docs/TEST-RESULTS.json",
+      "bytes": 858,
+      "sha256": "78e37823079fe7bc46faaf3cba5c450677f7fdef754b2e0e131cb0f08fcabe74"
+    },
+    {
+      "path": "Wedding-Planner/docs/VISUAL-GUIDELINES.md",
+      "bytes": 1817,
+      "sha256": "dbb546e01acf72629302371e4e21228bd7a7acbcee73aa21b7ddf8ebe1bd36da"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/.graphify_analysis.json",
+      "bytes": 9903,
+      "sha256": "ada04e8b110e6fc6fa71db97736b9cc00aeb1c1ada3ad12e010d6040d8c17383"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/.graphify_labels.json",
+      "bytes": 2206,
+      "sha256": "b03a3d9d835fafe1516e365840f6340e764c4eccf7e837a6e31409efeedbfb7f"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/.graphify_labels.json.sig",
+      "bytes": 1550,
+      "sha256": "96b45c2a3f359756de8bcd190856b45c9e6c07d0bbb00120c4c2b82a29284e22"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/graph.html",
+      "bytes": 482069,
+      "sha256": "9ac371a1b6da290fa79bd6703245db176509d797747f42ffdc03add9483faf66"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/graph.json",
+      "bytes": 557905,
+      "sha256": "fda5b050883bce602cd3b3ec62f323fe8b5eb95bcc524e2df8b1cf202c225c7b"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/GRAPH_REPORT.md",
+      "bytes": 13923,
+      "sha256": "a9f0b9d9bc6de0a39536e9c91c68ef46b290cc1468110b73e27c226d4b65b15a"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/manifest.json",
+      "bytes": 22613,
+      "sha256": "ceb130d2a768c05664c6f0ecdf2f0def3dc130ee4f784dbc6e6fd0a3204dd5ff"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-10/.graphify_analysis.json",
+      "bytes": 9903,
+      "sha256": "ada04e8b110e6fc6fa71db97736b9cc00aeb1c1ada3ad12e010d6040d8c17383"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-10/.graphify_labels.json",
+      "bytes": 463,
+      "sha256": "e3905bc21fef5201a510450ba4a3952a309b980ecb23ba0ae5cfd6abe75358c8"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-10/graph.json",
+      "bytes": 133064,
+      "sha256": "679d8095c012933f1625f11ecc9cc32e17ed883b755680a40bad58ed5b931f8d"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-10/GRAPH_REPORT.md",
+      "bytes": 6125,
+      "sha256": "a857af217473ae0db120ee0b7738f76b858bae526d09e77814b27edd8b385496"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-10/manifest.json",
+      "bytes": 5768,
+      "sha256": "deaead0048e73b55893b0f55fb088bf3572dbb919d4d2ff0da083e17c81d38b1"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-12/.graphify_analysis.json",
+      "bytes": 9903,
+      "sha256": "ada04e8b110e6fc6fa71db97736b9cc00aeb1c1ada3ad12e010d6040d8c17383"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-12/.graphify_labels.json",
+      "bytes": 1106,
+      "sha256": "fb21129ad6cf4ea52db4b520329c98af59ae59f19bd48595529407772b3f3642"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-12/graph.json",
+      "bytes": 247477,
+      "sha256": "a5dcedf8861691b399d98e910d4585b1cdc502912f27e8cc2ee266c8872cf8a9"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-12/GRAPH_REPORT.md",
+      "bytes": 7924,
+      "sha256": "0c17854f400a3fc99e7fba359a71b283271475ead3ab2e801783fb656eb90356"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-12/manifest.json",
+      "bytes": 13970,
+      "sha256": "b7a54fa5c9712f0c462aa951d2a0bf4e19b52b565e57c846140e1c5053fa1d28"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-13/.graphify_analysis.json",
+      "bytes": 9903,
+      "sha256": "ada04e8b110e6fc6fa71db97736b9cc00aeb1c1ada3ad12e010d6040d8c17383"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-13/.graphify_labels.json",
+      "bytes": 1151,
+      "sha256": "f51e3d5bb7ce1330ab20496c7a91006f3ad0c5a57270b0b92b25fd29b5c3efad"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-13/graph.json",
+      "bytes": 319865,
+      "sha256": "1d27079eb5f9d0a3adc5eba37a78c1462fbea863bdaed38e1e0eff0910198b32"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-13/GRAPH_REPORT.md",
+      "bytes": 8286,
+      "sha256": "ae7f1b484a2e411504969740f12f85c1e54c5372f4ed41425c480d30d02b754f"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-13/manifest.json",
+      "bytes": 15733,
+      "sha256": "0fe42d51346fee4b0ee33be05cc23c230f95670b2f305214800f733cf6feeeeb"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-14/.graphify_analysis.json",
+      "bytes": 9903,
+      "sha256": "ada04e8b110e6fc6fa71db97736b9cc00aeb1c1ada3ad12e010d6040d8c17383"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-14/.graphify_labels.json",
+      "bytes": 2265,
+      "sha256": "5d24100c4301fcb186a8163075b44919c62b41b3e2e2d8bcf368bc9eb291d86d"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-14/graph.json",
+      "bytes": 549912,
+      "sha256": "3f308809b610879dad476bdb864c520fda36a99cdbec25f821825b575516153d"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-14/GRAPH_REPORT.md",
+      "bytes": 14240,
+      "sha256": "bf5429f88263fc3deaa78c458dd0163f8f4e68ce30c674e1ece7bc4cb4787046"
+    },
+    {
+      "path": "Wedding-Planner/graphify-out/2026-10-14/manifest.json",
+      "bytes": 22426,
+      "sha256": "5825dbf0c008fb9db24767d78933969fa2cd1740c37e28618bafbc27482b8d63"
+    },
+    {
+      "path": "Wedding-Planner/public/apple-touch-icon.png",
+      "bytes": 1953,
+      "sha256": "e849fb06f1cb1aca0e96c26c97cfa79e9ff7b56bcdc026db4ee7c0eac8034d7c"
+    },
+    {
+      "path": "Wedding-Planner/public/favicon.ico",
+      "bytes": 7611,
+      "sha256": "bfc256992dcc8be115e8d8636f1da2b387145fadbe822cc421fe7a504006a953"
+    },
+    {
+      "path": "Wedding-Planner/public/manifest.json",
+      "bytes": 492,
+      "sha256": "31b70c0dbd1e7c7d97f57ccd9b4e64228e26c23ca57b4a8c893d2a88c7d02726"
+    },
+    {
+      "path": "Wedding-Planner/public/sw.js",
+      "bytes": 2325,
+      "sha256": "5f8c48ceb0dac8780a3c289a69ff8643193b799badd585a1fb872e65c4484899"
+    },
+    {
+      "path": "Wedding-Planner/public/icons/icon-192.png",
+      "bytes": 2201,
+      "sha256": "4ddf28188d290e2d89ed6a2191ad104d25dbdadcb15a7e53f96440630272f497"
+    },
+    {
+      "path": "Wedding-Planner/public/icons/icon-512.png",
+      "bytes": 7008,
+      "sha256": "d81aa7890a492cfc1f61f0c679991bc242ca85aa32d80b1cebeaca73c06aef5a"
+    },
+    {
+      "path": "Wedding-Planner/public/images/landscape-lake.jpg",
+      "bytes": 698701,
+      "sha256": "409b1e45e8cb8ad91c1d6c83b763afd84ba3888b2ed98358c8cc13b0a1aa64b6"
+    },
+    {
+      "path": "Wedding-Planner/public/images/wedding-flowers.jpg",
+      "bytes": 222153,
+      "sha256": "8acdfaffc5781a34932546178cd474ba6eff35b9986de5c18ecba7be91973435"
+    },
+    {
+      "path": "Wedding-Planner/public/templates/template-tamu.csv",
+      "bytes": 187,
+      "sha256": "bd5c23a23fdced37e25331f0360cbe331543732a224ab7690a55e7691dc346c3"
+    },
+    {
+      "path": "Wedding-Planner/scripts/prepare-admin-release.py",
+      "bytes": 1747,
+      "sha256": "58df9fa69e2cd0ced521d32a5519ff598f78d3f1df66858d5ccc1ab79b016ec7"
+    },
+    {
+      "path": "Wedding-Planner/scripts/preview.py",
+      "bytes": 884,
+      "sha256": "04a714936d17878a9f4a79bfc9f3ae36c89be3e94c7cf1e9dccd336c88f5729d"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-admin-browser.py",
+      "bytes": 6969,
+      "sha256": "cc7d3927314bff5c2260f0bda16c00899f2e8ae7229232907ef3b11b5dd2658b"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-admin-expand-browser.py",
+      "bytes": 4539,
+      "sha256": "e660aee1e2f7db857ca36fde370c099faff35d1aa95fbc0dd70506398db8e2c9"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-admin-expand.mjs",
+      "bytes": 4010,
+      "sha256": "7d00dcb2db1f3eff08827487300a080722aa9be7aabdf986d923e29321f64c24"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-admin-stage.mjs",
+      "bytes": 8666,
+      "sha256": "ea6581b3aa3b5f8bfe3886897d3ef6940e4135e1881b353014859ec8f2a3c86a"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-auth-browser.py",
+      "bytes": 2668,
+      "sha256": "594506a8c16d19a05477244d09bc629b7fb0384e96a21b75cdbe88e7d2b9e1f0"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-auth-configured-browser.py",
+      "bytes": 7750,
+      "sha256": "82bab8809d02f30bd9feab76f2cb1b6ec8c7337e1e5cd373c6262b24de401f3d"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-backend.mjs",
+      "bytes": 11367,
+      "sha256": "25da531e5b8134e762b8e88d1f6f111a3158666423ca40de4a2bc2418713061d"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-cloud.cjs",
+      "bytes": 6181,
+      "sha256": "6a98be715600ce89d0edf3d381a176b3e7a0798c945d83fc8425bcf7fb7f64c3"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-commerce.cjs",
+      "bytes": 1795,
+      "sha256": "7eb0ca87a129c1902b202bb9ba2bab652dc5498421ece20a787dbcc0439f4b42"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-dashboard.py",
+      "bytes": 9361,
+      "sha256": "ed64563aefcc86aa5266ea95f8fd24a4e87668b712a344afc96d3eea5270a36d"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-developer-stage.mjs",
+      "bytes": 8710,
+      "sha256": "094db89c98192c673f279f234a290f4c51cac60b89777491f74949cab8a2aa72"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-developer-ui.cjs",
+      "bytes": 1133,
+      "sha256": "07e0ba354e661438e79c973f5669f5fa924ff56dcce10aaa303d20f50773f9fb"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-empty-workspace-browser.py",
+      "bytes": 5635,
+      "sha256": "fba6f762a8c5aa2883f110544daeca89c8b2102a153b35c108c88aadbf2bda69"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-guest-csv-browser.py",
+      "bytes": 4573,
+      "sha256": "84b58e19351f56f210293129f6676fa30a1f1ae410f20aabeee19adf0c0a8e27"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-guest-csv.cjs",
+      "bytes": 2007,
+      "sha256": "8688ca2bf170ca8af927836a28312317e403f423845a1cf64de8bd159b9af749"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-guidance-reset-browser.py",
+      "bytes": 6145,
+      "sha256": "2515bbf6c976279194c93a708e4ec984a2236402f0dc32c50fabf49671b5ab61"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-paid-stage.mjs",
+      "bytes": 7476,
+      "sha256": "266e2ceafa13d02ec0e4adfee45adb1028884b06b3da5c21ea2755d297552bb1"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-planning-reset.mjs",
+      "bytes": 7293,
+      "sha256": "617f89d77d64cf2abd1d87ac0ca1ef4f3d76bed015d2a381b9e81562ae6d50be"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-preview.py",
+      "bytes": 4820,
+      "sha256": "143bcfab9b088a6b8af1487bfefd38a8d115f6b34a61c06405cb2fed0fe81b44"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-release.py",
+      "bytes": 3181,
+      "sha256": "329c02892cdd2e7c2d031ca63cde0cac74f3004a4e4096ac0e79b5d181b89538"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-savings.cjs",
+      "bytes": 1122,
+      "sha256": "eb464c919bb2bdd8792af8b726de67b17b60bbbfd5900c7769283c06ea8eac03"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-service-worker.py",
+      "bytes": 4684,
+      "sha256": "4f33d577c1753db0a318c7f7ed3754bde363c7b7c6c53dec8fb3672384855ec6"
+    },
+    {
+      "path": "Wedding-Planner/scripts/test-workspace-storage.cjs",
+      "bytes": 1797,
+      "sha256": "1f66e944afd73200e29c08bb07f57e05553717d4291b7c3fc94f795e3d48ba21"
+    },
+    {
+      "path": "Wedding-Planner/scripts/fixtures/legacy-sw.js",
+      "bytes": 1202,
+      "sha256": "fd09c8f8b04e67549e1429f6ff9b164e37f28270a9c41b6def94c3c1f25a540a"
+    },
+    {
+      "path": "Wedding-Planner/src/app/everrae.css",
+      "bytes": 15831,
+      "sha256": "5e22bfb7d35c0cb764a414c28fedf6aa64ed0e661b53df53c4b8ff3061dad749"
+    },
+    {
+      "path": "Wedding-Planner/src/app/globals.css",
+      "bytes": 3950,
+      "sha256": "9c782b0455b371778361e479e623e440aefcc660924f39bc9b530c762bcc9621"
+    },
+    {
+      "path": "Wedding-Planner/src/app/layout.tsx",
+      "bytes": 1015,
+      "sha256": "f280a6147fe7aa52c961bf6cecbefaf657ee529d8002c2ead533b96cc7ff0636"
+    },
+    {
+      "path": "Wedding-Planner/src/app/page.tsx",
+      "bytes": 494,
+      "sha256": "4baac69db240d7f92fcdd36f910ea550cf6332f2cc20bf7f969f5c89cb636838"
+    },
+    {
+      "path": "Wedding-Planner/src/app/scroll-motion.css",
+      "bytes": 573,
+      "sha256": "9b67adbb78122d7e6f1cbf39b6e78eb5ed88e591933340f641258b40c1ee2876"
+    },
+    {
+      "path": "Wedding-Planner/src/app/admin/page.tsx",
+      "bytes": 11427,
+      "sha256": "a3a28f8432cfeb1c676b9c41c116d4fd965ff439d232ed8ad22da76401f8f958"
+    },
+    {
+      "path": "Wedding-Planner/src/app/auth/callback/page.tsx",
+      "bytes": 1228,
+      "sha256": "fda355c94447878f15190e9c0c341cee0390099c6967254abd1e920ae115b1be"
+    },
+    {
+      "path": "Wedding-Planner/src/app/dashboard/dashboard.css",
+      "bytes": 10811,
+      "sha256": "c2652c6e04f41d4d6ec99fd513f189add436a8e12b933ff690031ad17cd85f6c"
+    },
+    {
+      "path": "Wedding-Planner/src/app/dashboard/layout.tsx",
+      "bytes": 165,
+      "sha256": "46e6091227957e422a1fdac06d301a3804d5c2d1a2520d6111683d4ec6740bd2"
+    },
+    {
+      "path": "Wedding-Planner/src/app/dashboard/page.tsx",
+      "bytes": 52731,
+      "sha256": "3cb8f51f1235495ac9526d455fdeb71626df0ed0a31a2cb3f8b0f0f68d9e4a8a"
+    },
+    {
+      "path": "Wedding-Planner/src/app/demo/page.tsx",
+      "bytes": 803,
+      "sha256": "56d4be724a1fb92735eb1182a7ebbc3ef9a72ec3d2e8e4dd7987e0a10a84a2cc"
+    },
+    {
+      "path": "Wedding-Planner/src/app/invite/layout.tsx",
+      "bytes": 165,
+      "sha256": "46e6091227957e422a1fdac06d301a3804d5c2d1a2520d6111683d4ec6740bd2"
+    },
+    {
+      "path": "Wedding-Planner/src/app/invite/page.tsx",
+      "bytes": 2906,
+      "sha256": "69f8f7a16c99154fe4f25c8b152c7133a045de58e39fafc752f8a3576875c1c0"
+    },
+    {
+      "path": "Wedding-Planner/src/app/legal/page.tsx",
+      "bytes": 5401,
+      "sha256": "5b71c295c3349a1b9dd8847b6aa99aa901c707040fdaa157a6b9f3a91811ce3e"
+    },
+    {
+      "path": "Wedding-Planner/src/app/login/page.tsx",
+      "bytes": 4693,
+      "sha256": "dfcc2be9e6655090c9c3587c9ea3aa71485e86b05e93f82a22ebd48873b4df60"
+    },
+    {
+      "path": "Wedding-Planner/src/app/onboarding/layout.tsx",
+      "bytes": 165,
+      "sha256": "46e6091227957e422a1fdac06d301a3804d5c2d1a2520d6111683d4ec6740bd2"
+    },
+    {
+      "path": "Wedding-Planner/src/app/onboarding/page.tsx",
+      "bytes": 16836,
+      "sha256": "85dde52fe46abaae49d59653211cff644fb7142ec7f9cb25725bd82919195826"
+    },
+    {
+      "path": "Wedding-Planner/src/app/purchase/page.tsx",
+      "bytes": 4390,
+      "sha256": "bd89a944bcd4342b8a8be6a829fff790dd41306b79c9bee099aced09118c421f"
+    },
+    {
+      "path": "Wedding-Planner/src/components/auth-gate.tsx",
+      "bytes": 1186,
+      "sha256": "1982dae3f6fdb3dc8381be8ad32e469fd2bfd289a08ed259262402ecf894fcb7"
+    },
+    {
+      "path": "Wedding-Planner/src/components/InstallPwaBanner.tsx",
+      "bytes": 4886,
+      "sha256": "7e8f33390492eeb59ec92982492d6f4740ad4f07f2a6a5afa4ee155ffef07617"
+    },
+    {
+      "path": "Wedding-Planner/src/components/Providers.tsx",
+      "bytes": 441,
+      "sha256": "30ede158abb56583d09c1b60b8cf783735e807cfddd7e01bede0a7cdab08074b"
+    },
+    {
+      "path": "Wedding-Planner/src/components/everrae/features.tsx",
+      "bytes": 2749,
+      "sha256": "76b2983afe86c361e202c1cbd8c7eb5371131dcb9653af6b2aa659357293d1ea"
+    },
+    {
+      "path": "Wedding-Planner/src/components/everrae/filling-example.tsx",
+      "bytes": 2024,
+      "sha256": "1ab6a8d1c15051947e7bc0bbdcc2dcad3543b2e4d8cf2a8d98ceaf8f98857cd2"
+    },
+    {
+      "path": "Wedding-Planner/src/components/everrae/guest-csv-import.tsx",
+      "bytes": 4895,
+      "sha256": "875d2b956dad858209ab474e62459ef3affaababc858f11a1b31cf3c34127b31"
+    },
+    {
+      "path": "Wedding-Planner/src/components/everrae/hero.tsx",
+      "bytes": 1345,
+      "sha256": "47744e030dbbe549e6770c64f142ecbff517123bc0ea8c36bf8b7ad7b25b3c50"
+    },
+    {
+      "path": "Wedding-Planner/src/components/everrae/landing-sections.tsx",
+      "bytes": 5353,
+      "sha256": "fafe6b79b40d3bbf562a65a561d06373902c839137f1e1e165e8dda71dc83204"
+    },
+    {
+      "path": "Wedding-Planner/src/components/everrae/navigation.tsx",
+      "bytes": 1270,
+      "sha256": "6e49ffab9aeca445b6d179c3a151a1f625f5e01c1dd1a686436e108b8eb89921"
+    },
+    {
+      "path": "Wedding-Planner/src/components/everrae/planner-dialog.tsx",
+      "bytes": 1694,
+      "sha256": "0e2c786f88f486e6a2e40c34f1de2b6052335b437ff7d0a9aea45fccb9ab3115"
+    },
+    {
+      "path": "Wedding-Planner/src/components/everrae/planner-preview.tsx",
+      "bytes": 2987,
+      "sha256": "9ff1d04512f627e7b55d4844c08da3b50741a2dbc49b88af958018c61d127dd9"
+    },
+    {
+      "path": "Wedding-Planner/src/components/everrae/planning-reset.tsx",
+      "bytes": 3920,
+      "sha256": "888c56c999d08f2e06b77abdf28495878fa3a3c7daead58311fe9eadaa579a84"
+    },
+    {
+      "path": "Wedding-Planner/src/components/everrae/scroll-motion.tsx",
+      "bytes": 1913,
+      "sha256": "53c74e0eae245925176d38e9139b19d3d9d2484a3beb09b4c099065f72a9935a"
+    },
+    {
+      "path": "Wedding-Planner/src/components/everrae/shared-savings.tsx",
+      "bytes": 4402,
+      "sha256": "fce80aedb4ec826c85c26d49e5264df6966949b9f80cb763baef5ab4ff725f4b"
+    },
+    {
+      "path": "Wedding-Planner/src/context/auth-context.tsx",
+      "bytes": 2717,
+      "sha256": "8b6968afd197950935509ad27892dfddcc247a34d7bce2460fc3e9b3485c910d"
+    },
+    {
+      "path": "Wedding-Planner/src/context/WorkspaceContext.tsx",
+      "bytes": 7781,
+      "sha256": "5d3c65ccf95d6ce28ead906e6f7ba881798d779c9e3d65f5b3c7e48468225c21"
+    },
+    {
+      "path": "Wedding-Planner/src/lib/auth-policy.ts",
+      "bytes": 1426,
+      "sha256": "d1dcf54b59e6f7364e66c724c7d9efe146a5cb2abbfd84cda7e4966ebb533c84"
+    },
+    {
+      "path": "Wedding-Planner/src/lib/cloud-workspace.ts",
+      "bytes": 5660,
+      "sha256": "763726a032e32ec9c7991aca0d2299d34981f6434c1cc4a040cec477d5ffbd85"
+    },
+    {
+      "path": "Wedding-Planner/src/lib/commerce.ts",
+      "bytes": 5395,
+      "sha256": "be5826a1b7051a81eff1ba5ba33f01f7408beccaec9b12b0e9f54a307d0debbe"
+    },
+    {
+      "path": "Wedding-Planner/src/lib/everrae-plans.ts",
+      "bytes": 637,
+      "sha256": "fc29e7f1182adf8eb2996cdd47583bdd9ff8fbc7a57c01367588a650504ddab8"
+    },
+    {
+      "path": "Wedding-Planner/src/lib/guest-csv.ts",
+      "bytes": 4000,
+      "sha256": "e5e77eab58c8e1d317ff024d0105c6d0177898b57d392184f947df02434378c6"
+    },
+    {
+      "path": "Wedding-Planner/src/lib/savings.ts",
+      "bytes": 752,
+      "sha256": "c1e682b0a8e2ae10ffe4dc0a19baee019e6e86aac0e4a590107df7b7763d2d0d"
+    },
+    {
+      "path": "Wedding-Planner/src/lib/seed-data.ts",
+      "bytes": 4204,
+      "sha256": "6de7c5ba04ea1c03f08b284e3a413aee491955382c2d84feb1fdb5122fc03296"
+    },
+    {
+      "path": "Wedding-Planner/src/lib/utils.ts",
+      "bytes": 932,
+      "sha256": "21e51a8d3a3bcf262b5e41c662dbaace0ce38fa56b6dd220bcdb93693b4ee984"
+    },
+    {
+      "path": "Wedding-Planner/src/lib/whatsapp.ts",
+      "bytes": 857,
+      "sha256": "0e79ee028ab5060a68a8ab2bb4ce1a3dbde242739d9a57f7992c977d05f36ae1"
+    },
+    {
+      "path": "Wedding-Planner/src/lib/workspace-storage.ts",
+      "bytes": 2911,
+      "sha256": "65e42e0d257ea6f9afa5478b7304ffbe18343c1ac786dd95bfae386019c4cd71"
+    },
+    {
+      "path": "Wedding-Planner/src/lib/supabase/client.ts",
+      "bytes": 739,
+      "sha256": "ec1bdf62008163dddffd690b61e8f699ee3278e0f97ae4fa095335fb3242c81e"
+    },
+    {
+      "path": "Wedding-Planner/src/types/index.ts",
+      "bytes": 1925,
+      "sha256": "2d0298bfcab352d0e27e9d5306a623d42698294b123e2b2dbcff640ff3460be6"
+    },
+    {
+      "path": "Wedding-Planner/supabase/schema.sql",
+      "bytes": 158,
+      "sha256": "c701e74c20179c7f31460f2681e2903116bf0f37b9560fea075f0d7c524f4a52"
+    },
+    {
+      "path": "Wedding-Planner/supabase/migrations/202610120001_secure_foundation.sql",
+      "bytes": 12746,
+      "sha256": "d5d6d533b480ed887623a5fb876eac8e68288599bbbe8fe4fb9d0e0d6c038197"
+    },
+    {
+      "path": "Wedding-Planner/supabase/migrations/202610140001_workspace_entitlements_savings.sql",
+      "bytes": 3820,
+      "sha256": "bd2b9f8f4e192aca60862852fa95302564f26d8d8f3edf215ec77d9a16544eae"
+    },
+    {
+      "path": "Wedding-Planner/supabase/migrations/202610140002_admin_manual_purchases.sql",
+      "bytes": 10447,
+      "sha256": "06b7c16dd8a564999af4d4b3f607b988fc629e08569f448fa3a3a0de49470cac"
+    },
+    {
+      "path": "Wedding-Planner/supabase/migrations/202610140003_reset_planning_content.sql",
+      "bytes": 1993,
+      "sha256": "e7a4628359cfc114c671100ea7c668faeab713f597d85682e74692a1e9221edd"
+    },
+    {
+      "path": "Wedding-Planner/supabase/migrations/202610140004_developer_operator_roles.sql",
+      "bytes": 7356,
+      "sha256": "157b0f35e04b8d8fb6a2295fb8821bfc072055ac04127782646f2d80a01e0c24"
+    },
+    {
+      "path": "Wedding-Planner/team-docs/AGENTS.md",
+      "bytes": 2298,
+      "sha256": "e9adad1c67786c03a8e6cf316a30062eef165cc983789870859c23f8a228760c"
+    },
+    {
+      "path": "Wedding-Planner/team-docs/ARCHITECTURE.md",
+      "bytes": 7214,
+      "sha256": "dde3334b6953235f2602d6b0bdebbeff593de8ced8456f4bec8c70b7daf269d5"
+    },
+    {
+      "path": "Wedding-Planner/team-docs/PRD.md",
+      "bytes": 11601,
+      "sha256": "ec819ef4b0edece5cd13647df7b7280cb5b4fd6fe19b5862ca194d505a5c1611"
+    },
+    {
+      "path": "Wedding-Planner/team-docs/branding/everrae-google-oauth-120.png",
+      "bytes": 4364,
+      "sha256": "700cefd6d2a6caf8bbc281261b13e4831fe22922e77eb67fdb055e421272d606"
+    },
+    {
+      "path": "Wedding-Planner/team-docs/branding/everrae-logo-1024.png",
+      "bytes": 56645,
+      "sha256": "3e382d54f476b0a1e2a28d6cf679f00662f327cf4755d66d82122cc3ee9f3ec0"
+    }
+  ],
+  "sanitized_files": [],
+  "excluded_files": [
+    ".env.local",
+    "tsconfig.tsbuildinfo",
+    "graphify-out\\.graphify_root"
+  ]
+}

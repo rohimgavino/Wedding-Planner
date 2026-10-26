@@ -1,0 +1,24 @@
+// Runs the real TypeScript utility without an additional test dependency.
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const ts = require('typescript');
+const Module = require('node:module');
+const source = fs.readFileSync('src/lib/guest-csv.ts', 'utf8');
+const mod = new Module('guest-csv');
+mod._compile(ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText, 'guest-csv.js');
+const {parseGuestCSV: parse, serializeGuestCSV: serialize, guestDuplicateError: duplicate, GUEST_CSV_HEADERS: headers} = mod.exports;
+const guest = {name:'Keluarga "Ayu", Bima\nJakarta', category:'sahabat', pax:2, phone:'081234567890', rsvp_status:'attending'};
+assert.deepEqual(parse(serialize([guest])), [guest]);
+assert.deepEqual(parse(serialize([guest]).replace(/^\uFEFF/,'')), [guest]);
+for (const phone of ['081234567890','6281234567890','+6281234567890','']) assert.equal(parse(serialize([{...guest,phone}]))[0].phone, phone);
+for (const data of ['"unfinished', 'a"b,sahabat,1,,sent', '"a"x,sahabat,1,,sent', 'a,sahabat,0,,sent', 'a,bad,1,,sent', 'a,sahabat,1,8.12E+11,sent', 'a,sahabat,1,,bad', 'a,sahabat,1,,sent,extra']) assert.throws(()=>parse(headers.join(',')+'\n'+data));
+assert.throws(()=>parse(headers.join(';')+'\na;sahabat;1;;sent'));
+assert.throws(()=>parse(headers.join(',')));
+assert.throws(()=>parse(serialize(Array.from({length:1001},(_,i)=>({...guest,name:String(i)})))));
+assert.ok(duplicate([{...guest,name:' Other ',phone:'+6281234567890'}],[guest]));
+assert.ok(duplicate([{...guest,name:guest.name.toUpperCase(),phone:''}],[guest]));
+assert.ok(duplicate([guest,guest],[]));
+assert.equal(duplicate([{...guest,name:'New',phone:''}],[guest]),null);
+const template = fs.readFileSync('public/templates/template-tamu.csv','utf8');
+assert.ok(parse(template).every(g=>g.name.startsWith('CONTOH')));
+console.log('PASS CSV: roundtrip/BOM/quoted commas, quotes, newlines/phone strings/malformed/limits/duplicate normalization/template');

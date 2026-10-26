@@ -1,0 +1,9 @@
+{
+  "legacy_font": "\"Times New Roman\"",
+  "updated_font": "Arial, Helvetica, sans-serif",
+  "offline_home": "styled",
+  "uncached_offline": 503,
+  "unrelated_cache": "preserved",
+  "public_get": 200,
+  "public_stylesheets": 200
+}

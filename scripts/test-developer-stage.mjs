@@ -1,0 +1,82 @@
+import { PGlite } from '@electric-sql/pglite';
+import { readFileSync, existsSync } from 'node:fs';
+import assert from 'node:assert/strict';
+const db=new PGlite();
+await db.exec(`CREATE ROLE anon; CREATE ROLE authenticated; CREATE SCHEMA auth; CREATE TABLE auth.users(id uuid PRIMARY KEY, email text, raw_user_meta_data jsonb); CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $$ SELECT nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$; GRANT USAGE ON SCHEMA public,auth TO anon,authenticated; GRANT EXECUTE ON FUNCTION auth.uid() TO anon,authenticated; INSERT INTO auth.users SELECT ('00000000-0000-0000-0000-00000000000'||n)::uuid,'ahmadnurrochim11@gmail.com','{"role":"developer"}' FROM generate_series(1,4) n;`);
+for(const p of ['202610120001_secure_foundation.sql','202610140001_workspace_entitlements_savings.sql','202610140002_admin_manual_purchases.sql','202610140003_reset_planning_content.sql','202610140004_developer_operator_roles.sql']) if(existsSync('supabase/migrations/'+p)) await db.exec(readFileSync('supabase/migrations/'+p,'utf8'));
+await db.exec("UPDATE public.release_controls SET sales_activation=true");
+await db.exec(readFileSync('supabase/activation/paid-enforcement.sql','utf8'));
+await db.exec(readFileSync('supabase/activation/reset-execute.sql','utf8'));
+const uuid=n=>`00000000-0000-0000-0000-00000000000${n}`;
+const user=async n=>{await db.exec('RESET ROLE; SET ROLE authenticated');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[uuid(n)]);};
+let passed=0;const test=async(name,fn)=>{await fn();console.log(`PASS ${++passed}: ${name}`);};
+await test('email and metadata do not grant role; no public bootstrap',async()=>{
+ await user(1);assert.equal((await db.query('select public.site_role() role')).rows[0].role,null);
+ await assert.rejects(db.query("select public.set_site_admin($1,'developer','self grant')",[uuid(1)]),/developer required/);
+ await db.exec('RESET ROLE; GRANT ALL ON public.site_admins TO authenticated');await user(1);
+ await assert.rejects(db.query('insert into public.site_admins(user_id) values(auth.uid())'),/row-level security/);
+});
+await db.exec('RESET ROLE');await db.query("insert into public.site_admins(user_id,role) values($1,'developer'),($2,'operator')",[uuid(3),uuid(4)]);
+await test('operator payment settings allowed but grants, roster and role audit denied',async()=>{
+ await user(4);assert.equal((await db.query('select public.site_role() role')).rows[0].role,'operator');
+ await db.query("select public.save_site_settings('test@example.com',100,30,'https://lynk.id/test/product',true)");
+ await assert.rejects(db.query("select public.set_site_admin($1,'developer','escalate')",[uuid(4)]),/developer required/);
+ await assert.rejects(db.query('select * from public.list_site_admins()'),/developer required/);
+ await db.exec('RESET ROLE');await db.query("insert into public.admin_audit(actor_id,action) values($1,'admin.granted')",[uuid(3)]);
+ await user(4);assert.equal((await db.query("select * from public.admin_audit where action='admin.granted'")).rows.length,0);
+});
+await test('developer secure grants audit and last developer protection',async()=>{
+ await user(3);
+ await assert.rejects(db.query("select public.set_site_admin($1,null,'remove last')",[uuid(3)]),/last developer/);
+ await assert.rejects(db.query("select public.set_site_admin($1,'operator','demote last')",[uuid(3)]),/last developer/);
+ await assert.rejects(db.query("select public.set_site_admin($1,'developer','')",[uuid(2)]),/reason required/);
+ await db.query("select public.set_site_admin($1,'developer','approved second developer')",[uuid(2)]);
+ assert.equal((await db.query("select * from public.admin_audit where action='admin.granted' and subject_id=$1",[uuid(2)])).rows.length,1);
+ await db.query("select public.set_site_admin($1,null,'revoke second')",[uuid(2)]);
+ assert.equal((await db.query('select * from public.list_site_admins()')).rows.length,2);
+ await db.exec('RESET ROLE');await assert.rejects(db.query('delete from public.site_admins where user_id=$1',[uuid(3)]),/last developer/);
+});
+let own,other,request;
+await test('operator verifies payment without tenant planner bypass',async()=>{
+ await user(1);other=(await db.query("select public.create_workspace('Other','2027-01-01') id")).rows[0].id;
+ request=(await db.query('select public.request_core_purchase($1) id',[other])).rows[0].id;
+ await user(4);await db.query("select public.verify_core_purchase($1,'REAL-TEST-FIXTURE',100,true,'local dashboard fixture')",[request]);
+ assert.equal((await db.query('select * from public.workspaces where id=$1',[other])).rows.length,0);
+ assert.equal((await db.query("select public.has_workspace_entitlement($1,'core') allowed",[other])).rows[0].allowed,false);
+});
+await test('test grant requires developer owner; not fake Lynk payment',async()=>{
+ await user(3);own=(await db.query("select public.create_workspace('Developer','2027-01-01') id")).rows[0].id;
+ await assert.rejects(db.query("select public.grant_developer_test_access($1,7,'outsider')",[other]),/owner required/);
+ await user(4);await assert.rejects(db.query("select public.grant_developer_test_access($1,7,'operator')",[own]),/developer required/);
+ await user(3);await assert.rejects(db.query("select public.grant_developer_test_access($1,31,'too long')",[own]),/invalid test grant/);
+ await db.query("select public.grant_developer_test_access($1,7,'manual developer smoke test')",[own]);
+ assert.equal((await db.query("select public.has_workspace_entitlement($1,'core') allowed",[own])).rows[0].allowed,true);
+ assert.equal((await db.query('select * from public.workspace_entitlements where workspace_id=$1',[own])).rows.length,0);
+ assert.equal((await db.query('select * from public.purchase_requests where workspace_id=$1',[own])).rows.length,0);
+ await db.exec('RESET ROLE');assert.equal((await db.query('select * from public.verified_transactions where workspace_id=$1',[own])).rows.length,0);
+});
+await test('own planner RLS works; partner and unrelated admin cannot inherit test grant',async()=>{
+ await user(3);await db.query("insert into public.tasks(workspace_id,title,phase,pic) values($1,'Local test','H-6 Bulan','both')",[own]);
+ await db.exec('RESET ROLE');await db.query("insert into public.workspace_members(workspace_id,user_id,role) values($1,$2,'partner')",[own,uuid(2)]);
+ await user(2);assert.equal((await db.query("select public.has_workspace_entitlement($1,'core') allowed",[own])).rows[0].allowed,false);
+ assert.equal((await db.query('select * from public.tasks where workspace_id=$1',[own])).rows.length,0);
+ await user(4);await assert.rejects(db.query("select public.reset_planning_content($1,'RESET RENCANA')",[own]),/owner/);
+});
+await test('test expiry revocation demotion direct mutation and audit immutability',async()=>{
+ await db.exec('RESET ROLE');await db.query('update public.developer_test_grants set expires_at=now()-interval \'1 second\' where workspace_id=$1',[own]);
+ await user(3);assert.equal((await db.query("select public.has_workspace_entitlement($1,'core') allowed",[own])).rows[0].allowed,false);
+ await db.query("select public.grant_developer_test_access($1,1,'renew test')",[own]);
+ await db.query("select public.revoke_developer_test_access($1,'finished test')",[own]);
+ assert.equal((await db.query('select public.has_developer_test_access($1) allowed',[own])).rows[0].allowed,false);
+ await db.query("select public.grant_developer_test_access($1,1,'test role revocation')",[own]);
+ await db.query("select public.set_site_admin($1,'developer','second developer')",[uuid(2)]);await user(2);
+ await db.query("select public.set_site_admin($1,'operator','demote developer')",[uuid(3)]);await user(3);
+ assert.equal((await db.query('select public.has_developer_test_access($1) allowed',[own])).rows[0].allowed,false);
+ await db.exec('RESET ROLE; GRANT ALL ON public.developer_test_grants TO authenticated');await user(3);
+ assert.equal((await db.query('update public.developer_test_grants set revoked_at=null returning workspace_id')).rows.length,0);
+ await assert.rejects(db.query('insert into public.developer_test_grants(workspace_id,user_id,expires_at) values($1,$2,now())',[other,uuid(3)]),/row-level security/);
+ await user(2);assert.ok((await db.query("select * from public.admin_audit where action like 'developer.test.%'")).rows.length>=4);
+ await db.exec('RESET ROLE');await assert.rejects(db.query("delete from public.admin_audit where action like 'developer.test.%'"),/append-only/);
+ await db.exec('SET ROLE anon');await assert.rejects(db.query('select public.site_role()'),/permission denied/);
+});
+await db.close();console.log(`${passed} developer SQL tests passed`);

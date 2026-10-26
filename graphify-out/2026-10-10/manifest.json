@@ -1,0 +1,176 @@
+{
+  "package.json": {
+    "mtime": 1791537728.6777956,
+    "seen": 1791537943.8469572,
+    "ast_hash": "6108a45419465681baa99585a0d6cb56",
+    "semantic_hash": "6108a45419465681baa99585a0d6cb56"
+  },
+  "next.config.mjs": {
+    "mtime": 1791546711.049672,
+    "seen": 1791546905.5350134,
+    "ast_hash": "84508cbd05400be55fe6d02679c60cf8",
+    "semantic_hash": "84508cbd05400be55fe6d02679c60cf8"
+  },
+  "postcss.config.mjs": {
+    "mtime": 1791537713.056027,
+    "seen": 1791537943.8469572,
+    "ast_hash": "636c6892234d6e307d4ebdde6d3b268e",
+    "semantic_hash": "636c6892234d6e307d4ebdde6d3b268e"
+  },
+  "public/manifest.json": {
+    "mtime": 1791537757.9987836,
+    "seen": 1791537943.8469572,
+    "ast_hash": "14e6628209d3dc1c69e1fc83600bb001",
+    "semantic_hash": "14e6628209d3dc1c69e1fc83600bb001"
+  },
+  "src/app/layout.tsx": {
+    "mtime": 1791587077.892609,
+    "seen": 1791587218.7607267,
+    "ast_hash": "1fdc11decfc94eb7b18f2c52cd63604c",
+    "semantic_hash": ""
+  },
+  "src/app/page.tsx": {
+    "mtime": 1791588346.4727898,
+    "seen": 1791588364.4178998,
+    "ast_hash": "1e3db7bce539c3e90f0e0d1cddc1907a",
+    "semantic_hash": ""
+  },
+  "src/lib/supabase/client.ts": {
+    "mtime": 1791537803.1547792,
+    "seen": 1791537943.8469572,
+    "ast_hash": "cd22e35460b95cdb4428a88a1a3b064d",
+    "semantic_hash": "cd22e35460b95cdb4428a88a1a3b064d"
+  },
+  "src/lib/utils.ts": {
+    "mtime": 1791537777.792307,
+    "seen": 1791537943.8469572,
+    "ast_hash": "b60dfe24fe771a605783f5c18d49ecbe",
+    "semantic_hash": "b60dfe24fe771a605783f5c18d49ecbe"
+  },
+  "src/lib/whatsapp.ts": {
+    "mtime": 1791537792.9713154,
+    "seen": 1791537943.8469572,
+    "ast_hash": "4f2a27bb11b3fe4375ca4605b25fcef9",
+    "semantic_hash": "4f2a27bb11b3fe4375ca4605b25fcef9"
+  },
+  "src/types/index.ts": {
+    "mtime": 1791537765.6177099,
+    "seen": 1791537943.8469572,
+    "ast_hash": "928c5f8ce282fa7ec06d0158b071b081",
+    "semantic_hash": "928c5f8ce282fa7ec06d0158b071b081"
+  },
+  "supabase/schema.sql": {
+    "mtime": 1791537869.9600995,
+    "seen": 1791537943.8469572,
+    "ast_hash": "634ecef7d121e9d8bf3fafc22bd5039c",
+    "semantic_hash": "634ecef7d121e9d8bf3fafc22bd5039c"
+  },
+  "tailwind.config.ts": {
+    "mtime": 1791537737.826152,
+    "seen": 1791537943.8469572,
+    "ast_hash": "4c4a870231003f19ebe45fc4ca687325",
+    "semantic_hash": "4c4a870231003f19ebe45fc4ca687325"
+  },
+  "tsconfig.json": {
+    "mtime": 1791537708.729955,
+    "seen": 1791537943.8469572,
+    "ast_hash": "5e478ee42eb1df5556c17977e8362a93",
+    "semantic_hash": "5e478ee42eb1df5556c17977e8362a93"
+  },
+  "src/app/dashboard/page.tsx": {
+    "mtime": 1791587427.5053134,
+    "seen": 1791588324.0070708,
+    "ast_hash": "6e3a7abfc0bc4a2f0ce6d1f2134a44b1",
+    "semantic_hash": ""
+  },
+  "src/app/onboarding/page.tsx": {
+    "mtime": 1791587103.4908917,
+    "seen": 1791587218.7607267,
+    "ast_hash": "4fee0b4edf4fdf9b5e38a3a6729a713c",
+    "semantic_hash": ""
+  },
+  "src/components/Providers.tsx": {
+    "mtime": 1791542109.0561185,
+    "seen": 1791542191.8006551,
+    "ast_hash": "8549ab53ae58d5b8a4b5fa9c36b1aba6",
+    "semantic_hash": "8549ab53ae58d5b8a4b5fa9c36b1aba6"
+  },
+  "src/context/WorkspaceContext.tsx": {
+    "mtime": 1791543556.961945,
+    "seen": 1791544013.156924,
+    "ast_hash": "2c7c62aba60752bb54aa8d3b99439c80",
+    "semantic_hash": "2c7c62aba60752bb54aa8d3b99439c80"
+  },
+  "src/lib/seed-data.ts": {
+    "mtime": 1791539868.0834625,
+    "seen": 1791540183.2650487,
+    "ast_hash": "fc531ba511b4225287c43a95181c545f",
+    "semantic_hash": "fc531ba511b4225287c43a95181c545f"
+  },
+  "public/sw.js": {
+    "mtime": 1791542061.523342,
+    "seen": 1791542191.8006551,
+    "ast_hash": "78acf3a3270911fe8285016637ea2696",
+    "semantic_hash": "78acf3a3270911fe8285016637ea2696"
+  },
+  "src/components/InstallPwaBanner.tsx": {
+    "mtime": 1791547574.9876385,
+    "seen": 1791547654.7107222,
+    "ast_hash": "9345a56c2264b864d0cd5052ae1f01b4",
+    "semantic_hash": "9345a56c2264b864d0cd5052ae1f01b4"
+  },
+  "src/app/login/page.tsx": {
+    "mtime": 1791587090.708941,
+    "seen": 1791587218.7607267,
+    "ast_hash": "1047b5b2d542026ed83236f0be0bca80",
+    "semantic_hash": ""
+  },
+  "src/app/invite/page.tsx": {
+    "mtime": 1791546740.744614,
+    "seen": 1791546905.5360143,
+    "ast_hash": "d79e91be87ccf84221dc47ab40a5e280",
+    "semantic_hash": "d79e91be87ccf84221dc47ab40a5e280"
+  },
+  "src/components/marketing-home.tsx": {
+    "mtime": 1791586939.4922287,
+    "seen": 1791587218.7607267,
+    "ast_hash": "664c4478903bfdea6fdfb0df4900e48b",
+    "semantic_hash": ""
+  },
+  "AGENTS.md": {
+    "mtime": 1791537207.317679,
+    "seen": 1791587218.7607267,
+    "ast_hash": "0c59d8ba5ea5288ae4a75eb3e01801d8",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1791537194.3164923,
+    "seen": 1791587218.7607267,
+    "ast_hash": "e5042df8377bad03b21223bd382be843",
+    "semantic_hash": ""
+  },
+  "public/apple-touch-icon.png": {
+    "mtime": 1791542048.7670887,
+    "seen": 1791587218.7607267,
+    "ast_hash": "aef6cbc667cf711f3195996c4ed17411",
+    "semantic_hash": ""
+  },
+  "public/icons/icon-192.png": {
+    "mtime": 1791542048.7640922,
+    "seen": 1791587218.7607267,
+    "ast_hash": "c1d9f96b46f5b7d5febb3fee333d9375",
+    "semantic_hash": ""
+  },
+  "public/icons/icon-512.png": {
+    "mtime": 1791542048.7610822,
+    "seen": 1791587218.7607267,
+    "ast_hash": "78352209b83613d55c83631f60ffb88d",
+    "semantic_hash": ""
+  },
+  "UX-DESIGN.md": {
+    "mtime": 1791588289.5803044,
+    "seen": 1791588324.0070708,
+    "ast_hash": "d40f10a072ce37cfb753553b3771423b",
+    "semantic_hash": ""
+  }
+}

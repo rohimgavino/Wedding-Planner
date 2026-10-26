@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),ts=require('typescript'),Module=require('node:module');
+const m=new Module('commerce',module);m._compile(ts.transpileModule(fs.readFileSync('src/lib/commerce.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,'commerce');
+const {validLynkURL,parsePackage,Commerce}=m.exports;
+assert.equal(validLynkURL('https://lynk.id/shop/product'),true);
+for(const url of ['http://lynk.id/shop/product','https://lynk.id.evil/shop/product','https://evil@lynk.id/shop/product','https://lynk.id/shop','https://lynk.id/shop/product?x=1','https://lynk.id/shop/../product'])assert.equal(validLynkURL(url),false);
+assert.deepEqual(parsePackage('','','','',false),{email:null,price:null,days:null,url:null,enabled:false});
+assert.throws(()=>parsePackage('bad','100','30','https://lynk.id/shop/product',true));
+for(const n of ['0','-1','1.5','1e3','9007199254740992'])assert.throws(()=>parsePackage('a@example.com',n,'30','https://lynk.id/shop/product',true));
+assert.deepEqual(parsePackage('a@example.com','100','30','https://lynk.id/shop/product',true),{email:'a@example.com',price:100,days:30,url:'https://lynk.id/shop/product',enabled:true});
+const calls=[];const client={rpc:async(name,args)=>{calls.push([name,args]);return {data:'id',error:null}}};
+(async()=>{const c=new Commerce(client);assert.equal(await c.request('workspace'),'id');await c.verify('request',' tx-one ','100',true,'Dashboard');assert.deepEqual(calls,[['request_core_purchase',{ws_id:'workspace'}],['verify_core_purchase',{request_id:'request',reference:'TX-ONE',paid_amount:100,dashboard_confirmed:true,note:'Dashboard'}]]);await assert.rejects(c.verify('request','X','100',false,'note'));console.log('PASS commerce validation and RPC contracts');})();

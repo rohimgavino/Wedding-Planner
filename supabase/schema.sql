@@ -1,0 +1,2 @@
+-- Deprecated: do not execute this file. Apply supabase/migrations/*.sql in order.
+-- Secure foundation and RPC contracts: docs/BACKEND-FOUNDATION-REPORT.md.

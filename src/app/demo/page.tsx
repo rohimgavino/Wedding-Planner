@@ -1,0 +1,4 @@
+import Link from "next/link";
+import { Brand } from "@/components/everrae/navigation";
+import { PlannerPreview } from "@/components/everrae/planner-preview";
+export default function Demo(){return <div className="everrae er-demo-page"><div className="er-container"><header className="er-demo-heading"><Link href="/"><Brand/></Link></header><div className="er-demo-notice"><p className="er-eyebrow">DEMO INTERAKTIF · SEMUA DATA FIKTIF</p><h1 className="text-4xl font-serif my-4">A little closer to your big day.</h1><p>Coba tab Timeline, Budget, dan Guest List, lalu tandai checklist. Perubahan demo hanya di memori halaman ini, tidak disimpan dan tidak mengisi workspace pribadi kamu.</p></div><PlannerPreview interactive/><Link className="er-text-link" href="/">Kembali ke beranda</Link></div></div>;}

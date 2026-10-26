@@ -1,0 +1,22 @@
+.everrae .er-scroll-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 700ms ease, transform 700ms cubic-bezier(.2,.65,.3,1);
+  transition-delay: var(--er-reveal-delay, 0ms);
+}
+.everrae .er-scroll-reveal.er-scroll-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Keyboard navigation must never focus an invisible element. */
+.everrae .er-scroll-reveal:focus-within {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .everrae .er-scroll-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

@@ -1,0 +1,12 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs'),ts=require('typescript'),Module=require('node:module');
+const m=new Module('savings',module);m._compile(ts.transpileModule(fs.readFileSync('src/lib/savings.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,'savings');
+const {savingsSummary,entitlementActive}=m.exports;
+assert.deepEqual(savingsSummary([{contributor_id:'a',amount:100},{contributor_id:'b',amount:200}],1000),{total:300,remaining:700,progress:30,byPartner:{a:100,b:200}});
+assert.equal(savingsSummary([{contributor_id:'a',amount:2000}],1000).progress,100);
+assert.equal(savingsSummary([],0).progress,0);
+assert.equal(entitlementActive([{feature:'core',revoked_at:null,expires_at:null}],'core'),true);
+assert.equal(entitlementActive([{feature:'core',revoked_at:'2026-01-01',expires_at:null}],'core'),false);
+assert.equal(entitlementActive([{feature:'core',revoked_at:null,expires_at:'2020-01-01'}],'core'),false);
+assert.equal(entitlementActive([],'core'),false);
+console.log('PASS savings totals/partners/remaining/progress and entitlement expiry/revocation');
