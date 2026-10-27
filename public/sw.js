@@ -1,5 +1,5 @@
 // Never keep stale HTML pointing to deleted Next.js build hashes.
-const CACHE_NAME = 'everrae-public-v2';
+const CACHE_NAME = 'everrae-public-v3-brand-logout';
 const PUBLIC_ASSETS = ['/manifest.json', '/favicon.ico', '/icons/icon-192.png', '/icons/icon-512.png', '/apple-touch-icon.png'];
 
 self.addEventListener('install', (event) => {

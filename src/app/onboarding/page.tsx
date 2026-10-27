@@ -44,7 +44,7 @@ export default function OnboardingPage() {
               💍
             </div>
             <span className="font-serif font-bold text-slate-900 tracking-tight text-xl">
-              EverRae
+              Pocket Planner
             </span>
           </Link>
           <h1 className="text-2xl font-serif font-bold text-slate-900 leading-tight">
