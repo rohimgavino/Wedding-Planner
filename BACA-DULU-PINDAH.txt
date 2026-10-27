@@ -1,0 +1,13 @@
+WEDDING PLANNER - PINDAH KOMPUTER
+
+Snapshot kode lokal dari branch backup/local-development-20261026, commit 5f5bb9b.
+
+1. Extract ZIP.
+2. Install Node.js dan Git.
+3. Buka terminal di folder hasil extract, jalankan npm ci.
+4. Jalankan npm run dev untuk pengembangan lokal.
+
+Tidak menyertakan .env, kredensial, node_modules, build, backup pelanggan atau riwayat Git. Konfigurasi Supabase perlu disiapkan secara aman; tanpa konfigurasi aplikasi dapat failclosed.
+JANGAN langsung deploy atau menjalankan migrasi SQL. Baca docs/GITHUB-LOCAL-SNAPSHOT.md dan docs/TIER-PRICING-LOCAL.md. Fitur lokal pricing/admin/DOKU belum seluruhnya dirilis produksi.
+
+Repo: https://github.com/rohimgavino/Wedding-Planner/tree/backup/local-development-20261026
