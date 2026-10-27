@@ -60,6 +60,9 @@ BEGIN
   IF jsonb_typeof(promo->'title') IS DISTINCT FROM 'string' OR length(btrim(promo->>'title')) NOT BETWEEN 1 AND 120 THEN RAISE EXCEPTION 'invalid promo title'; END IF;
   IF jsonb_typeof(promo->'starts_at') IS DISTINCT FROM 'string' OR jsonb_typeof(promo->'ends_at') IS DISTINCT FROM 'string' OR (promo->>'starts_at') !~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$' OR (promo->>'ends_at') !~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$' THEN RAISE EXCEPTION 'invalid UTC schedule'; END IF;
   BEGIN starts:=(promo->>'starts_at')::timestamptz; ends:=(promo->>'ends_at')::timestamptz; EXCEPTION WHEN OTHERS THEN RAISE EXCEPTION 'invalid UTC schedule'; END;
+  -- PostgreSQL can normalize values such as 24:00:00; require exact canonical UTC.
+  IF to_char(starts AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS"Z"') IS DISTINCT FROM promo->>'starts_at'
+     OR to_char(ends AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS"Z"') IS DISTINCT FROM promo->>'ends_at' THEN RAISE EXCEPTION 'invalid UTC schedule'; END IF;
   IF starts>=ends THEN RAISE EXCEPTION 'invalid promo interval'; END IF;
  END IF;
  SELECT version INTO old_version FROM public.tier_price_current WHERE package_id=p_package_id FOR UPDATE;

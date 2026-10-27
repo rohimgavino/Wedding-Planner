@@ -16,6 +16,26 @@ const config={amount_idr:'400000',promo:{amount_idr:'300000',title:'Synthetic pr
 const save=async(c=config,v='1',p='starter',reason='Synthetic approval',confirmed=true)=>(await db.query('select public.admin_update_tier_price($1,$2,$3,$4,$5) r',[p,v,c,reason,confirmed])).rows[0].r;
 await user(2);assert.equal((await save()).packages[0].version,'2');
 await assert.rejects(save(config,'1'),/version conflict/);
+await assert.rejects(save({...config,promo:{...config.promo,starts_at:'2026-10-21T24:00:00Z'}},'2'),/invalid UTC schedule/,'reject PostgreSQL-normalized 24:00:00 start');
+await assert.rejects(save({...config,promo:{...config.promo,ends_at:'2026-10-22T24:00:00Z'}},'2'),/invalid UTC schedule/,'reject PostgreSQL-normalized 24:00:00 end');
+console.log('PASS canonical UTC rejects normalized 24:00:00 at both schedule endpoints');
+for(const field of ['starts_at','ends_at']){
+ for(const value of [null,0,false,{},[], '', '2026-10-22', '2026-10-22T00:00:00', '2026-10-22T00:00:00+00:00', '2026-10-22T00:00:00.000Z', '2026-10-22t00:00:00z', '2026-02-29T00:00:00Z', '2026-02-30T00:00:00Z', '2026-13-01T00:00:00Z', '2026-10-22T23:59:60Z', '2026-10-22T00:60:00Z', '0000-01-01T00:00:00Z']){
+  await assert.rejects(save({...config,promo:{...config.promo,[field]:value}},'2'),/invalid UTC schedule/,`${field}: ${JSON.stringify(value)}`);
+ }
+ const missing={...config.promo};delete missing[field];
+ await assert.rejects(save({...config,promo:missing},'2'),/invalid promo keys/);
+}
+await assert.rejects(save({...config,promo:{...config.promo,starts_at:config.promo.ends_at,ends_at:config.promo.starts_at}},'2'),/invalid promo interval/);
+// A non-UTC session must not change validation; roll back accepted fixtures to retain draft tiers.
+await db.exec("BEGIN;SET LOCAL TIME ZONE 'Asia/Jakarta'");
+try{
+ const leap={...config,promo:{...config.promo,starts_at:'2024-02-29T00:00:00Z',ends_at:'2024-02-29T23:59:59Z'}};
+ assert.deepEqual((await save(leap,'1','premium')).packages[1].config,leap);
+ const yearBoundary={...config,promo:{...config.promo,starts_at:'2026-12-31T23:59:59Z',ends_at:'2027-01-01T00:00:00Z'}};
+ assert.deepEqual((await save(yearBoundary,'2','premium')).packages[1].config,yearBoundary);
+}finally{await db.exec('ROLLBACK');}
+console.log('PASS both UTC endpoints: malformed/null/missing rejection, leap-day/year boundaries, non-UTC session');
 for(const bad of [null,[],{}, {...config,extra:1},{...config,amount_idr:400000},{...config,amount_idr:'0'},{...config,amount_idr:'9007199254740992'},{...config,amount_idr:null},{...config,promo:{}},{...config,promo:{...config.promo,amount_idr:'400000'}},{...config,promo:{...config.promo,title:' '}},{...config,promo:{...config.promo,title:'x'.repeat(121)}},{...config,promo:{...config.promo,starts_at:'2026-02-30T00:00:00Z'}},{...config,promo:{...config.promo,ends_at:config.promo.starts_at}}]) await assert.rejects(save(bad,'2'),/invalid/);
 for(const v of [null,'0','01','1e2'])await assert.rejects(save(config,v),/invalid version/);
 await assert.rejects(save(config,'2','unknown'),/invalid package/);
