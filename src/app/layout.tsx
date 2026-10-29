@@ -6,10 +6,10 @@ import { Providers } from "@/components/Providers";
 export const metadata: Metadata = {
   title: "Pocket Planner — Plan Your Dream Wedding, Effortlessly",
   description: "Rencanakan pernikahan dengan lebih tenang. Checklist, anggaran, dan daftar tamu bersama Pocket Planner.",
-  manifest: "/manifest.json?v=pp-alpha-1",
+  manifest: "/manifest.json?v=pp-alpha-2",
   icons: {
-    icon: "/favicon.ico?v=pp-alpha-1",
-    apple: "/apple-touch-icon.png?v=pp-alpha-1",
+    icon: "/favicon.ico?v=pp-alpha-2",
+    apple: "/apple-touch-icon.png?v=pp-alpha-2",
   },
 };
 
