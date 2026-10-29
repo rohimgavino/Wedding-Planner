@@ -1,0 +1,15 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const dashboard=fs.readFileSync('src/app/dashboard/page.tsx','utf8');
+const reset=fs.readFileSync('src/components/everrae/planning-reset.tsx','utf8');
+const activation=fs.readFileSync('src/components/everrae/workspace-activation.tsx','utf8');
+assert(dashboard.includes("!entitlementActive(entitlements,'core') && !developerTestAccess && activeTab !== 'pairing'"));
+assert(dashboard.includes("<WorkspaceActivation onSettings={() => setActiveTab('pairing')} />"));
+assert(reset.includes("confirmation!=='RESET RENCANA'"));
+assert(reset.includes('Cadangkan data penting terlebih dahulu; tidak ada tombol urungkan.'));
+assert(reset.includes('Owner dan pasangan sama-sama terdampak.'));
+assert(activation.indexOf('href="/purchase"')<activation.indexOf('<FillingExample />'));
+assert(activation.indexOf('href="/purchase"')<activation.indexOf('<PlanningReset />'));
+assert(activation.includes('diverifikasi manual'));
+assert(!activation.includes('DOKU'));
+console.log('PASS activation guard, CTA ordering, manual verification and unchanged reset safeguards');

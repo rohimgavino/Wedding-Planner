@@ -1,0 +1,40 @@
+.activation-gate{--activation-forest:#203d32;--activation-line:#dce2d7;min-height:100svh;background:#f6f5ef;color:#27382f;padding:24px 16px 32px;font-family:var(--font-sans),Arial,sans-serif;overflow-wrap:anywhere}
+.activation-wrap{max-width:640px;margin:auto}
+.activation-brand{display:flex;align-items:center;width:132px;min-height:44px;margin:0 0 20px}
+.activation-brand img{width:112px;height:64px;object-fit:contain}
+.activation-panel{background:#fff;border:1px solid var(--activation-line);border-radius:20px;padding:32px;box-shadow:0 8px 28px #203d3206}
+.activation-status{display:inline-flex;align-items:center;gap:8px;border:1px solid #d9dfce;background:#f1f3e9;padding:6px 12px;border-radius:100px;font-size:.75rem;font-weight:600;color:#47583c}
+.activation-status>span{width:6px;height:6px;border-radius:50%;background:#78865e;flex-shrink:0}
+.activation-eyebrow{font-size:.65rem;font-weight:600;letter-spacing:.14em;margin:16px 0 8px;color:#637168}
+.activation-heading h1{font-family:var(--font-serif),Georgia,serif;font-size:2rem;line-height:1.15;font-weight:500;letter-spacing:-.025em;max-width:450px;color:var(--activation-forest)}
+.activation-intro{font-size:.9rem;line-height:1.65;color:#637168;max-width:470px;margin:14px 0 0}
+.activation-actions{display:grid;gap:10px;margin:24px 0 28px}
+.activation-gate .activation-primary,.activation-gate .activation-secondary{display:flex;align-items:center;justify-content:center;gap:16px;min-height:48px;padding:12px 18px;border-radius:8px;font-size:.875rem;line-height:1.5;font-weight:600;white-space:normal;text-align:center}
+.activation-gate .activation-primary{background:var(--activation-forest);color:white;border:1px solid var(--activation-forest)}
+.activation-gate .activation-primary:hover{background:#305342}
+.activation-secondary{border:1px solid var(--activation-line);background:#fff;color:var(--activation-forest);cursor:pointer}
+.activation-secondary:hover{background:#f6f5ef}
+.activation-guide{border-top:1px solid var(--activation-line);padding-top:22px}
+.activation-guide h2{font-size:.85rem;font-weight:600;margin-bottom:16px}
+.activation-guide ol{list-style:none;display:grid;gap:16px;padding:0;margin:0}
+.activation-guide li{display:flex;align-items:flex-start;gap:12px}
+.activation-guide li>span{display:flex;align-items:center;justify-content:center;border:1px solid var(--activation-line);border-radius:50%;width:25px;height:25px;flex-shrink:0;font-size:.7rem;color:#637168}
+.activation-guide strong{font-size:.8rem;font-weight:600;display:block;line-height:1.5}
+.activation-guide li p{font-size:.775rem;line-height:1.6;color:#637168;margin:2px 0 0}
+.activation-payment{margin-top:20px;border-top:1px solid var(--activation-line);font-size:.8rem}
+.activation-gate summary{cursor:pointer;min-height:44px;padding:12px 0;line-height:1.5;font-weight:600;color:var(--activation-forest)}
+.activation-payment p{font-size:.8rem;line-height:1.7;color:#637168;padding:0 0 4px}
+.activation-extras{margin-top:16px;border-top:1px solid var(--activation-line);border-bottom:1px solid var(--activation-line)}
+.activation-extras>details{margin:0;border:0;border-radius:0;background:transparent;padding:0 8px;font-size:.8rem}
+.activation-extras>details+details{border-top:1px solid var(--activation-line)}
+.activation-extras>details>summary{font-size:.8rem}
+.activation-extras>details>p,.activation-extras>details>ol{margin-bottom:16px}
+.activation-maintenance>section{margin:0 0 16px;padding:16px;background:#fff;border:1px solid var(--activation-line);border-radius:8px;line-height:1.7}
+.activation-maintenance>section>button{font-size:.8rem}
+.activation-home{display:inline-flex;align-items:center;min-height:44px;font-size:.75rem;color:#637168;margin-top:12px;padding:8px}
+.activation-gate :is(a,button,summary):focus-visible{outline:3px solid #ae9565;outline-offset:3px}
+body:has(.activation-gate) .pwa-install-banner{position:static;inset:auto;width:calc(100% - 32px);max-width:640px;margin:0 auto 24px;flex-wrap:wrap}
+body:has(.activation-gate) .pwa-install-banner>div:first-child{flex:1 1 180px;min-width:0}
+body:has(.activation-gate) .pwa-install-banner button{min-height:44px;min-width:44px}
+@media(min-width:768px){.activation-gate{padding-top:32px}.activation-brand{margin-bottom:24px}.activation-actions{grid-template-columns:1fr 1fr}.activation-panel{padding:36px 40px}}
+@media(max-width:380px){.activation-panel{padding:24px}.activation-heading h1{font-size:1.8rem}}

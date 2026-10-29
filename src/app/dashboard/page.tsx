@@ -7,6 +7,7 @@ import "./dashboard.css";
 import { PlannerDialog } from "@/components/everrae/planner-dialog";
 import { FillingExample } from "@/components/everrae/filling-example";
 import { PlanningReset } from "@/components/everrae/planning-reset";
+import { WorkspaceActivation } from "@/components/everrae/workspace-activation";
 import { SharedSavings } from "@/components/everrae/shared-savings";
 import { entitlementActive } from "@/lib/savings";
 import { GuestCSVImport } from "@/components/everrae/guest-csv-import";
@@ -99,7 +100,7 @@ export default function DashboardPage() {
   }
 
   if (!entitlementActive(entitlements,'core') && !developerTestAccess && activeTab !== 'pairing') {
-    return <main className="min-h-screen bg-[#FAF7F5] p-6 flex items-center justify-center"><section className="max-w-lg rounded-3xl bg-white p-6 border border-rose-100"><h1 className="font-serif text-2xl">Workspace menunggu aktivasi</h1><FillingExample /><PlanningReset /><p className="mt-4">Budget, checklist, tamu, dan tabungan bersama termasuk paket inti berbayar per workspace. Pembayaran melalui Lynk.id harus diverifikasi manual oleh admin sebelum akses aktif untuk berdua.</p><p className="mt-3 text-sm">Tidak ada aktivasi otomatis dari redirect pembayaran. Hubungi kanal dukungan resmi untuk verifikasi; jangan kirim data kartu atau password.</p><Link href="/purchase" className="block mt-4 min-h-11 underline text-rose-700">Paket inti & permintaan aktivasi</Link><button className="mt-4 min-h-11 border rounded-xl p-3" onClick={()=>setActiveTab('pairing')}>Pengaturan & pasangan</button><Link className="block mt-3 underline" href="/">Kembali ke beranda</Link></section></main>;
+    return <WorkspaceActivation onSettings={() => setActiveTab('pairing')} />;
   }
 
   const daysRemaining = workspace ? calculateDaysRemaining(workspace.wedding_date) : 0;
