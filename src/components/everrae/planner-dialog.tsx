@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 
 /** Local planner dialog: focus containment, Escape, backdrop and return focus. */
-export function PlannerDialog({ children, onClose, title }: { children: React.ReactNode; onClose: () => void; title: string }) {
+export function PlannerDialog({ children, onClose, title, resetSurface = false }: { children: React.ReactNode; onClose: () => void; title: string; resetSurface?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const close = useRef(onClose);
   close.current = onClose;
@@ -25,5 +26,7 @@ export function PlannerDialog({ children, onClose, title }: { children: React.Re
     document.addEventListener("keydown", key);
     return () => { document.removeEventListener("keydown", key); document.body.style.overflow = bodyOverflow; previous?.focus(); };
   }, []);
-  return <div className="planner-backdrop" onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}><div ref={ref} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1}>{children}</div></div>;
+  const dialog = <div className={resetSurface ? "planner-backdrop planning-reset-backdrop" : "planner-backdrop"} onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}><div ref={ref} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1}>{children}</div></div>;
+  // Reset escapes dashboard stacking contexts; other planner dialogs keep their existing layout.
+  return resetSurface ? createPortal(dialog, document.body) : dialog;
 }

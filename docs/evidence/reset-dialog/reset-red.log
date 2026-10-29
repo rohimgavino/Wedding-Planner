@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "C:\Users\MSI\program\pocketplanner-reset-review-20261029\scripts\test-reset-surface-browser.py", line 60, in <module>
+    exec(compile(prefix+steps, __file__, 'exec'))
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MSI\program\pocketplanner-reset-review-20261029\scripts\test-reset-surface-browser.py", line 64, in <module>
+AssertionError: {'background': 'rgba(0, 0, 0, 0)', 'color': 'rgb(39, 56, 47)', 'z': '100', 'left': 12, 'right': 348, 'top': 48, 'bottom': 592, 'centered': True, 'above': True, 'overflow': 'auto', 'locked': True}

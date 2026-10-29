@@ -1,0 +1,1 @@
+PASS cloud: safe redirects/config/callback, authenticated scoped CRUD, immutable tenant IDs, secure RPC contracts, failures reject

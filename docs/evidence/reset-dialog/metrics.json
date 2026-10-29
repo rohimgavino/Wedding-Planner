@@ -1,0 +1,762 @@
+[
+  {
+    "mode": "app",
+    "viewport": [
+      360,
+      640
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 344,
+    "top": 32,
+    "bottom": 608,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "app",
+    "viewport": [
+      360,
+      640
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 344,
+    "top": 32,
+    "bottom": 608,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "app",
+    "viewport": [
+      390,
+      844
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 374,
+    "top": 42.203125,
+    "bottom": 801.796875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "app",
+    "viewport": [
+      390,
+      844
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 374,
+    "top": 42.203125,
+    "bottom": 801.796875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "app",
+    "viewport": [
+      430,
+      844
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 414,
+    "top": 48.703125,
+    "bottom": 795.296875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "app",
+    "viewport": [
+      430,
+      844
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 414,
+    "top": 42.203125,
+    "bottom": 801.796875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "app",
+    "viewport": [
+      1280,
+      900
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 416,
+    "right": 864,
+    "top": 112.703125,
+    "bottom": 787.296875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "app",
+    "viewport": [
+      1280,
+      900
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 416,
+    "right": 864,
+    "top": 45,
+    "bottom": 855,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "app",
+    "viewport": [
+      844,
+      390
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 198,
+    "right": 646,
+    "top": 19.5,
+    "bottom": 370.5,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "app",
+    "viewport": [
+      844,
+      390
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 198,
+    "right": 646,
+    "top": 19.5,
+    "bottom": 370.5,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "android",
+    "viewport": [
+      360,
+      640
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 344,
+    "top": 32,
+    "bottom": 608,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "android",
+    "viewport": [
+      360,
+      640
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 344,
+    "top": 32,
+    "bottom": 608,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "android",
+    "viewport": [
+      390,
+      844
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 374,
+    "top": 42.203125,
+    "bottom": 801.796875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "android",
+    "viewport": [
+      390,
+      844
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 374,
+    "top": 42.203125,
+    "bottom": 801.796875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "android",
+    "viewport": [
+      430,
+      844
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 414,
+    "top": 48.703125,
+    "bottom": 795.296875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "android",
+    "viewport": [
+      430,
+      844
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 414,
+    "top": 42.203125,
+    "bottom": 801.796875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "android",
+    "viewport": [
+      1280,
+      900
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 416,
+    "right": 864,
+    "top": 112.703125,
+    "bottom": 787.296875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "android",
+    "viewport": [
+      1280,
+      900
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 416,
+    "right": 864,
+    "top": 45,
+    "bottom": 855,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "android",
+    "viewport": [
+      844,
+      390
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 198,
+    "right": 646,
+    "top": 19.5,
+    "bottom": 370.5,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "android",
+    "viewport": [
+      844,
+      390
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 198,
+    "right": 646,
+    "top": 19.5,
+    "bottom": 370.5,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "ios",
+    "viewport": [
+      360,
+      640
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 344,
+    "top": 32,
+    "bottom": 608,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "ios",
+    "viewport": [
+      360,
+      640
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 344,
+    "top": 32,
+    "bottom": 608,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "ios",
+    "viewport": [
+      390,
+      844
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 374,
+    "top": 42.203125,
+    "bottom": 801.796875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "ios",
+    "viewport": [
+      390,
+      844
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 374,
+    "top": 42.203125,
+    "bottom": 801.796875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "ios",
+    "viewport": [
+      430,
+      844
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 414,
+    "top": 48.703125,
+    "bottom": 795.296875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "ios",
+    "viewport": [
+      430,
+      844
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 414,
+    "top": 42.203125,
+    "bottom": 801.796875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "ios",
+    "viewport": [
+      1280,
+      900
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 416,
+    "right": 864,
+    "top": 112.703125,
+    "bottom": 787.296875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "ios",
+    "viewport": [
+      1280,
+      900
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 416,
+    "right": 864,
+    "top": 45,
+    "bottom": 855,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "ios",
+    "viewport": [
+      844,
+      390
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 198,
+    "right": 646,
+    "top": 19.5,
+    "bottom": 370.5,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "ios",
+    "viewport": [
+      844,
+      390
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 198,
+    "right": 646,
+    "top": 19.5,
+    "bottom": 370.5,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "standalone",
+    "viewport": [
+      360,
+      640
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 344,
+    "top": 32,
+    "bottom": 608,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "standalone",
+    "viewport": [
+      360,
+      640
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 344,
+    "top": 32,
+    "bottom": 608,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "standalone",
+    "viewport": [
+      390,
+      844
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 374,
+    "top": 42.203125,
+    "bottom": 801.796875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "standalone",
+    "viewport": [
+      390,
+      844
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 374,
+    "top": 42.203125,
+    "bottom": 801.796875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "standalone",
+    "viewport": [
+      430,
+      844
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 414,
+    "top": 48.703125,
+    "bottom": 795.296875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "standalone",
+    "viewport": [
+      430,
+      844
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 16,
+    "right": 414,
+    "top": 42.203125,
+    "bottom": 801.796875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "standalone",
+    "viewport": [
+      1280,
+      900
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 416,
+    "right": 864,
+    "top": 112.703125,
+    "bottom": 787.296875,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "standalone",
+    "viewport": [
+      1280,
+      900
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 416,
+    "right": 864,
+    "top": 45,
+    "bottom": 855,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "standalone",
+    "viewport": [
+      844,
+      390
+    ],
+    "scale": 1,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 198,
+    "right": 646,
+    "top": 19.5,
+    "bottom": 370.5,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  },
+  {
+    "mode": "standalone",
+    "viewport": [
+      844,
+      390
+    ],
+    "scale": 2,
+    "background": "rgb(255, 255, 255)",
+    "color": "rgb(39, 56, 47)",
+    "z": "2000",
+    "left": 198,
+    "right": 646,
+    "top": 19.5,
+    "bottom": 370.5,
+    "centered": true,
+    "above": true,
+    "overflow": "auto",
+    "locked": true
+  }
+]

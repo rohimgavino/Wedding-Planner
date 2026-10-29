@@ -1,0 +1,17 @@
+{"viewport": 360, "scale": 1, "banner": "android", "width": 278, "height": 48, "cardTop": 85, "display": "block", "font": "14px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+{"viewport": 360, "scale": 2, "banner": "android", "width": 278, "height": 136, "cardTop": 85, "display": "block", "font": "28px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+{"viewport": 390, "scale": 1, "banner": "android", "width": 308, "height": 48, "cardTop": 85, "display": "block", "font": "14px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+{"viewport": 390, "scale": 2, "banner": "android", "width": 308, "height": 136, "cardTop": 85, "display": "block", "font": "28px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+{"viewport": 430, "scale": 1, "banner": "android", "width": 348, "height": 48, "cardTop": 85, "display": "block", "font": "14px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+{"viewport": 430, "scale": 2, "banner": "android", "width": 348, "height": 136, "cardTop": 85, "display": "block", "font": "28px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+{"viewport": 1280, "scale": 1, "banner": "android", "width": 398, "height": 48, "cardTop": 89, "display": "block", "font": "14px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+{"viewport": 1280, "scale": 2, "banner": "android", "width": 846, "height": 96, "cardTop": 89, "display": "block", "font": "28px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+{"viewport": 360, "scale": 1, "banner": "ios", "width": 278, "height": 48, "cardTop": 85, "display": "block", "font": "14px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+{"viewport": 360, "scale": 2, "banner": "ios", "width": 278, "height": 136, "cardTop": 85, "display": "block", "font": "28px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+{"viewport": 390, "scale": 1, "banner": "ios", "width": 308, "height": 48, "cardTop": 85, "display": "block", "font": "14px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+{"viewport": 390, "scale": 2, "banner": "ios", "width": 308, "height": 136, "cardTop": 85, "display": "block", "font": "28px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+{"viewport": 430, "scale": 1, "banner": "ios", "width": 348, "height": 48, "cardTop": 85, "display": "block", "font": "14px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+{"viewport": 430, "scale": 2, "banner": "ios", "width": 348, "height": 136, "cardTop": 85, "display": "block", "font": "28px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+{"viewport": 1280, "scale": 1, "banner": "ios", "width": 398, "height": 48, "cardTop": 89, "display": "block", "font": "14px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+{"viewport": 1280, "scale": 2, "banner": "ios", "width": 846, "height": 96, "cardTop": 89, "display": "block", "font": "28px", "textFits": true, "centered": true, "noOverlap": true, "overflow": false}
+PASS authenticated EMPTY dashboard, CTA bounds/text, 200% root text, Android/iOS PWA spacing, guidance; 16 cases; no hosted calls
