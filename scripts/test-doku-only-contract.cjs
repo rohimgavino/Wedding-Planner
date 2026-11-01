@@ -1,0 +1,13 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const purchase = fs.readFileSync('src/app/purchase/page.tsx','utf8');
+const activation = fs.readFileSync('src/components/everrae/workspace-activation.tsx','utf8');
+const landing = fs.readFileSync('src/components/everrae/landing-sections.tsx','utf8');
+assert(purchase.includes('Pembayaran belum tersedia'), 'Purchase must explain unavailable payment');
+assert(purchase.includes('DOKU'), 'Only DOKU may be offered');
+assert(!purchase.includes('AuthGate'), 'Explanation must remain public, even without cloud config');
+assert(!/validLynkURL|\.request\(|\.verify\(|\.settings\(|href=\{p\.lynk_url\}/.test(purchase), 'No legacy sales or settings path');
+assert(!/Lynk|verifikasi manual|diverifikasi manual/.test(activation), 'Activation must not offer manual payment');
+assert(activation.includes('DOKU'));
+assert(!/Lynk|lynk/.test(landing), 'Public purchase copy must only mention DOKU');
+console.log('PASS DOKU-only public explanation, no legacy new-purchase path, compact activation');

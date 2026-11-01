@@ -26,13 +26,13 @@ export function WorkspaceActivation({ onSettings }: { onSettings: () => void }) 
      <h2 id="activation-guide-title">Cara mengaktifkan</h2>
      <ol>
       <li><span aria-hidden="true">1</span><div><strong>Lihat paket</strong><p>Cek informasi dan ketersediaan di halaman aktivasi.</p></div></li>
-      <li><span aria-hidden="true">2</span><div><strong>Ikuti petunjuk pembayaran</strong><p>Gunakan Lynk.id sesuai arahan resmi.</p></div></li>
-      <li><span aria-hidden="true">3</span><div><strong>Verifikasi oleh admin</strong><p>Akses berdua aktif setelah pembayaran diverifikasi manual.</p></div></li>
+      <li><span aria-hidden="true">2</span><div><strong>Pembayaran belum tersedia</strong><p>Pembelian baru hanya melalui DOKU setelah backend terverifikasi.</p></div></li>
+      <li><span aria-hidden="true">3</span><div><strong>Tunggu checkout resmi</strong><p>Jangan membayar lewat kanal lain atau meminta aktivasi manual.</p></div></li>
      </ol>
     </section>
     <details className="activation-payment">
      <summary>Pembayaran &amp; keamanan</summary>
-     <p>Tidak ada aktivasi otomatis dari redirect pembayaran. Hubungi kanal dukungan resmi untuk verifikasi; jangan kirim data kartu atau password.</p>
+     <p>Tidak ada aktivasi otomatis dari redirect pembayaran. Pembayaran baru belum dibuka; jangan kirim data kartu, password, atau OTP.</p>
     </details>
    </section>
    <div className="activation-extras">

@@ -10,6 +10,6 @@ assert(reset.includes('Cadangkan data penting terlebih dahulu; tidak ada tombol 
 assert(reset.includes('Owner dan pasangan sama-sama terdampak.'));
 assert(activation.indexOf('href="/purchase"')<activation.indexOf('<FillingExample />'));
 assert(activation.indexOf('href="/purchase"')<activation.indexOf('<PlanningReset />'));
-assert(activation.includes('diverifikasi manual'));
-assert(!activation.includes('DOKU'));
-console.log('PASS activation guard, CTA ordering, manual verification and unchanged reset safeguards');
+assert(!activation.includes('diverifikasi manual'));
+assert(activation.includes('DOKU'));
+console.log('PASS activation guard, CTA ordering, DOKU unavailable and unchanged reset safeguards');
