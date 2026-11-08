@@ -1,0 +1,115 @@
+{
+  "sourceManifestSha256": "7491a3bb74b9309be814bb8d9b4f34134eeab7eb21a9bd4a81759a97b4ea20fc",
+  "baseMain": "43f766d586a32663592217da6540f80bde838e3e",
+  "configurationRequired": true,
+  "deviations": [
+    "public-config.txt replaced by audited offline CLOSED placeholder; no real key published",
+    "SQL, closure runner, lease template and build outputs omitted: runtime import closure only"
+  ],
+  "files": [
+    {
+      "path": ".gitignore",
+      "sha256": "0583940bb95f7ddb0a6045681b1a7671f02a926de2ea66929791494d8d5ca94c"
+    },
+    {
+      "path": "package.json",
+      "sha256": "ebd5dc74bbd6e8280f5f27e3c9386ac604cd1dbe6f9a0bc47cf493da98923106"
+    },
+    {
+      "path": "services/doku-cf-sandbox/ingress-gate.mjs",
+      "sha256": "98169963d82e97f9909c96e32195b71f208dc24e5f3c39fb1a6b877ab971b790"
+    },
+    {
+      "path": "services/doku-cf-sandbox/worker.mjs",
+      "sha256": "3bb20378451995a7c7b404181a260e9ae9c28372abe7486c58faad825e0390aa"
+    },
+    {
+      "path": "services/doku-cf-sandbox/wrangler.simple-sandbox.json",
+      "sha256": "bd703f4dcb6b25a594303508169851809c11f8524408bfd0cc60d51528fb467a"
+    },
+    {
+      "path": "services/doku-hosted-sandbox/bounded-body.mjs",
+      "sha256": "443bf145d2ad789ae6dc73c3dc5e7c017e6a99d9b27363614831f757f744ddbd"
+    },
+    {
+      "path": "services/doku-hosted-sandbox/handler.mjs",
+      "sha256": "14a06b33218cd3e5296c4285c2cd31f187efeaa51b1716cee474cb185716a851"
+    },
+    {
+      "path": "services/doku-hosted-sandbox/jwks.mjs",
+      "sha256": "70f3c7569c3fea37c9f7cc822197e2b1cbe068f403a32d393c550d42b861df33"
+    },
+    {
+      "path": "services/doku-sandbox/auth.mjs",
+      "sha256": "fb5a2dbaafe56f94ebb158626f57c5fb8113d43371035f595324aeb25ef6a109"
+    },
+    {
+      "path": "services/doku-sandbox/checkout-adapter.mjs",
+      "sha256": "dfb834bfcbd80c39be906d8f912524b58b6a6dec4216b978706a82f203aa9a3d"
+    },
+    {
+      "path": "services/doku-sandbox/checkout.mjs",
+      "sha256": "b25ff0e5ee90c4073c72c8483ae6653523a0377fc14b4c5e0ad802e0afa2b3ca"
+    },
+    {
+      "path": "services/doku-sandbox/protocol.mjs",
+      "sha256": "58dc8b11c12eaf00722939242dbdf8a76e8ee8e2341a12b8af1357d3269a9892"
+    },
+    {
+      "path": "services/doku-sandbox/tier-snapshot.mjs",
+      "sha256": "410087ca7ae83a1506408aee4203d72f177a2ba99bb80ecac45ca223d9e90ea3"
+    },
+    {
+      "path": "services/doku-sbx-harness/app.mjs",
+      "sha256": "13d07a79a24b7188df31988140af416348a52452b347c4f68553569131fee99a"
+    },
+    {
+      "path": "services/doku-sbx-harness/catalog.json",
+      "sha256": "57ef1153944f3a66531af47b6c60cb62f94d8a2409c8493302aa1d41cfbbad00"
+    },
+    {
+      "path": "services/doku-sbx-harness/checkout-client.mjs",
+      "sha256": "8bf5c400293b8d5da442d9ccc789cd918215aadf0f2991882f54291f650d4f62"
+    },
+    {
+      "path": "services/doku-sbx-harness/index.html",
+      "sha256": "fcdcc9a3d8bc2e35553ae7a286d76b1e19322dc1ad444a0f734c125da23b5dde"
+    },
+    {
+      "path": "services/doku-sbx-harness/public-config.offline.txt",
+      "sha256": "e14d94d3c9ccd3133e7e44bffb2aeddc3da50eff55681026fe664d634b86acca"
+    },
+    {
+      "path": "services/doku-sbx-harness/public-config.txt",
+      "sha256": "e14d94d3c9ccd3133e7e44bffb2aeddc3da50eff55681026fe664d634b86acca"
+    },
+    {
+      "path": "services/doku-sbx-harness/style.css",
+      "sha256": "56b18b61f26ffeb720432964b22b9985ee52d2e04be8b130781754f47c075a99"
+    },
+    {
+      "path": "services/doku-sbx-harness/timeout-probe.mjs",
+      "sha256": "2f2ee6625383e5a0ac4c9b601f9bdf2b840f326e2e907f654c9972dda27440ce"
+    },
+    {
+      "path": "services/doku-sbx-harness/worker.mjs",
+      "sha256": "18c51de26765b20efb38bc3bf42a6071002a9c58a5bd49c0fe754d30b11f4987"
+    },
+    {
+      "path": "services/doku-sbx-harness/workspace-intent-client.mjs",
+      "sha256": "4ac7fcb6d3784982a2a097bb457c35e832a3754fb4f5a62630f0e89c16bfb04e"
+    },
+    {
+      "path": "services/doku-sbx-harness/workspace-inventory.mjs",
+      "sha256": "66fb0df0727fdceafa951e79e1a2ad0116dbb3e248f11d10752afa9eff9668ce"
+    },
+    {
+      "path": "services/doku-sbx-harness/wrangler.json",
+      "sha256": "67b4020db7e2710ee08be5586cd836fbcbe6a9c87643d149f1d24dc1171e8e9c"
+    },
+    {
+      "path": "services/doku-cf-sandbox/lease-bridge.local.mjs",
+      "sha256": "2b6fdb4c55248cec5405ca4baa8cbdb651d8b72e074b743b2d95ca17b5defd1f"
+    }
+  ]
+}
