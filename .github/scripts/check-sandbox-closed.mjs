@@ -1,0 +1,53 @@
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {readFileSync, writeFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+
+const git = (...args) => execFileSync('git', args, {encoding: 'utf8'}).trim();
+const marker = '.github/sandbox-approvals/deploy-closed-api-v3.txt';
+const root = 'sandbox-release/closed-v3';
+const approvedTree = '2f4be20337904a365b10a5a7103db95c22067dae';
+assert.equal(process.env.GITHUB_REPOSITORY, 'rohimgavino/Wedding-Planner');
+assert.equal(process.env.GITHUB_REF, 'refs/heads/sandbox/doku-checkout');
+assert.equal(process.env.GITHUB_EVENT_NAME, 'push');
+const event = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8'));
+assert.equal(event.created, false, 'Branch creation cannot approve deployment');
+assert.equal(event.deleted, false);
+assert.equal(event.forced, false, 'Force pushes cannot approve deployment');
+assert.equal(event.after, git('rev-parse', 'HEAD'));
+assert.equal(event.before, git('rev-parse', 'HEAD^'), 'Exactly one new commit required');
+assert.equal(git('diff', '--name-status', 'HEAD^', 'HEAD'), `A\t${marker}`, 'Approval must ONLY add the dedicated marker');
+assert.equal(readFileSync(marker, 'utf8'), 'APPROVE CLOSED API ONLY\nartifact-tree=2f4be20337904a365b10a5a7103db95c22067dae\nworker=pp-doku-sbx-disabled-20261102-bec84f2\n');
+assert.equal(git('rev-parse', `HEAD:${root}`), approvedTree, 'Exact published CLOSED artifact required');
+assert.equal(git('status', '--porcelain', '--untracked-files=no', '--', root), '', 'Artifact working tree must be pristine');
+// Published Git blobs normalized some CRLF files before -text was added.
+// Restore ONLY the byte representation already approved by the pinned manifest.
+// Never rewrite the manifest or accept arbitrary content/hash changes.
+const provenance = JSON.parse(readFileSync(`${root}/package-provenance.json`, 'utf8'));
+for (const file of provenance.files) {
+  assert.match(file.path, /^(?!.*\.\.)(?!\/)[A-Za-z0-9_.\/-]+$/);
+  const path = `${root}/${file.path}`;
+  const bytes = readFileSync(path);
+  const hash = b => createHash('sha256').update(b).digest('hex');
+  if (hash(bytes) !== file.sha256) {
+    const restored = Buffer.from(bytes.toString('utf8').replace(/\r?\n/g, '\r\n'));
+    assert.equal(hash(restored), file.sha256, `Not a proven CRLF-only restoration: ${file.path}`);
+    writeFileSync(path, restored);
+  }
+}
+const config = JSON.parse(readFileSync(`${root}/services/doku-cf-sandbox/wrangler.simple-sandbox.json`, 'utf8'));
+assert.equal(config.name, 'pp-doku-sbx-disabled-20261102-bec84f2');
+assert.equal(config.account_id, '4c9d871a80b70e0c2275773bcd51db84');
+assert.equal(process.env.CLOUDFLARE_ACCOUNT_ID, config.account_id);
+assert.equal(config.vars.SANDBOX_ENABLED, 'false');
+assert.equal(config.vars.PLANNER_TRANSPORT_VERSION, 'disabled');
+assert.equal(config.vars.SALES_PROTOCOL, 'successor-lease-v1');
+assert.deepEqual(config.routes, []);
+assert.equal(config.preview_urls, false);
+assert.equal(config.observability.enabled, false);
+assert.equal(config.logpush, false);
+assert.equal(config.assets, undefined);
+const pkg = JSON.parse(readFileSync(`${root}/package.json`, 'utf8'));
+assert.equal(pkg.devDependencies.wrangler, '4.151.3');
+execFileSync(process.execPath, [`${root}/verify-closed.mjs`], {stdio: 'inherit'});
+console.log('Approval, target, immutable artifact tree, CLOSED vars and provenance PASS. No credential accessed.');
