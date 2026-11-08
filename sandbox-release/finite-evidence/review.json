@@ -1,0 +1,26 @@
+{
+  "artifactTree": "2f4be20337904a365b10a5a7103db95c22067dae",
+  "tuple": {
+    "leaseId": "7bd4e710-e23e-48c9-bb2e-c7a665f9d368",
+    "salesStart": "2026-11-08T22:34:11.908Z",
+    "salesExpires": "2026-11-08T22:49:11.908Z",
+    "reconciliationExpires": "2026-11-08T22:54:11.908Z"
+  },
+  "verdict": "PASS",
+  "findings": [],
+  "files": [
+    {
+      "path": ".github/scripts/check-finite-lease.mjs",
+      "sha256": "2d238881b7bbdd594cbe2636562ea218b342d500efcbc7ff20110ebb4d5febec"
+    },
+    {
+      "path": ".github/scripts/finite-evidence.mjs",
+      "sha256": "3614405982bf257f9f2070a55187dff16a7bca8112f2dc1287de39da021e6a66"
+    },
+    {
+      "path": ".github/workflows/finite-lease.yml",
+      "sha256": "261927904f07cebbfdad3994508a07e9a73f341343f23350d3fe465609e7859a"
+    }
+  ],
+  "sourceReview": "FINITE-FINAL-REVIEW.md and readiness-fixes/REVIEW.md; trusted operator verifies exact publication byte hashes"
+}

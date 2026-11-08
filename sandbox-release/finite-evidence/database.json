@@ -1,0 +1,26 @@
+{
+  "artifactTree": "2f4be20337904a365b10a5a7103db95c22067dae",
+  "tuple": {
+    "leaseId": "7bd4e710-e23e-48c9-bb2e-c7a665f9d368",
+    "salesStart": "2026-11-08T22:34:11.908Z",
+    "salesExpires": "2026-11-08T22:49:11.908Z",
+    "reconciliationExpires": "2026-11-08T22:54:11.908Z"
+  },
+  "project": "timrseunzsdqdrbyvyfn",
+  "scope": "hosted-rollback-readback",
+  "rows": [
+    {
+      "leaseId": "7bd4e710-e23e-48c9-bb2e-c7a665f9d368",
+      "salesStart": "2026-11-08T22:34:11.908Z",
+      "salesExpires": "2026-11-08T22:49:11.908Z",
+      "reconciliationExpires": "2026-11-08T22:54:11.908Z",
+      "enabled": true,
+      "closed": false
+    }
+  ],
+  "baselineBeforeSha256": "812da713e18299e063e7d4f3912bdb997eb11cf3f9233c78c496055f45f061a8",
+  "baselineAfterSha256": "812da713e18299e063e7d4f3912bdb997eb11cf3f9233c78c496055f45f061a8",
+  "sqlSha256": "bd25f0f8b1d4fb5e0de4dad9e61baeaf095dcbe65ff467ce351e03a0a5d9435d",
+  "actualRollbackSqlSha256": "fdfbf0dacb8a159e877d674c53983084af850c7a55688dfeaccf1fe725e7b89e",
+  "sourceReport": "C:/Users/MSI/AppData/Local/hermes/cache/scratch/pp-finite-activate-20261109/REPORT.json"
+}
