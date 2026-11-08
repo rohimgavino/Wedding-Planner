@@ -1,0 +1,5 @@
+.github/scripts/check-finite-lease.mjs text eol=lf
+.github/scripts/finite-evidence.mjs text eol=lf
+.github/workflows/finite-lease.yml text eol=lf
+sandbox-release/finite-evidence/*.json text eol=lf
+.github/sandbox-approvals/finite-api-lease.json text eol=lf

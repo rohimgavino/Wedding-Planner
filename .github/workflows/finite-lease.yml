@@ -1,0 +1,53 @@
+# INERT LOCAL CANDIDATE: separate publication and execution approval required.
+name: Finite API lease LOCAL candidate
+
+# Deliberately no workflow_dispatch: branch-only workflows cannot register it.
+# Publishing this workflow does NOT match the path filter below.
+on:
+  push:
+    branches: [sandbox/doku-checkout]
+    paths: [.github/sandbox-approvals/finite-api-lease.json]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sandbox-finite-api-lease
+  cancel-in-progress: false
+
+jobs:
+  closed-api:
+    if: github.repository == 'rohimgavino/Wedding-Planner' && github.ref == 'refs/heads/sandbox/doku-checkout' && github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    env:
+      CLOUDFLARE_ACCOUNT_ID: 4c9d871a80b70e0c2275773bcd51db84
+      WRANGLER_SEND_METRICS: 'false'
+      CI: 'true'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2, verified official tag
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0, verified official tag
+        with:
+          node-version: '22.16.0'
+      - name: Fail-closed approval, target and immutable artifact checks
+        run: node .github/scripts/check-finite-lease.mjs
+      - name: Install exact locked build and verify CLOSED artifact
+        working-directory: sandbox-release/closed-v3
+        run: npm ci --no-audit --no-fund
+      - name: Package API offline (no credential)
+        working-directory: sandbox-release/closed-v3
+        run: ./node_modules/.bin/wrangler deploy --config services/doku-cf-sandbox/wrangler.simple-sandbox.json --dry-run
+      - name: Deploy only CLOSED sandbox API
+        working-directory: sandbox-release/closed-v3
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_SANDBOX_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "${CLOUDFLARE_API_TOKEN:-}" || { printf '%s\n' 'Missing sandbox GitHub secret; deployment refused.'; exit 1; }
+          ./node_modules/.bin/wrangler deploy --config services/doku-cf-sandbox/wrangler.simple-sandbox.json --message "finite-lease:${GITHUB_SHA}"
