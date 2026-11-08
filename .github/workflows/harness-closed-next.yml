@@ -1,0 +1,46 @@
+name: Sandbox harness CLOSED candidate
+# INERT until separate exact parent-bound marker-only approval; local preparation only.
+# After review: copy package to sandbox-release/harness-closed-next,
+# publish without marker, then separate exact marker-only approval push.
+on:
+  push:
+    branches: [sandbox/doku-checkout]
+    paths: [.github/sandbox-approvals/deploy-harness-closed-next.txt]
+permissions:
+  contents: read
+concurrency:
+  group: sandbox-harness-closed-next
+  cancel-in-progress: false
+jobs:
+  closed-harness:
+    if: github.repository == 'rohimgavino/Wedding-Planner' && github.ref == 'refs/heads/sandbox/doku-checkout'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_ACCOUNT_ID: 4c9d871a80b70e0c2275773bcd51db84
+      WRANGLER_SEND_METRICS: 'false'
+      CI: 'true'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.16.0'
+      - name: Exact separate marker-only approval
+        run: node .github/scripts/check-harness-marker.mjs
+      - name: Pinned CLOSED harness and authentic unauthenticated public source
+        run: node sandbox-release/harness-closed-next/verify-harness.mjs --public-source
+      - name: Install existing pinned Wrangler
+        working-directory: sandbox-release/closed-v3
+        run: npm ci --no-audit --no-fund
+      - name: Offline package
+        run: sandbox-release/closed-v3/node_modules/.bin/wrangler deploy --config sandbox-release/harness-closed-next/harness-closed/wrangler.json --dry-run
+      - name: Deploy only CLOSED harness with separate single-Worker token
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_SANDBOX_HARNESS_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "${CLOUDFLARE_API_TOKEN:-}"
+          sandbox-release/closed-v3/node_modules/.bin/wrangler deploy --config sandbox-release/harness-closed-next/harness-closed/wrangler.json --message "harness-closed:${GITHUB_SHA}"

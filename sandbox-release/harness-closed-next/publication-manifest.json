@@ -1,0 +1,65 @@
+{
+  "base": "085f96d8e59cb912d09f51cbb1a9ee3bef5b5487",
+  "files": [
+    {
+      "path": ".github/workflows/harness-closed-next.yml",
+      "sha256": "4397a8715291ee0fbb14368cf384df386509e6da4a114b29c8b9e35e3e796bb1"
+    },
+    {
+      "path": "sandbox-release/harness-closed-next/harness-closed/app.mjs",
+      "sha256": "13d07a79a24b7188df31988140af416348a52452b347c4f68553569131fee99a"
+    },
+    {
+      "path": "sandbox-release/harness-closed-next/harness-closed/catalog.json",
+      "sha256": "57ef1153944f3a66531af47b6c60cb62f94d8a2409c8493302aa1d41cfbbad00"
+    },
+    {
+      "path": "sandbox-release/harness-closed-next/harness-closed/checkout-client.mjs",
+      "sha256": "8bf5c400293b8d5da442d9ccc789cd918215aadf0f2991882f54291f650d4f62"
+    },
+    {
+      "path": "sandbox-release/harness-closed-next/harness-closed/index.html",
+      "sha256": "dab8ff9f92a7ee5e8a10a9ed21a9d83981d907604f284927abf04e4ed5294e06"
+    },
+    {
+      "path": "sandbox-release/harness-closed-next/harness-closed/public-config.offline.txt",
+      "sha256": "e14d94d3c9ccd3133e7e44bffb2aeddc3da50eff55681026fe664d634b86acca"
+    },
+    {
+      "path": "sandbox-release/harness-closed-next/harness-closed/public-config.txt",
+      "sha256": "e9a9653641ce09ae8d65b282b6401495e6a3ac20ffb1865ad0705d7d796a6f92"
+    },
+    {
+      "path": "sandbox-release/harness-closed-next/harness-closed/style.css",
+      "sha256": "56b18b61f26ffeb720432964b22b9985ee52d2e04be8b130781754f47c075a99"
+    },
+    {
+      "path": "sandbox-release/harness-closed-next/harness-closed/timeout-probe.mjs",
+      "sha256": "2f2ee6625383e5a0ac4c9b601f9bdf2b840f326e2e907f654c9972dda27440ce"
+    },
+    {
+      "path": "sandbox-release/harness-closed-next/harness-closed/worker.mjs",
+      "sha256": "18c51de26765b20efb38bc3bf42a6071002a9c58a5bd49c0fe754d30b11f4987"
+    },
+    {
+      "path": "sandbox-release/harness-closed-next/harness-closed/workspace-intent-client.mjs",
+      "sha256": "4ac7fcb6d3784982a2a097bb457c35e832a3754fb4f5a62630f0e89c16bfb04e"
+    },
+    {
+      "path": "sandbox-release/harness-closed-next/harness-closed/workspace-inventory.mjs",
+      "sha256": "66fb0df0727fdceafa951e79e1a2ad0116dbb3e248f11d10752afa9eff9668ce"
+    },
+    {
+      "path": "sandbox-release/harness-closed-next/harness-closed/wrangler.json",
+      "sha256": "67b4020db7e2710ee08be5586cd836fbcbe6a9c87643d149f1d24dc1171e8e9c"
+    },
+    {
+      "path": "sandbox-release/harness-closed-next/harness-manifest.json",
+      "sha256": "2a4a979eb5cbdcad23a2a8130b97a77c072c7d6fa0c636b250ffc02bcb2a6251"
+    },
+    {
+      "path": "sandbox-release/harness-closed-next/verify-harness.mjs",
+      "sha256": "bad2f33a1208be932ce3d06b9e7f8d8c51a7d69b361bae69684dfbefbbe0951d"
+    }
+  ]
+}

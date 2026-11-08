@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {readFileSync,writeFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+const git=(...a)=>execFileSync('git',a,{encoding:'utf8',timeout:30000}).trim();
+const hash=b=>createHash('sha256').update(b).digest('hex');
+const marker='.github/sandbox-approvals/deploy-harness-closed-next.txt';
+assert.equal(process.env.GITHUB_REPOSITORY,'rohimgavino/Wedding-Planner');
+assert.equal(process.env.GITHUB_REF,'refs/heads/sandbox/doku-checkout');
+assert.equal(process.env.GITHUB_EVENT_NAME,'push');
+const e=JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH));
+assert.equal(e.created,false);assert.equal(e.deleted,false);assert.equal(e.forced,false);
+assert.equal(e.after,git('rev-parse','HEAD'));assert.equal(e.before,git('rev-parse','HEAD^'));
+assert.equal(git('diff','--name-status','HEAD^','HEAD'),'A\t'+marker);
+const mf='sandbox-release/harness-closed-next/publication-manifest.json';
+const bytes=Buffer.from(readFileSync(mf,'utf8').replace(/\r\n/g,'\n'));assert.equal(hash(bytes),'3b2f03c00c4879b85ab2d65b0543a3dfa3fb6640247abaabcaec36ba475c756c');writeFileSync(mf,bytes);
+assert.equal(readFileSync(marker,'utf8'),'APPROVE CLOSED HARNESS ONLY\nparent='+e.before+'\nmanifest=3b2f03c00c4879b85ab2d65b0543a3dfa3fb6640247abaabcaec36ba475c756c\nworker=pp-doku-sbx-harness-20261102\n');
+assert.equal(git('rev-parse','HEAD:sandbox-release/closed-v3'),'2f4be20337904a365b10a5a7103db95c22067dae');
+for(const f of JSON.parse(bytes).files){assert.match(f.path,/^(?:sandbox-release\/harness-closed-next\/[A-Za-z0-9_.\/-]+|\.github\/workflows\/harness-closed-next\.yml)$/);assert.ok(!f.path.includes('..'));const b=Buffer.from(readFileSync(f.path,'utf8').replace(/\r\n/g,'\n'));assert.equal(hash(b),f.sha256,f.path);writeFileSync(f.path,b);}
+console.log('Exact parent-bound marker, LF publication bytes and CLOSED API tree validated.');
