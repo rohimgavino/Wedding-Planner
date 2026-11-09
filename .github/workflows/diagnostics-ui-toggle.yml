@@ -1,0 +1,43 @@
+name: Sandbox harness exact boolean toggle
+on:
+  push:
+    branches: [sandbox/doku-checkout]
+    paths:
+      - .github/sandbox-approvals/diagnostics-ui-open.json
+      - .github/sandbox-approvals/diagnostics-ui-close.json
+permissions:
+  contents: read
+concurrency:
+  group: sandbox-diagnostics-ui-toggle
+  cancel-in-progress: false
+jobs:
+  toggle:
+    if: github.repository == 'rohimgavino/Wedding-Planner' && github.ref == 'refs/heads/sandbox/doku-checkout'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_ACCOUNT_ID: 4c9d871a80b70e0c2275773bcd51db84
+      WRANGLER_SEND_METRICS: 'false'
+      CI: 'true'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.16.0'
+      - name: Exact parent and unchanged baseline hashes
+        run: node .github/scripts/check-diagnostics-ui.mjs
+      - name: Install pinned existing Wrangler
+        working-directory: sandbox-release/closed-v3
+        run: npm ci --no-audit --no-fund
+      - name: Offline bundle
+        run: sandbox-release/closed-v3/node_modules/.bin/wrangler deploy --config sandbox-release/diagnostics-ui/harness/wrangler.json --dry-run
+      - name: Deploy harness only with dedicated per-Worker token
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_SANDBOX_HARNESS_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "${CLOUDFLARE_API_TOKEN:-}"
+          sandbox-release/closed-v3/node_modules/.bin/wrangler deploy --config sandbox-release/diagnostics-ui/harness/wrangler.json --message "diagnostics-ui:${GITHUB_SHA}"
