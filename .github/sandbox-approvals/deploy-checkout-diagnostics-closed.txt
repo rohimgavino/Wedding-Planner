@@ -1,0 +1,5 @@
+APPROVE CLOSED CHECKOUT DIAGNOSTICS ONLY
+parent=d1ddfc5bf5f582baf789e4a1ac3186f55b00def2
+manifest=3216cedeb38a66db71479c335023ba154bcc713abdfbb319d8c75c17952e1bf0
+api=pp-doku-sbx-disabled-20261102-bec84f2
+harness=pp-doku-sbx-harness-20261102
