@@ -5,9 +5,13 @@ export function safeDiagnostic(value={},fallbackStatus){
  const result={stage:stages.includes(value?.stage)?value.stage:'transport',errorCode:codes.includes(value?.errorCode)?value.errorCode:'API_HTTP_ERROR',retryCheckout:false};
  const status=Number.isInteger(value?.httpStatus)&&value.httpStatus>=100&&value.httpStatus<=599?value.httpStatus:fallbackStatus;
  if(Number.isInteger(status)&&status>=100&&status<=599)result.httpStatus=status;
+ if(Array.isArray(value?.messages)){
+  const safeMsgs=value.messages.filter(m=>typeof m==='string').map(m=>m.slice(0,256)).slice(0,16);
+  if(safeMsgs.length>0)result.messages=safeMsgs;
+ }
  return result;
 }
-export function diagnosticText(value){const d=safeDiagnostic(value);return `Diagnostik: ${d.stage} / ${d.errorCode}${d.httpStatus?' / HTTP '+d.httpStatus:''}. Hasil belum pasti; jangan ulangi pembayaran.`;}
+export function diagnosticText(value){const d=safeDiagnostic(value);const msgSuffix=d.messages?.length?` [${d.messages.join('; ')}]`:'';return `Diagnostik: ${d.stage} / ${d.errorCode}${d.httpStatus?' / HTTP '+d.httpStatus:''}${msgSuffix}. Hasil belum pasti; jangan ulangi pembayaran.`;}
 async function boundedDiagnostic(response){
  const reader=response.body?.getReader();if(!reader)return {};let timer,size=0;const chunks=[];
  const deadline=new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error()),1000);});

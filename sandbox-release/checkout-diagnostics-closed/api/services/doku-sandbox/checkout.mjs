@@ -8,7 +8,19 @@ export function prepareCheckout(config,order,time){
  check(config?.enabled===true&&config.environment==='sandbox'&&config.baseUrl===undefined&&config.production===undefined);
  check(order.merchant===config.clientId&&order.environment==='sandbox'&&order.currency==='IDR'&&Number.isSafeInteger(order.amount)&&order.amount>0&&order.amount<=999999999999&&String(order.amount)===order.packageAmountIdr&&/^[A-Za-z0-9._-]{1,30}$/.test(order.invoice));
  if(order.packageId!==undefined)validateTierSnapshot(order);
- const rawBody=Buffer.from(JSON.stringify({order:{invoice_number:order.invoice,amount:order.amount,currency:'IDR',auto_redirect:false},payment:{payment_due_date:60,payment_method_types:['VIRTUAL_ACCOUNT_BCA']}}));
+ const orderPayload={invoice_number:order.invoice,amount:order.amount};
+ const callbackUrl=order.callback_url??order.callbackUrl??config.callbackUrl;
+ if(typeof callbackUrl==='string'&&/^https?:\/\//.test(callbackUrl)){
+  orderPayload.callback_url=callbackUrl;
+  if(order.auto_redirect!==undefined||order.autoRedirect!==undefined){
+   orderPayload.auto_redirect=Boolean(order.auto_redirect??order.autoRedirect);
+  }
+ }
+ const paymentPayload={payment_due_date:Number.isInteger(order.paymentDueDate)?order.paymentDueDate:60};
+ if(Array.isArray(order.payment_method_types??order.paymentMethodTypes)){
+  paymentPayload.payment_method_types=order.payment_method_types??order.paymentMethodTypes;
+ }
+ const rawBody=Buffer.from(JSON.stringify({order:orderPayload,payment:paymentPayload}));
  return {url:'https://api-sandbox.doku.com'+target,method:'POST',rawBody,headers:{'Client-Id':config.clientId,'Request-Id':order.requestId,'Request-Timestamp':time,'Content-Type':'application/json',Signature:signRequest({clientId:config.clientId,requestId:order.requestId,timestamp:time,target},rawBody,config.secret)}};
 }
 export function verifyCheckoutResponse(config,order,response){

@@ -45,7 +45,7 @@
     },
     {
       "path": "services/doku-hosted-sandbox/handler.mjs",
-      "sha256": "b1888066661b704adc08b398843b4f3caf05c14ff49a0e418c97454463543aec"
+      "sha256": "7f52803de0c0d93d8d5607ad4b462563b2b57794bfdae8d139a938c4e25a0937"
     },
     {
       "path": "services/doku-hosted-sandbox/jwks.mjs",
@@ -57,11 +57,11 @@
     },
     {
       "path": "services/doku-sandbox/checkout-adapter.mjs",
-      "sha256": "ae193cc7abf21cfde6cab352e1046b386d3bc96b0458b2be995e3136333acaa7"
+      "sha256": "84840cdc1f9d22c8253f1e82ed83828881b40be9d230a02d0490592096165086"
     },
     {
       "path": "services/doku-sandbox/checkout.mjs",
-      "sha256": "95bbb11f7fd35d42420b9f6147a243cb76ae64a641757ac3dc3c5f8c8565dcd6"
+      "sha256": "4136fc78ad46749d1579827bc605babd85708e78c80b68febea9a3ec2810c377"
     },
     {
       "path": "services/doku-sandbox/protocol.mjs",
@@ -133,7 +133,7 @@
     },
     {
       "path": "../harness/checkout-client.mjs",
-      "sha256": "141d49c01d8bbf2a4c0ea0054d24afeb7c94231f0866bf3110ee9ebd1b3d5c68"
+      "sha256": "ba0efbedbd0c916834084299cf3a31f01e09a11f72f19052b3e42f6ac2f65715"
     },
     {
       "path": "../harness/index.html",

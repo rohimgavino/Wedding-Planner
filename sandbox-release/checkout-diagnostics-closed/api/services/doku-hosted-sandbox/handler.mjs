@@ -53,7 +53,10 @@ export function createHostedHandler({db,config,jwksTransport,checkoutTransport})
      const response=await checkoutTransport.fetch(r.url,{method:r.method,headers:r.headers,body:r.rawBody,redirect:'manual'});
      // An observed non-200 HTTP rejection is authoritative even if its body is unreadable.
      // This records a response, not an inference that entering transport dispatched payment.
-     if(response.status!==200){void response.body?.cancel().catch(()=>{});throw new CheckoutDiagnosticError('transport','unknown',{errorCode:'PROVIDER_HTTP_REJECTED',httpStatus:response.status});}
+     if(response.status!==200){
+      let rawBody;try{rawBody=await bounded(response);}catch{void response.body?.cancel().catch(()=>{});}
+      throw new CheckoutDiagnosticError('transport','unknown',{errorCode:'PROVIDER_HTTP_REJECTED',httpStatus:response.status,rawBody});
+     }
      let rawBody;try{rawBody=await bounded(response);}catch{throw new CheckoutDiagnosticError('transport','unknown',{errorCode:'PROVIDER_BODY_INVALID',httpStatus:response.status});}
      return {status:response.status,headers:Object.fromEntries(response.headers),rawBody};
     });
@@ -87,7 +90,7 @@ export function createHostedHandler({db,config,jwksTransport,checkoutTransport})
    if(url.pathname==='/access'&&Object.keys(body).join(',')==='workspaceId')return Response.json({sandboxAccess:await call('has_access',[userId,body.workspaceId])},{headers:{'Cache-Control':'no-store'}});
    return new Response(null,{status:400});
   }catch(error){
-  if(error instanceof CheckoutDiagnosticError)return Response.json({error:error.outcome==='not_dispatched'?'checkout_not_dispatched':'checkout_outcome_unknown',stage:error.stage,errorCode:error.errorCode,...(error.httpStatus===undefined?{}:{httpStatus:error.httpStatus}),outcome:error.outcome,retryCheckout:false},{status:503,headers:{'Cache-Control':'no-store'}});
+  if(error instanceof CheckoutDiagnosticError)return Response.json({error:error.outcome==='not_dispatched'?'checkout_not_dispatched':'checkout_outcome_unknown',stage:error.stage,errorCode:error.errorCode,...(error.httpStatus===undefined?{}:{httpStatus:error.httpStatus}),...(Array.isArray(error.messages)&&error.messages.length>0?{messages:error.messages}:{}),outcome:error.outcome,retryCheckout:false},{status:503,headers:{'Cache-Control':'no-store'}});
   return new Response(null,{status:403,headers:{'Cache-Control':'no-store'}});
  }
  }};
