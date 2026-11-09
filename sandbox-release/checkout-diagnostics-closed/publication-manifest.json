@@ -1,0 +1,237 @@
+{
+  "schema": 1,
+  "sourceCommit": "bc6f4863a404a77fa22e8470e35ebe426e04be1b",
+  "branch": "sandbox/doku-checkout",
+  "repository": "rohimgavino/Wedding-Planner",
+  "marker": ".github/sandbox-approvals/deploy-checkout-diagnostics-closed.txt",
+  "account": "4c9d871a80b70e0c2275773bcd51db84",
+  "api": "pp-doku-sbx-disabled-20261102-bec84f2",
+  "harness": "pp-doku-sbx-harness-20261102",
+  "publicationPaths": [
+    ".github/scripts/check-checkout-diagnostics-closed.mjs",
+    ".github/workflows/checkout-diagnostics-closed.yml",
+    "sandbox-release/checkout-diagnostics-closed/api/.gitattributes",
+    "sandbox-release/checkout-diagnostics-closed/api/.gitignore",
+    "sandbox-release/checkout-diagnostics-closed/api/README.md",
+    "sandbox-release/checkout-diagnostics-closed/api/package-lock.json",
+    "sandbox-release/checkout-diagnostics-closed/api/package-provenance.json",
+    "sandbox-release/checkout-diagnostics-closed/api/package.json",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-cf-sandbox/ingress-gate.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-cf-sandbox/lease-bridge.local.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-cf-sandbox/worker.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-cf-sandbox/wrangler.simple-sandbox.json",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-hosted-sandbox/bounded-body.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-hosted-sandbox/handler.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-hosted-sandbox/jwks.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sandbox/auth.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sandbox/checkout-adapter.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sandbox/checkout.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sandbox/protocol.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sandbox/tier-snapshot.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/app.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/catalog.json",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/checkout-client.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/index.html",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/public-config.offline.txt",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/public-config.txt",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/style.css",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/timeout-probe.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/worker.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/workspace-intent-client.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/workspace-inventory.mjs",
+    "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/wrangler.json",
+    "sandbox-release/checkout-diagnostics-closed/api/verify-closed.mjs",
+    "sandbox-release/checkout-diagnostics-closed/harness/app.mjs",
+    "sandbox-release/checkout-diagnostics-closed/harness/catalog.json",
+    "sandbox-release/checkout-diagnostics-closed/harness/checkout-client.mjs",
+    "sandbox-release/checkout-diagnostics-closed/harness/index.html",
+    "sandbox-release/checkout-diagnostics-closed/harness/public-config.offline.txt",
+    "sandbox-release/checkout-diagnostics-closed/harness/public-config.txt",
+    "sandbox-release/checkout-diagnostics-closed/harness/style.css",
+    "sandbox-release/checkout-diagnostics-closed/harness/timeout-probe.mjs",
+    "sandbox-release/checkout-diagnostics-closed/harness/worker.mjs",
+    "sandbox-release/checkout-diagnostics-closed/harness/workspace-intent-client.mjs",
+    "sandbox-release/checkout-diagnostics-closed/harness/workspace-inventory.mjs",
+    "sandbox-release/checkout-diagnostics-closed/harness/wrangler.json",
+    "sandbox-release/checkout-diagnostics-closed/publication-manifest.json",
+    "sandbox-release/checkout-diagnostics-closed/review-manifest.json"
+  ],
+  "files": [
+    {
+      "path": ".github/workflows/checkout-diagnostics-closed.yml",
+      "sha256": "de534ae618fa92c726b3187f97649604baedb07016eb5ddfad27ab442a5b8521"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/.gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/.gitignore",
+      "sha256": "462313e9cdf5217c7e729cfd60632a763ad1b8452774d4b736b90ab2e03a2c28"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/README.md",
+      "sha256": "a16281540b5524c14e30d3baa11dc16d828694d5bbbf50bba56e7651c87dff85"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/package-lock.json",
+      "sha256": "44f8ff5926ed9f67000c6c403b15b829a5d68d0a10b0e36960a1a9ff2f92ae39"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/package-provenance.json",
+      "sha256": "bb772f9567e7f07571ac408474a7d015e31a2ef3e2e6c8a240ce7bdea56a2850"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/package.json",
+      "sha256": "6818ba104d2e3fa14669fde2f7b10bdf9b6b009f9753391e965954411ecd32fd"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-cf-sandbox/ingress-gate.mjs",
+      "sha256": "98169963d82e97f9909c96e32195b71f208dc24e5f3c39fb1a6b877ab971b790"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-cf-sandbox/lease-bridge.local.mjs",
+      "sha256": "2b6fdb4c55248cec5405ca4baa8cbdb651d8b72e074b743b2d95ca17b5defd1f"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-cf-sandbox/worker.mjs",
+      "sha256": "7ec5b7b7b8290b1f98ab19190b9ec7fabf56b4bfa42565b6894b31cc8f7a38e1"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-cf-sandbox/wrangler.simple-sandbox.json",
+      "sha256": "bd703f4dcb6b25a594303508169851809c11f8524408bfd0cc60d51528fb467a"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-hosted-sandbox/bounded-body.mjs",
+      "sha256": "443bf145d2ad789ae6dc73c3dc5e7c017e6a99d9b27363614831f757f744ddbd"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-hosted-sandbox/handler.mjs",
+      "sha256": "b1888066661b704adc08b398843b4f3caf05c14ff49a0e418c97454463543aec"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-hosted-sandbox/jwks.mjs",
+      "sha256": "fdf8183915fc306977c2cbf7656826c9841b75178e5c84f97d7bc715dc31a4e6"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sandbox/auth.mjs",
+      "sha256": "2fe453372008e0a5c99460f43713314f8659879be3d403cd795686f6e91be7ba"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sandbox/checkout-adapter.mjs",
+      "sha256": "ae193cc7abf21cfde6cab352e1046b386d3bc96b0458b2be995e3136333acaa7"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sandbox/checkout.mjs",
+      "sha256": "95bbb11f7fd35d42420b9f6147a243cb76ae64a641757ac3dc3c5f8c8565dcd6"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sandbox/protocol.mjs",
+      "sha256": "e1deaedab98467625eb288d407da324e0efbe7211209d70b850813464174ba2d"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sandbox/tier-snapshot.mjs",
+      "sha256": "b93a7b31c3b6b85920ed26c0691f091ae3b8b26a4b3df659487b4fcca94e7be1"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/app.mjs",
+      "sha256": "13d07a79a24b7188df31988140af416348a52452b347c4f68553569131fee99a"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/catalog.json",
+      "sha256": "57ef1153944f3a66531af47b6c60cb62f94d8a2409c8493302aa1d41cfbbad00"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/checkout-client.mjs",
+      "sha256": "8bf5c400293b8d5da442d9ccc789cd918215aadf0f2991882f54291f650d4f62"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/index.html",
+      "sha256": "fcdcc9a3d8bc2e35553ae7a286d76b1e19322dc1ad444a0f734c125da23b5dde"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/public-config.offline.txt",
+      "sha256": "e14d94d3c9ccd3133e7e44bffb2aeddc3da50eff55681026fe664d634b86acca"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/public-config.txt",
+      "sha256": "e14d94d3c9ccd3133e7e44bffb2aeddc3da50eff55681026fe664d634b86acca"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/style.css",
+      "sha256": "56b18b61f26ffeb720432964b22b9985ee52d2e04be8b130781754f47c075a99"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/timeout-probe.mjs",
+      "sha256": "2f2ee6625383e5a0ac4c9b601f9bdf2b840f326e2e907f654c9972dda27440ce"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/worker.mjs",
+      "sha256": "18c51de26765b20efb38bc3bf42a6071002a9c58a5bd49c0fe754d30b11f4987"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/workspace-intent-client.mjs",
+      "sha256": "4ac7fcb6d3784982a2a097bb457c35e832a3754fb4f5a62630f0e89c16bfb04e"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/workspace-inventory.mjs",
+      "sha256": "66fb0df0727fdceafa951e79e1a2ad0116dbb3e248f11d10752afa9eff9668ce"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sbx-harness/wrangler.json",
+      "sha256": "67b4020db7e2710ee08be5586cd836fbcbe6a9c87643d149f1d24dc1171e8e9c"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/api/verify-closed.mjs",
+      "sha256": "6cd205529b8d6ea12997f7492c3c529ed3533b17fe284778e276bb0758e13bf4"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/harness/app.mjs",
+      "sha256": "6f3b24682cc331c1815153fd8588ffbe4d3cc8196393ff2dbe11fa2aab048047"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/harness/catalog.json",
+      "sha256": "57ef1153944f3a66531af47b6c60cb62f94d8a2409c8493302aa1d41cfbbad00"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/harness/checkout-client.mjs",
+      "sha256": "141d49c01d8bbf2a4c0ea0054d24afeb7c94231f0866bf3110ee9ebd1b3d5c68"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/harness/index.html",
+      "sha256": "dab8ff9f92a7ee5e8a10a9ed21a9d83981d907604f284927abf04e4ed5294e06"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/harness/public-config.offline.txt",
+      "sha256": "e14d94d3c9ccd3133e7e44bffb2aeddc3da50eff55681026fe664d634b86acca"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/harness/public-config.txt",
+      "sha256": "e9a9653641ce09ae8d65b282b6401495e6a3ac20ffb1865ad0705d7d796a6f92"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/harness/style.css",
+      "sha256": "56b18b61f26ffeb720432964b22b9985ee52d2e04be8b130781754f47c075a99"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/harness/timeout-probe.mjs",
+      "sha256": "2f2ee6625383e5a0ac4c9b601f9bdf2b840f326e2e907f654c9972dda27440ce"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/harness/worker.mjs",
+      "sha256": "18c51de26765b20efb38bc3bf42a6071002a9c58a5bd49c0fe754d30b11f4987"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/harness/workspace-intent-client.mjs",
+      "sha256": "4ac7fcb6d3784982a2a097bb457c35e832a3754fb4f5a62630f0e89c16bfb04e"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/harness/workspace-inventory.mjs",
+      "sha256": "66fb0df0727fdceafa951e79e1a2ad0116dbb3e248f11d10752afa9eff9668ce"
+    },
+    {
+      "path": "sandbox-release/checkout-diagnostics-closed/harness/wrangler.json",
+      "sha256": "67b4020db7e2710ee08be5586cd836fbcbe6a9c87643d149f1d24dc1171e8e9c"
+    }
+  ]
+}

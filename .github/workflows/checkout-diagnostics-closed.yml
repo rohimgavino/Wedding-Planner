@@ -1,0 +1,57 @@
+name: Checkout diagnostics CLOSED only
+on:
+  push:
+    branches: [sandbox/doku-checkout]
+    paths: [.github/sandbox-approvals/deploy-checkout-diagnostics-closed.txt]
+permissions:
+  contents: read
+concurrency:
+  group: checkout-diagnostics-closed
+  cancel-in-progress: false
+jobs:
+  closed:
+    if: github.repository == 'rohimgavino/Wedding-Planner' && github.ref == 'refs/heads/sandbox/doku-checkout' && github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    env:
+      CLOUDFLARE_ACCOUNT_ID: 4c9d871a80b70e0c2275773bcd51db84
+      WRANGLER_SEND_METRICS: 'false'
+      CI: 'true'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 3
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.16.0'
+      - name: Exact Git-blob approval and CLOSED checks before any secret
+        run: node .github/scripts/check-checkout-diagnostics-closed.mjs
+      - name: Install exact lock
+        working-directory: sandbox-release/checkout-diagnostics-closed/api
+        run: npm ci --no-audit --no-fund
+      - name: Verify CLOSED
+        run: node sandbox-release/checkout-diagnostics-closed/api/verify-closed.mjs
+      - name: Package both CLOSED Workers without credentials
+        run: |
+          set -euo pipefail
+          W=sandbox-release/checkout-diagnostics-closed/api/node_modules/.bin/wrangler
+          "$W" deploy --config sandbox-release/checkout-diagnostics-closed/api/services/doku-cf-sandbox/wrangler.simple-sandbox.json --dry-run
+          "$W" deploy --config sandbox-release/checkout-diagnostics-closed/harness/wrangler.json --dry-run
+      - name: Deploy CLOSED API only
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_SANDBOX_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "${CLOUDFLARE_API_TOKEN:-}"
+          sandbox-release/checkout-diagnostics-closed/api/node_modules/.bin/wrangler deploy --config sandbox-release/checkout-diagnostics-closed/api/services/doku-cf-sandbox/wrangler.simple-sandbox.json --message "checkout-diagnostics-closed-api:${GITHUB_SHA}"
+      - name: Deploy CLOSED harness only
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_SANDBOX_HARNESS_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "${CLOUDFLARE_API_TOKEN:-}"
+          sandbox-release/checkout-diagnostics-closed/api/node_modules/.bin/wrangler deploy --config sandbox-release/checkout-diagnostics-closed/harness/wrangler.json --message "checkout-diagnostics-closed-harness:${GITHUB_SHA}"

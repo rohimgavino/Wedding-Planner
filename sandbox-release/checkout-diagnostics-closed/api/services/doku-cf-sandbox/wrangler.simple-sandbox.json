@@ -1,0 +1,75 @@
+{
+  "name": "pp-doku-sbx-disabled-20261102-bec84f2",
+  "account_id": "4c9d871a80b70e0c2275773bcd51db84",
+  "main": "worker.mjs",
+  "compatibility_date": "2025-10-11",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": true,
+  "preview_urls": false,
+  "routes": [],
+  "logpush": false,
+  "send_metrics": false,
+  "tail_consumers": [],
+  "streaming_tail_consumers": [],
+  "observability": {
+    "enabled": false,
+    "head_sampling_rate": 0,
+    "logs": {
+      "enabled": false,
+      "invocation_logs": false,
+      "persist": false,
+      "destinations": []
+    },
+    "traces": {
+      "enabled": false,
+      "persist": false,
+      "destinations": []
+    },
+    "issues": {
+      "enabled": false
+    }
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "SANDBOX_GATE",
+        "class_name": "SandboxIngressGate"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "sandbox-ingress-v1",
+      "new_sqlite_classes": [
+        "SandboxIngressGate"
+      ]
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "INGRESS_LIMITER",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 60,
+        "period": 60
+      }
+    },
+    {
+      "name": "GLOBAL_LIMITER",
+      "namespace_id": "1002",
+      "simple": {
+        "limit": 2400,
+        "period": 60
+      }
+    }
+  ],
+  "vars": {
+    "SANDBOX_ENABLED": "false",
+    "EDGE_CUSTODY": "durable-sandbox-v1",
+    "PLANNER_TRANSPORT_VERSION": "disabled",
+    "ALLOWED_ORIGIN": "https://pp-doku-sbx-harness-20261102.taarufplanner12.workers.dev",
+    "SALES_PROTOCOL": "successor-lease-v1"
+  }
+}
