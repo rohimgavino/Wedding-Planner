@@ -1,10 +1,10 @@
 {
   "artifactTree": "2f4be20337904a365b10a5a7103db95c22067dae",
   "tuple": {
-    "leaseId": "7bd4e710-e23e-48c9-bb2e-c7a665f9d368",
-    "salesStart": "2026-11-08T22:34:11.908Z",
-    "salesExpires": "2026-11-08T22:49:11.908Z",
-    "reconciliationExpires": "2026-11-08T22:54:11.908Z"
+    "leaseId": "76abc43e-bd2a-4c20-ae9f-4df0a901a499",
+    "salesStart": "2026-11-09T04:49:44.215Z",
+    "salesExpires": "2026-11-09T05:04:44.215Z",
+    "reconciliationExpires": "2026-11-09T05:09:44.215Z"
   },
   "verdict": "PASS",
   "findings": [],
@@ -22,5 +22,5 @@
       "sha256": "261927904f07cebbfdad3994508a07e9a73f341343f23350d3fe465609e7859a"
     }
   ],
-  "sourceReview": "FINITE-FINAL-REVIEW.md and readiness-fixes/REVIEW.md; trusted operator verifies exact publication byte hashes"
+  "sourceReview": "Existing finite publication review plus supervisor-reentry-fix-20261109/independent-review/REVIEW.md; exact reviewed runtime hashes checked before preparation"
 }
