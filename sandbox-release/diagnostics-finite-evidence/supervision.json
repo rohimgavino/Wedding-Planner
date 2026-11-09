@@ -1,10 +1,10 @@
 {
   "artifactTree": "09cf9a16074f21cb50d258ffcea91284b993182e",
   "tuple": {
-    "leaseId": "9d3a2fd8-ab4e-44e2-8332-bd1358ade354",
-    "salesStart": "2026-11-09T22:38:22.330Z",
-    "salesExpires": "2026-11-09T22:53:22.330Z",
-    "reconciliationExpires": "2026-11-09T22:58:22.330Z"
+    "leaseId": "261f562c-2ae4-4c9b-a034-203c3e1e1261",
+    "salesStart": "2026-11-09T23:13:21.659Z",
+    "salesExpires": "2026-11-09T23:28:21.659Z",
+    "reconciliationExpires": "2026-11-09T23:33:21.659Z"
   },
   "scope": "native-pg-supervisor-rehearsal",
   "command": "node test-finite-native.mjs",
