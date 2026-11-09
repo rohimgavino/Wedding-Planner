@@ -1,0 +1,26 @@
+{
+  "artifactTree": "09cf9a16074f21cb50d258ffcea91284b993182e",
+  "tuple": {
+    "leaseId": "1304d935-3e03-4a65-b8c4-d57debb5bde9",
+    "salesStart": "2026-11-09T14:24:45.483Z",
+    "salesExpires": "2026-11-09T14:39:45.483Z",
+    "reconciliationExpires": "2026-11-09T14:44:45.483Z"
+  },
+  "verdict": "PASS",
+  "findings": [],
+  "files": [
+    {
+      "path": ".github/scripts/check-diagnostics-finite.mjs",
+      "sha256": "a459a3e12a40050d5fa139d5658bfbff655b9d1d708cd02d0b65b916181fc0c8"
+    },
+    {
+      "path": ".github/scripts/diagnostics-finite-evidence.mjs",
+      "sha256": "4594889f5d9dbc417f0702c9f9c027771f8b9fe8030b4f11c1fef8ae7d0c218a"
+    },
+    {
+      "path": ".github/workflows/diagnostics-finite.yml",
+      "sha256": "27c84bd3d725186bf515ba5c67197f018d0c7fa51cfcfe097e50bb4be080e9cc"
+    }
+  ],
+  "sourceReview": "Diagnostic finite workflow and supervisor reviewed runtime"
+}
