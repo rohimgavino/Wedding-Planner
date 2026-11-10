@@ -1,0 +1,5 @@
+APPROVE CLOSED CHECKOUT SIGNATURE FIX ONLY
+parent=ab33dd2fd43658aecf1ab79cb10c9add1cfe0100
+manifest=60c2c7b7a33ba79215837da9fa4b4497f7320d1197cfce1310b2cb73cb6fe40a
+api=pp-doku-sbx-disabled-20261102-bec84f2
+harness=pp-doku-sbx-harness-20261102
