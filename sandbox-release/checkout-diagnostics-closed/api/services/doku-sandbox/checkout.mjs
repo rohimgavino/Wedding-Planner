@@ -8,7 +8,7 @@ export function prepareCheckout(config,order,time){
  check(config?.enabled===true&&config.environment==='sandbox'&&config.baseUrl===undefined&&config.production===undefined);
  check(order.merchant===config.clientId&&order.environment==='sandbox'&&order.currency==='IDR'&&Number.isSafeInteger(order.amount)&&order.amount>0&&order.amount<=999999999999&&String(order.amount)===order.packageAmountIdr&&/^[A-Za-z0-9._-]{1,30}$/.test(order.invoice));
  if(order.packageId!==undefined)validateTierSnapshot(order);
- const orderPayload={invoice_number:order.invoice,amount:order.amount};
+ const orderPayload={invoice_number:order.invoice,amount:order.amount,currency:order.currency||'IDR'};
  const callbackUrl=order.callback_url??order.callbackUrl??config.callbackUrl;
  if(typeof callbackUrl==='string'&&/^https?:\/\//.test(callbackUrl)){
   orderPayload.callback_url=callbackUrl;

@@ -79,7 +79,7 @@
     },
     {
       "path": "sandbox-release/checkout-diagnostics-closed/api/package-provenance.json",
-      "sha256": "c59126ce5fd493fad420bd1f318ba6bd5c42134e0aa7bc9d8dc4b9417d0595c1"
+      "sha256": "f2b4e84899c3b742eb6fc3a1d90f3dc1b9969eef95950a676e7873cc0dd246d8"
     },
     {
       "path": "sandbox-release/checkout-diagnostics-closed/api/package.json",
@@ -123,7 +123,7 @@
     },
     {
       "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sandbox/checkout.mjs",
-      "sha256": "4136fc78ad46749d1579827bc605babd85708e78c80b68febea9a3ec2810c377"
+      "sha256": "282cd086ea8c7f9736af51a47a8b37f481c6bb1f1e5af34f815c8955242ad5b1"
     },
     {
       "path": "sandbox-release/checkout-diagnostics-closed/api/services/doku-sandbox/protocol.mjs",
