@@ -1,26 +1,26 @@
 {
   "artifactTree": "09cf9a16074f21cb50d258ffcea91284b993182e",
   "tuple": {
-    "leaseId": "f30af92e-60c1-4c49-a623-015d63a2d8f7",
-    "salesStart": "2026-11-10T02:42:35.785Z",
-    "salesExpires": "2026-11-10T02:57:35.785Z",
-    "reconciliationExpires": "2026-11-10T03:02:35.785Z"
+    "leaseId": "e6e94318-863e-4232-a1d9-1feaf849e916",
+    "salesStart": "2026-11-10T05:06:27.018Z",
+    "salesExpires": "2026-11-10T05:21:27.018Z",
+    "reconciliationExpires": "2026-11-10T05:26:27.018Z"
   },
   "project": "timrseunzsdqdrbyvyfn",
   "scope": "hosted-rollback-readback",
   "rows": [
     {
-      "leaseId": "f30af92e-60c1-4c49-a623-015d63a2d8f7",
-      "salesStart": "2026-11-10T02:42:35.785Z",
-      "salesExpires": "2026-11-10T02:57:35.785Z",
-      "reconciliationExpires": "2026-11-10T03:02:35.785Z",
+      "leaseId": "e6e94318-863e-4232-a1d9-1feaf849e916",
+      "salesStart": "2026-11-10T05:06:27.018Z",
+      "salesExpires": "2026-11-10T05:21:27.018Z",
+      "reconciliationExpires": "2026-11-10T05:26:27.018Z",
       "enabled": true,
       "closed": false
     }
   ],
-  "baselineBeforeSha256": "74da1ed4ee007ec9c5d392b4c3fa05d3afd5337bbf64cb6f54dd6d190cf4dc9c",
-  "baselineAfterSha256": "74da1ed4ee007ec9c5d392b4c3fa05d3afd5337bbf64cb6f54dd6d190cf4dc9c",
-  "sqlSha256": "49d5795b6ad56cdbc398737b40892f082531ea764c26f3c1fbf03fcec01d48c5",
-  "actualRollbackSqlSha256": "aae4338746f426873971ea774a06525a2faf872d03a56a469ec1e5cde50fbea6",
-  "sourceReport": "C:/Users/MSI/AppData/Local/hermes/cache/scratch/pp-finite-exec-20261110-run3/REPORT.json"
+  "baselineBeforeSha256": "9ecbf4549748affadffeafc35b8e446c8bb50e34e45928e72586a0eb1e0f2856",
+  "baselineAfterSha256": "9ecbf4549748affadffeafc35b8e446c8bb50e34e45928e72586a0eb1e0f2856",
+  "sqlSha256": "faa913d01265c08d60668d014ec65ee5e2c7de42937e29fde96847bc15aaef49",
+  "actualRollbackSqlSha256": "fe1406a338dcb1537988789c0a31c9e12b93f8a842e1f89342d3c6d19430520d",
+  "sourceReport": "C:/Users/MSI/AppData/Local/hermes/cache/scratch/pp-finite-exec-20261110-run4/REPORT.json"
 }

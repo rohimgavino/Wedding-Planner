@@ -1,10 +1,10 @@
 {
   "artifactTree": "09cf9a16074f21cb50d258ffcea91284b993182e",
   "tuple": {
-    "leaseId": "f30af92e-60c1-4c49-a623-015d63a2d8f7",
-    "salesStart": "2026-11-10T02:42:35.785Z",
-    "salesExpires": "2026-11-10T02:57:35.785Z",
-    "reconciliationExpires": "2026-11-10T03:02:35.785Z"
+    "leaseId": "e6e94318-863e-4232-a1d9-1feaf849e916",
+    "salesStart": "2026-11-10T05:06:27.018Z",
+    "salesExpires": "2026-11-10T05:21:27.018Z",
+    "reconciliationExpires": "2026-11-10T05:26:27.018Z"
   },
   "verdict": "PASS",
   "findings": [],
