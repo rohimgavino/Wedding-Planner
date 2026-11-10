@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "manifestSha256": "c7149fb303a93693ab6c49c364eaff950de6435c4fd64eed29b2f75b862949d1",
+  "manifestSha256": "63bb9eb8bcbe59d5caf9d6a517cb69aa1a9393dfcab5052d1e88fb15a4012f11",
   "checkerSha256": "111520caaf499c897f27eb6a3e72ad3685073d967822b296180d80be3c81c797",
   "publicationPaths": [
     ".github/scripts/check-checkout-diagnostics-closed.mjs",

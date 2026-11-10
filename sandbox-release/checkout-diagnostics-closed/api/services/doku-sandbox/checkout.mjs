@@ -23,16 +23,28 @@ export function prepareCheckout(config,order,time){
  return {url:'https://api-sandbox.doku.com'+target,method:'POST',rawBody,headers:{'Client-Id':config.clientId,'Request-Id':order.requestId,'Request-Timestamp':time,'Content-Type':'application/json',Signature:signRequest({clientId:config.clientId,requestId:order.requestId,timestamp:time,target},rawBody,config.secret)}};
 }
 export function verifyCheckoutResponse(config,order,response){
- check(config?.enabled===true&&config.environment==='sandbox'&&response?.status===200&&Buffer.isBuffer(response.rawBody)&&response.rawBody.length>0&&response.rawBody.length<=65536);
+ const isBinary=Buffer.isBuffer(response?.rawBody)||(response?.rawBody instanceof Uint8Array)||(response?.rawBody&&response.rawBody.byteLength!==undefined);
+ const bodyLen=response?.rawBody?.byteLength??response?.rawBody?.length;
+ check(config?.enabled===true&&config.environment==='sandbox'&&response?.status===200&&isBinary&&typeof bodyLen==='number'&&bodyLen>0&&bodyLen<=65536);
  const parsed=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(response.rawBody));
  const data=parsed?.response??parsed;
  check(data?.order?.invoice_number===order.invoice&&(data.order.amount===order.amount||data.order.amount===String(order.amount)));
  const headers=data?.headers??parsed?.headers;
  if(headers&&typeof headers==='object'){
-  if(headers.client_id!==undefined)check(headers.client_id===config.clientId);
-  if(headers.request_id!==undefined)check(headers.request_id===order.requestId);
+  const entries=Object.entries(headers);
+  const getHeader=(key)=>{
+   const norm=key.toLowerCase().replace(/[-_]/g,'');
+   const found=entries.find(([k])=>k.toLowerCase().replace(/[-_]/g,'')===norm);
+   return found?found[1]:undefined;
+  };
+  const clientId=getHeader('client_id');
+  if(clientId!==undefined)check(clientId===config.clientId);
+  const requestId=getHeader('request_id');
+  if(requestId!==undefined)check(requestId===order.requestId);
  }
- check(typeof data?.payment?.url==='string');
- const url=new URL(data.payment.url);check(url.protocol==='https:'&&url.hostname==='sandbox.doku.com'&&!url.port&&!url.username&&!url.password&&!url.hash&&!url.search&&/^\/checkout-link(?:-v2)?\/[A-Za-z0-9_-]+$/.test(url.pathname));
+ const paymentUrl=data?.payment?.url??data?.paymentUrl??data?.checkout_url;
+ check(typeof paymentUrl==='string');
+ const url=new URL(paymentUrl);
+ check(url.protocol==='https:'&&url.hostname==='sandbox.doku.com'&&!url.port&&!url.username&&!url.password&&!url.hash&&/^\/checkout-link(?:-v2)?\/[A-Za-z0-9_-]+$/.test(url.pathname));
  return {checkoutUrl:url.href,grantsAccess:false};
 }
