@@ -1,0 +1,33 @@
+{
+  "source": "Hosted sandbox DB independent readback 2026-11-03; display-only snapshot",
+  "asOf": "2026-11-03",
+  "packages": [
+    {
+      "packageId": "premium",
+      "version": "2",
+      "amount": 79900,
+      "currency": "IDR",
+      "term": "1 tahun kalender",
+      "timezone": "Asia/Jakarta",
+      "checkoutEligible": false
+    },
+    {
+      "packageId": "starter",
+      "version": "2",
+      "amount": 49900,
+      "currency": "IDR",
+      "term": "6 bulan kalender",
+      "timezone": "Asia/Jakarta",
+      "checkoutEligible": false
+    },
+    {
+      "packageId": "wedding_pro",
+      "version": "2",
+      "amount": 99900,
+      "currency": "IDR",
+      "term": "1 tahun kalender",
+      "timezone": "Asia/Jakarta",
+      "checkoutEligible": false
+    }
+  ]
+}
