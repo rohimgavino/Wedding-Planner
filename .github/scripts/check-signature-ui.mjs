@@ -13,5 +13,5 @@ for(const [p,h] of Object.entries(pins)){assert.equal(hash(blob(e.before,p)),h,p
 verifyPinned();
 const baseline=JSON.parse(readFileSync(root+'baseline.json'));const closed=readFileSync(root+'config-closed.txt'),opened=readFileSync(root+'config-open.txt');assert.equal(hash(closed),baseline.closed);assert.equal(hash(opened),baseline.open);assert.deepEqual(JSON.parse(opened),{...JSON.parse(closed),checkoutEnabled:true});assert.equal(JSON.parse(closed).checkoutEnabled,false);
 for(const [p,h] of Object.entries(baseline.files))assert.equal(hash(readFileSync(root+'harness/'+p)),h,p);
-writeFileSync('sandbox-release/signature-closed/harness/public-config.txt',m.to?opened:closed);writeFileSync(root+'harness/public-config.txt',m.to?opened:closed);const expected={...JSON.parse(closed),checkoutEnabled:m.to};assert.deepEqual(JSON.parse(readFileSync(root+'harness/public-config.txt')),expected);
+writeFileSync(root+'harness/public-config.txt',m.to?opened:closed);const expected={...JSON.parse(closed),checkoutEnabled:m.to};assert.deepEqual(JSON.parse(readFileSync(root+'harness/public-config.txt')),expected);
 console.log(JSON.stringify({validated:true,onlyBooleanChanged:true,from:m.from,to:m.to,worker:'pp-doku-sbx-harness-20261102',annotation:'signature-ui:'+e.after}));
