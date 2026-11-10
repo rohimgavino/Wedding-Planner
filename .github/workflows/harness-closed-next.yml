@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   closed-harness:
-    if: github.repository == 'rohimgavino/Wedding-Planner' && github.ref == 'refs/heads/sandbox/doku-checkout'
+    if: ${{ false }} # Retired by CLOSED signature successor; no historical payload deployment
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:

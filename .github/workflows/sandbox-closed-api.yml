@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   closed-api:
-    if: github.repository == 'rohimgavino/Wedding-Planner' && github.ref == 'refs/heads/sandbox/doku-checkout' && github.event_name == 'push'
+    if: ${{ false }} # Retired by CLOSED signature successor; no historical payload deployment
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     defaults:

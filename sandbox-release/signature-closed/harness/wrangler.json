@@ -1,0 +1,46 @@
+{
+  "name": "pp-doku-sbx-harness-20261102",
+  "account_id": "4c9d871a80b70e0c2275773bcd51db84",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  "routes": [],
+  "logpush": false,
+  "tail_consumers": [],
+  "streaming_tail_consumers": [],
+  "send_metrics": false,
+  "observability": {
+    "enabled": false,
+    "head_sampling_rate": 0,
+    "logs": {
+      "enabled": false,
+      "invocation_logs": false,
+      "persist": false
+    },
+    "traces": {
+      "enabled": false,
+      "persist": false
+    },
+    "issues": {
+      "enabled": false
+    }
+  },
+  "rules": [
+    {
+      "type": "Text",
+      "globs": [
+        "**/*.html",
+        "**/*.css",
+        "**/*.txt",
+        "**/catalog.json",
+        "**/app.mjs",
+        "**/checkout-client.mjs",
+        "**/workspace-intent-client.mjs",
+        "**/workspace-inventory.mjs",
+        "**/timeout-probe.mjs"
+      ],
+      "fallthrough": true
+    }
+  ]
+}

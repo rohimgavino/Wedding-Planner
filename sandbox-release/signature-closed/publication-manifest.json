@@ -1,0 +1,341 @@
+{
+  "schema": 1,
+  "sourceCommit": "2916539757b5e0b921337eaece700f0bbb8e6a71",
+  "branch": "sandbox/doku-checkout",
+  "repository": "rohimgavino/Wedding-Planner",
+  "marker": ".github/sandbox-approvals/deploy-signature-closed.txt",
+  "account": "4c9d871a80b70e0c2275773bcd51db84",
+  "api": "pp-doku-sbx-disabled-20261102-bec84f2",
+  "harness": "pp-doku-sbx-harness-20261102",
+  "scope": "CLOSED only; all historical deploy workflows retired; activation forbidden",
+  "publicationPaths": [
+    ".github/scripts/check-signature-closed.mjs",
+    ".github/workflows/checkout-diagnostics-closed.yml",
+    ".github/workflows/diagnostics-close.yml",
+    ".github/workflows/diagnostics-finite.yml",
+    ".github/workflows/diagnostics-ui-toggle.yml",
+    ".github/workflows/finite-lease.yml",
+    ".github/workflows/harness-closed-next.yml",
+    ".github/workflows/harness-ui-toggle.yml",
+    ".github/workflows/sandbox-closed-api.yml",
+    ".github/workflows/signature-closed.yml",
+    ".github/workflows/successor-close.yml",
+    "sandbox-release/signature-closed/api/.gitattributes",
+    "sandbox-release/signature-closed/api/.gitignore",
+    "sandbox-release/signature-closed/api/README.md",
+    "sandbox-release/signature-closed/api/package-lock.json",
+    "sandbox-release/signature-closed/api/package-provenance.json",
+    "sandbox-release/signature-closed/api/package.json",
+    "sandbox-release/signature-closed/api/services/doku-cf-sandbox/ingress-gate.mjs",
+    "sandbox-release/signature-closed/api/services/doku-cf-sandbox/lease-bridge.local.mjs",
+    "sandbox-release/signature-closed/api/services/doku-cf-sandbox/worker.mjs",
+    "sandbox-release/signature-closed/api/services/doku-cf-sandbox/wrangler.simple-sandbox.json",
+    "sandbox-release/signature-closed/api/services/doku-hosted-sandbox/bounded-body.mjs",
+    "sandbox-release/signature-closed/api/services/doku-hosted-sandbox/handler.mjs",
+    "sandbox-release/signature-closed/api/services/doku-hosted-sandbox/jwks.mjs",
+    "sandbox-release/signature-closed/api/services/doku-sandbox/auth.mjs",
+    "sandbox-release/signature-closed/api/services/doku-sandbox/checkout-adapter.mjs",
+    "sandbox-release/signature-closed/api/services/doku-sandbox/checkout.mjs",
+    "sandbox-release/signature-closed/api/services/doku-sandbox/protocol.mjs",
+    "sandbox-release/signature-closed/api/services/doku-sandbox/tier-snapshot.mjs",
+    "sandbox-release/signature-closed/api/services/doku-sbx-harness/app.mjs",
+    "sandbox-release/signature-closed/api/services/doku-sbx-harness/catalog.json",
+    "sandbox-release/signature-closed/api/services/doku-sbx-harness/checkout-client.mjs",
+    "sandbox-release/signature-closed/api/services/doku-sbx-harness/index.html",
+    "sandbox-release/signature-closed/api/services/doku-sbx-harness/public-config.offline.txt",
+    "sandbox-release/signature-closed/api/services/doku-sbx-harness/public-config.txt",
+    "sandbox-release/signature-closed/api/services/doku-sbx-harness/style.css",
+    "sandbox-release/signature-closed/api/services/doku-sbx-harness/timeout-probe.mjs",
+    "sandbox-release/signature-closed/api/services/doku-sbx-harness/worker.mjs",
+    "sandbox-release/signature-closed/api/services/doku-sbx-harness/workspace-intent-client.mjs",
+    "sandbox-release/signature-closed/api/services/doku-sbx-harness/workspace-inventory.mjs",
+    "sandbox-release/signature-closed/api/services/doku-sbx-harness/wrangler.json",
+    "sandbox-release/signature-closed/api/verify-closed.mjs",
+    "sandbox-release/signature-closed/harness/app.mjs",
+    "sandbox-release/signature-closed/harness/catalog.json",
+    "sandbox-release/signature-closed/harness/checkout-client.mjs",
+    "sandbox-release/signature-closed/harness/index.html",
+    "sandbox-release/signature-closed/harness/public-config.offline.txt",
+    "sandbox-release/signature-closed/harness/public-config.txt",
+    "sandbox-release/signature-closed/harness/style.css",
+    "sandbox-release/signature-closed/harness/timeout-probe.mjs",
+    "sandbox-release/signature-closed/harness/worker.mjs",
+    "sandbox-release/signature-closed/harness/workspace-intent-client.mjs",
+    "sandbox-release/signature-closed/harness/workspace-inventory.mjs",
+    "sandbox-release/signature-closed/harness/wrangler.json",
+    "sandbox-release/signature-closed/publication-manifest.json",
+    "sandbox-release/signature-closed/review-manifest.json"
+  ],
+  "publicationDelta": [
+    "A\t.github/scripts/check-signature-closed.mjs",
+    "A\t.github/workflows/signature-closed.yml",
+    "A\tsandbox-release/signature-closed/api/.gitattributes",
+    "A\tsandbox-release/signature-closed/api/.gitignore",
+    "A\tsandbox-release/signature-closed/api/README.md",
+    "A\tsandbox-release/signature-closed/api/package-lock.json",
+    "A\tsandbox-release/signature-closed/api/package-provenance.json",
+    "A\tsandbox-release/signature-closed/api/package.json",
+    "A\tsandbox-release/signature-closed/api/services/doku-cf-sandbox/ingress-gate.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-cf-sandbox/lease-bridge.local.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-cf-sandbox/worker.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-cf-sandbox/wrangler.simple-sandbox.json",
+    "A\tsandbox-release/signature-closed/api/services/doku-hosted-sandbox/bounded-body.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-hosted-sandbox/handler.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-hosted-sandbox/jwks.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-sandbox/auth.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-sandbox/checkout-adapter.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-sandbox/checkout.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-sandbox/protocol.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-sandbox/tier-snapshot.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-sbx-harness/app.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-sbx-harness/catalog.json",
+    "A\tsandbox-release/signature-closed/api/services/doku-sbx-harness/checkout-client.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-sbx-harness/index.html",
+    "A\tsandbox-release/signature-closed/api/services/doku-sbx-harness/public-config.offline.txt",
+    "A\tsandbox-release/signature-closed/api/services/doku-sbx-harness/public-config.txt",
+    "A\tsandbox-release/signature-closed/api/services/doku-sbx-harness/style.css",
+    "A\tsandbox-release/signature-closed/api/services/doku-sbx-harness/timeout-probe.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-sbx-harness/worker.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-sbx-harness/workspace-intent-client.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-sbx-harness/workspace-inventory.mjs",
+    "A\tsandbox-release/signature-closed/api/services/doku-sbx-harness/wrangler.json",
+    "A\tsandbox-release/signature-closed/api/verify-closed.mjs",
+    "A\tsandbox-release/signature-closed/harness/app.mjs",
+    "A\tsandbox-release/signature-closed/harness/catalog.json",
+    "A\tsandbox-release/signature-closed/harness/checkout-client.mjs",
+    "A\tsandbox-release/signature-closed/harness/index.html",
+    "A\tsandbox-release/signature-closed/harness/public-config.offline.txt",
+    "A\tsandbox-release/signature-closed/harness/public-config.txt",
+    "A\tsandbox-release/signature-closed/harness/style.css",
+    "A\tsandbox-release/signature-closed/harness/timeout-probe.mjs",
+    "A\tsandbox-release/signature-closed/harness/worker.mjs",
+    "A\tsandbox-release/signature-closed/harness/workspace-intent-client.mjs",
+    "A\tsandbox-release/signature-closed/harness/workspace-inventory.mjs",
+    "A\tsandbox-release/signature-closed/harness/wrangler.json",
+    "A\tsandbox-release/signature-closed/publication-manifest.json",
+    "A\tsandbox-release/signature-closed/review-manifest.json",
+    "M\t.github/workflows/checkout-diagnostics-closed.yml",
+    "M\t.github/workflows/diagnostics-close.yml",
+    "M\t.github/workflows/diagnostics-finite.yml",
+    "M\t.github/workflows/diagnostics-ui-toggle.yml",
+    "M\t.github/workflows/finite-lease.yml",
+    "M\t.github/workflows/harness-closed-next.yml",
+    "M\t.github/workflows/harness-ui-toggle.yml",
+    "M\t.github/workflows/sandbox-closed-api.yml",
+    "M\t.github/workflows/successor-close.yml"
+  ],
+  "files": [
+    {
+      "path": ".github/workflows/checkout-diagnostics-closed.yml",
+      "sha256": "60e2808db9d8d332f874cccfea7bea9ec5e0db8629efafc66e01f4e2a1472fbb"
+    },
+    {
+      "path": ".github/workflows/diagnostics-close.yml",
+      "sha256": "94b69cdc3464310e0109a0dc60169eff3bb1ab42687d51c26866311f7549839f"
+    },
+    {
+      "path": ".github/workflows/diagnostics-finite.yml",
+      "sha256": "6d4e4e63f566d8b891071c70679f09b1bc8987eb1ab98f0b8e24aeecc14d9bf0"
+    },
+    {
+      "path": ".github/workflows/diagnostics-ui-toggle.yml",
+      "sha256": "b827d1c5f2fdec396a3e7f371dd210f149ef7ddf00e66341ef87e6d7503416c1"
+    },
+    {
+      "path": ".github/workflows/finite-lease.yml",
+      "sha256": "2ea69a9347c6c93be347258db9cee1d615fbabb7bc1ef668a52f3827aebd8805"
+    },
+    {
+      "path": ".github/workflows/harness-closed-next.yml",
+      "sha256": "074875bf7151858d0895cab85f94684c2c32a922884d1586e15a2fca4addf3ab"
+    },
+    {
+      "path": ".github/workflows/harness-ui-toggle.yml",
+      "sha256": "76b3153466c72d1fde1a5e1f81fffe7c02097610bc07c392396620486aa4306c"
+    },
+    {
+      "path": ".github/workflows/sandbox-closed-api.yml",
+      "sha256": "c18b152cf52357c170adbec90262d1d088c835aaf04023c2a618ba71118814b9"
+    },
+    {
+      "path": ".github/workflows/signature-closed.yml",
+      "sha256": "17611af5ce5c9c01697b844142b2a1ff1449c0798fac6b0645db3b223918bbb0"
+    },
+    {
+      "path": ".github/workflows/successor-close.yml",
+      "sha256": "815e324d25e815a70b553fc9e5c100af660688983ec7afe735a8426c26b8bd82"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/.gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/.gitignore",
+      "sha256": "462313e9cdf5217c7e729cfd60632a763ad1b8452774d4b736b90ab2e03a2c28"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/README.md",
+      "sha256": "a16281540b5524c14e30d3baa11dc16d828694d5bbbf50bba56e7651c87dff85"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/package-lock.json",
+      "sha256": "44f8ff5926ed9f67000c6c403b15b829a5d68d0a10b0e36960a1a9ff2f92ae39"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/package-provenance.json",
+      "sha256": "6680a5bfd375cffd9244c5eb1b49f272f73f144cfb7a111db21b1f5e63ada49a"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/package.json",
+      "sha256": "6818ba104d2e3fa14669fde2f7b10bdf9b6b009f9753391e965954411ecd32fd"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-cf-sandbox/ingress-gate.mjs",
+      "sha256": "98169963d82e97f9909c96e32195b71f208dc24e5f3c39fb1a6b877ab971b790"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-cf-sandbox/lease-bridge.local.mjs",
+      "sha256": "2b6fdb4c55248cec5405ca4baa8cbdb651d8b72e074b743b2d95ca17b5defd1f"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-cf-sandbox/worker.mjs",
+      "sha256": "7ec5b7b7b8290b1f98ab19190b9ec7fabf56b4bfa42565b6894b31cc8f7a38e1"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-cf-sandbox/wrangler.simple-sandbox.json",
+      "sha256": "bd703f4dcb6b25a594303508169851809c11f8524408bfd0cc60d51528fb467a"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-hosted-sandbox/bounded-body.mjs",
+      "sha256": "443bf145d2ad789ae6dc73c3dc5e7c017e6a99d9b27363614831f757f744ddbd"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-hosted-sandbox/handler.mjs",
+      "sha256": "7f52803de0c0d93d8d5607ad4b462563b2b57794bfdae8d139a938c4e25a0937"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-hosted-sandbox/jwks.mjs",
+      "sha256": "fdf8183915fc306977c2cbf7656826c9841b75178e5c84f97d7bc715dc31a4e6"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sandbox/auth.mjs",
+      "sha256": "2fe453372008e0a5c99460f43713314f8659879be3d403cd795686f6e91be7ba"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sandbox/checkout-adapter.mjs",
+      "sha256": "84840cdc1f9d22c8253f1e82ed83828881b40be9d230a02d0490592096165086"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sandbox/checkout.mjs",
+      "sha256": "afe1f0b8c079ca53f0a57193a999bee1e70b0c690c52aeb4bf3ea8b21fad4319"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sandbox/protocol.mjs",
+      "sha256": "22d1602bc0250a1c5d76af6b5c21827ada9c52aba785859ce4fd7f1dd2346b0d"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sandbox/tier-snapshot.mjs",
+      "sha256": "b93a7b31c3b6b85920ed26c0691f091ae3b8b26a4b3df659487b4fcca94e7be1"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sbx-harness/app.mjs",
+      "sha256": "13d07a79a24b7188df31988140af416348a52452b347c4f68553569131fee99a"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sbx-harness/catalog.json",
+      "sha256": "57ef1153944f3a66531af47b6c60cb62f94d8a2409c8493302aa1d41cfbbad00"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sbx-harness/checkout-client.mjs",
+      "sha256": "8bf5c400293b8d5da442d9ccc789cd918215aadf0f2991882f54291f650d4f62"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sbx-harness/index.html",
+      "sha256": "fcdcc9a3d8bc2e35553ae7a286d76b1e19322dc1ad444a0f734c125da23b5dde"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sbx-harness/public-config.offline.txt",
+      "sha256": "e14d94d3c9ccd3133e7e44bffb2aeddc3da50eff55681026fe664d634b86acca"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sbx-harness/public-config.txt",
+      "sha256": "e14d94d3c9ccd3133e7e44bffb2aeddc3da50eff55681026fe664d634b86acca"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sbx-harness/style.css",
+      "sha256": "56b18b61f26ffeb720432964b22b9985ee52d2e04be8b130781754f47c075a99"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sbx-harness/timeout-probe.mjs",
+      "sha256": "2f2ee6625383e5a0ac4c9b601f9bdf2b840f326e2e907f654c9972dda27440ce"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sbx-harness/worker.mjs",
+      "sha256": "18c51de26765b20efb38bc3bf42a6071002a9c58a5bd49c0fe754d30b11f4987"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sbx-harness/workspace-intent-client.mjs",
+      "sha256": "4ac7fcb6d3784982a2a097bb457c35e832a3754fb4f5a62630f0e89c16bfb04e"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sbx-harness/workspace-inventory.mjs",
+      "sha256": "66fb0df0727fdceafa951e79e1a2ad0116dbb3e248f11d10752afa9eff9668ce"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/services/doku-sbx-harness/wrangler.json",
+      "sha256": "67b4020db7e2710ee08be5586cd836fbcbe6a9c87643d149f1d24dc1171e8e9c"
+    },
+    {
+      "path": "sandbox-release/signature-closed/api/verify-closed.mjs",
+      "sha256": "6cd205529b8d6ea12997f7492c3c529ed3533b17fe284778e276bb0758e13bf4"
+    },
+    {
+      "path": "sandbox-release/signature-closed/harness/app.mjs",
+      "sha256": "6f3b24682cc331c1815153fd8588ffbe4d3cc8196393ff2dbe11fa2aab048047"
+    },
+    {
+      "path": "sandbox-release/signature-closed/harness/catalog.json",
+      "sha256": "57ef1153944f3a66531af47b6c60cb62f94d8a2409c8493302aa1d41cfbbad00"
+    },
+    {
+      "path": "sandbox-release/signature-closed/harness/checkout-client.mjs",
+      "sha256": "ba0efbedbd0c916834084299cf3a31f01e09a11f72f19052b3e42f6ac2f65715"
+    },
+    {
+      "path": "sandbox-release/signature-closed/harness/index.html",
+      "sha256": "dab8ff9f92a7ee5e8a10a9ed21a9d83981d907604f284927abf04e4ed5294e06"
+    },
+    {
+      "path": "sandbox-release/signature-closed/harness/public-config.offline.txt",
+      "sha256": "e14d94d3c9ccd3133e7e44bffb2aeddc3da50eff55681026fe664d634b86acca"
+    },
+    {
+      "path": "sandbox-release/signature-closed/harness/public-config.txt",
+      "sha256": "e9a9653641ce09ae8d65b282b6401495e6a3ac20ffb1865ad0705d7d796a6f92"
+    },
+    {
+      "path": "sandbox-release/signature-closed/harness/style.css",
+      "sha256": "56b18b61f26ffeb720432964b22b9985ee52d2e04be8b130781754f47c075a99"
+    },
+    {
+      "path": "sandbox-release/signature-closed/harness/timeout-probe.mjs",
+      "sha256": "2f2ee6625383e5a0ac4c9b601f9bdf2b840f326e2e907f654c9972dda27440ce"
+    },
+    {
+      "path": "sandbox-release/signature-closed/harness/worker.mjs",
+      "sha256": "18c51de26765b20efb38bc3bf42a6071002a9c58a5bd49c0fe754d30b11f4987"
+    },
+    {
+      "path": "sandbox-release/signature-closed/harness/workspace-intent-client.mjs",
+      "sha256": "4ac7fcb6d3784982a2a097bb457c35e832a3754fb4f5a62630f0e89c16bfb04e"
+    },
+    {
+      "path": "sandbox-release/signature-closed/harness/workspace-inventory.mjs",
+      "sha256": "66fb0df0727fdceafa951e79e1a2ad0116dbb3e248f11d10752afa9eff9668ce"
+    },
+    {
+      "path": "sandbox-release/signature-closed/harness/wrangler.json",
+      "sha256": "67b4020db7e2710ee08be5586cd836fbcbe6a9c87643d149f1d24dc1171e8e9c"
+    }
+  ]
+}

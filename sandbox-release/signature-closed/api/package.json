@@ -1,0 +1,18 @@
+{
+  "name": "doku-sandbox-closed-successor",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node verify-closed.mjs",
+    "build": "npm run verify",
+    "dryrun:api": "wrangler deploy --config services/doku-cf-sandbox/wrangler.simple-sandbox.json --dry-run",
+    "dryrun:harness": "wrangler deploy --config services/doku-sbx-harness/wrangler.json --dry-run"
+  },
+  "dependencies": {
+    "jose": "6.1.0"
+  },
+  "devDependencies": {
+    "wrangler": "4.151.3"
+  }
+}
