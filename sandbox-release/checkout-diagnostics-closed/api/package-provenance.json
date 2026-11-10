@@ -61,7 +61,7 @@
     },
     {
       "path": "services/doku-sandbox/checkout.mjs",
-      "sha256": "282cd086ea8c7f9736af51a47a8b37f481c6bb1f1e5af34f815c8955242ad5b1"
+      "sha256": "47cc3240d2ce61cfd1e97eb7918f06698a64036719e1dedc9109ce5c76e5dda3"
     },
     {
       "path": "services/doku-sandbox/protocol.mjs",
