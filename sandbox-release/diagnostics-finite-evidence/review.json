@@ -1,17 +1,17 @@
 {
   "artifactTree": "09cf9a16074f21cb50d258ffcea91284b993182e",
   "tuple": {
-    "leaseId": "f9da2b76-487e-48cd-aa5d-38d93c176f06",
-    "salesStart": "2026-11-10T06:47:27.102Z",
-    "salesExpires": "2026-11-10T07:02:27.102Z",
-    "reconciliationExpires": "2026-11-10T07:07:27.102Z"
+    "leaseId": "ed482c51-a25e-4de4-977f-daa73c8eaaf2",
+    "salesStart": "2026-11-10T08:10:26.241Z",
+    "salesExpires": "2026-11-10T08:25:26.241Z",
+    "reconciliationExpires": "2026-11-10T08:30:26.241Z"
   },
   "verdict": "PASS",
   "findings": [],
   "files": [
     {
       "path": ".github/scripts/check-diagnostics-finite.mjs",
-      "sha256": "1363a9508f75bdda6fc793618301aaecafc2413725cbebb1eae8fe088be42572"
+      "sha256": "b12235ecd452fb4d13ce422a0e70f14e4c92eb7d625ec2a0fc3da268017ab6cc"
     },
     {
       "path": ".github/scripts/diagnostics-finite-evidence.mjs",
