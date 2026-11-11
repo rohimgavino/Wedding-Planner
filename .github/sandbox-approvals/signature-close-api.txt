@@ -1,4 +1,4 @@
 APPROVE SUCCESSOR API CLOSURE ONLY
 artifact-tree=42d6e65f01ca0c5bfaf56f297dd22fca2545f865
 worker=pp-doku-sbx-disabled-20261102-bec84f2
-parent=02cdfb585708fcedcc24dadb4df875e02d6cad00
+parent=b50542c1d53b34a2d3cb675957c832522d3d61ac
