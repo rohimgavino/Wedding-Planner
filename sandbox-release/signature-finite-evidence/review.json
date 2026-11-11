@@ -1,10 +1,10 @@
 {
   "artifactTree": "42d6e65f01ca0c5bfaf56f297dd22fca2545f865",
   "tuple": {
-    "leaseId": "9101f746-d696-4915-802d-678425ae5297",
-    "salesStart": "2026-11-11T00:34:01.876Z",
-    "salesExpires": "2026-11-11T00:49:01.876Z",
-    "reconciliationExpires": "2026-11-11T00:59:01.876Z"
+    "leaseId": "f0cf569e-fc50-48cc-923a-314875f7153b",
+    "salesStart": "2026-11-11T01:03:25.211Z",
+    "salesExpires": "2026-11-11T01:18:25.211Z",
+    "reconciliationExpires": "2026-11-11T01:28:25.211Z"
   },
   "verdict": "PASS",
   "findings": [],
@@ -22,5 +22,5 @@
       "sha256": "8fc2630a338eff113bc7f41bca35004e116cf1c5051980543995a33056272dea"
     }
   ],
-  "sourceReview": "Signature finite workflow and supervisor reviewed runtime (Run 9 attempts_checkout_url_check fixed)"
+  "sourceReview": "Signature finite workflow and supervisor reviewed runtime (Run 10 using clean Tes BCA Sandbox 9)"
 }
