@@ -1,23 +1,23 @@
 {
-  "parent": "3deb6b427e7005846cfffd29067c66acf3119e56",
+  "parent": "9e4762a9a36fddce4a867c91997f525c36158049",
   "authorization": "APPROVED_EXACT_FINITE_SANDBOX_LEASE",
-  "leaseId": "e7b56d2e-2902-4d66-9cf0-b494e43c8683",
-  "salesStart": "2026-11-10T23:20:21.650Z",
-  "salesExpires": "2026-11-10T23:35:21.650Z",
-  "reconciliationExpires": "2026-11-10T23:40:21.650Z",
-  "activationSqlSha256": "a79136a4ec266ddde2717c18caa2d243288953c9c08c39687eddec027b8e41db",
+  "leaseId": "b0285b27-4aaa-4a0a-88a9-072559346f65",
+  "salesStart": "2026-11-11T00:15:39.556Z",
+  "salesExpires": "2026-11-11T00:30:39.556Z",
+  "reconciliationExpires": "2026-11-11T00:40:39.556Z",
+  "activationSqlSha256": "c5aa82c8102b92d478b888a9852fd51aca8c9fb2ded330403ec77ce2a1cf2038",
   "evidence": {
     "database": {
       "path": "sandbox-release/signature-finite-evidence/database.json",
-      "sha256": "db985ea3ea4774c4f87f4ead7a76059eea961e0714673f60c256fc0332be000e"
+      "sha256": "3fd9ef9d78b814f85a361bd82efa95433716a79c15f6b286fc01ae95f81f4e81"
     },
     "supervision": {
       "path": "sandbox-release/signature-finite-evidence/supervision.json",
-      "sha256": "c521c232393b6affa11bb7f96be1e867d5bed298613fffa617598df70dbca94d"
+      "sha256": "ca97fb1e0398084072f74e8d51622e467451912d54dc04c25702f79a32cfde67"
     },
     "review": {
       "path": "sandbox-release/signature-finite-evidence/review.json",
-      "sha256": "75fc65ba68a72a26252a3b3144a029ab9bebb2b88b5e5ebee0bbbbfe3cdc78eb"
+      "sha256": "f1f97e35053f2735e914f8a64f40e88d5240ff73358270cd907c0a94e0c667b7"
     }
   }
 }
