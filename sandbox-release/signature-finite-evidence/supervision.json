@@ -1,20 +1,20 @@
 {
   "artifactTree": "42d6e65f01ca0c5bfaf56f297dd22fca2545f865",
   "tuple": {
-    "leaseId": "b0285b27-4aaa-4a0a-88a9-072559346f65",
-    "salesStart": "2026-11-11T00:15:39.556Z",
-    "salesExpires": "2026-11-11T00:30:39.556Z",
-    "reconciliationExpires": "2026-11-11T00:40:39.556Z"
+    "leaseId": "9101f746-d696-4915-802d-678425ae5297",
+    "salesStart": "2026-11-11T00:34:01.876Z",
+    "salesExpires": "2026-11-11T00:49:01.876Z",
+    "reconciliationExpires": "2026-11-11T00:59:01.876Z"
   },
   "scope": "native-pg-supervisor-rehearsal",
   "command": "node test-finite-native.mjs",
   "exitCode": 0,
-  "stdoutSha256": "95a68326865364ee928722dfa46b68f8358aaaaf35f0d6e25f3d03c91ec036ec",
+  "stdoutSha256": "4d844799171d2122398351bd0e5ef395cb7f3a82d0f6641f5df09e17fb5f4e97",
   "closedRows": [
     {
       "closed": true
     }
   ],
-  "sourceLog": "C:/Users/MSI/AppData/Local/hermes/cache/scratch/pp-finite-exec-20261111-run8/synthetic-native-supervisor.log",
+  "sourceLog": "C:/Users/MSI/AppData/Local/hermes/cache/scratch/pp-finite-exec-20261111-run9/synthetic-native-supervisor.log",
   "scopeLimit": "Structurally valid synthetic evidence; no local PG execution"
 }

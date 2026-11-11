@@ -1,10 +1,10 @@
 {
   "artifactTree": "42d6e65f01ca0c5bfaf56f297dd22fca2545f865",
   "tuple": {
-    "leaseId": "b0285b27-4aaa-4a0a-88a9-072559346f65",
-    "salesStart": "2026-11-11T00:15:39.556Z",
-    "salesExpires": "2026-11-11T00:30:39.556Z",
-    "reconciliationExpires": "2026-11-11T00:40:39.556Z"
+    "leaseId": "9101f746-d696-4915-802d-678425ae5297",
+    "salesStart": "2026-11-11T00:34:01.876Z",
+    "salesExpires": "2026-11-11T00:49:01.876Z",
+    "reconciliationExpires": "2026-11-11T00:59:01.876Z"
   },
   "verdict": "PASS",
   "findings": [],
@@ -22,5 +22,5 @@
       "sha256": "8fc2630a338eff113bc7f41bca35004e116cf1c5051980543995a33056272dea"
     }
   ],
-  "sourceReview": "Signature finite workflow and supervisor reviewed runtime (Run 8 staging.doku.com fix)"
+  "sourceReview": "Signature finite workflow and supervisor reviewed runtime (Run 9 attempts_checkout_url_check fixed)"
 }
