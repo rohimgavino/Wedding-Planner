@@ -1,7 +1,7 @@
 export const API_ORIGIN='https://pp-doku-sbx-disabled-20261102-bec84f2.taarufplanner12.workers.dev';
 const uuid=v=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
 export function safeCheckoutUrl(value){
- try{const u=new URL(value);if(u.protocol==='https:'&&u.hostname==='sandbox.doku.com'&&!u.port&&!u.username&&!u.password&&!u.search&&!u.hash&&/^\/checkout-link(?:-v2)?\/[A-Za-z0-9_-]+$/.test(u.pathname))return u.href;}catch{}
+ try{const u=new URL(value);if(u.protocol==='https:'&&(u.hostname==='staging.doku.com'||u.hostname==='sandbox.doku.com')&&!u.port&&!u.username&&!u.password&&!u.search&&!u.hash&&/^\/checkout-link(?:-v2)?\/[A-Za-z0-9_-]+$/.test(u.pathname))return u.href;}catch{}
  throw Error('Checkout tidak valid. Periksa status, jangan ulangi pembayaran.');
 }
 // Memory only. Reserve is server-idempotent per unpaid workspace/package;

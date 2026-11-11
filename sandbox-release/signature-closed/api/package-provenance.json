@@ -1,7 +1,7 @@
 {
   "sourceCommit": "2916539757b5e0b921337eaece700f0bbb8e6a71",
   "historicalProvenanceSha256": "b673382c18fbdde249c9a33a99eca01d4049e2b36c65ae5a7568646ba201d2dd",
-  "scope": "CLOSED signature-fix successor; historical pins unchanged; no activation",
+  "scope": "CLOSED signature-fix successor; allow staging.doku.com and sandbox.doku.com checkout URLs",
   "files": [
     {
       "path": ".gitattributes",
@@ -61,7 +61,7 @@
     },
     {
       "path": "services/doku-sandbox/checkout.mjs",
-      "sha256": "afe1f0b8c079ca53f0a57193a999bee1e70b0c690c52aeb4bf3ea8b21fad4319"
+      "sha256": "914f0dd759e7f9f9b0022724402ebd112e04372f24b9f15c3c99b243c423f3f0"
     },
     {
       "path": "services/doku-sandbox/protocol.mjs",
@@ -81,7 +81,7 @@
     },
     {
       "path": "services/doku-sbx-harness/checkout-client.mjs",
-      "sha256": "8bf5c400293b8d5da442d9ccc789cd918215aadf0f2991882f54291f650d4f62"
+      "sha256": "99c1c9e695f8c934ca0424ec0371ca522537071a5c398a480d68927bd715ace7"
     },
     {
       "path": "services/doku-sbx-harness/index.html",
@@ -133,7 +133,7 @@
     },
     {
       "path": "../harness/checkout-client.mjs",
-      "sha256": "ba0efbedbd0c916834084299cf3a31f01e09a11f72f19052b3e42f6ac2f65715"
+      "sha256": "15bad58450d11182c93b35feb8ce8385a96a717faf8c74b455fd4e0dd2352c31"
     },
     {
       "path": "../harness/index.html",
@@ -183,6 +183,21 @@
       "path": "services/doku-sandbox/protocol.mjs",
       "before": "e1deaedab98467625eb288d407da324e0efbe7211209d70b850813464174ba2d",
       "after": "22d1602bc0250a1c5d76af6b5c21827ada9c52aba785859ce4fd7f1dd2346b0d"
+    },
+    {
+      "path": "services/doku-sandbox/checkout.mjs",
+      "before": "afe1f0b8c079ca53f0a57193a999bee1e70b0c690c52aeb4bf3ea8b21fad4319",
+      "after": "914f0dd759e7f9f9b0022724402ebd112e04372f24b9f15c3c99b243c423f3f0"
+    },
+    {
+      "path": "services/doku-sbx-harness/checkout-client.mjs",
+      "before": "8bf5c400293b8d5da442d9ccc789cd918215aadf0f2991882f54291f650d4f62",
+      "after": "99c1c9e695f8c934ca0424ec0371ca522537071a5c398a480d68927bd715ace7"
+    },
+    {
+      "path": "../harness/checkout-client.mjs",
+      "before": "ba0efbedbd0c916834084299cf3a31f01e09a11f72f19052b3e42f6ac2f65715",
+      "after": "15bad58450d11182c93b35feb8ce8385a96a717faf8c74b455fd4e0dd2352c31"
     }
   ]
 }

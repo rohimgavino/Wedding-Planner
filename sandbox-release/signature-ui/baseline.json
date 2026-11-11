@@ -4,7 +4,7 @@
   "files": {
     "app.mjs": "6f3b24682cc331c1815153fd8588ffbe4d3cc8196393ff2dbe11fa2aab048047",
     "catalog.json": "57ef1153944f3a66531af47b6c60cb62f94d8a2409c8493302aa1d41cfbbad00",
-    "checkout-client.mjs": "ba0efbedbd0c916834084299cf3a31f01e09a11f72f19052b3e42f6ac2f65715",
+    "checkout-client.mjs": "15bad58450d11182c93b35feb8ce8385a96a717faf8c74b455fd4e0dd2352c31",
     "index.html": "dab8ff9f92a7ee5e8a10a9ed21a9d83981d907604f284927abf04e4ed5294e06",
     "public-config.offline.txt": "e14d94d3c9ccd3133e7e44bffb2aeddc3da50eff55681026fe664d634b86acca",
     "public-config.txt": "e9a9653641ce09ae8d65b282b6401495e6a3ac20ffb1865ad0705d7d796a6f92",

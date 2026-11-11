@@ -6,7 +6,7 @@ const git=(...a)=>execFileSync('git',a,{maxBuffer:10*1024*1024});
 const text=(...a)=>git(...a).toString('utf8').trim();
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const manifest="sandbox-release/signature-closed/publication-manifest.json",review="sandbox-release/signature-closed/review-manifest.json",checker=".github/scripts/check-signature-closed.mjs",marker=".github/sandbox-approvals/deploy-signature-closed.txt";
-const manifestHash="60c2c7b7a33ba79215837da9fa4b4497f7320d1197cfce1310b2cb73cb6fe40a";
+const manifestHash="ef36807719126cdffa9f621283072257262023e118d036fab4a15c0f51fb28b6";
 const blob=(rev,p)=>git('show',`${rev}:${p}`);
 const e=JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH,'utf8'));
 assert.equal(process.env.GITHUB_EVENT_NAME,'push');assert.equal(process.env.GITHUB_REPOSITORY,'rohimgavino/Wedding-Planner');

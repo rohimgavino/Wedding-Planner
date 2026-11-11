@@ -183,7 +183,7 @@
     },
     {
       "path": "sandbox-release/signature-closed/api/package-provenance.json",
-      "sha256": "6680a5bfd375cffd9244c5eb1b49f272f73f144cfb7a111db21b1f5e63ada49a"
+      "sha256": "7538c8312cec48d6d914f040c0cd6c695ba792521a3b89675fb1c93404b402ec"
     },
     {
       "path": "sandbox-release/signature-closed/api/package.json",
@@ -227,7 +227,7 @@
     },
     {
       "path": "sandbox-release/signature-closed/api/services/doku-sandbox/checkout.mjs",
-      "sha256": "afe1f0b8c079ca53f0a57193a999bee1e70b0c690c52aeb4bf3ea8b21fad4319"
+      "sha256": "914f0dd759e7f9f9b0022724402ebd112e04372f24b9f15c3c99b243c423f3f0"
     },
     {
       "path": "sandbox-release/signature-closed/api/services/doku-sandbox/protocol.mjs",
@@ -247,7 +247,7 @@
     },
     {
       "path": "sandbox-release/signature-closed/api/services/doku-sbx-harness/checkout-client.mjs",
-      "sha256": "8bf5c400293b8d5da442d9ccc789cd918215aadf0f2991882f54291f650d4f62"
+      "sha256": "99c1c9e695f8c934ca0424ec0371ca522537071a5c398a480d68927bd715ace7"
     },
     {
       "path": "sandbox-release/signature-closed/api/services/doku-sbx-harness/index.html",
@@ -299,7 +299,7 @@
     },
     {
       "path": "sandbox-release/signature-closed/harness/checkout-client.mjs",
-      "sha256": "ba0efbedbd0c916834084299cf3a31f01e09a11f72f19052b3e42f6ac2f65715"
+      "sha256": "15bad58450d11182c93b35feb8ce8385a96a717faf8c74b455fd4e0dd2352c31"
     },
     {
       "path": "sandbox-release/signature-closed/harness/index.html",

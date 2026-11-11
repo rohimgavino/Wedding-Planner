@@ -11,7 +11,7 @@ const root='sandbox-release/signature-closed/api',marker='.github/sandbox-approv
 assert.equal(process.env.GITHUB_REPOSITORY,'rohimgavino/Wedding-Planner');assert.equal(process.env.GITHUB_REF,'refs/heads/sandbox/doku-checkout');assert.equal(process.env.GITHUB_EVENT_NAME,'push');
 const e=JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH));assert.equal(e.created,false);assert.equal(e.deleted,false);assert.equal(e.forced,false);assert.equal(e.before,git('show','-s','--format=%P','HEAD'));assert.equal(e.after,git('rev-parse','HEAD'));
 assert.ok(['A\t'+marker,'M\t'+marker].includes(git('diff','--name-status','HEAD^','HEAD')));
-assert.equal(git('rev-parse','HEAD:'+root),'c497bde8436c7320cc115703036f4bf3a049dc07');
+assert.equal(git('rev-parse','HEAD:'+root),'42d6e65f01ca0c5bfaf56f297dd22fca2545f865');
 const p=JSON.parse(readFileSync(marker));assert.equal(p.parent,e.before);assert.equal(p.authorization,'APPROVED_EXACT_FINITE_SANDBOX_LEASE');
 assert.match(p.leaseId,/^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/);
 for(const k of ['salesStart','salesExpires','reconciliationExpires'])assert.equal(new Date(p[k]).toISOString(),p[k]);

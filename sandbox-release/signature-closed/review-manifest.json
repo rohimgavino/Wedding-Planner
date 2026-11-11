@@ -1,5 +1,5 @@
 {
-  "manifestSha256": "60c2c7b7a33ba79215837da9fa4b4497f7320d1197cfce1310b2cb73cb6fe40a",
+  "manifestSha256": "ef36807719126cdffa9f621283072257262023e118d036fab4a15c0f51fb28b6",
   "checkerSha256": "19de7a5cb706a47281a3323068749dac100c0f88529c84b312f956be400d6f0b",
   "publicationPaths": [
     ".github/scripts/check-signature-closed.mjs",

@@ -10,7 +10,7 @@ export function verifyEvidence(p,load){
   const ref=p.evidence[name];assert.deepEqual(Object.keys(ref).sort(),['path','sha256']);
   assert.equal(ref.path,`sandbox-release/signature-finite-evidence/${name}.json`);assert.match(ref.sha256,/^[a-f0-9]{64}$/);
   const bytes=load(ref.path);assert.equal(hash(bytes),ref.sha256,`${name} evidence hash`);
-  const r=JSON.parse(bytes);assert.equal(r.artifactTree,'c497bde8436c7320cc115703036f4bf3a049dc07');assert.deepEqual(r.tuple,tuple);reports[name]=r;
+  const r=JSON.parse(bytes);assert.equal(r.artifactTree,'42d6e65f01ca0c5bfaf56f297dd22fca2545f865');assert.deepEqual(r.tuple,tuple);reports[name]=r;
  }
  const d=reports.database;assert.equal(d.project,'timrseunzsdqdrbyvyfn');assert.equal(d.scope,'hosted-rollback-readback');
  assert.deepEqual(d.rows,[{...tuple,enabled:true,closed:false}]);
@@ -19,7 +19,7 @@ export function verifyEvidence(p,load){
  const s=reports.supervision;assert.equal(s.scope,'native-pg-supervisor-rehearsal');
  assert.equal(s.command,'node test-finite-native.mjs');assert.equal(s.exitCode,0);
  assert.match(s.stdoutSha256,/^[a-f0-9]{64}$/);assert.equal(s.closedRows.length,1);assert.deepEqual(s.closedRows,[{closed:true}]);
- const r=reports.review;assert.equal(r.verdict,'PASS');assert.equal(r.artifactTree,'c497bde8436c7320cc115703036f4bf3a049dc07');
+ const r=reports.review;assert.equal(r.verdict,'PASS');assert.equal(r.artifactTree,'42d6e65f01ca0c5bfaf56f297dd22fca2545f865');
  assert.deepEqual(r.findings,[]);assert.ok(r.files.length>=3);
  const seen=new Set();
  for(const f of r.files){assert.match(f.path,/^(?:\.github\/(?:scripts|workflows)\/|sandbox-release\/signature-finite-evidence\/)[A-Za-z0-9_.\/-]+$/);assert.ok(!f.path.includes('..'));assert.ok(!seen.has(f.path));seen.add(f.path);assert.equal(hash(load(f.path)),f.sha256,`reviewed file ${f.path}`);}
