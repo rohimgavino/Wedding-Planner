@@ -18,18 +18,36 @@ import {
 } from '@/lib/commerce';
 import { formatRupiah } from '@/lib/utils';
 
+const TIER_RANK: Record<string, number> = {
+  starter: 1,
+  premium: 2,
+  wedding_pro: 3,
+};
+
 function hasActivePackageAccess(billing: WorkspaceBillingStatus | null, packageId?: string): boolean {
   if (!billing) return false;
   const now = Date.now();
-  return billing.entitlements.some((item) => {
-    const matchesFeature = packageId
-      ? item.feature === 'core' || item.feature === packageId
-      : item.feature === 'core' || item.feature === 'starter' || item.feature === 'premium' || item.feature === 'wedding_pro';
-    if (!matchesFeature || item.revoked_at) return false;
-    if (!item.expires_at) return true;
-    const exp = Date.parse(item.expires_at);
-    return Number.isFinite(exp) && exp > now;
-  });
+  const activeFeatures = billing.entitlements
+    .filter((item) => {
+      if (item.revoked_at) return false;
+      if (!item.expires_at) return true;
+      const exp = Date.parse(item.expires_at);
+      return Number.isFinite(exp) && exp > now;
+    })
+    .map((item) => item.feature);
+
+  if (!packageId) {
+    return activeFeatures.some(
+      (f) => f === 'core' || f === 'starter' || f === 'premium' || f === 'wedding_pro'
+    );
+  }
+
+  const targetRank = TIER_RANK[packageId] ?? 0;
+  const maxTierRank = activeFeatures.reduce((max, f) => Math.max(max, TIER_RANK[f] ?? 0), 0);
+  if (maxTierRank > 0) {
+    return maxTierRank >= targetRank;
+  }
+  return activeFeatures.includes('core');
 }
 
 async function getAccessToken(): Promise<string | null> {
