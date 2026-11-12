@@ -7,6 +7,59 @@ import {
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const VALID_PACKAGES = new Set(['starter', 'premium', 'wedding_pro']);
+const PACKAGE_METADATA = {
+  starter: {
+    name: 'Starter',
+    description: 'Awal yang lebih terarah untuk merapikan rencana inti berdua.',
+    features: [
+      '1 wedding workspace berdua',
+      'Checklist persiapan & timeline',
+      'Anggaran, tabungan & daftar tamu',
+    ],
+  },
+  premium: {
+    name: 'Premium',
+    description: 'Ruang lengkap untuk setiap detail acara bersama pasangan.',
+    features: [
+      'Seluruh fitur Starter',
+      'Kolaborasi pasangan real-time',
+      'Prioritas pembaruan fitur undangan',
+    ],
+  },
+  wedding_pro: {
+    name: 'Wedding Pro',
+    description: 'Kapasitas penuh untuk persiapan menyeluruh hingga hari H.',
+    features: [
+      'Seluruh fitur Premium',
+      'Dukungan perencanaan menyeluruh',
+      'Akses penuh selama 365 hari',
+    ],
+  },
+};
+
+function normalizeCatalogPackage(raw, salesEnabled, dokuConfigured) {
+  const id = String(raw?.id || raw?.package_id || '');
+  const meta = PACKAGE_METADATA[id] || {
+    name: id || 'Paket',
+    description: 'Paket aktivasi workspace Pocket Planner.',
+    features: [],
+  };
+  const baseNum = raw?.base_amount_idr != null ? Number(raw.base_amount_idr) : null;
+  const priceNum = Number(raw?.price_idr ?? raw?.effective_amount_idr ?? raw?.base_amount_idr ?? 0);
+  const durationDays = Number(raw?.duration_days ?? 365);
+  const priceEligible = raw?.price_eligible !== false && Number.isFinite(priceNum) && priceNum > 0;
+  return {
+    id,
+    name: typeof raw?.name === 'string' && raw.name ? raw.name : meta.name,
+    description: typeof raw?.description === 'string' && raw.description ? raw.description : meta.description,
+    base_amount_idr: Number.isFinite(baseNum) ? baseNum : null,
+    price_idr: Number.isFinite(priceNum) ? priceNum : 0,
+    duration_days: Number.isFinite(durationDays) && durationDays > 0 ? durationDays : 365,
+    features: Array.isArray(raw?.features) ? raw.features : meta.features,
+    promo_active: Boolean(raw?.promo_active),
+    checkout_eligible: Boolean(salesEnabled && dokuConfigured && priceEligible),
+  };
+}
 const DOKU_CHECKOUT_TARGET = '/checkout/v1/payment';
 const DOKU_NOTIFICATION_TARGET = '/doku/notifications';
 
@@ -97,12 +150,15 @@ async function handleCatalog(env, fetchImpl) {
   if (!rpc.ok || !rpc.data) {
     return jsonResponse({ error: 'CATALOG_UNAVAILABLE' }, 502);
   }
+  const salesEnabled = Boolean(rpc.data.sales_enabled);
+  const dokuConfigured = Boolean(env?.DOKU_CLIENT_ID && env?.DOKU_SECRET_KEY && env?.SUPABASE_SERVICE_ROLE_KEY);
+  const rawPackages = Array.isArray(rpc.data.packages) ? rpc.data.packages : [];
   return jsonResponse({
-    salesEnabled: Boolean(rpc.data.sales_enabled),
+    salesEnabled,
     supportEmail: rpc.data.support_email || null,
     serverNow: rpc.data.server_now || null,
-    packages: Array.isArray(rpc.data.packages) ? rpc.data.packages : [],
-    dokuConfigured: Boolean(env?.DOKU_CLIENT_ID && env?.DOKU_SECRET_KEY && env?.SUPABASE_SERVICE_ROLE_KEY),
+    packages: rawPackages.map((pkg) => normalizeCatalogPackage(pkg, salesEnabled, dokuConfigured)),
+    dokuConfigured,
   });
 }
 

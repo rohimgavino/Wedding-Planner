@@ -629,4 +629,48 @@ await test('SQL: unknown order unblocks via FAILED webhook and audited admin_res
   assert.deepEqual(opAudit, ['doku.order_resolved', 'sales.activation_updated']);
 });
 
+await test('Worker: /api/payments/catalog normalizes SQL public_tier_catalog into TierPackage[] with checkout_eligible=true', async () => {
+  const env = {
+    DOKU_ENV: 'production',
+    DOKU_CLIENT_ID: CLIENT_ID,
+    DOKU_SECRET_KEY: SECRET,
+    SUPABASE_URL: 'https://supa.example.test',
+    SUPABASE_ANON_KEY: 'anon-key',
+    SUPABASE_SERVICE_ROLE_KEY: 'service-key',
+  };
+  const mockFetch = async () =>
+    new Response(
+      JSON.stringify({
+        sales_enabled: true,
+        support_email: 'support@pocketwedding.id',
+        server_now: '2026-11-12T10:00:00Z',
+        packages: [
+          {
+            package_id: 'starter',
+            version: '2',
+            duration_days: 365,
+            base_amount_idr: '49900',
+            effective_amount_idr: '49900',
+            price_eligible: true,
+            checkout_eligible: false,
+            promo_active: false,
+          },
+        ],
+      }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
+  const res = await handleRequest(new Request('https://pocketwedding.id/api/payments/catalog'), env, mockFetch);
+  assert.equal(res.status, 200);
+  const body = await res.json();
+  assert.equal(body.salesEnabled, true);
+  assert.equal(body.dokuConfigured, true);
+  assert.equal(body.packages.length, 1);
+  assert.equal(body.packages[0].id, 'starter');
+  assert.equal(body.packages[0].name, 'Starter');
+  assert.equal(body.packages[0].price_idr, 49900);
+  assert.equal(Array.isArray(body.packages[0].features), true);
+  assert.ok(body.packages[0].features.length > 0);
+  assert.equal(body.packages[0].checkout_eligible, true);
+});
+
 console.log(`ALL ${passed} DOKU TESTS PASSED`);

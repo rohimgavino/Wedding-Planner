@@ -256,7 +256,12 @@ export default function PurchasePage() {
         {catalog && (
           <div className="grid sm:grid-cols-3 gap-4 pt-2">
             {catalog.packages.map((pkg) => {
-              const packageActive = hasActivePackageAccess(billing, pkg.id);
+              const packageId = pkg.id || (pkg as unknown as { package_id?: string }).package_id || '';
+              const packagePrice = Number(
+                pkg.price_idr ?? (pkg as unknown as { effective_amount_idr?: string | number }).effective_amount_idr ?? pkg.base_amount_idr ?? 0
+              );
+              const packageFeatures = Array.isArray(pkg.features) ? pkg.features : [];
+              const packageActive = hasActivePackageAccess(billing, packageId);
               const disabled =
                 !user ||
                 !workspace ||
@@ -268,16 +273,16 @@ export default function PurchasePage() {
 
               return (
                 <article
-                  key={pkg.id}
+                  key={packageId}
                   className="rounded-2xl border border-rose-100 p-4 flex flex-col justify-between space-y-4 bg-white"
                 >
                   <div className="space-y-2">
-                    <h2 className="font-serif text-xl text-slate-900">{pkg.name}</h2>
-                    <p className="text-lg font-semibold text-rose-800">{formatRupiah(pkg.price_idr)}</p>
-                    <p className="text-xs text-slate-500">{pkg.duration_days} hari sejak aktivasi</p>
-                    <p className="text-sm text-slate-600">{pkg.description}</p>
+                    <h2 className="font-serif text-xl text-slate-900">{pkg.name || packageId}</h2>
+                    <p className="text-lg font-semibold text-rose-800">{formatRupiah(packagePrice)}</p>
+                    <p className="text-xs text-slate-500">{pkg.duration_days ?? 365} hari sejak aktivasi</p>
+                    {pkg.description && <p className="text-sm text-slate-600">{pkg.description}</p>}
                     <ul className="text-xs text-slate-700 space-y-1 pt-1 list-disc pl-4">
-                      {pkg.features.map((feat) => (
+                      {packageFeatures.map((feat) => (
                         <li key={feat}>{feat}</li>
                       ))}
                     </ul>
@@ -286,10 +291,10 @@ export default function PurchasePage() {
                   <button
                     type="button"
                     disabled={disabled}
-                    onClick={() => void handleCheckout(pkg.id)}
+                    onClick={() => void handleCheckout(packageId)}
                     className="w-full min-h-11 rounded-xl bg-rose-700 text-white px-4 py-2.5 text-sm font-medium disabled:opacity-50"
                   >
-                    {busyPackageId === pkg.id
+                    {busyPackageId === packageId
                       ? 'Menyiapkan checkout…'
                       : packageActive
                         ? 'Paket sudah aktif'
