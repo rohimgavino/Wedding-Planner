@@ -673,4 +673,82 @@ await test('Worker: /api/payments/catalog normalizes SQL public_tier_catalog int
   assert.equal(body.packages[0].checkout_eligible, true);
 });
 
+await test('Worker: /api/payments/status reconciles pending order via DOKU Check Status API (GET /orders/v1/status)', async () => {
+  const env = {
+    DOKU_ENV: 'production',
+    DOKU_CLIENT_ID: CLIENT_ID,
+    DOKU_SECRET_KEY: SECRET,
+    SUPABASE_URL: 'https://supa.example.test',
+    SUPABASE_ANON_KEY: 'anon-key',
+    SUPABASE_SERVICE_ROLE_KEY: 'service-key',
+  };
+  let statusCallCount = 0;
+  let applyCalledWith = null;
+  let dokuStatusTarget = null;
+  let dokuHadDigest = false;
+
+  const mockFetch = async (url, init = {}) => {
+    const u = String(url);
+    if (u.endsWith('/auth/v1/user')) {
+      return new Response(JSON.stringify({ id: '00000000-0000-4000-8000-000000000001' }), { status: 200 });
+    }
+    if (u.endsWith('/rest/v1/rpc/doku_workspace_orders')) {
+      statusCallCount += 1;
+      if (statusCallCount === 1) {
+        return new Response(
+          JSON.stringify({
+            orders: [{ invoice: 'pp-sync-01', status: 'checkout_ready', amount_idr: 10000 }],
+            entitlements: [],
+          }),
+          { status: 200 }
+        );
+      }
+      return new Response(
+        JSON.stringify({
+          orders: [{ invoice: 'pp-sync-01', status: 'paid', amount_idr: 10000, payment_channel: 'VIRTUAL_ACCOUNT_BNI' }],
+          entitlements: [{ feature: 'starter' }, { feature: 'core' }],
+        }),
+        { status: 200 }
+      );
+    }
+    if (u === 'https://api.doku.com/orders/v1/status/pp-sync-01') {
+      dokuStatusTarget = u;
+      dokuHadDigest = Boolean(init.headers?.Digest || init.headers?.digest);
+      assert.match(init.headers?.Signature || '', /^HMACSHA256=[A-Za-z0-9+/]{43}=$/);
+      return new Response(
+        JSON.stringify({
+          order: { invoice_number: 'pp-sync-01', amount: '10000.00' },
+          transaction: { status: 'SUCCESS' },
+          channel: { id: 'VIRTUAL_ACCOUNT_BNI' },
+        }),
+        { status: 200 }
+      );
+    }
+    if (u.endsWith('/rest/v1/rpc/doku_apply_notification')) {
+      applyCalledWith = JSON.parse(init.body);
+      return new Response(JSON.stringify({ outcome: 'paid' }), { status: 200 });
+    }
+    throw new Error(`Unexpected URL: ${u}`);
+  };
+
+  const res = await handleRequest(
+    new Request('https://pocketwedding.id/api/payments/status?workspace_id=00000000-0000-4000-8000-000000000099', {
+      headers: { Authorization: 'Bearer user-jwt' },
+    }),
+    env,
+    mockFetch
+  );
+  assert.equal(res.status, 200);
+  const body = await res.json();
+  assert.equal(dokuStatusTarget, 'https://api.doku.com/orders/v1/status/pp-sync-01');
+  assert.equal(dokuHadDigest, false);
+  assert.equal(applyCalledWith.p_invoice, 'pp-sync-01');
+  assert.equal(applyCalledWith.p_amount_idr, 10000);
+  assert.equal(applyCalledWith.p_tx_status, 'SUCCESS');
+  assert.equal(applyCalledWith.p_channel_id, 'VIRTUAL_ACCOUNT_BNI');
+  assert.equal(statusCallCount, 2);
+  assert.equal(body.orders[0].status, 'paid');
+  assert.equal(body.entitlements.length, 2);
+});
+
 console.log(`ALL ${passed} DOKU TESTS PASSED`);

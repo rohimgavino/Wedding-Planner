@@ -1,5 +1,6 @@
 import {
   formatUtcIso,
+  parseDokuStatusPayload,
   signDokuRequest,
   verifyDokuNotification,
   verifyDokuResponse,
@@ -162,6 +163,95 @@ async function handleCatalog(env, fetchImpl) {
   });
 }
 
+async function syncPendingOrdersWithDoku(orders, env, fetchImpl) {
+  if (!hasPaymentSecrets(env) || !Array.isArray(orders) || orders.length === 0) {
+    return false;
+  }
+  const pending = orders
+    .filter((o) => o && typeof o.invoice === 'string' && (o.status === 'checkout_ready' || o.status === 'unknown'))
+    .slice(0, 3);
+  if (pending.length === 0) return false;
+
+  let changed = false;
+  for (const ord of pending) {
+    const target = `/orders/v1/status/${ord.invoice}`;
+    const requestId = crypto.randomUUID();
+    const timestamp = formatUtcIso();
+    let signature;
+    try {
+      signature = await signDokuRequest(
+        {
+          clientId: env.DOKU_CLIENT_ID,
+          requestId,
+          timestamp,
+          target,
+        },
+        env.DOKU_SECRET_KEY
+      );
+    } catch {
+      continue;
+    }
+
+    let dokuResp;
+    try {
+      dokuResp = await fetchImpl(`${getDokuBaseUrl(env)}${target}`, {
+        method: 'GET',
+        headers: {
+          'Client-Id': env.DOKU_CLIENT_ID,
+          'Request-Id': requestId,
+          'Request-Timestamp': timestamp,
+          Signature: signature,
+        },
+        signal: AbortSignal.timeout(8000),
+      });
+    } catch {
+      continue;
+    }
+
+    if (dokuResp.status !== 200) {
+      try {
+        await dokuResp.body?.cancel?.();
+      } catch {
+        // ignore cancel error
+      }
+      continue;
+    }
+
+    const respBytes = new Uint8Array(await dokuResp.arrayBuffer());
+    const parsed = await parseDokuStatusPayload(respBytes, ord.invoice);
+    if (!parsed.ok) continue;
+    if (parsed.txStatus !== 'SUCCESS' && parsed.txStatus !== 'EXPIRED' && parsed.txStatus !== 'FAILED') {
+      continue;
+    }
+
+    const applyRpc = await callSupabaseRpc(
+      env,
+      'doku_apply_notification',
+      {
+        p_event_key: `status-api:${ord.invoice}:${parsed.txStatus}:${parsed.amountIdr}`,
+        p_payload_hash: parsed.payloadHash,
+        p_invoice: parsed.invoice,
+        p_amount_idr: parsed.amountIdr,
+        p_channel_id: parsed.channelId,
+        p_tx_status: parsed.txStatus,
+        p_tx_type: parsed.txType,
+      },
+      env.SUPABASE_SERVICE_ROLE_KEY,
+      fetchImpl
+    );
+    if (
+      applyRpc.ok &&
+      (applyRpc.data?.outcome === 'paid' ||
+        applyRpc.data?.outcome === 'expired' ||
+        applyRpc.data?.outcome === 'failed' ||
+        applyRpc.data?.outcome === 'ignored')
+    ) {
+      changed = true;
+    }
+  }
+  return changed;
+}
+
 async function handleStatus(request, env, fetchImpl) {
   if (!hasSupabaseConfig(env)) {
     return jsonResponse({ error: 'CONFIG_MISSING' }, 503);
@@ -181,7 +271,7 @@ async function handleStatus(request, env, fetchImpl) {
     return jsonResponse({ error: 'UNAUTHORIZED' }, 401);
   }
 
-  const rpc = await callSupabaseRpc(
+  let rpc = await callSupabaseRpc(
     env,
     'doku_workspace_orders',
     { p_workspace_id: workspaceId },
@@ -195,10 +285,26 @@ async function handleStatus(request, env, fetchImpl) {
     }
     return jsonResponse({ error: 'STATUS_QUERY_FAILED' }, 502);
   }
-  return jsonResponse({
-    orders: Array.isArray(rpc.data?.orders) ? rpc.data.orders : [],
-    entitlements: Array.isArray(rpc.data?.entitlements) ? rpc.data.entitlements : [],
-  });
+
+  let orders = Array.isArray(rpc.data?.orders) ? rpc.data.orders : [];
+  let entitlements = Array.isArray(rpc.data?.entitlements) ? rpc.data.entitlements : [];
+
+  const changed = await syncPendingOrdersWithDoku(orders, env, fetchImpl);
+  if (changed) {
+    const refreshed = await callSupabaseRpc(
+      env,
+      'doku_workspace_orders',
+      { p_workspace_id: workspaceId },
+      token,
+      fetchImpl
+    );
+    if (refreshed.ok) {
+      orders = Array.isArray(refreshed.data?.orders) ? refreshed.data.orders : orders;
+      entitlements = Array.isArray(refreshed.data?.entitlements) ? refreshed.data.entitlements : entitlements;
+    }
+  }
+
+  return jsonResponse({ orders, entitlements });
 }
 
 async function handleCheckout(request, env, fetchImpl) {

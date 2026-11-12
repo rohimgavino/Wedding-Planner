@@ -348,3 +348,54 @@ export async function verifyDokuNotification(
     txType: txType ? txType.slice(0, 32) : null,
   };
 }
+
+export async function parseDokuStatusPayload(rawBody, expectedInvoice) {
+  const bytes = toBytes(rawBody);
+  if (bytes.byteLength === 0 || bytes.byteLength > 65536) {
+    return { ok: false, reasonCode: 'RESPONSE_BODY_SIZE_INVALID' };
+  }
+  let payload;
+  try {
+    const text = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+    payload = JSON.parse(text);
+  } catch {
+    return { ok: false, reasonCode: 'INVALID_JSON' };
+  }
+
+  const invoice = payload?.order?.invoice_number;
+  if (typeof invoice !== 'string' || !INVOICE_RE.test(invoice) || (expectedInvoice && invoice !== expectedInvoice)) {
+    return { ok: false, reasonCode: 'INVALID_INVOICE' };
+  }
+
+  const currency = payload?.order?.currency;
+  if (currency !== undefined && currency !== 'IDR') {
+    return { ok: false, reasonCode: 'INVALID_CURRENCY' };
+  }
+
+  const amountIdr = parsePositiveIntAmount(payload?.order?.amount);
+  if (amountIdr === null) {
+    return { ok: false, reasonCode: 'INVALID_AMOUNT' };
+  }
+
+  const txStatus = typeof payload?.transaction?.status === 'string' ? payload.transaction.status.trim().toUpperCase() : '';
+  if (!txStatus) {
+    return { ok: false, reasonCode: 'MISSING_TRANSACTION_STATUS' };
+  }
+
+  const txType = typeof payload?.transaction?.type === 'string' ? payload.transaction.type.trim().toUpperCase() : null;
+  const channelId =
+    (typeof payload?.channel?.id === 'string' && payload.channel.id.trim()) ||
+    (typeof payload?.acquirer?.id === 'string' && payload.acquirer.id.trim()) ||
+    (typeof payload?.service?.id === 'string' && payload.service.id.trim()) ||
+    'DOKU';
+
+  return {
+    ok: true,
+    payloadHash: await sha256Hex(bytes),
+    invoice,
+    amountIdr,
+    channelId: channelId.slice(0, 64),
+    txStatus: txStatus.slice(0, 32),
+    txType: txType ? txType.slice(0, 32) : null,
+  };
+}
