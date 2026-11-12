@@ -16,7 +16,7 @@ export function WorkspaceActivation({ onSettings }: { onSettings: () => void }) 
      <span className="activation-status"><span aria-hidden="true" />Belum aktif</span>
      <p className="activation-eyebrow">RENCANA BERSAMA KALIAN</p>
      <h1 id="activation-title">Workspace menunggu aktivasi</h1>
-     <p className="activation-intro">Satu paket inti untuk berdua: budget, checklist, tamu, dan tabungan bersama.</p>
+     <p className="activation-intro">Satu paket untuk berdua selama 365 hari: budget, checklist, tamu, dan tabungan bersama.</p>
     </header>
     <div className="activation-actions">
      <Link href="/purchase" className="activation-primary">Lihat paket &amp; aktivasi <span aria-hidden="true">→</span></Link>
@@ -25,14 +25,14 @@ export function WorkspaceActivation({ onSettings }: { onSettings: () => void }) 
     <section className="activation-guide" aria-labelledby="activation-guide-title">
      <h2 id="activation-guide-title">Cara mengaktifkan</h2>
      <ol>
-      <li><span aria-hidden="true">1</span><div><strong>Lihat paket</strong><p>Cek informasi dan ketersediaan di halaman aktivasi.</p></div></li>
-      <li><span aria-hidden="true">2</span><div><strong>Pembayaran belum tersedia</strong><p>Pembelian baru hanya melalui DOKU setelah backend terverifikasi.</p></div></li>
-      <li><span aria-hidden="true">3</span><div><strong>Tunggu checkout resmi</strong><p>Jangan membayar lewat kanal lain atau meminta aktivasi manual.</p></div></li>
+      <li><span aria-hidden="true">1</span><div><strong>Pilih paket</strong><p>Bandingkan paket Starter, Premium, atau Wedding Pro di halaman aktivasi.</p></div></li>
+      <li><span aria-hidden="true">2</span><div><strong>Bayar lewat DOKU Checkout</strong><p>Pembayaran resmi mendukung QRIS, Virtual Account, dan kanal aktif DOKU lainnya.</p></div></li>
+      <li><span aria-hidden="true">3</span><div><strong>Aktif otomatis untuk berdua</strong><p>Akses terbuka setelah notifikasi resmi DOKU diterima; hindari pembayaran di luar kanal resmi.</p></div></li>
      </ol>
     </section>
     <details className="activation-payment">
      <summary>Pembayaran &amp; keamanan</summary>
-     <p>Tidak ada aktivasi otomatis dari redirect pembayaran. Pembayaran baru belum dibuka; jangan kirim data kartu, password, atau OTP.</p>
+     <p>Tidak ada aktivasi otomatis dari redirect pembayaran. Akses aktif setelah notifikasi lunas dari gateway DOKU terverifikasi; jangan kirim data kartu, password, atau OTP.</p>
     </details>
    </section>
    <div className="activation-extras">

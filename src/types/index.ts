@@ -11,7 +11,7 @@ export interface SavingsContribution {
  id: string; workspace_id: string; contributor_id: string; amount: number; contributed_on: string; notes: string; created_at?: string;
 }
 export interface WorkspaceEntitlement {
- workspace_id: string; feature: 'core' | 'lamaran' | 'honeymoon'; verified_at: string; expires_at: string | null; revoked_at: string | null;
+ workspace_id: string; feature: 'core' | 'lamaran' | 'honeymoon' | 'starter' | 'premium' | 'wedding_pro'; verified_at: string; expires_at: string | null; revoked_at: string | null;
 }
 
 export type MemberRole = 'owner' | 'partner';
