@@ -1,6 +1,7 @@
 import { PGlite } from '@electric-sql/pglite';
 import { readFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
+import { installHostedPlannerFixture } from './fixtures/hosted-planner-schema.mjs';
 const db=new PGlite();
 await db.exec(`CREATE ROLE anon; CREATE ROLE authenticated; CREATE SCHEMA auth; CREATE TABLE auth.users(id uuid PRIMARY KEY); CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $$ SELECT nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$; GRANT USAGE ON SCHEMA public,auth TO anon,authenticated; GRANT EXECUTE ON FUNCTION auth.uid() TO anon,authenticated; INSERT INTO auth.users VALUES ('00000000-0000-0000-0000-000000000001'),('00000000-0000-0000-0000-000000000002'),('00000000-0000-0000-0000-000000000003');`);
 const apply=async p=>db.exec(readFileSync('supabase/migrations/'+p,'utf8'));
@@ -19,5 +20,5 @@ await user(3);await assert.rejects(db.query("select public.set_site_admin(auth.u
 await db.exec('RESET ROLE; GRANT ALL ON public.site_admins TO authenticated');await user(3);await assert.rejects(db.query('insert into public.site_admins(user_id) values(auth.uid())'),/row-level security/);
 await user(1);await assert.rejects(db.query("select public.set_site_admin(auth.uid(),null,'last')"),/last developer/);await db.query("select public.grant_developer_test_access($1,7,'own local test')",[spaces[0]]);
 console.log('PASS operator restrictions, no escalation, last developer, own nonpayment grant, SQL sales/reset gates');
-await db.exec('RESET ROLE');await db.exec(readFileSync('supabase/activation/paid-enforcement.sql','utf8'));await user(2);assert.equal((await db.query('select * from public.tasks')).rows.length,0);await user(1);assert.equal((await db.query('select * from public.tasks')).rows.length,2);
+await db.exec('RESET ROLE; CREATE ROLE service_role BYPASSRLS');await installHostedPlannerFixture(db, { preserveExistingPlanner: true });await db.exec(readFileSync('supabase/activation/paid-enforcement.sql','utf8'));await user(2);assert.equal((await db.query('select * from public.tasks')).rows.length,0);await user(1);assert.equal((await db.query('select * from public.tasks')).rows.length,2);
 console.log('PASS deliberate paid activation denies operator unentitled, preserves developer own grant');await db.close();

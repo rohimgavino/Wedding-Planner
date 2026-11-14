@@ -1,11 +1,23 @@
 import { PGlite } from '@electric-sql/pglite';
 import { readFileSync, existsSync } from 'node:fs';
 import assert from 'node:assert/strict';
+import { captured, installHostedPlannerFixture } from './fixtures/hosted-planner-schema.mjs';
 const db = new PGlite();
 await db.exec(`CREATE ROLE anon; CREATE ROLE authenticated; CREATE SCHEMA auth; CREATE TABLE auth.users(id uuid PRIMARY KEY); CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $$ SELECT nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$; GRANT USAGE ON SCHEMA public,auth TO anon,authenticated; GRANT EXECUTE ON FUNCTION auth.uid() TO anon,authenticated; INSERT INTO auth.users SELECT ('00000000-0000-0000-0000-00000000000'||n)::uuid FROM generate_series(1,4) n;`);
 for (const file of ['202610120001_secure_foundation.sql','202610140001_workspace_entitlements_savings.sql','202610140002_admin_manual_purchases.sql','202610140003_reset_planning_content.sql']) if(existsSync('supabase/migrations/'+file)) await db.exec(readFileSync('supabase/migrations/'+file,'utf8'));
+// Preserve the legacy five-table/functions baseline and every business assertion.
+// Add captured vendor prerequisites only; this is not native hosted-schema parity.
+await db.exec('CREATE ROLE service_role BYPASSRLS');
+await installHostedPlannerFixture(db, { preserveExistingPlanner: true });
 await db.exec(readFileSync('supabase/activation/paid-enforcement.sql','utf8'));
-await db.exec(readFileSync('supabase/activation/reset-execute.sql','utf8'));
+// TEST ONLY: source reset migration revokes public API execution; the schema-only
+// 2026-11-14 snapshot captures authenticated EXECUTE (anon denied). Model that live
+// privilege on the legacy source reset body without inventing production activation.
+// Owner reset remains free even when expired; preserve the four-table source contract.
+const resetAcl = captured.functions.find(f => f.schema === 'public' && f.name === 'reset_planning_content');
+assert.equal(resetAcl.authenticated_execute, true);
+assert.equal(resetAcl.anon_execute, false);
+await db.exec('GRANT EXECUTE ON FUNCTION public.reset_planning_content(uuid,text) TO authenticated');
 const user = async n => db.exec(`RESET ROLE; SET ROLE authenticated; SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-00000000000${n}',false)`);
 await user(1);
 const ws=(await db.query("select public.create_workspace('Identity preserved','2027-01-01') id")).rows[0].id;

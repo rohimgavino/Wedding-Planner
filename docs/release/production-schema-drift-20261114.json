@@ -1,0 +1,4301 @@
+{
+  "dependencies": [
+    {
+      "dependency_type": "a",
+      "dependent": "constraint admin_audit_pkey on table admin_audit",
+      "referenced": "column id of table admin_audit"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint applied_pkey on table starter_private.applied",
+      "referenced": "column workspace_id of table starter_private.applied"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint applied_workspace_id_fkey on table starter_private.applied",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint applied_workspace_id_fkey on table starter_private.applied",
+      "referenced": "column workspace_id of table starter_private.applied"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint applied_workspace_id_fkey on table starter_private.applied",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint budgets_payment_status_check on table budgets",
+      "referenced": "column payment_status of table budgets"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint budgets_payment_status_check on table budgets",
+      "referenced": "column payment_status of table budgets"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint budgets_pkey on table budgets",
+      "referenced": "column id of table budgets"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint budgets_workspace_id_fkey on table budgets",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint budgets_workspace_id_fkey on table budgets",
+      "referenced": "column workspace_id of table budgets"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint budgets_workspace_id_fkey on table budgets",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint developer_test_grants_workspace_id_fkey on table developer_test_grants",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint developer_test_grants_workspace_id_fkey on table developer_test_grants",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint doku_orders_workspace_id_fkey on table doku_orders",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint doku_orders_workspace_id_fkey on table doku_orders",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint guests_category_check on table guests",
+      "referenced": "column category of table guests"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint guests_category_check on table guests",
+      "referenced": "column category of table guests"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint guests_pkey on table guests",
+      "referenced": "column id of table guests"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint guests_rsvp_status_check on table guests",
+      "referenced": "column rsvp_status of table guests"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint guests_rsvp_status_check on table guests",
+      "referenced": "column rsvp_status of table guests"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint guests_workspace_id_fkey on table guests",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint guests_workspace_id_fkey on table guests",
+      "referenced": "column workspace_id of table guests"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint guests_workspace_id_fkey on table guests",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint invitations_workspace_id_fkey on table invitations",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint invitations_workspace_id_fkey on table invitations",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint invoices_workspace_id_fkey on table doku_sandbox.invoices",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint invoices_workspace_id_fkey on table doku_sandbox.invoices",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint package_price_versions_version_amount_idr_key on table package_price_versions",
+      "referenced": "column amount_idr of table package_price_versions"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint package_price_versions_version_amount_idr_key on table package_price_versions",
+      "referenced": "column version of table package_price_versions"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint purchase_requests_workspace_id_fkey on table purchase_requests",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint purchase_requests_workspace_id_fkey on table purchase_requests",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint requests_owner_id_fkey on table starter_private.requests",
+      "referenced": "column id of table auth.users"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint requests_owner_id_fkey on table starter_private.requests",
+      "referenced": "column owner_id of table starter_private.requests"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint requests_owner_id_fkey on table starter_private.requests",
+      "referenced": "index auth.users_pkey"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint requests_pkey on table starter_private.requests",
+      "referenced": "column request_id of table starter_private.requests"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint requests_workspace_id_fkey on table starter_private.requests",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint requests_workspace_id_fkey on table starter_private.requests",
+      "referenced": "column workspace_id of table starter_private.requests"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint requests_workspace_id_fkey on table starter_private.requests",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint savings_accounts_pkey on table savings_accounts",
+      "referenced": "column id of table savings_accounts"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint savings_accounts_workspace_id_fkey on table savings_accounts",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint savings_accounts_workspace_id_fkey on table savings_accounts",
+      "referenced": "column workspace_id of table savings_accounts"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint savings_accounts_workspace_id_fkey on table savings_accounts",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint savings_contributions_amount_check on table savings_contributions",
+      "referenced": "column amount of table savings_contributions"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint savings_contributions_amount_check on table savings_contributions",
+      "referenced": "column amount of table savings_contributions"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint savings_contributions_notes_check on table savings_contributions",
+      "referenced": "column notes of table savings_contributions"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint savings_contributions_notes_check on table savings_contributions",
+      "referenced": "column notes of table savings_contributions"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint savings_contributions_pkey on table savings_contributions",
+      "referenced": "column id of table savings_contributions"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint savings_contributions_workspace_id_contributor_id_fkey on table savings_contributions",
+      "referenced": "column contributor_id of table savings_contributions"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint savings_contributions_workspace_id_contributor_id_fkey on table savings_contributions",
+      "referenced": "column user_id of table workspace_members"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint savings_contributions_workspace_id_contributor_id_fkey on table savings_contributions",
+      "referenced": "column workspace_id of table savings_contributions"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint savings_contributions_workspace_id_contributor_id_fkey on table savings_contributions",
+      "referenced": "column workspace_id of table workspace_members"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint savings_contributions_workspace_id_contributor_id_fkey on table savings_contributions",
+      "referenced": "index workspace_members_workspace_id_user_id_key"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint savings_contributions_workspace_id_fkey on table savings_contributions",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint savings_contributions_workspace_id_fkey on table savings_contributions",
+      "referenced": "column workspace_id of table savings_contributions"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint savings_contributions_workspace_id_fkey on table savings_contributions",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint tasks_pic_check on table tasks",
+      "referenced": "column pic of table tasks"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint tasks_pic_check on table tasks",
+      "referenced": "column pic of table tasks"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint tasks_pkey on table tasks",
+      "referenced": "column id of table tasks"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint tasks_workspace_id_fkey on table tasks",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint tasks_workspace_id_fkey on table tasks",
+      "referenced": "column workspace_id of table tasks"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint tasks_workspace_id_fkey on table tasks",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint tier_invoice_snapshots_workspace_id_fkey on table tier_invoice_snapshots",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint tier_invoice_snapshots_workspace_id_fkey on table tier_invoice_snapshots",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint valid_wa_template on table workspaces",
+      "referenced": "column wa_template of table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint valid_wa_template on table workspaces",
+      "referenced": "column wa_template of table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint valid_wa_template on table workspaces",
+      "referenced": "function valid_wa_template(jsonb)"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_installments_amount_check on table vendor_installments",
+      "referenced": "column amount of table vendor_installments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_installments_amount_check on table vendor_installments",
+      "referenced": "column amount of table vendor_installments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_installments_due_date_check on table vendor_installments",
+      "referenced": "column due_date of table vendor_installments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_installments_due_date_check on table vendor_installments",
+      "referenced": "column due_date of table vendor_installments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_installments_pkey on table vendor_installments",
+      "referenced": "column id of table vendor_installments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_installments_title_check on table vendor_installments",
+      "referenced": "column title of table vendor_installments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_installments_title_check on table vendor_installments",
+      "referenced": "column title of table vendor_installments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_installments_workspace_id_fkey on table vendor_installments",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_installments_workspace_id_fkey on table vendor_installments",
+      "referenced": "column workspace_id of table vendor_installments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_installments_workspace_id_fkey on table vendor_installments",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_installments_workspace_id_id_key on table vendor_installments",
+      "referenced": "column id of table vendor_installments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_installments_workspace_id_id_key on table vendor_installments",
+      "referenced": "column workspace_id of table vendor_installments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_installments_workspace_id_vendor_id_fkey on table vendor_installments",
+      "referenced": "column id of table vendors"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_installments_workspace_id_vendor_id_fkey on table vendor_installments",
+      "referenced": "column vendor_id of table vendor_installments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_installments_workspace_id_vendor_id_fkey on table vendor_installments",
+      "referenced": "column workspace_id of table vendor_installments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_installments_workspace_id_vendor_id_fkey on table vendor_installments",
+      "referenced": "column workspace_id of table vendors"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_installments_workspace_id_vendor_id_fkey on table vendor_installments",
+      "referenced": "index vendors_workspace_id_id_key"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_payments_amount_check on table vendor_payments",
+      "referenced": "column amount of table vendor_payments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_payments_amount_check on table vendor_payments",
+      "referenced": "column amount of table vendor_payments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_payments_notes_check on table vendor_payments",
+      "referenced": "column notes of table vendor_payments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_payments_notes_check on table vendor_payments",
+      "referenced": "column notes of table vendor_payments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_payments_paid_on_check on table vendor_payments",
+      "referenced": "column paid_on of table vendor_payments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_payments_paid_on_check on table vendor_payments",
+      "referenced": "column paid_on of table vendor_payments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_payments_pkey on table vendor_payments",
+      "referenced": "column id of table vendor_payments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_payments_workspace_id_fkey on table vendor_payments",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_payments_workspace_id_fkey on table vendor_payments",
+      "referenced": "column workspace_id of table vendor_payments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_payments_workspace_id_fkey on table vendor_payments",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_payments_workspace_id_installment_id_fkey on table vendor_payments",
+      "referenced": "column id of table vendor_installments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_payments_workspace_id_installment_id_fkey on table vendor_payments",
+      "referenced": "column installment_id of table vendor_payments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_payments_workspace_id_installment_id_fkey on table vendor_payments",
+      "referenced": "column workspace_id of table vendor_installments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendor_payments_workspace_id_installment_id_fkey on table vendor_payments",
+      "referenced": "column workspace_id of table vendor_payments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendor_payments_workspace_id_installment_id_fkey on table vendor_payments",
+      "referenced": "index vendor_installments_workspace_id_id_key"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendors_contact_name_check on table vendors",
+      "referenced": "column contact_name of table vendors"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendors_contact_name_check on table vendors",
+      "referenced": "column contact_name of table vendors"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendors_contact_phone_check on table vendors",
+      "referenced": "column contact_phone of table vendors"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendors_contact_phone_check on table vendors",
+      "referenced": "column contact_phone of table vendors"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendors_contract_notes_check on table vendors",
+      "referenced": "column contract_notes of table vendors"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendors_contract_notes_check on table vendors",
+      "referenced": "column contract_notes of table vendors"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendors_contract_total_check on table vendors",
+      "referenced": "column contract_total of table vendors"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendors_contract_total_check on table vendors",
+      "referenced": "column contract_total of table vendors"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendors_name_check on table vendors",
+      "referenced": "column name of table vendors"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendors_name_check on table vendors",
+      "referenced": "column name of table vendors"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendors_pkey on table vendors",
+      "referenced": "column id of table vendors"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendors_workspace_id_fkey on table vendors",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendors_workspace_id_fkey on table vendors",
+      "referenced": "column workspace_id of table vendors"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint vendors_workspace_id_fkey on table vendors",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendors_workspace_id_id_key on table vendors",
+      "referenced": "column id of table vendors"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint vendors_workspace_id_id_key on table vendors",
+      "referenced": "column workspace_id of table vendors"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint verified_transactions_workspace_id_fkey on table verified_transactions",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint verified_transactions_workspace_id_fkey on table verified_transactions",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint workspace_entitlements_workspace_id_fkey on table workspace_entitlements",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint workspace_entitlements_workspace_id_fkey on table workspace_entitlements",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint workspace_members_workspace_id_fkey on table workspace_members",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "constraint workspace_members_workspace_id_fkey on table workspace_members",
+      "referenced": "index workspaces_pkey"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "constraint workspaces_pkey on table workspaces",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column allocated_amount of table budgets",
+      "referenced": "column allocated_amount of table budgets"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column applied_at of table starter_private.applied",
+      "referenced": "column applied_at of table starter_private.applied"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column category of table guests",
+      "referenced": "column category of table guests"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column contact_name of table vendors",
+      "referenced": "column contact_name of table vendors"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column contact_phone of table vendors",
+      "referenced": "column contact_phone of table vendors"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column contract_notes of table vendors",
+      "referenced": "column contract_notes of table vendors"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column contract_total of table vendors",
+      "referenced": "column contract_total of table vendors"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column created_at of table admin_audit",
+      "referenced": "column created_at of table admin_audit"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column created_at of table budgets",
+      "referenced": "column created_at of table budgets"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column created_at of table guests",
+      "referenced": "column created_at of table guests"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column created_at of table savings_accounts",
+      "referenced": "column created_at of table savings_accounts"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column created_at of table savings_contributions",
+      "referenced": "column created_at of table savings_contributions"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column created_at of table tasks",
+      "referenced": "column created_at of table tasks"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column created_at of table vendor_installments",
+      "referenced": "column created_at of table vendor_installments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column created_at of table vendor_payments",
+      "referenced": "column created_at of table vendor_payments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column created_at of table vendors",
+      "referenced": "column created_at of table vendors"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column created_at of table workspaces",
+      "referenced": "column created_at of table workspaces"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column current_balance of table savings_accounts",
+      "referenced": "column current_balance of table savings_accounts"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column details of table admin_audit",
+      "referenced": "column details of table admin_audit"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column id of table admin_audit",
+      "referenced": "column id of table admin_audit"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column id of table budgets",
+      "referenced": "column id of table budgets"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column id of table guests",
+      "referenced": "column id of table guests"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column id of table savings_accounts",
+      "referenced": "column id of table savings_accounts"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column id of table savings_contributions",
+      "referenced": "column id of table savings_contributions"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column id of table tasks",
+      "referenced": "column id of table tasks"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column id of table vendor_installments",
+      "referenced": "column id of table vendor_installments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column id of table vendor_payments",
+      "referenced": "column id of table vendor_payments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column id of table vendors",
+      "referenced": "column id of table vendors"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column id of table workspaces",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column is_completed of table tasks",
+      "referenced": "column is_completed of table tasks"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column notes of table savings_contributions",
+      "referenced": "column notes of table savings_contributions"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column notes of table vendor_payments",
+      "referenced": "column notes of table vendor_payments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column pax of table guests",
+      "referenced": "column pax of table guests"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column payment_status of table budgets",
+      "referenced": "column payment_status of table budgets"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column pic of table tasks",
+      "referenced": "column pic of table tasks"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column rsvp_status of table guests",
+      "referenced": "column rsvp_status of table guests"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column spent_amount of table budgets",
+      "referenced": "column spent_amount of table budgets"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column target_amount of table savings_accounts",
+      "referenced": "column target_amount of table savings_accounts"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column target_budget of table workspaces",
+      "referenced": "column target_budget of table workspaces"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column target_savings of table workspaces",
+      "referenced": "column target_savings of table workspaces"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column updated_at of table budgets",
+      "referenced": "column updated_at of table budgets"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column updated_at of table guests",
+      "referenced": "column updated_at of table guests"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column updated_at of table tasks",
+      "referenced": "column updated_at of table tasks"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "default value for column updated_at of table workspaces",
+      "referenced": "column updated_at of table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function audit_immutable()",
+      "referenced": "language plpgsql"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function audit_immutable()",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function create_starter_workspace(uuid,text,text,date,bigint,bigint)",
+      "referenced": "language plpgsql"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function create_starter_workspace(uuid,text,text,date,bigint,bigint)",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function create_workspace(text,date)",
+      "referenced": "language plpgsql"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function create_workspace(text,date)",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function has_developer_test_access(uuid)",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function has_workspace_entitlement(uuid,text)",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function is_workspace_member(uuid)",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function keep_savings_workspace()",
+      "referenced": "language plpgsql"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function keep_savings_workspace()",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function reset_planning_content(uuid,text)",
+      "referenced": "language plpgsql"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function reset_planning_content(uuid,text)",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function site_role()",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function use_starter_template(uuid)",
+      "referenced": "language plpgsql"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function use_starter_template(uuid)",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function vendor_immutable_scope()",
+      "referenced": "language plpgsql"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "function vendor_immutable_scope()",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "index admin_audit_pkey",
+      "referenced": "constraint admin_audit_pkey on table admin_audit"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "index budgets_pkey",
+      "referenced": "constraint budgets_pkey on table budgets"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "index guests_pkey",
+      "referenced": "constraint guests_pkey on table guests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "index package_price_versions_version_amount_idr_key",
+      "referenced": "constraint package_price_versions_version_amount_idr_key on table package_price_versions"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "index savings_accounts_pkey",
+      "referenced": "constraint savings_accounts_pkey on table savings_accounts"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "index savings_contributions_pkey",
+      "referenced": "constraint savings_contributions_pkey on table savings_contributions"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "index savings_contributions_workspace",
+      "referenced": "column workspace_id of table savings_contributions"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "index starter_private.applied_pkey",
+      "referenced": "constraint applied_pkey on table starter_private.applied"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "index starter_private.requests_pkey",
+      "referenced": "constraint requests_pkey on table starter_private.requests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "index tasks_pkey",
+      "referenced": "constraint tasks_pkey on table tasks"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "index vendor_installments_pkey",
+      "referenced": "constraint vendor_installments_pkey on table vendor_installments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "index vendor_installments_workspace_id_id_key",
+      "referenced": "constraint vendor_installments_workspace_id_id_key on table vendor_installments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "index vendor_installments_workspace_id_vendor_id_idx",
+      "referenced": "column vendor_id of table vendor_installments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "index vendor_installments_workspace_id_vendor_id_idx",
+      "referenced": "column workspace_id of table vendor_installments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "index vendor_payments_pkey",
+      "referenced": "constraint vendor_payments_pkey on table vendor_payments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "index vendor_payments_workspace_id_installment_id_idx",
+      "referenced": "column installment_id of table vendor_payments"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "index vendor_payments_workspace_id_installment_id_idx",
+      "referenced": "column workspace_id of table vendor_payments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "index vendors_pkey",
+      "referenced": "constraint vendors_pkey on table vendors"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "index vendors_workspace_id_id_key",
+      "referenced": "constraint vendors_workspace_id_id_key on table vendors"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "index vendors_workspace_id_idx",
+      "referenced": "column workspace_id of table vendors"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "index workspaces_pkey",
+      "referenced": "constraint workspaces_pkey on table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy audit_read on table admin_audit",
+      "referenced": "column action of table admin_audit"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy audit_read on table admin_audit",
+      "referenced": "function site_role()"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "policy audit_read on table admin_audit",
+      "referenced": "table admin_audit"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy entitlement_read on table workspace_entitlements",
+      "referenced": "function is_workspace_member(uuid)"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy member_crud on table budgets",
+      "referenced": "column workspace_id of table budgets"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy member_crud on table budgets",
+      "referenced": "function is_workspace_member(uuid)"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "policy member_crud on table budgets",
+      "referenced": "table budgets"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy member_crud on table guests",
+      "referenced": "column workspace_id of table guests"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy member_crud on table guests",
+      "referenced": "function is_workspace_member(uuid)"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "policy member_crud on table guests",
+      "referenced": "table guests"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy member_crud on table savings_accounts",
+      "referenced": "column workspace_id of table savings_accounts"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy member_crud on table savings_accounts",
+      "referenced": "function is_workspace_member(uuid)"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "policy member_crud on table savings_accounts",
+      "referenced": "table savings_accounts"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy member_crud on table tasks",
+      "referenced": "column workspace_id of table tasks"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy member_crud on table tasks",
+      "referenced": "function is_workspace_member(uuid)"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "policy member_crud on table tasks",
+      "referenced": "table tasks"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy member_crud on table vendor_installments",
+      "referenced": "column workspace_id of table vendor_installments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy member_crud on table vendor_installments",
+      "referenced": "function is_workspace_member(uuid)"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "policy member_crud on table vendor_installments",
+      "referenced": "table vendor_installments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy member_crud on table vendor_payments",
+      "referenced": "column workspace_id of table vendor_payments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy member_crud on table vendor_payments",
+      "referenced": "function is_workspace_member(uuid)"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "policy member_crud on table vendor_payments",
+      "referenced": "table vendor_payments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy member_crud on table vendors",
+      "referenced": "column workspace_id of table vendors"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy member_crud on table vendors",
+      "referenced": "function is_workspace_member(uuid)"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "policy member_crud on table vendors",
+      "referenced": "table vendors"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy membership_read on table workspace_members",
+      "referenced": "function is_workspace_member(uuid)"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy purchase_read on table purchase_requests",
+      "referenced": "function is_workspace_member(uuid)"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy savings_member on table savings_contributions",
+      "referenced": "column workspace_id of table savings_contributions"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy savings_member on table savings_contributions",
+      "referenced": "function is_workspace_member(uuid)"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "policy savings_member on table savings_contributions",
+      "referenced": "table savings_contributions"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy test_grant_read on table developer_test_grants",
+      "referenced": "function is_workspace_member(uuid)"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy workspace_read on table workspaces",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy workspace_read on table workspaces",
+      "referenced": "function is_workspace_member(uuid)"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "policy workspace_read on table workspaces",
+      "referenced": "table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy workspace_update on table workspaces",
+      "referenced": "column id of table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "policy workspace_update on table workspaces",
+      "referenced": "function is_workspace_member(uuid)"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "policy workspace_update on table workspaces",
+      "referenced": "table workspaces"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "table admin_audit",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "table budgets",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "table guests",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "table package_price_current",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "table package_price_versions",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "table savings_accounts",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "table savings_contributions",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "table starter_private.applied",
+      "referenced": "schema starter_private"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "table starter_private.requests",
+      "referenced": "schema starter_private"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "table tasks",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "table vendor_installments",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "table vendor_payments",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "table vendors",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "table workspaces",
+      "referenced": "schema public"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "toast table pg_toast.pg_toast_17625",
+      "referenced": "table workspaces"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "toast table pg_toast.pg_toast_17689",
+      "referenced": "table budgets"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "toast table pg_toast.pg_toast_17708",
+      "referenced": "table tasks"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "toast table pg_toast.pg_toast_17726",
+      "referenced": "table guests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "toast table pg_toast.pg_toast_17812",
+      "referenced": "table savings_contributions"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "toast table pg_toast.pg_toast_17866",
+      "referenced": "table admin_audit"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "toast table pg_toast.pg_toast_18012",
+      "referenced": "table vendors"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "toast table pg_toast.pg_toast_18040",
+      "referenced": "table vendor_installments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "toast table pg_toast.pg_toast_18064",
+      "referenced": "table vendor_payments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "trigger audit_no_change on table admin_audit",
+      "referenced": "function audit_immutable()"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "trigger audit_no_change on table admin_audit",
+      "referenced": "table admin_audit"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "trigger immutable_scope on table vendor_installments",
+      "referenced": "function vendor_immutable_scope()"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "trigger immutable_scope on table vendor_installments",
+      "referenced": "table vendor_installments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "trigger immutable_scope on table vendor_payments",
+      "referenced": "function vendor_immutable_scope()"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "trigger immutable_scope on table vendor_payments",
+      "referenced": "table vendor_payments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "trigger immutable_scope on table vendors",
+      "referenced": "function vendor_immutable_scope()"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "trigger immutable_scope on table vendors",
+      "referenced": "table vendors"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17649 on table workspaces",
+      "referenced": "constraint workspace_members_workspace_id_fkey on table workspace_members"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17650 on table workspaces",
+      "referenced": "constraint workspace_members_workspace_id_fkey on table workspace_members"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17671 on table workspaces",
+      "referenced": "constraint invitations_workspace_id_fkey on table invitations"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17672 on table workspaces",
+      "referenced": "constraint invitations_workspace_id_fkey on table invitations"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17685 on table workspaces",
+      "referenced": "constraint savings_accounts_workspace_id_fkey on table savings_accounts"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17686 on table workspaces",
+      "referenced": "constraint savings_accounts_workspace_id_fkey on table savings_accounts"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17704 on table workspaces",
+      "referenced": "constraint budgets_workspace_id_fkey on table budgets"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17705 on table workspaces",
+      "referenced": "constraint budgets_workspace_id_fkey on table budgets"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17722 on table workspaces",
+      "referenced": "constraint tasks_workspace_id_fkey on table tasks"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17723 on table workspaces",
+      "referenced": "constraint tasks_workspace_id_fkey on table tasks"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17742 on table workspaces",
+      "referenced": "constraint guests_workspace_id_fkey on table guests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17743 on table workspaces",
+      "referenced": "constraint guests_workspace_id_fkey on table guests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17798 on table workspaces",
+      "referenced": "constraint workspace_entitlements_workspace_id_fkey on table workspace_entitlements"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17799 on table workspaces",
+      "referenced": "constraint workspace_entitlements_workspace_id_fkey on table workspace_entitlements"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17825 on table workspaces",
+      "referenced": "constraint savings_contributions_workspace_id_fkey on table savings_contributions"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17826 on table workspaces",
+      "referenced": "constraint savings_contributions_workspace_id_fkey on table savings_contributions"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17830 on table workspace_members",
+      "referenced": "constraint savings_contributions_workspace_id_contributor_id_fkey on table savings_contributions"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17831 on table workspace_members",
+      "referenced": "constraint savings_contributions_workspace_id_contributor_id_fkey on table savings_contributions"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17900 on table workspaces",
+      "referenced": "constraint purchase_requests_workspace_id_fkey on table purchase_requests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17901 on table workspaces",
+      "referenced": "constraint purchase_requests_workspace_id_fkey on table purchase_requests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17928 on table workspaces",
+      "referenced": "constraint verified_transactions_workspace_id_fkey on table verified_transactions"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17929 on table workspaces",
+      "referenced": "constraint verified_transactions_workspace_id_fkey on table verified_transactions"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17959 on table workspaces",
+      "referenced": "constraint developer_test_grants_workspace_id_fkey on table developer_test_grants"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17960 on table workspaces",
+      "referenced": "constraint developer_test_grants_workspace_id_fkey on table developer_test_grants"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17982 on table auth.users",
+      "referenced": "constraint requests_owner_id_fkey on table starter_private.requests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17983 on table auth.users",
+      "referenced": "constraint requests_owner_id_fkey on table starter_private.requests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17987 on table workspaces",
+      "referenced": "constraint requests_workspace_id_fkey on table starter_private.requests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17988 on table workspaces",
+      "referenced": "constraint requests_workspace_id_fkey on table starter_private.requests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17998 on table workspaces",
+      "referenced": "constraint applied_workspace_id_fkey on table starter_private.applied"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_17999 on table workspaces",
+      "referenced": "constraint applied_workspace_id_fkey on table starter_private.applied"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18033 on table workspaces",
+      "referenced": "constraint vendors_workspace_id_fkey on table vendors"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18034 on table workspaces",
+      "referenced": "constraint vendors_workspace_id_fkey on table vendors"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18055 on table workspaces",
+      "referenced": "constraint vendor_installments_workspace_id_fkey on table vendor_installments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18056 on table workspaces",
+      "referenced": "constraint vendor_installments_workspace_id_fkey on table vendor_installments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18060 on table vendors",
+      "referenced": "constraint vendor_installments_workspace_id_vendor_id_fkey on table vendor_installments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18061 on table vendors",
+      "referenced": "constraint vendor_installments_workspace_id_vendor_id_fkey on table vendor_installments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18078 on table workspaces",
+      "referenced": "constraint vendor_payments_workspace_id_fkey on table vendor_payments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18079 on table workspaces",
+      "referenced": "constraint vendor_payments_workspace_id_fkey on table vendor_payments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18083 on table vendor_installments",
+      "referenced": "constraint vendor_payments_workspace_id_installment_id_fkey on table vendor_payments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18084 on table vendor_installments",
+      "referenced": "constraint vendor_payments_workspace_id_installment_id_fkey on table vendor_payments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18213 on table workspaces",
+      "referenced": "constraint invoices_workspace_id_fkey on table doku_sandbox.invoices"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18214 on table workspaces",
+      "referenced": "constraint invoices_workspace_id_fkey on table doku_sandbox.invoices"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18351 on table workspaces",
+      "referenced": "constraint tier_invoice_snapshots_workspace_id_fkey on table tier_invoice_snapshots"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18352 on table workspaces",
+      "referenced": "constraint tier_invoice_snapshots_workspace_id_fkey on table tier_invoice_snapshots"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18470 on table workspaces",
+      "referenced": "constraint doku_orders_workspace_id_fkey on table doku_orders"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_a_18471 on table workspaces",
+      "referenced": "constraint doku_orders_workspace_id_fkey on table doku_orders"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17687 on table savings_accounts",
+      "referenced": "constraint savings_accounts_workspace_id_fkey on table savings_accounts"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17688 on table savings_accounts",
+      "referenced": "constraint savings_accounts_workspace_id_fkey on table savings_accounts"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17706 on table budgets",
+      "referenced": "constraint budgets_workspace_id_fkey on table budgets"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17707 on table budgets",
+      "referenced": "constraint budgets_workspace_id_fkey on table budgets"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17724 on table tasks",
+      "referenced": "constraint tasks_workspace_id_fkey on table tasks"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17725 on table tasks",
+      "referenced": "constraint tasks_workspace_id_fkey on table tasks"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17744 on table guests",
+      "referenced": "constraint guests_workspace_id_fkey on table guests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17745 on table guests",
+      "referenced": "constraint guests_workspace_id_fkey on table guests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17827 on table savings_contributions",
+      "referenced": "constraint savings_contributions_workspace_id_fkey on table savings_contributions"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17828 on table savings_contributions",
+      "referenced": "constraint savings_contributions_workspace_id_fkey on table savings_contributions"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17832 on table savings_contributions",
+      "referenced": "constraint savings_contributions_workspace_id_contributor_id_fkey on table savings_contributions"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17833 on table savings_contributions",
+      "referenced": "constraint savings_contributions_workspace_id_contributor_id_fkey on table savings_contributions"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17984 on table starter_private.requests",
+      "referenced": "constraint requests_owner_id_fkey on table starter_private.requests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17985 on table starter_private.requests",
+      "referenced": "constraint requests_owner_id_fkey on table starter_private.requests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17989 on table starter_private.requests",
+      "referenced": "constraint requests_workspace_id_fkey on table starter_private.requests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_17990 on table starter_private.requests",
+      "referenced": "constraint requests_workspace_id_fkey on table starter_private.requests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_18000 on table starter_private.applied",
+      "referenced": "constraint applied_workspace_id_fkey on table starter_private.applied"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_18001 on table starter_private.applied",
+      "referenced": "constraint applied_workspace_id_fkey on table starter_private.applied"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_18035 on table vendors",
+      "referenced": "constraint vendors_workspace_id_fkey on table vendors"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_18036 on table vendors",
+      "referenced": "constraint vendors_workspace_id_fkey on table vendors"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_18057 on table vendor_installments",
+      "referenced": "constraint vendor_installments_workspace_id_fkey on table vendor_installments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_18058 on table vendor_installments",
+      "referenced": "constraint vendor_installments_workspace_id_fkey on table vendor_installments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_18062 on table vendor_installments",
+      "referenced": "constraint vendor_installments_workspace_id_vendor_id_fkey on table vendor_installments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_18063 on table vendor_installments",
+      "referenced": "constraint vendor_installments_workspace_id_vendor_id_fkey on table vendor_installments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_18080 on table vendor_payments",
+      "referenced": "constraint vendor_payments_workspace_id_fkey on table vendor_payments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_18081 on table vendor_payments",
+      "referenced": "constraint vendor_payments_workspace_id_fkey on table vendor_payments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_18085 on table vendor_payments",
+      "referenced": "constraint vendor_payments_workspace_id_installment_id_fkey on table vendor_payments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "trigger RI_ConstraintTrigger_c_18086 on table vendor_payments",
+      "referenced": "constraint vendor_payments_workspace_id_installment_id_fkey on table vendor_payments"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "trigger savings_workspace_immutable on table savings_contributions",
+      "referenced": "function keep_savings_workspace()"
+    },
+    {
+      "dependency_type": "a",
+      "dependent": "trigger savings_workspace_immutable on table savings_contributions",
+      "referenced": "table savings_contributions"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "trigger tier_invoice_immutable on table tier_invoice_snapshots",
+      "referenced": "function audit_immutable()"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "trigger tier_price_immutable on table tier_price_versions",
+      "referenced": "function audit_immutable()"
+    },
+    {
+      "dependency_type": "n",
+      "dependent": "trigger transaction_no_change on table verified_transactions",
+      "referenced": "function audit_immutable()"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "type admin_audit",
+      "referenced": "table admin_audit"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "type budgets",
+      "referenced": "table budgets"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "type guests",
+      "referenced": "table guests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "type package_price_current",
+      "referenced": "table package_price_current"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "type package_price_versions",
+      "referenced": "table package_price_versions"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "type savings_accounts",
+      "referenced": "table savings_accounts"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "type savings_contributions",
+      "referenced": "table savings_contributions"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "type starter_private.applied",
+      "referenced": "table starter_private.applied"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "type starter_private.requests",
+      "referenced": "table starter_private.requests"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "type tasks",
+      "referenced": "table tasks"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "type vendor_installments",
+      "referenced": "table vendor_installments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "type vendor_payments",
+      "referenced": "table vendor_payments"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "type vendors",
+      "referenced": "table vendors"
+    },
+    {
+      "dependency_type": "i",
+      "dependent": "type workspaces",
+      "referenced": "table workspaces"
+    }
+  ],
+  "dependency_limit": "Catalog edges only. PL/pgSQL body references are not exhaustively tracked by pg_depend; review definitions and source too.",
+  "format": "review-only-schema-metadata-v1",
+  "functions": [
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "anon_execute": false,
+      "authenticated_execute": false,
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.audit_immutable()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\r\nBEGIN\r\n  RAISE EXCEPTION 'append-only audit';\r\nEND $function$\n",
+      "identity_arguments": "",
+      "name": "audit_immutable",
+      "owner": "postgres",
+      "schema": "public",
+      "security_definer": false
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.create_starter_workspace(p_request_id uuid, p_groom_name text, p_bride_name text, p_wedding_date date, p_target_budget bigint, p_target_savings bigint)\n RETURNS uuid\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\nDECLARE uid uuid:=auth.uid(); ws uuid; prior starter_private.requests%ROWTYPE;\nBEGIN\n IF uid IS NULL THEN RAISE EXCEPTION 'authentication required' USING ERRCODE='42501'; END IF;\n IF p_request_id IS NULL THEN RAISE EXCEPTION 'request required'; END IF;\n -- Same logical request serialized before workspace creation, including network retries.\n PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(p_request_id::text,0));\n SELECT * INTO prior FROM starter_private.requests WHERE request_id=p_request_id;\n IF FOUND THEN\n  IF prior.owner_id<>uid THEN RAISE EXCEPTION 'request belongs to another owner' USING ERRCODE='42501'; END IF;\n  RETURN prior.workspace_id;\n END IF;\n IF p_groom_name IS NULL OR length(btrim(p_groom_name)) NOT BETWEEN 1 AND 100 OR p_bride_name IS NULL OR length(btrim(p_bride_name)) NOT BETWEEN 1 AND 100 OR p_wedding_date IS NULL OR p_target_budget IS NULL OR p_target_savings IS NULL OR p_target_budget NOT BETWEEN 0 AND 9007199254740991 OR p_target_savings NOT BETWEEN 0 AND 9007199254740991 THEN RAISE EXCEPTION 'invalid workspace'; END IF;\n ws:=public.create_workspace('Pernikahan '||btrim(p_groom_name)||' & '||btrim(p_bride_name),p_wedding_date);\n UPDATE public.workspaces SET groom_name=p_groom_name,bride_name=p_bride_name,target_budget=p_target_budget,target_savings=p_target_savings WHERE id=ws;\n PERFORM public.use_starter_template(ws);\n INSERT INTO starter_private.requests VALUES(p_request_id,uid,ws);\n RETURN ws;\nEND $function$\n",
+      "identity_arguments": "p_request_id uuid, p_groom_name text, p_bride_name text, p_wedding_date date, p_target_budget bigint, p_target_savings bigint",
+      "name": "create_starter_workspace",
+      "owner": "postgres",
+      "schema": "public",
+      "security_definer": true
+    },
+    {
+      "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.create_workspace(p_title text, p_wedding_date date)\n RETURNS uuid\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\nDECLARE uid uuid := auth.uid(); ws uuid;\nBEGIN\n IF uid IS NULL THEN RAISE EXCEPTION 'authentication required' USING ERRCODE='42501'; END IF;\n IF p_title IS NULL OR length(btrim(p_title)) NOT BETWEEN 1 AND 255 OR p_wedding_date IS NULL THEN RAISE EXCEPTION 'invalid workspace'; END IF;\n INSERT INTO public.workspaces(title,wedding_date) VALUES(btrim(p_title),p_wedding_date) RETURNING id INTO ws;\n INSERT INTO public.workspace_members(workspace_id,user_id,role) VALUES(ws,uid,'owner');\n RETURN ws;\nEND $function$\n",
+      "identity_arguments": "p_title text, p_wedding_date date",
+      "name": "create_workspace",
+      "owner": "postgres",
+      "schema": "public",
+      "security_definer": true
+    },
+    {
+      "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.has_developer_test_access(p_workspace_id uuid)\n RETURNS boolean\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO ''\nAS $function$\n SELECT public.site_role()='developer' AND EXISTS(SELECT 1 FROM public.workspace_members WHERE workspace_id=p_workspace_id AND user_id=auth.uid() AND role='owner')\n AND EXISTS(SELECT 1 FROM public.developer_test_grants WHERE workspace_id=p_workspace_id AND user_id=auth.uid() AND revoked_at IS NULL AND expires_at>now());\n$function$\n",
+      "identity_arguments": "p_workspace_id uuid",
+      "name": "has_developer_test_access",
+      "owner": "postgres",
+      "schema": "public",
+      "security_definer": true
+    },
+    {
+      "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.has_workspace_entitlement(ws_id uuid, feature_key text)\n RETURNS boolean\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO ''\nAS $function$\n SELECT public.is_workspace_member(ws_id) AND (\n EXISTS(SELECT 1 FROM public.workspace_entitlements WHERE workspace_id=ws_id AND feature=feature_key AND revoked_at IS NULL AND (expires_at IS NULL OR expires_at>now()))\n OR (feature_key='core' AND public.has_developer_test_access(ws_id)));\n$function$\n",
+      "identity_arguments": "ws_id uuid, feature_key text",
+      "name": "has_workspace_entitlement",
+      "owner": "postgres",
+      "schema": "public",
+      "security_definer": true
+    },
+    {
+      "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.is_workspace_member(ws_id uuid)\n RETURNS boolean\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO ''\nAS $function$\n SELECT EXISTS(SELECT 1 FROM public.workspace_members WHERE workspace_id=ws_id AND user_id=auth.uid());\n$function$\n",
+      "identity_arguments": "ws_id uuid",
+      "name": "is_workspace_member",
+      "owner": "postgres",
+      "schema": "public",
+      "security_definer": true
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "anon_execute": false,
+      "authenticated_execute": false,
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.keep_savings_workspace()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\nBEGIN\n IF NEW.workspace_id<>OLD.workspace_id THEN RAISE EXCEPTION 'immutable workspace'; END IF;\n RETURN NEW;\nEND $function$\n",
+      "identity_arguments": "",
+      "name": "keep_savings_workspace",
+      "owner": "postgres",
+      "schema": "public",
+      "security_definer": false
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.reset_planning_content(p_workspace_id uuid, p_confirmation text)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\nDECLARE uid uuid:=auth.uid(); b bigint; t bigint; g bigint; s bigint; counts jsonb; v bigint; i bigint; p bigint;\nBEGIN\n IF uid IS NULL THEN RAISE EXCEPTION 'authentication required' USING ERRCODE='42501'; END IF;\n IF p_confirmation IS DISTINCT FROM 'RESET RENCANA' THEN RAISE EXCEPTION 'confirmation required' USING ERRCODE='22023'; END IF;\n PERFORM 1 FROM public.workspaces WHERE id=p_workspace_id FOR UPDATE;\n IF NOT EXISTS(SELECT 1 FROM public.workspace_members WHERE workspace_id=p_workspace_id AND user_id=uid AND role='owner' FOR UPDATE) THEN\n  RAISE EXCEPTION 'owner required' USING ERRCODE='42501';\n END IF;\n INSERT INTO starter_private.applied(workspace_id) VALUES(p_workspace_id) ON CONFLICT DO NOTHING;\n -- Explicit planning-only scope. Do not cascade-delete workspace, identity, legacy\n -- savings accounts, invitations, purchase references, entitlements or audit.\n DELETE FROM public.vendor_payments WHERE workspace_id=p_workspace_id; GET DIAGNOSTICS p=ROW_COUNT;\n DELETE FROM public.vendor_installments WHERE workspace_id=p_workspace_id; GET DIAGNOSTICS i=ROW_COUNT;\n DELETE FROM public.vendors WHERE workspace_id=p_workspace_id; GET DIAGNOSTICS v=ROW_COUNT;\n DELETE FROM public.budgets WHERE workspace_id=p_workspace_id; GET DIAGNOSTICS b=ROW_COUNT;\n DELETE FROM public.tasks WHERE workspace_id=p_workspace_id; GET DIAGNOSTICS t=ROW_COUNT;\n DELETE FROM public.guests WHERE workspace_id=p_workspace_id; GET DIAGNOSTICS g=ROW_COUNT;\n DELETE FROM public.savings_contributions WHERE workspace_id=p_workspace_id; GET DIAGNOSTICS s=ROW_COUNT;\n counts:=jsonb_build_object('vendors',v,'vendor_installments',i,'vendor_payments',p,'budgets',b,'tasks',t,'guests',g,'savings_contributions',s);\n INSERT INTO public.admin_audit(actor_id,action,subject_id,details)\n VALUES(uid,'planning.reset',p_workspace_id,jsonb_build_object('deleted',counts));\n RETURN counts;\nEND $function$\n",
+      "identity_arguments": "p_workspace_id uuid, p_confirmation text",
+      "name": "reset_planning_content",
+      "owner": "postgres",
+      "schema": "public",
+      "security_definer": true
+    },
+    {
+      "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.site_role()\n RETURNS text\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO ''\nAS $function$\n SELECT role FROM public.site_admins WHERE user_id=auth.uid();\n$function$\n",
+      "identity_arguments": "",
+      "name": "site_role",
+      "owner": "postgres",
+      "schema": "public",
+      "security_definer": true
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.use_starter_template(p_workspace_id uuid)\n RETURNS uuid\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\nDECLARE uid uuid:=auth.uid(); target bigint; used bigint:=0; amount bigint; item record;\nBEGIN\n IF uid IS NULL THEN RAISE EXCEPTION 'authentication required' USING ERRCODE='42501'; END IF;\n SELECT target_budget INTO target FROM public.workspaces WHERE id=p_workspace_id FOR UPDATE;\n IF NOT EXISTS(SELECT 1 FROM public.workspace_members WHERE workspace_id=p_workspace_id AND user_id=uid AND role='owner' FOR UPDATE) THEN RAISE EXCEPTION 'owner required' USING ERRCODE='42501'; END IF;\n -- Durable receipt survives reset: retries never recreate deleted examples.\n IF EXISTS(SELECT 1 FROM starter_private.applied WHERE workspace_id=p_workspace_id) THEN RETURN p_workspace_id; END IF;\n IF EXISTS(SELECT 1 FROM public.budgets WHERE workspace_id=p_workspace_id) OR EXISTS(SELECT 1 FROM public.tasks WHERE workspace_id=p_workspace_id) OR EXISTS(SELECT 1 FROM public.guests WHERE workspace_id=p_workspace_id) OR EXISTS(SELECT 1 FROM public.savings_contributions WHERE workspace_id=p_workspace_id) OR EXISTS(SELECT 1 FROM public.savings_accounts WHERE workspace_id=p_workspace_id) OR EXISTS(SELECT 1 FROM public.vendors WHERE workspace_id=p_workspace_id) OR EXISTS(SELECT 1 FROM public.vendor_installments WHERE workspace_id=p_workspace_id) OR EXISTS(SELECT 1 FROM public.vendor_payments WHERE workspace_id=p_workspace_id) THEN RAISE EXCEPTION 'empty workspace required'; END IF;\n IF target IS NULL OR target<0 OR target>9007199254740991 THEN RAISE EXCEPTION 'invalid target'; END IF;\n FOR item IN SELECT * FROM (VALUES (1,'Katering',40),(2,'Venue',15),(3,'Dekorasi',10),(4,'MUA & Busana',10),(5,'Dokumentasi',8),(6,'Undangan & Souvenir',5),(7,'Mahar & Seserahan',5),(8,'Dana Darurat',7)) AS v(ord,category,pct) ORDER BY ord LOOP\n  -- Integer Rupiah, final reserve absorbs floor rounding. Sum always equals user's target.\n  amount:=CASE WHEN item.ord=8 THEN target-used ELSE floor(target::numeric*item.pct/100)::bigint END;\n  used:=used+amount;\n  INSERT INTO public.budgets(workspace_id,category,title,allocated_amount,spent_amount,payment_status,notes)\n  VALUES(p_workspace_id,item.category,'[CONTOH FIKTIF] '||item.category,amount,0,'unpaid','Estimasi ilustratif proporsional dari target Anda, bukan penawaran/harga pasar. Belum ada pembayaran. Ubah sesuai kebutuhan dan penawaran vendor; target tidak diubah.');\n END LOOP;\n INSERT INTO public.tasks(workspace_id,title,phase,pic,is_completed,notes)\n SELECT p_workspace_id,'[CONTOH FIKTIF] '||v.title,v.phase,'both',false,'Rekomendasi umum yang dapat diedit; belum dilakukan. Sesuaikan dengan tanggal, adat, agama dan ketentuan resmi setempat; bukan kepastian jadwal atau persyaratan.' FROM (VALUES\n ('Sepakati prioritas, jumlah tamu dan batas anggaran','H-6 Bulan'),\n ('Bandingkan venue, kapasitas dan aksesibilitas','H-6 Bulan'),\n ('Minta rincian katering, pajak dan biaya tambahan','H-6 Bulan'),\n ('Hitung kebutuhan tabungan bulanan dari sisa target dan bulan tersisa; sepakati kontribusi tanpa mencatat transfer fiktif','H-6 Bulan'),\n ('Konfirmasi persyaratan dan jadwal pencatatan nikah pada instansi resmi','Dokumen KUA'),\n ('Siapkan dokumen identitas sesuai persyaratan resmi terbaru','Dokumen KUA'),\n ('Konsultasikan persyaratan kesehatan pada fasilitas resmi','Dokumen KUA'),\n ('Bandingkan dekorasi dan kebutuhan listrik','H-3 Bulan'),\n ('Pilih MUA, busana dan jadwal fitting','H-3 Bulan'),\n ('Sepakati dokumentasi dan hak penggunaan foto','H-3 Bulan'),\n ('Tinjau kontrak, jadwal DP, pelunasan dan pembatalan','H-3 Bulan'),\n ('Buat daftar tamu nyata dan verifikasi kontak sebelum mengundang','H-3 Bulan'),\n ('Siapkan undangan, souvenir, mahar dan seserahan sesuai kesepakatan','H-1 Bulan'),\n ('Susun rundown, PIC, transportasi dan kebutuhan konsumsi','H-1 Bulan'),\n ('Periksa dana darurat; pisahkan alokasi dari pengeluaran aktual','H-1 Bulan'),\n ('Konfirmasi vendor dan RSVP; jangan anggap contoh sebagai kehadiran','H-1 Minggu'),\n ('Briefing keluarga dan vendor; siapkan rencana cuaca darurat','H-1 Minggu'),\n ('Periksa dokumen dan jalankan rundown; catat hanya pembayaran nyata','Hari H')\n ) AS v(title,phase);\n INSERT INTO public.guests(workspace_id,name,category,pax,phone,rsvp_status,notes)\n SELECT p_workspace_id,'[CONTOH FIKTIF] '||v.name,v.category,1,NULL,'uncontacted','Placeholder ilustratif, bukan tamu nyata. Belum dihubungi/RSVP belum dikonfirmasi. Ganti/hapus sebelum mengirim undangan.' FROM (VALUES ('Tamu keluarga pria','keluarga_pria'),('Tamu keluarga wanita','keluarga_wanita'),('Tamu sahabat','sahabat')) AS v(name,category);\n INSERT INTO starter_private.applied(workspace_id) VALUES(p_workspace_id);\n RETURN p_workspace_id;\nEND $function$\n",
+      "identity_arguments": "p_workspace_id uuid",
+      "name": "use_starter_template",
+      "owner": "postgres",
+      "schema": "public",
+      "security_definer": true
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "anon_execute": false,
+      "authenticated_execute": false,
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.vendor_immutable_scope()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\nBEGIN\n IF NEW.workspace_id IS DISTINCT FROM OLD.workspace_id OR NEW.id IS DISTINCT FROM OLD.id THEN RAISE EXCEPTION 'immutable scope'; END IF;\n RETURN NEW;\nEND $function$\n",
+      "identity_arguments": "",
+      "name": "vendor_immutable_scope",
+      "owner": "postgres",
+      "schema": "public",
+      "security_definer": false
+    }
+  ],
+  "migration_ledger": [
+    {
+      "name": "reset_planning_content",
+      "version": "202610140005"
+    },
+    {
+      "name": "starter_template",
+      "version": "202610140006"
+    },
+    {
+      "name": "whatsapp_template",
+      "version": "202610150001"
+    },
+    {
+      "name": "vendor_planning",
+      "version": "202610150002"
+    }
+  ],
+  "schemas": [
+    {
+      "acl": "{pg_database_owner=UC/pg_database_owner,=U/pg_database_owner,postgres=U/pg_database_owner,anon=U/pg_database_owner,authenticated=U/pg_database_owner,service_role=U/pg_database_owner,doku_sandbox_server=U/pg_database_owner}",
+      "name": "public",
+      "owner": "pg_database_owner"
+    },
+    {
+      "acl": "{postgres=UC/postgres}",
+      "name": "starter_private",
+      "owner": "postgres"
+    }
+  ],
+  "tables": [
+    {
+      "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}",
+      "columns": [
+        {
+          "acl": null,
+          "default": "gen_random_uuid()",
+          "generated": "",
+          "identity": "",
+          "name": "id",
+          "not_null": true,
+          "position": 1,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "actor_id",
+          "not_null": true,
+          "position": 2,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "action",
+          "not_null": true,
+          "position": 3,
+          "type": "text"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "subject_id",
+          "not_null": false,
+          "position": 4,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": "'{}'::jsonb",
+          "generated": "",
+          "identity": "",
+          "name": "details",
+          "not_null": true,
+          "position": 5,
+          "type": "jsonb"
+        },
+        {
+          "acl": null,
+          "default": "now()",
+          "generated": "",
+          "identity": "",
+          "name": "created_at",
+          "not_null": true,
+          "position": 6,
+          "type": "timestamp with time zone"
+        }
+      ],
+      "constraints": [
+        {
+          "deferrable": false,
+          "definition": "PRIMARY KEY (id)",
+          "initially_deferred": false,
+          "name": "admin_audit_pkey",
+          "type": "p",
+          "validated": true
+        }
+      ],
+      "force_rls": false,
+      "indexes": [
+        {
+          "definition": "CREATE UNIQUE INDEX admin_audit_pkey ON public.admin_audit USING btree (id)",
+          "ready": true,
+          "valid": true
+        }
+      ],
+      "name": "admin_audit",
+      "owner": "postgres",
+      "policies": [
+        {
+          "cmd": "SELECT",
+          "permissive": "PERMISSIVE",
+          "policyname": "audit_read",
+          "qual": "((site_role() = 'developer'::text) OR ((site_role() = 'operator'::text) AND (action = ANY (ARRAY['settings.updated'::text, 'purchase.requested'::text, 'purchase.verified'::text, 'purchase.rejected'::text, 'sales.activation_updated'::text, 'doku.order_resolved'::text]))))",
+          "roles": [
+            "authenticated"
+          ],
+          "schemaname": "public",
+          "tablename": "admin_audit",
+          "with_check": null
+        }
+      ],
+      "rls": true,
+      "schema": "public",
+      "triggers": [
+        {
+          "definition": "CREATE TRIGGER audit_no_change BEFORE DELETE OR UPDATE ON admin_audit FOR EACH ROW EXECUTE FUNCTION audit_immutable()",
+          "enabled": "O",
+          "function": "audit_immutable()",
+          "internal": false,
+          "name": "audit_no_change"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=arwd/postgres}",
+      "columns": [
+        {
+          "acl": null,
+          "default": "gen_random_uuid()",
+          "generated": "",
+          "identity": "",
+          "name": "id",
+          "not_null": true,
+          "position": 1,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "workspace_id",
+          "not_null": true,
+          "position": 2,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "category",
+          "not_null": true,
+          "position": 3,
+          "type": "character varying(50)"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "title",
+          "not_null": true,
+          "position": 4,
+          "type": "character varying(150)"
+        },
+        {
+          "acl": null,
+          "default": "0",
+          "generated": "",
+          "identity": "",
+          "name": "allocated_amount",
+          "not_null": false,
+          "position": 5,
+          "type": "bigint"
+        },
+        {
+          "acl": null,
+          "default": "0",
+          "generated": "",
+          "identity": "",
+          "name": "spent_amount",
+          "not_null": false,
+          "position": 6,
+          "type": "bigint"
+        },
+        {
+          "acl": null,
+          "default": "'unpaid'::character varying",
+          "generated": "",
+          "identity": "",
+          "name": "payment_status",
+          "not_null": false,
+          "position": 7,
+          "type": "character varying(20)"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "notes",
+          "not_null": false,
+          "position": 8,
+          "type": "text"
+        },
+        {
+          "acl": null,
+          "default": "timezone('utc'::text, now())",
+          "generated": "",
+          "identity": "",
+          "name": "created_at",
+          "not_null": true,
+          "position": 9,
+          "type": "timestamp with time zone"
+        },
+        {
+          "acl": null,
+          "default": "timezone('utc'::text, now())",
+          "generated": "",
+          "identity": "",
+          "name": "updated_at",
+          "not_null": true,
+          "position": 10,
+          "type": "timestamp with time zone"
+        }
+      ],
+      "constraints": [
+        {
+          "deferrable": false,
+          "definition": "CHECK (payment_status::text = ANY (ARRAY['unpaid'::character varying, 'dp'::character varying, 'paid'::character varying]::text[]))",
+          "initially_deferred": false,
+          "name": "budgets_payment_status_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "PRIMARY KEY (id)",
+          "initially_deferred": false,
+          "name": "budgets_pkey",
+          "type": "p",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE",
+          "initially_deferred": false,
+          "name": "budgets_workspace_id_fkey",
+          "type": "f",
+          "validated": true
+        }
+      ],
+      "force_rls": false,
+      "indexes": [
+        {
+          "definition": "CREATE UNIQUE INDEX budgets_pkey ON public.budgets USING btree (id)",
+          "ready": true,
+          "valid": true
+        }
+      ],
+      "name": "budgets",
+      "owner": "postgres",
+      "policies": [
+        {
+          "cmd": "ALL",
+          "permissive": "PERMISSIVE",
+          "policyname": "member_crud",
+          "qual": "is_workspace_member(workspace_id)",
+          "roles": [
+            "authenticated"
+          ],
+          "schemaname": "public",
+          "tablename": "budgets",
+          "with_check": "is_workspace_member(workspace_id)"
+        }
+      ],
+      "rls": true,
+      "schema": "public",
+      "triggers": [
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17706\" AFTER INSERT ON budgets FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_ins\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17706"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17707\" AFTER UPDATE ON budgets FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17707"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=arwd/postgres}",
+      "columns": [
+        {
+          "acl": null,
+          "default": "gen_random_uuid()",
+          "generated": "",
+          "identity": "",
+          "name": "id",
+          "not_null": true,
+          "position": 1,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "workspace_id",
+          "not_null": true,
+          "position": 2,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "name",
+          "not_null": true,
+          "position": 3,
+          "type": "character varying(150)"
+        },
+        {
+          "acl": null,
+          "default": "'teman_kantor'::character varying",
+          "generated": "",
+          "identity": "",
+          "name": "category",
+          "not_null": false,
+          "position": 4,
+          "type": "character varying(50)"
+        },
+        {
+          "acl": null,
+          "default": "1",
+          "generated": "",
+          "identity": "",
+          "name": "pax",
+          "not_null": false,
+          "position": 5,
+          "type": "integer"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "phone",
+          "not_null": false,
+          "position": 6,
+          "type": "character varying(30)"
+        },
+        {
+          "acl": null,
+          "default": "'uncontacted'::character varying",
+          "generated": "",
+          "identity": "",
+          "name": "rsvp_status",
+          "not_null": false,
+          "position": 7,
+          "type": "character varying(20)"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "notes",
+          "not_null": false,
+          "position": 8,
+          "type": "text"
+        },
+        {
+          "acl": null,
+          "default": "timezone('utc'::text, now())",
+          "generated": "",
+          "identity": "",
+          "name": "created_at",
+          "not_null": true,
+          "position": 9,
+          "type": "timestamp with time zone"
+        },
+        {
+          "acl": null,
+          "default": "timezone('utc'::text, now())",
+          "generated": "",
+          "identity": "",
+          "name": "updated_at",
+          "not_null": true,
+          "position": 10,
+          "type": "timestamp with time zone"
+        }
+      ],
+      "constraints": [
+        {
+          "deferrable": false,
+          "definition": "CHECK (category::text = ANY (ARRAY['keluarga_pria'::character varying, 'keluarga_wanita'::character varying, 'teman_kantor'::character varying, 'sahabat'::character varying, 'vip'::character varying, 'lainnya'::character varying]::text[]))",
+          "initially_deferred": false,
+          "name": "guests_category_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "PRIMARY KEY (id)",
+          "initially_deferred": false,
+          "name": "guests_pkey",
+          "type": "p",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "CHECK (rsvp_status::text = ANY (ARRAY['uncontacted'::character varying, 'sent'::character varying, 'attending'::character varying, 'declined'::character varying]::text[]))",
+          "initially_deferred": false,
+          "name": "guests_rsvp_status_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE",
+          "initially_deferred": false,
+          "name": "guests_workspace_id_fkey",
+          "type": "f",
+          "validated": true
+        }
+      ],
+      "force_rls": false,
+      "indexes": [
+        {
+          "definition": "CREATE UNIQUE INDEX guests_pkey ON public.guests USING btree (id)",
+          "ready": true,
+          "valid": true
+        }
+      ],
+      "name": "guests",
+      "owner": "postgres",
+      "policies": [
+        {
+          "cmd": "ALL",
+          "permissive": "PERMISSIVE",
+          "policyname": "member_crud",
+          "qual": "is_workspace_member(workspace_id)",
+          "roles": [
+            "authenticated"
+          ],
+          "schemaname": "public",
+          "tablename": "guests",
+          "with_check": "is_workspace_member(workspace_id)"
+        }
+      ],
+      "rls": true,
+      "schema": "public",
+      "triggers": [
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17744\" AFTER INSERT ON guests FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_ins\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17744"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17745\" AFTER UPDATE ON guests FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17745"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres,anon=arwdDxtm/postgres,authenticated=arwdDxtm/postgres,service_role=arwdDxtm/postgres}",
+      "columns": [
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "id",
+          "not_null": false,
+          "position": 1,
+          "type": "boolean"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "version",
+          "not_null": false,
+          "position": 2,
+          "type": "bigint"
+        }
+      ],
+      "constraints": [],
+      "force_rls": false,
+      "indexes": [],
+      "name": "package_price_current",
+      "owner": "postgres",
+      "policies": [],
+      "rls": true,
+      "schema": "public",
+      "triggers": []
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres,anon=arwdDxtm/postgres,authenticated=arwdDxtm/postgres,service_role=arwdDxtm/postgres}",
+      "columns": [
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "version",
+          "not_null": false,
+          "position": 1,
+          "type": "bigint"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "amount_idr",
+          "not_null": false,
+          "position": 2,
+          "type": "bigint"
+        }
+      ],
+      "constraints": [
+        {
+          "deferrable": false,
+          "definition": "UNIQUE (version, amount_idr)",
+          "initially_deferred": false,
+          "name": "package_price_versions_version_amount_idr_key",
+          "type": "u",
+          "validated": true
+        }
+      ],
+      "force_rls": false,
+      "indexes": [
+        {
+          "definition": "CREATE UNIQUE INDEX package_price_versions_version_amount_idr_key ON public.package_price_versions USING btree (version, amount_idr)",
+          "ready": true,
+          "valid": true
+        }
+      ],
+      "name": "package_price_versions",
+      "owner": "postgres",
+      "policies": [],
+      "rls": true,
+      "schema": "public",
+      "triggers": []
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=arwd/postgres}",
+      "columns": [
+        {
+          "acl": null,
+          "default": "gen_random_uuid()",
+          "generated": "",
+          "identity": "",
+          "name": "id",
+          "not_null": true,
+          "position": 1,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "workspace_id",
+          "not_null": true,
+          "position": 2,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "account_name",
+          "not_null": true,
+          "position": 3,
+          "type": "character varying(100)"
+        },
+        {
+          "acl": null,
+          "default": "0",
+          "generated": "",
+          "identity": "",
+          "name": "target_amount",
+          "not_null": false,
+          "position": 4,
+          "type": "bigint"
+        },
+        {
+          "acl": null,
+          "default": "0",
+          "generated": "",
+          "identity": "",
+          "name": "current_balance",
+          "not_null": false,
+          "position": 5,
+          "type": "bigint"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "account_number",
+          "not_null": false,
+          "position": 6,
+          "type": "character varying(50)"
+        },
+        {
+          "acl": null,
+          "default": "timezone('utc'::text, now())",
+          "generated": "",
+          "identity": "",
+          "name": "created_at",
+          "not_null": true,
+          "position": 7,
+          "type": "timestamp with time zone"
+        }
+      ],
+      "constraints": [
+        {
+          "deferrable": false,
+          "definition": "PRIMARY KEY (id)",
+          "initially_deferred": false,
+          "name": "savings_accounts_pkey",
+          "type": "p",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE",
+          "initially_deferred": false,
+          "name": "savings_accounts_workspace_id_fkey",
+          "type": "f",
+          "validated": true
+        }
+      ],
+      "force_rls": false,
+      "indexes": [
+        {
+          "definition": "CREATE UNIQUE INDEX savings_accounts_pkey ON public.savings_accounts USING btree (id)",
+          "ready": true,
+          "valid": true
+        }
+      ],
+      "name": "savings_accounts",
+      "owner": "postgres",
+      "policies": [
+        {
+          "cmd": "ALL",
+          "permissive": "PERMISSIVE",
+          "policyname": "member_crud",
+          "qual": "is_workspace_member(workspace_id)",
+          "roles": [
+            "authenticated"
+          ],
+          "schemaname": "public",
+          "tablename": "savings_accounts",
+          "with_check": "is_workspace_member(workspace_id)"
+        }
+      ],
+      "rls": true,
+      "schema": "public",
+      "triggers": [
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17687\" AFTER INSERT ON savings_accounts FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_ins\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17687"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17688\" AFTER UPDATE ON savings_accounts FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17688"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=arwd/postgres}",
+      "columns": [
+        {
+          "acl": null,
+          "default": "gen_random_uuid()",
+          "generated": "",
+          "identity": "",
+          "name": "id",
+          "not_null": true,
+          "position": 1,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "workspace_id",
+          "not_null": true,
+          "position": 2,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "contributor_id",
+          "not_null": true,
+          "position": 3,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "amount",
+          "not_null": true,
+          "position": 4,
+          "type": "bigint"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "contributed_on",
+          "not_null": true,
+          "position": 5,
+          "type": "date"
+        },
+        {
+          "acl": null,
+          "default": "''::text",
+          "generated": "",
+          "identity": "",
+          "name": "notes",
+          "not_null": true,
+          "position": 6,
+          "type": "text"
+        },
+        {
+          "acl": null,
+          "default": "now()",
+          "generated": "",
+          "identity": "",
+          "name": "created_at",
+          "not_null": true,
+          "position": 7,
+          "type": "timestamp with time zone"
+        }
+      ],
+      "constraints": [
+        {
+          "deferrable": false,
+          "definition": "CHECK (amount >= 1 AND amount <= '9007199254740991'::bigint)",
+          "initially_deferred": false,
+          "name": "savings_contributions_amount_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "CHECK (length(notes) <= 500)",
+          "initially_deferred": false,
+          "name": "savings_contributions_notes_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "PRIMARY KEY (id)",
+          "initially_deferred": false,
+          "name": "savings_contributions_pkey",
+          "type": "p",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "FOREIGN KEY (workspace_id, contributor_id) REFERENCES workspace_members(workspace_id, user_id)",
+          "initially_deferred": false,
+          "name": "savings_contributions_workspace_id_contributor_id_fkey",
+          "type": "f",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE",
+          "initially_deferred": false,
+          "name": "savings_contributions_workspace_id_fkey",
+          "type": "f",
+          "validated": true
+        }
+      ],
+      "force_rls": false,
+      "indexes": [
+        {
+          "definition": "CREATE UNIQUE INDEX savings_contributions_pkey ON public.savings_contributions USING btree (id)",
+          "ready": true,
+          "valid": true
+        },
+        {
+          "definition": "CREATE INDEX savings_contributions_workspace ON public.savings_contributions USING btree (workspace_id)",
+          "ready": true,
+          "valid": true
+        }
+      ],
+      "name": "savings_contributions",
+      "owner": "postgres",
+      "policies": [
+        {
+          "cmd": "ALL",
+          "permissive": "PERMISSIVE",
+          "policyname": "savings_member",
+          "qual": "is_workspace_member(workspace_id)",
+          "roles": [
+            "authenticated"
+          ],
+          "schemaname": "public",
+          "tablename": "savings_contributions",
+          "with_check": "is_workspace_member(workspace_id)"
+        }
+      ],
+      "rls": true,
+      "schema": "public",
+      "triggers": [
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17827\" AFTER INSERT ON savings_contributions FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_ins\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17827"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17828\" AFTER UPDATE ON savings_contributions FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17828"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17832\" AFTER INSERT ON savings_contributions FROM workspace_members NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_ins\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17832"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17833\" AFTER UPDATE ON savings_contributions FROM workspace_members NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17833"
+        },
+        {
+          "definition": "CREATE TRIGGER savings_workspace_immutable BEFORE UPDATE ON savings_contributions FOR EACH ROW EXECUTE FUNCTION keep_savings_workspace()",
+          "enabled": "O",
+          "function": "keep_savings_workspace()",
+          "internal": false,
+          "name": "savings_workspace_immutable"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=arwd/postgres}",
+      "columns": [
+        {
+          "acl": null,
+          "default": "gen_random_uuid()",
+          "generated": "",
+          "identity": "",
+          "name": "id",
+          "not_null": true,
+          "position": 1,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "workspace_id",
+          "not_null": true,
+          "position": 2,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "title",
+          "not_null": true,
+          "position": 3,
+          "type": "character varying(255)"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "phase",
+          "not_null": true,
+          "position": 4,
+          "type": "character varying(50)"
+        },
+        {
+          "acl": null,
+          "default": "'both'::character varying",
+          "generated": "",
+          "identity": "",
+          "name": "pic",
+          "not_null": false,
+          "position": 5,
+          "type": "character varying(20)"
+        },
+        {
+          "acl": null,
+          "default": "false",
+          "generated": "",
+          "identity": "",
+          "name": "is_completed",
+          "not_null": false,
+          "position": 6,
+          "type": "boolean"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "due_date",
+          "not_null": false,
+          "position": 7,
+          "type": "date"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "notes",
+          "not_null": false,
+          "position": 8,
+          "type": "text"
+        },
+        {
+          "acl": null,
+          "default": "timezone('utc'::text, now())",
+          "generated": "",
+          "identity": "",
+          "name": "created_at",
+          "not_null": true,
+          "position": 9,
+          "type": "timestamp with time zone"
+        },
+        {
+          "acl": null,
+          "default": "timezone('utc'::text, now())",
+          "generated": "",
+          "identity": "",
+          "name": "updated_at",
+          "not_null": true,
+          "position": 10,
+          "type": "timestamp with time zone"
+        }
+      ],
+      "constraints": [
+        {
+          "deferrable": false,
+          "definition": "CHECK (pic::text = ANY (ARRAY['groom'::character varying, 'bride'::character varying, 'both'::character varying]::text[]))",
+          "initially_deferred": false,
+          "name": "tasks_pic_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "PRIMARY KEY (id)",
+          "initially_deferred": false,
+          "name": "tasks_pkey",
+          "type": "p",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE",
+          "initially_deferred": false,
+          "name": "tasks_workspace_id_fkey",
+          "type": "f",
+          "validated": true
+        }
+      ],
+      "force_rls": false,
+      "indexes": [
+        {
+          "definition": "CREATE UNIQUE INDEX tasks_pkey ON public.tasks USING btree (id)",
+          "ready": true,
+          "valid": true
+        }
+      ],
+      "name": "tasks",
+      "owner": "postgres",
+      "policies": [
+        {
+          "cmd": "ALL",
+          "permissive": "PERMISSIVE",
+          "policyname": "member_crud",
+          "qual": "is_workspace_member(workspace_id)",
+          "roles": [
+            "authenticated"
+          ],
+          "schemaname": "public",
+          "tablename": "tasks",
+          "with_check": "is_workspace_member(workspace_id)"
+        }
+      ],
+      "rls": true,
+      "schema": "public",
+      "triggers": [
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17724\" AFTER INSERT ON tasks FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_ins\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17724"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17725\" AFTER UPDATE ON tasks FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17725"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=arwd/postgres}",
+      "columns": [
+        {
+          "acl": null,
+          "default": "gen_random_uuid()",
+          "generated": "",
+          "identity": "",
+          "name": "id",
+          "not_null": true,
+          "position": 1,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "workspace_id",
+          "not_null": true,
+          "position": 2,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "vendor_id",
+          "not_null": true,
+          "position": 3,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "title",
+          "not_null": true,
+          "position": 4,
+          "type": "text"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "amount",
+          "not_null": true,
+          "position": 5,
+          "type": "bigint"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "due_date",
+          "not_null": true,
+          "position": 6,
+          "type": "date"
+        },
+        {
+          "acl": null,
+          "default": "now()",
+          "generated": "",
+          "identity": "",
+          "name": "created_at",
+          "not_null": true,
+          "position": 7,
+          "type": "timestamp with time zone"
+        }
+      ],
+      "constraints": [
+        {
+          "deferrable": false,
+          "definition": "CHECK (amount >= 1 AND amount <= '9007199254740991'::bigint)",
+          "initially_deferred": false,
+          "name": "vendor_installments_amount_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "CHECK (due_date >= '1900-01-01'::date AND due_date <= '9999-12-31'::date)",
+          "initially_deferred": false,
+          "name": "vendor_installments_due_date_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "PRIMARY KEY (id)",
+          "initially_deferred": false,
+          "name": "vendor_installments_pkey",
+          "type": "p",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "CHECK (length(btrim(title)) >= 1 AND length(btrim(title)) <= 200)",
+          "initially_deferred": false,
+          "name": "vendor_installments_title_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE",
+          "initially_deferred": false,
+          "name": "vendor_installments_workspace_id_fkey",
+          "type": "f",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "UNIQUE (workspace_id, id)",
+          "initially_deferred": false,
+          "name": "vendor_installments_workspace_id_id_key",
+          "type": "u",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "FOREIGN KEY (workspace_id, vendor_id) REFERENCES vendors(workspace_id, id) ON DELETE CASCADE",
+          "initially_deferred": false,
+          "name": "vendor_installments_workspace_id_vendor_id_fkey",
+          "type": "f",
+          "validated": true
+        }
+      ],
+      "force_rls": false,
+      "indexes": [
+        {
+          "definition": "CREATE UNIQUE INDEX vendor_installments_pkey ON public.vendor_installments USING btree (id)",
+          "ready": true,
+          "valid": true
+        },
+        {
+          "definition": "CREATE UNIQUE INDEX vendor_installments_workspace_id_id_key ON public.vendor_installments USING btree (workspace_id, id)",
+          "ready": true,
+          "valid": true
+        },
+        {
+          "definition": "CREATE INDEX vendor_installments_workspace_id_vendor_id_idx ON public.vendor_installments USING btree (workspace_id, vendor_id)",
+          "ready": true,
+          "valid": true
+        }
+      ],
+      "name": "vendor_installments",
+      "owner": "postgres",
+      "policies": [
+        {
+          "cmd": "ALL",
+          "permissive": "PERMISSIVE",
+          "policyname": "member_crud",
+          "qual": "is_workspace_member(workspace_id)",
+          "roles": [
+            "authenticated"
+          ],
+          "schemaname": "public",
+          "tablename": "vendor_installments",
+          "with_check": "is_workspace_member(workspace_id)"
+        }
+      ],
+      "rls": true,
+      "schema": "public",
+      "triggers": [
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18083\" AFTER DELETE ON vendor_installments FROM vendor_payments NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18083"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18084\" AFTER UPDATE ON vendor_installments FROM vendor_payments NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18084"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_18057\" AFTER INSERT ON vendor_installments FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_ins\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_18057"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_18058\" AFTER UPDATE ON vendor_installments FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_18058"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_18062\" AFTER INSERT ON vendor_installments FROM vendors NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_ins\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_18062"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_18063\" AFTER UPDATE ON vendor_installments FROM vendors NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_18063"
+        },
+        {
+          "definition": "CREATE TRIGGER immutable_scope BEFORE UPDATE ON vendor_installments FOR EACH ROW EXECUTE FUNCTION vendor_immutable_scope()",
+          "enabled": "O",
+          "function": "vendor_immutable_scope()",
+          "internal": false,
+          "name": "immutable_scope"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=arwd/postgres}",
+      "columns": [
+        {
+          "acl": null,
+          "default": "gen_random_uuid()",
+          "generated": "",
+          "identity": "",
+          "name": "id",
+          "not_null": true,
+          "position": 1,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "workspace_id",
+          "not_null": true,
+          "position": 2,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "installment_id",
+          "not_null": true,
+          "position": 3,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "amount",
+          "not_null": true,
+          "position": 4,
+          "type": "bigint"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "paid_on",
+          "not_null": true,
+          "position": 5,
+          "type": "date"
+        },
+        {
+          "acl": null,
+          "default": "''::text",
+          "generated": "",
+          "identity": "",
+          "name": "notes",
+          "not_null": true,
+          "position": 6,
+          "type": "text"
+        },
+        {
+          "acl": null,
+          "default": "now()",
+          "generated": "",
+          "identity": "",
+          "name": "created_at",
+          "not_null": true,
+          "position": 7,
+          "type": "timestamp with time zone"
+        }
+      ],
+      "constraints": [
+        {
+          "deferrable": false,
+          "definition": "CHECK (amount >= 1 AND amount <= '9007199254740991'::bigint)",
+          "initially_deferred": false,
+          "name": "vendor_payments_amount_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "CHECK (length(notes) <= 4000)",
+          "initially_deferred": false,
+          "name": "vendor_payments_notes_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "CHECK (paid_on >= '1900-01-01'::date AND paid_on <= '9999-12-31'::date)",
+          "initially_deferred": false,
+          "name": "vendor_payments_paid_on_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "PRIMARY KEY (id)",
+          "initially_deferred": false,
+          "name": "vendor_payments_pkey",
+          "type": "p",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE",
+          "initially_deferred": false,
+          "name": "vendor_payments_workspace_id_fkey",
+          "type": "f",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "FOREIGN KEY (workspace_id, installment_id) REFERENCES vendor_installments(workspace_id, id) ON DELETE CASCADE",
+          "initially_deferred": false,
+          "name": "vendor_payments_workspace_id_installment_id_fkey",
+          "type": "f",
+          "validated": true
+        }
+      ],
+      "force_rls": false,
+      "indexes": [
+        {
+          "definition": "CREATE UNIQUE INDEX vendor_payments_pkey ON public.vendor_payments USING btree (id)",
+          "ready": true,
+          "valid": true
+        },
+        {
+          "definition": "CREATE INDEX vendor_payments_workspace_id_installment_id_idx ON public.vendor_payments USING btree (workspace_id, installment_id)",
+          "ready": true,
+          "valid": true
+        }
+      ],
+      "name": "vendor_payments",
+      "owner": "postgres",
+      "policies": [
+        {
+          "cmd": "ALL",
+          "permissive": "PERMISSIVE",
+          "policyname": "member_crud",
+          "qual": "is_workspace_member(workspace_id)",
+          "roles": [
+            "authenticated"
+          ],
+          "schemaname": "public",
+          "tablename": "vendor_payments",
+          "with_check": "is_workspace_member(workspace_id)"
+        }
+      ],
+      "rls": true,
+      "schema": "public",
+      "triggers": [
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_18080\" AFTER INSERT ON vendor_payments FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_ins\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_18080"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_18081\" AFTER UPDATE ON vendor_payments FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_18081"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_18085\" AFTER INSERT ON vendor_payments FROM vendor_installments NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_ins\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_18085"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_18086\" AFTER UPDATE ON vendor_payments FROM vendor_installments NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_18086"
+        },
+        {
+          "definition": "CREATE TRIGGER immutable_scope BEFORE UPDATE ON vendor_payments FOR EACH ROW EXECUTE FUNCTION vendor_immutable_scope()",
+          "enabled": "O",
+          "function": "vendor_immutable_scope()",
+          "internal": false,
+          "name": "immutable_scope"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=arwd/postgres}",
+      "columns": [
+        {
+          "acl": null,
+          "default": "gen_random_uuid()",
+          "generated": "",
+          "identity": "",
+          "name": "id",
+          "not_null": true,
+          "position": 1,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "workspace_id",
+          "not_null": true,
+          "position": 2,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "name",
+          "not_null": true,
+          "position": 3,
+          "type": "text"
+        },
+        {
+          "acl": null,
+          "default": "''::text",
+          "generated": "",
+          "identity": "",
+          "name": "contact_name",
+          "not_null": true,
+          "position": 4,
+          "type": "text"
+        },
+        {
+          "acl": null,
+          "default": "''::text",
+          "generated": "",
+          "identity": "",
+          "name": "contact_phone",
+          "not_null": true,
+          "position": 5,
+          "type": "text"
+        },
+        {
+          "acl": null,
+          "default": "''::text",
+          "generated": "",
+          "identity": "",
+          "name": "contract_notes",
+          "not_null": true,
+          "position": 6,
+          "type": "text"
+        },
+        {
+          "acl": null,
+          "default": "0",
+          "generated": "",
+          "identity": "",
+          "name": "contract_total",
+          "not_null": true,
+          "position": 7,
+          "type": "bigint"
+        },
+        {
+          "acl": null,
+          "default": "now()",
+          "generated": "",
+          "identity": "",
+          "name": "created_at",
+          "not_null": true,
+          "position": 8,
+          "type": "timestamp with time zone"
+        }
+      ],
+      "constraints": [
+        {
+          "deferrable": false,
+          "definition": "CHECK (length(contact_name) <= 200)",
+          "initially_deferred": false,
+          "name": "vendors_contact_name_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "CHECK (length(contact_phone) <= 100)",
+          "initially_deferred": false,
+          "name": "vendors_contact_phone_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "CHECK (length(contract_notes) <= 4000)",
+          "initially_deferred": false,
+          "name": "vendors_contract_notes_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "CHECK (contract_total >= 0 AND contract_total <= '9007199254740991'::bigint)",
+          "initially_deferred": false,
+          "name": "vendors_contract_total_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "CHECK (length(btrim(name)) >= 1 AND length(btrim(name)) <= 200)",
+          "initially_deferred": false,
+          "name": "vendors_name_check",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "PRIMARY KEY (id)",
+          "initially_deferred": false,
+          "name": "vendors_pkey",
+          "type": "p",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE",
+          "initially_deferred": false,
+          "name": "vendors_workspace_id_fkey",
+          "type": "f",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "UNIQUE (workspace_id, id)",
+          "initially_deferred": false,
+          "name": "vendors_workspace_id_id_key",
+          "type": "u",
+          "validated": true
+        }
+      ],
+      "force_rls": false,
+      "indexes": [
+        {
+          "definition": "CREATE UNIQUE INDEX vendors_pkey ON public.vendors USING btree (id)",
+          "ready": true,
+          "valid": true
+        },
+        {
+          "definition": "CREATE UNIQUE INDEX vendors_workspace_id_id_key ON public.vendors USING btree (workspace_id, id)",
+          "ready": true,
+          "valid": true
+        },
+        {
+          "definition": "CREATE INDEX vendors_workspace_id_idx ON public.vendors USING btree (workspace_id)",
+          "ready": true,
+          "valid": true
+        }
+      ],
+      "name": "vendors",
+      "owner": "postgres",
+      "policies": [
+        {
+          "cmd": "ALL",
+          "permissive": "PERMISSIVE",
+          "policyname": "member_crud",
+          "qual": "is_workspace_member(workspace_id)",
+          "roles": [
+            "authenticated"
+          ],
+          "schemaname": "public",
+          "tablename": "vendors",
+          "with_check": "is_workspace_member(workspace_id)"
+        }
+      ],
+      "rls": true,
+      "schema": "public",
+      "triggers": [
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18060\" AFTER DELETE ON vendors FROM vendor_installments NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18060"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18061\" AFTER UPDATE ON vendors FROM vendor_installments NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18061"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_18035\" AFTER INSERT ON vendors FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_ins\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_18035"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_18036\" AFTER UPDATE ON vendors FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_18036"
+        },
+        {
+          "definition": "CREATE TRIGGER immutable_scope BEFORE UPDATE ON vendors FOR EACH ROW EXECUTE FUNCTION vendor_immutable_scope()",
+          "enabled": "O",
+          "function": "vendor_immutable_scope()",
+          "internal": false,
+          "name": "immutable_scope"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=rw/postgres}",
+      "columns": [
+        {
+          "acl": null,
+          "default": "gen_random_uuid()",
+          "generated": "",
+          "identity": "",
+          "name": "id",
+          "not_null": true,
+          "position": 1,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "title",
+          "not_null": true,
+          "position": 2,
+          "type": "character varying(255)"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "groom_name",
+          "not_null": false,
+          "position": 3,
+          "type": "character varying(100)"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "bride_name",
+          "not_null": false,
+          "position": 4,
+          "type": "character varying(100)"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "wedding_date",
+          "not_null": true,
+          "position": 5,
+          "type": "date"
+        },
+        {
+          "acl": null,
+          "default": "0",
+          "generated": "",
+          "identity": "",
+          "name": "target_budget",
+          "not_null": false,
+          "position": 6,
+          "type": "bigint"
+        },
+        {
+          "acl": null,
+          "default": "0",
+          "generated": "",
+          "identity": "",
+          "name": "target_savings",
+          "not_null": false,
+          "position": 7,
+          "type": "bigint"
+        },
+        {
+          "acl": null,
+          "default": "timezone('utc'::text, now())",
+          "generated": "",
+          "identity": "",
+          "name": "created_at",
+          "not_null": true,
+          "position": 8,
+          "type": "timestamp with time zone"
+        },
+        {
+          "acl": null,
+          "default": "timezone('utc'::text, now())",
+          "generated": "",
+          "identity": "",
+          "name": "updated_at",
+          "not_null": true,
+          "position": 9,
+          "type": "timestamp with time zone"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "wa_template",
+          "not_null": false,
+          "position": 10,
+          "type": "jsonb"
+        }
+      ],
+      "constraints": [
+        {
+          "deferrable": false,
+          "definition": "CHECK (valid_wa_template(wa_template))",
+          "initially_deferred": false,
+          "name": "valid_wa_template",
+          "type": "c",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "PRIMARY KEY (id)",
+          "initially_deferred": false,
+          "name": "workspaces_pkey",
+          "type": "p",
+          "validated": true
+        }
+      ],
+      "force_rls": false,
+      "indexes": [
+        {
+          "definition": "CREATE UNIQUE INDEX workspaces_pkey ON public.workspaces USING btree (id)",
+          "ready": true,
+          "valid": true
+        }
+      ],
+      "name": "workspaces",
+      "owner": "postgres",
+      "policies": [
+        {
+          "cmd": "SELECT",
+          "permissive": "PERMISSIVE",
+          "policyname": "workspace_read",
+          "qual": "is_workspace_member(id)",
+          "roles": [
+            "authenticated"
+          ],
+          "schemaname": "public",
+          "tablename": "workspaces",
+          "with_check": null
+        },
+        {
+          "cmd": "UPDATE",
+          "permissive": "PERMISSIVE",
+          "policyname": "workspace_update",
+          "qual": "is_workspace_member(id)",
+          "roles": [
+            "authenticated"
+          ],
+          "schemaname": "public",
+          "tablename": "workspaces",
+          "with_check": "is_workspace_member(id)"
+        }
+      ],
+      "rls": true,
+      "schema": "public",
+      "triggers": [
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17649\" AFTER DELETE ON workspaces FROM workspace_members NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17649"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17650\" AFTER UPDATE ON workspaces FROM workspace_members NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17650"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17671\" AFTER DELETE ON workspaces FROM invitations NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17671"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17672\" AFTER UPDATE ON workspaces FROM invitations NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17672"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17685\" AFTER DELETE ON workspaces FROM savings_accounts NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17685"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17686\" AFTER UPDATE ON workspaces FROM savings_accounts NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17686"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17704\" AFTER DELETE ON workspaces FROM budgets NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17704"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17705\" AFTER UPDATE ON workspaces FROM budgets NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17705"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17722\" AFTER DELETE ON workspaces FROM tasks NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17722"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17723\" AFTER UPDATE ON workspaces FROM tasks NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17723"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17742\" AFTER DELETE ON workspaces FROM guests NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17742"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17743\" AFTER UPDATE ON workspaces FROM guests NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17743"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17798\" AFTER DELETE ON workspaces FROM workspace_entitlements NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17798"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17799\" AFTER UPDATE ON workspaces FROM workspace_entitlements NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17799"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17825\" AFTER DELETE ON workspaces FROM savings_contributions NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17825"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17826\" AFTER UPDATE ON workspaces FROM savings_contributions NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17826"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17900\" AFTER DELETE ON workspaces FROM purchase_requests NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17900"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17901\" AFTER UPDATE ON workspaces FROM purchase_requests NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17901"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17928\" AFTER DELETE ON workspaces FROM verified_transactions NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17928"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17929\" AFTER UPDATE ON workspaces FROM verified_transactions NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17929"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17959\" AFTER DELETE ON workspaces FROM developer_test_grants NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17959"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17960\" AFTER UPDATE ON workspaces FROM developer_test_grants NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17960"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17987\" AFTER DELETE ON workspaces FROM starter_private.requests NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17987"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17988\" AFTER UPDATE ON workspaces FROM starter_private.requests NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17988"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17998\" AFTER DELETE ON workspaces FROM starter_private.applied NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17998"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17999\" AFTER UPDATE ON workspaces FROM starter_private.applied NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_17999"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18033\" AFTER DELETE ON workspaces FROM vendors NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18033"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18034\" AFTER UPDATE ON workspaces FROM vendors NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18034"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18055\" AFTER DELETE ON workspaces FROM vendor_installments NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18055"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18056\" AFTER UPDATE ON workspaces FROM vendor_installments NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18056"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18078\" AFTER DELETE ON workspaces FROM vendor_payments NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18078"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18079\" AFTER UPDATE ON workspaces FROM vendor_payments NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18079"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18213\" AFTER DELETE ON workspaces FROM doku_sandbox.invoices NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18213"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18214\" AFTER UPDATE ON workspaces FROM doku_sandbox.invoices NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18214"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18351\" AFTER DELETE ON workspaces FROM tier_invoice_snapshots NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18351"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18352\" AFTER UPDATE ON workspaces FROM tier_invoice_snapshots NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18352"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18470\" AFTER DELETE ON workspaces FROM doku_orders NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_cascade_del\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18470"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_18471\" AFTER UPDATE ON workspaces FROM doku_orders NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_noaction_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_a_18471"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "columns": [
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "workspace_id",
+          "not_null": true,
+          "position": 1,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": "now()",
+          "generated": "",
+          "identity": "",
+          "name": "applied_at",
+          "not_null": true,
+          "position": 2,
+          "type": "timestamp with time zone"
+        }
+      ],
+      "constraints": [
+        {
+          "deferrable": false,
+          "definition": "PRIMARY KEY (workspace_id)",
+          "initially_deferred": false,
+          "name": "applied_pkey",
+          "type": "p",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE",
+          "initially_deferred": false,
+          "name": "applied_workspace_id_fkey",
+          "type": "f",
+          "validated": true
+        }
+      ],
+      "force_rls": false,
+      "indexes": [
+        {
+          "definition": "CREATE UNIQUE INDEX applied_pkey ON starter_private.applied USING btree (workspace_id)",
+          "ready": true,
+          "valid": true
+        }
+      ],
+      "name": "applied",
+      "owner": "postgres",
+      "policies": [],
+      "rls": true,
+      "schema": "starter_private",
+      "triggers": [
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_18000\" AFTER INSERT ON starter_private.applied FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_ins\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_18000"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_18001\" AFTER UPDATE ON starter_private.applied FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_18001"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "columns": [
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "request_id",
+          "not_null": true,
+          "position": 1,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "owner_id",
+          "not_null": true,
+          "position": 2,
+          "type": "uuid"
+        },
+        {
+          "acl": null,
+          "default": null,
+          "generated": "",
+          "identity": "",
+          "name": "workspace_id",
+          "not_null": true,
+          "position": 3,
+          "type": "uuid"
+        }
+      ],
+      "constraints": [
+        {
+          "deferrable": false,
+          "definition": "FOREIGN KEY (owner_id) REFERENCES auth.users(id)",
+          "initially_deferred": false,
+          "name": "requests_owner_id_fkey",
+          "type": "f",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "PRIMARY KEY (request_id)",
+          "initially_deferred": false,
+          "name": "requests_pkey",
+          "type": "p",
+          "validated": true
+        },
+        {
+          "deferrable": false,
+          "definition": "FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE",
+          "initially_deferred": false,
+          "name": "requests_workspace_id_fkey",
+          "type": "f",
+          "validated": true
+        }
+      ],
+      "force_rls": false,
+      "indexes": [
+        {
+          "definition": "CREATE UNIQUE INDEX requests_pkey ON starter_private.requests USING btree (request_id)",
+          "ready": true,
+          "valid": true
+        }
+      ],
+      "name": "requests",
+      "owner": "postgres",
+      "policies": [],
+      "rls": true,
+      "schema": "starter_private",
+      "triggers": [
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17984\" AFTER INSERT ON starter_private.requests FROM auth.users NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_ins\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17984"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17985\" AFTER UPDATE ON starter_private.requests FROM auth.users NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17985"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17989\" AFTER INSERT ON starter_private.requests FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_ins\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17989"
+        },
+        {
+          "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_17990\" AFTER UPDATE ON starter_private.requests FROM workspaces NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()",
+          "enabled": "O",
+          "function": "\"RI_FKey_check_upd\"()",
+          "internal": true,
+          "name": "RI_ConstraintTrigger_c_17990"
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import { PGlite } from '@electric-sql/pglite';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import assert from 'node:assert/strict';
+import { installHostedPlannerFixture } from './fixtures/hosted-planner-schema.mjs';
 const db = new PGlite();
 await db.exec(`CREATE ROLE anon; CREATE ROLE authenticated; CREATE SCHEMA auth;
 CREATE TABLE auth.users(id uuid PRIMARY KEY);
@@ -10,6 +11,9 @@ INSERT INTO auth.users VALUES ('00000000-0000-0000-0000-000000000001'),('0000000
 await db.exec(readFileSync('supabase/migrations/202610120001_secure_foundation.sql','utf8'));
 const migration='supabase/migrations/202610140001_workspace_entitlements_savings.sql';
 if(existsSync(migration)) await db.exec(readFileSync(migration,'utf8'));
+await db.exec('CREATE ROLE service_role BYPASSRLS; ALTER TABLE auth.users ADD COLUMN email text; ALTER TABLE auth.users ADD COLUMN raw_user_meta_data jsonb');
+for(const f of readdirSync('supabase/migrations').filter(f=>f.endsWith('.sql') && f>'202610140001_workspace_entitlements_savings.sql' && f!=='202611140001_paid_access_rls.sql').sort()) await db.exec(readFileSync('supabase/migrations/'+f,'utf8'));
+await installHostedPlannerFixture(db);
 await db.exec(readFileSync('supabase/activation/paid-enforcement.sql','utf8'));
 const user=async n=>db.exec(`RESET ROLE; SET ROLE authenticated; SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-00000000000${n}',false)`);
 let passed=0;

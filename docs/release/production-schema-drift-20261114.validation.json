@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "scope": "structural metadata only; not deploy or native restore evidence",
+  "tables": 14,
+  "columns": 91,
+  "constraints": 47,
+  "indexes": 19,
+  "policies": 11,
+  "triggers": 75,
+  "functions": 11,
+  "dependencies": 365,
+  "ledger_versions": 4,
+  "membership_only_planner_tables": 8,
+  "sensitive_literal_scan": "PASS (heuristic plus catalog-only query; no application-row query)",
+  "snapshot_sha256": "3dc79a16d092e4f090ef41ef6f8fac118923f4beb766e136de959cfce4800320",
+  "query_sha256": "c6847b6ffc0e6d217cffa9f39d8db8d205476d8588ceb5570cefabfad0106101"
+}

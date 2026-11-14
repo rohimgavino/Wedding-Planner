@@ -1,0 +1,794 @@
+{
+  "status": "PERSISTENT_APPLIED_VERIFIED_RECORDED",
+  "target": "lkudkvjaxdjntjosudni",
+  "candidate_sha256": "15180763a40c3d1189d46bbd2b0ce18f3b93f15dd56be79e7769c3873a729dff",
+  "activation_byte_identical": true,
+  "wrapper_sha256": "c4b79b9f8cd9c7dd8938d5d49d4888934713906237d689dea8c8a62ec67980e4",
+  "canonical_bytes_preserved_except_timeout_insertion": true,
+  "fresh_schema_exact_reviewed": true,
+  "fresh_cohort_exact_reviewed": true,
+  "before_schema_sha256": "001863a08ca12c88ed255cf8cd65006b508fe920082d996556ab5653ccf841c9",
+  "cohort_before": {
+    "active_finite_core": 2,
+    "active_null_core": 0,
+    "developer_own_effective_memberships": 1,
+    "effective_core_member_access": 2,
+    "expired_core_rows": 0,
+    "helper_acl": [
+      {
+        "anon": false,
+        "authenticated": true,
+        "config": [
+          "search_path=\"\""
+        ],
+        "name": "has_developer_test_access",
+        "owner": "postgres",
+        "security_definer": true
+      },
+      {
+        "anon": false,
+        "authenticated": true,
+        "config": [
+          "search_path=\"\""
+        ],
+        "name": "has_workspace_entitlement",
+        "owner": "postgres",
+        "security_definer": true
+      },
+      {
+        "anon": false,
+        "authenticated": true,
+        "config": [
+          "search_path=\"\""
+        ],
+        "name": "is_workspace_member",
+        "owner": "postgres",
+        "security_definer": true
+      },
+      {
+        "anon": false,
+        "authenticated": true,
+        "config": [
+          "search_path=\"\""
+        ],
+        "name": "site_role",
+        "owner": "postgres",
+        "security_definer": true
+      }
+    ],
+    "ledger": [
+      {
+        "name": "secure_foundation",
+        "version": "202610120001"
+      },
+      {
+        "name": "workspace_entitlements_savings",
+        "version": "202610140001"
+      },
+      {
+        "name": "admin_manual_purchases",
+        "version": "202610140002"
+      },
+      {
+        "name": "developer_operator_roles",
+        "version": "202610140004"
+      },
+      {
+        "name": "reset_planning_content",
+        "version": "202610140005"
+      },
+      {
+        "name": "starter_template",
+        "version": "202610140006"
+      },
+      {
+        "name": "whatsapp_template",
+        "version": "202610150001"
+      },
+      {
+        "name": "vendor_planning",
+        "version": "202610150002"
+      },
+      {
+        "name": "doku_checkout",
+        "version": "202611120001"
+      },
+      {
+        "name": "doku_checkout_hardening",
+        "version": "202611120002"
+      }
+    ],
+    "memberships": 3,
+    "no_active_core": 1,
+    "owners": 3,
+    "partners": 0,
+    "revoked_core_rows": 0,
+    "table_acl": [
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "budgets",
+        "update": true
+      },
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "guests",
+        "update": true
+      },
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "savings_accounts",
+        "update": true
+      },
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "savings_contributions",
+        "update": true
+      },
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "tasks",
+        "update": true
+      },
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "vendor_installments",
+        "update": true
+      },
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "vendor_payments",
+        "update": true
+      },
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "vendors",
+        "update": true
+      }
+    ],
+    "workspaces": 3
+  },
+  "data_aggregates_before": [
+    {
+      "rows": 11,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "279be793da0331e7c931f066b369d531614133ae7d213a92af342fa8abec6dc9",
+      "table": "admin_audit"
+    },
+    {
+      "rows": 8,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e99d43715201560b4a74675517660a118796697c9cb4fffc7731698cbf21fb4c",
+      "table": "budgets"
+    },
+    {
+      "rows": 1,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "cf7c45a6174415b307c4b55dad477690d2e7044d119acc2b9aa0162e6a239577",
+      "table": "developer_test_grants"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "7e858acb3a15aa2469fdbf0322c5d5ecb6f2643e6ed0c398fdcb6be1a5cde0b7",
+      "table": "doku_orders"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "0ff8227c2ff72e3875346053fdc7e19e371273f63e972b85354e54c2b3bb10a5",
+      "table": "doku_webhook_events"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "fbae6257c2de19bf51c0054b5cc71cb7ead01b759998967fcde1cef0f9fbb582",
+      "table": "guests"
+    },
+    {
+      "rows": 1,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "b1c8160bff6c9d4e94a550d74d9836cd63bde1fd7c3fb82738faf39c15208d72",
+      "table": "invitations"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "package_price_current"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "package_price_versions"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "purchase_requests"
+    },
+    {
+      "rows": 1,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "bd5acb9130a10dc9ac67bc5524a7cdfb59ce0d9f4cd6d1e53c10db2024ac3e09",
+      "table": "release_controls"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "savings_accounts"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "savings_contributions"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "56d38dabea24a4648c60803d2d24306ac8ab8b714291a0c2d164c50d168f168d",
+      "table": "site_admins"
+    },
+    {
+      "rows": 1,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "fb7faed04b03adb83668b66ddd5b0e5af2f6fb83bf99c307d4a3f2e3701ff4f8",
+      "table": "site_settings"
+    },
+    {
+      "rows": 18,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "64ef37a5ae8ff612f7d5ac1943f67e13365d1eb4422b0982a24c8415e5445794",
+      "table": "tasks"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "90ffd586878a9a9324fc0ac7f521111d648c349ff4a14b3414f5c69c204cb7f6",
+      "table": "tier_invoice_snapshots"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "4b926ec4a500164f23334458c7dd8d8ce3cb0de285d534c81406fd1a2d4f9ed6",
+      "table": "tier_price_current"
+    },
+    {
+      "rows": 8,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "c44597bf6212eff641bd979453fdd0ce9703bfbc7660fa62e3b694f79768104d",
+      "table": "tier_price_versions"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "vendor_installments"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "vendor_payments"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "vendors"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "verified_transactions"
+    },
+    {
+      "rows": 4,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "bf5c476856c844ab2b0b279ff31413f6c297c4b9e371f823fba7178c4d2bed4f",
+      "table": "workspace_entitlements"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "287bd6c6b7d44289abc9fc5182612912c20a7d6789d75fead6565c88bd8b1250",
+      "table": "workspace_members"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "26c79ce4307d64ca389fec944ac9993b6ec3868a21dc6bb767bb198194c2ae39",
+      "table": "workspaces"
+    },
+    {
+      "rows": 2,
+      "schema": "starter_private",
+      "sha256_sorted_row_hashes": "94d4bdb4de25257eeeb15a3f7a428af5561b8c1f3561d1cbcdb7187587e03b00",
+      "table": "applied"
+    },
+    {
+      "rows": 1,
+      "schema": "starter_private",
+      "sha256_sorted_row_hashes": "cdff3ac61333f797f26d1fd5392532cbcc1e05e7ae72ef15a2aa414ec5b2f151",
+      "table": "requests"
+    }
+  ],
+  "data_before_sha256": "2fdb8e52f1c3acd9bdf4963f50229961f84df26e021de3c7dc278eef68d87eed",
+  "smoke_sql_sha256": "b7bb4be55c2aaf13f083ca971f26102e401e2a4ae51813fd2e7257e27868e29a",
+  "apply_attempts": 1,
+  "history_attempts": 1,
+  "failures": [],
+  "apply_cli_exit": 0,
+  "policy_count": 8,
+  "policies": [
+    {
+      "cmd": "ALL",
+      "permissive": "RESTRICTIVE",
+      "policyname": "paid_core_access",
+      "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+      "roles": [
+        "authenticated"
+      ],
+      "schemaname": "public",
+      "tablename": "budgets",
+      "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+    },
+    {
+      "cmd": "ALL",
+      "permissive": "RESTRICTIVE",
+      "policyname": "paid_core_access",
+      "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+      "roles": [
+        "authenticated"
+      ],
+      "schemaname": "public",
+      "tablename": "guests",
+      "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+    },
+    {
+      "cmd": "ALL",
+      "permissive": "RESTRICTIVE",
+      "policyname": "paid_core_access",
+      "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+      "roles": [
+        "authenticated"
+      ],
+      "schemaname": "public",
+      "tablename": "savings_accounts",
+      "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+    },
+    {
+      "cmd": "ALL",
+      "permissive": "RESTRICTIVE",
+      "policyname": "paid_core_access",
+      "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+      "roles": [
+        "authenticated"
+      ],
+      "schemaname": "public",
+      "tablename": "savings_contributions",
+      "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+    },
+    {
+      "cmd": "ALL",
+      "permissive": "RESTRICTIVE",
+      "policyname": "paid_core_access",
+      "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+      "roles": [
+        "authenticated"
+      ],
+      "schemaname": "public",
+      "tablename": "tasks",
+      "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+    },
+    {
+      "cmd": "ALL",
+      "permissive": "RESTRICTIVE",
+      "policyname": "paid_core_access",
+      "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+      "roles": [
+        "authenticated"
+      ],
+      "schemaname": "public",
+      "tablename": "vendor_installments",
+      "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+    },
+    {
+      "cmd": "ALL",
+      "permissive": "RESTRICTIVE",
+      "policyname": "paid_core_access",
+      "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+      "roles": [
+        "authenticated"
+      ],
+      "schemaname": "public",
+      "tablename": "vendor_payments",
+      "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+    },
+    {
+      "cmd": "ALL",
+      "permissive": "RESTRICTIVE",
+      "policyname": "paid_core_access",
+      "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+      "roles": [
+        "authenticated"
+      ],
+      "schemaname": "public",
+      "tablename": "vendors",
+      "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+    }
+  ],
+  "schema_except_paid_policies_and_dependencies_equal": true,
+  "functions_acl_settings_membership_policies_unchanged": true,
+  "data_aggregates_after": [
+    {
+      "rows": 11,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "279be793da0331e7c931f066b369d531614133ae7d213a92af342fa8abec6dc9",
+      "table": "admin_audit"
+    },
+    {
+      "rows": 8,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e99d43715201560b4a74675517660a118796697c9cb4fffc7731698cbf21fb4c",
+      "table": "budgets"
+    },
+    {
+      "rows": 1,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "cf7c45a6174415b307c4b55dad477690d2e7044d119acc2b9aa0162e6a239577",
+      "table": "developer_test_grants"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "7e858acb3a15aa2469fdbf0322c5d5ecb6f2643e6ed0c398fdcb6be1a5cde0b7",
+      "table": "doku_orders"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "0ff8227c2ff72e3875346053fdc7e19e371273f63e972b85354e54c2b3bb10a5",
+      "table": "doku_webhook_events"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "fbae6257c2de19bf51c0054b5cc71cb7ead01b759998967fcde1cef0f9fbb582",
+      "table": "guests"
+    },
+    {
+      "rows": 1,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "b1c8160bff6c9d4e94a550d74d9836cd63bde1fd7c3fb82738faf39c15208d72",
+      "table": "invitations"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "package_price_current"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "package_price_versions"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "purchase_requests"
+    },
+    {
+      "rows": 1,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "bd5acb9130a10dc9ac67bc5524a7cdfb59ce0d9f4cd6d1e53c10db2024ac3e09",
+      "table": "release_controls"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "savings_accounts"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "savings_contributions"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "56d38dabea24a4648c60803d2d24306ac8ab8b714291a0c2d164c50d168f168d",
+      "table": "site_admins"
+    },
+    {
+      "rows": 1,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "fb7faed04b03adb83668b66ddd5b0e5af2f6fb83bf99c307d4a3f2e3701ff4f8",
+      "table": "site_settings"
+    },
+    {
+      "rows": 18,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "64ef37a5ae8ff612f7d5ac1943f67e13365d1eb4422b0982a24c8415e5445794",
+      "table": "tasks"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "90ffd586878a9a9324fc0ac7f521111d648c349ff4a14b3414f5c69c204cb7f6",
+      "table": "tier_invoice_snapshots"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "4b926ec4a500164f23334458c7dd8d8ce3cb0de285d534c81406fd1a2d4f9ed6",
+      "table": "tier_price_current"
+    },
+    {
+      "rows": 8,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "c44597bf6212eff641bd979453fdd0ce9703bfbc7660fa62e3b694f79768104d",
+      "table": "tier_price_versions"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "vendor_installments"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "vendor_payments"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "vendors"
+    },
+    {
+      "rows": 0,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "table": "verified_transactions"
+    },
+    {
+      "rows": 4,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "bf5c476856c844ab2b0b279ff31413f6c297c4b9e371f823fba7178c4d2bed4f",
+      "table": "workspace_entitlements"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "287bd6c6b7d44289abc9fc5182612912c20a7d6789d75fead6565c88bd8b1250",
+      "table": "workspace_members"
+    },
+    {
+      "rows": 3,
+      "schema": "public",
+      "sha256_sorted_row_hashes": "26c79ce4307d64ca389fec944ac9993b6ec3868a21dc6bb767bb198194c2ae39",
+      "table": "workspaces"
+    },
+    {
+      "rows": 2,
+      "schema": "starter_private",
+      "sha256_sorted_row_hashes": "94d4bdb4de25257eeeb15a3f7a428af5561b8c1f3561d1cbcdb7187587e03b00",
+      "table": "applied"
+    },
+    {
+      "rows": 1,
+      "schema": "starter_private",
+      "sha256_sorted_row_hashes": "cdff3ac61333f797f26d1fd5392532cbcc1e05e7ae72ef15a2aa414ec5b2f151",
+      "table": "requests"
+    }
+  ],
+  "data_aggregate_before_after_equal": true,
+  "data_after_sha256": "2fdb8e52f1c3acd9bdf4963f50229961f84df26e021de3c7dc278eef68d87eed",
+  "cohort_before_after_equal": true,
+  "role_smoke": {
+    "native_version": "PostgreSQL 17.11 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit",
+    "policies": [
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "budgets",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      },
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "guests",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      },
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "savings_accounts",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      },
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "savings_contributions",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      },
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "tasks",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      },
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "vendor_installments",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      },
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "vendor_payments",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      },
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "vendors",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      }
+    ],
+    "role_select": {
+      "allowed_checks": 16,
+      "checks": 72,
+      "denied_checks": 56,
+      "jwt_proof": false,
+      "nonempty_allowed_checks": 3,
+      "nonempty_denied_checks": 6,
+      "outsider_pairs": 6,
+      "owner_pairs": 3,
+      "partner_pairs": 0,
+      "role_context_asserted": true
+    },
+    "transaction_open": false
+  },
+  "persistent_catalog_sha256": "25acab7070db73bf1ba87ca43248ef598c38183434753aa44ae3ac47fdec19ca",
+  "no_application_dml": true,
+  "history_cli_exit": 0,
+  "ledger_after": [
+    {
+      "name": "secure_foundation",
+      "version": "202610120001"
+    },
+    {
+      "name": "workspace_entitlements_savings",
+      "version": "202610140001"
+    },
+    {
+      "name": "admin_manual_purchases",
+      "version": "202610140002"
+    },
+    {
+      "name": "developer_operator_roles",
+      "version": "202610140004"
+    },
+    {
+      "name": "reset_planning_content",
+      "version": "202610140005"
+    },
+    {
+      "name": "starter_template",
+      "version": "202610140006"
+    },
+    {
+      "name": "whatsapp_template",
+      "version": "202610150001"
+    },
+    {
+      "name": "vendor_planning",
+      "version": "202610150002"
+    },
+    {
+      "name": "doku_checkout",
+      "version": "202611120001"
+    },
+    {
+      "name": "doku_checkout_hardening",
+      "version": "202611120002"
+    },
+    {
+      "name": "paid_access_rls",
+      "version": "202611140001"
+    }
+  ],
+  "ledger_added_only": [
+    {
+      "name": "paid_access_rls",
+      "version": "202611140001"
+    }
+  ],
+  "final_policy_count": 8,
+  "final_data_aggregate_equal": true,
+  "limitations": [
+    "SQL_ROLE_SIMULATION_NOT_JWT_POSTGREST",
+    "NO_NATIVE_PARTNER_EXPIRED_REVOKED_COHORTS_LOCAL_ONLY",
+    "NATIVE_CONCURRENCY_UNPROVEN",
+    "BACKUP_RESTORE_UNPROVEN",
+    "NOT_PRODUCT_RELEASE_READINESS_SIGNOFF"
+  ]
+}

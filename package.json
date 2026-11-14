@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint src --ext .ts,.tsx --max-warnings 0",
     "graphify": "graphify update .",
-    "test:backend": "node scripts/test-backend.mjs"
+    "test:backend": "node scripts/test-backend.mjs",
+    "test:paid-rls": "node scripts/test-paid-rls.mjs && node scripts/test-paid-stage.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.5.0",

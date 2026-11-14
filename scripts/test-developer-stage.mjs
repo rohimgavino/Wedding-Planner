@@ -1,12 +1,24 @@
 import { PGlite } from '@electric-sql/pglite';
 import { readFileSync, existsSync } from 'node:fs';
 import assert from 'node:assert/strict';
+import { captured, installHostedPlannerFixture } from './fixtures/hosted-planner-schema.mjs';
 const db=new PGlite();
 await db.exec(`CREATE ROLE anon; CREATE ROLE authenticated; CREATE SCHEMA auth; CREATE TABLE auth.users(id uuid PRIMARY KEY, email text, raw_user_meta_data jsonb); CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $$ SELECT nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$; GRANT USAGE ON SCHEMA public,auth TO anon,authenticated; GRANT EXECUTE ON FUNCTION auth.uid() TO anon,authenticated; INSERT INTO auth.users SELECT ('00000000-0000-0000-0000-00000000000'||n)::uuid,'ahmadnurrochim11@gmail.com','{"role":"developer"}' FROM generate_series(1,4) n;`);
 for(const p of ['202610120001_secure_foundation.sql','202610140001_workspace_entitlements_savings.sql','202610140002_admin_manual_purchases.sql','202610140003_reset_planning_content.sql','202610140004_developer_operator_roles.sql']) if(existsSync('supabase/migrations/'+p)) await db.exec(readFileSync('supabase/migrations/'+p,'utf8'));
 await db.exec("UPDATE public.release_controls SET sales_activation=true");
+// Preserve the legacy five-table/functions baseline and every business assertion.
+// Add captured vendor prerequisites only; this is not native hosted-schema parity.
+await db.exec('CREATE ROLE service_role BYPASSRLS');
+await installHostedPlannerFixture(db, { preserveExistingPlanner: true });
 await db.exec(readFileSync('supabase/activation/paid-enforcement.sql','utf8'));
-await db.exec(readFileSync('supabase/activation/reset-execute.sql','utf8'));
+// TEST ONLY: source reset migration revokes public API execution; the schema-only
+// 2026-11-14 snapshot captures authenticated EXECUTE (anon denied). Model that live
+// privilege on the legacy source reset body without inventing production activation.
+// Owner reset remains free even when expired; preserve the four-table source contract.
+const resetAcl = captured.functions.find(f => f.schema === 'public' && f.name === 'reset_planning_content');
+assert.equal(resetAcl.authenticated_execute, true);
+assert.equal(resetAcl.anon_execute, false);
+await db.exec('GRANT EXECUTE ON FUNCTION public.reset_planning_content(uuid,text) TO authenticated');
 const uuid=n=>`00000000-0000-0000-0000-00000000000${n}`;
 const user=async n=>{await db.exec('RESET ROLE; SET ROLE authenticated');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[uuid(n)]);};
 let passed=0;const test=async(name,fn)=>{await fn();console.log(`PASS ${++passed}: ${name}`);};

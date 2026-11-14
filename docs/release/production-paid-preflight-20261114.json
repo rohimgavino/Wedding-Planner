@@ -1,0 +1,283 @@
+{
+  "status": "PASS_ROLLBACK_ONLY_NOT_CUTOVER",
+  "target": "lkudkvjaxdjntjosudni",
+  "candidate_sha256": "15180763a40c3d1189d46bbd2b0ce18f3b93f15dd56be79e7769c3873a729dff",
+  "activation_byte_identical": true,
+  "snapshot_exact_before_and_after": true,
+  "scoped_functions_exact_snapshot": 11,
+  "cohort_before_after_equal": true,
+  "cohort": {
+    "active_finite_core": 2,
+    "active_null_core": 0,
+    "developer_own_effective_memberships": 1,
+    "effective_core_member_access": 2,
+    "expired_core_rows": 0,
+    "helper_acl": [
+      {
+        "anon": false,
+        "authenticated": true,
+        "config": [
+          "search_path=\"\""
+        ],
+        "name": "has_developer_test_access",
+        "owner": "postgres",
+        "security_definer": true
+      },
+      {
+        "anon": false,
+        "authenticated": true,
+        "config": [
+          "search_path=\"\""
+        ],
+        "name": "has_workspace_entitlement",
+        "owner": "postgres",
+        "security_definer": true
+      },
+      {
+        "anon": false,
+        "authenticated": true,
+        "config": [
+          "search_path=\"\""
+        ],
+        "name": "is_workspace_member",
+        "owner": "postgres",
+        "security_definer": true
+      },
+      {
+        "anon": false,
+        "authenticated": true,
+        "config": [
+          "search_path=\"\""
+        ],
+        "name": "site_role",
+        "owner": "postgres",
+        "security_definer": true
+      }
+    ],
+    "ledger": [
+      {
+        "name": "secure_foundation",
+        "version": "202610120001"
+      },
+      {
+        "name": "workspace_entitlements_savings",
+        "version": "202610140001"
+      },
+      {
+        "name": "admin_manual_purchases",
+        "version": "202610140002"
+      },
+      {
+        "name": "developer_operator_roles",
+        "version": "202610140004"
+      },
+      {
+        "name": "reset_planning_content",
+        "version": "202610140005"
+      },
+      {
+        "name": "starter_template",
+        "version": "202610140006"
+      },
+      {
+        "name": "whatsapp_template",
+        "version": "202610150001"
+      },
+      {
+        "name": "vendor_planning",
+        "version": "202610150002"
+      },
+      {
+        "name": "doku_checkout",
+        "version": "202611120001"
+      },
+      {
+        "name": "doku_checkout_hardening",
+        "version": "202611120002"
+      }
+    ],
+    "memberships": 3,
+    "no_active_core": 1,
+    "owners": 3,
+    "partners": 0,
+    "revoked_core_rows": 0,
+    "table_acl": [
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "budgets",
+        "update": true
+      },
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "guests",
+        "update": true
+      },
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "savings_accounts",
+        "update": true
+      },
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "savings_contributions",
+        "update": true
+      },
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "tasks",
+        "update": true
+      },
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "vendor_installments",
+        "update": true
+      },
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "vendor_payments",
+        "update": true
+      },
+      {
+        "delete": true,
+        "insert": true,
+        "select": true,
+        "table": "vendors",
+        "update": true
+      }
+    ],
+    "workspaces": 3
+  },
+  "native_rehearsal": {
+    "native_version": "PostgreSQL 17.11 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit",
+    "policies": [
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "budgets",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      },
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "guests",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      },
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "savings_accounts",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      },
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "savings_contributions",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      },
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "tasks",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      },
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "vendor_installments",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      },
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "vendor_payments",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      },
+      {
+        "cmd": "ALL",
+        "permissive": "RESTRICTIVE",
+        "policyname": "paid_core_access",
+        "qual": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))",
+        "roles": [
+          "authenticated"
+        ],
+        "schemaname": "public",
+        "tablename": "vendors",
+        "with_check": "(is_workspace_member(workspace_id) AND has_workspace_entitlement(workspace_id, 'core'::text))"
+      }
+    ],
+    "role_select": {
+      "allowed_checks": 16,
+      "checks": 72,
+      "denied_checks": 56,
+      "jwt_proof": false,
+      "nonempty_allowed_checks": 3,
+      "nonempty_denied_checks": 6,
+      "outsider_pairs": 6,
+      "owner_pairs": 3,
+      "partner_pairs": 0,
+      "role_context_asserted": true
+    },
+    "transaction_open": true
+  },
+  "sql_sha256": "42532b1e503b0e5abd114126e53d6f306f3742a57cdfb657a103a9597119cff4",
+  "no_customer_dml": true,
+  "jwt_postgrest": "NOT_TESTED",
+  "native_restore": "NOT_TESTED",
+  "multi_connection": "NOT_TESTED"
+}

@@ -1,10 +1,13 @@
 import { PGlite } from '@electric-sql/pglite';
 import { readFileSync, existsSync } from 'node:fs';
 import assert from 'node:assert/strict';
+import { installHostedPlannerFixture } from './fixtures/hosted-planner-schema.mjs';
 const db=new PGlite();
 await db.exec(`CREATE ROLE anon; CREATE ROLE authenticated; CREATE SCHEMA auth; CREATE TABLE auth.users(id uuid PRIMARY KEY); CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $$ SELECT nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$; GRANT USAGE ON SCHEMA public,auth TO anon,authenticated; GRANT EXECUTE ON FUNCTION auth.uid() TO anon,authenticated; INSERT INTO auth.users SELECT ('00000000-0000-0000-0000-00000000000'||n)::uuid FROM generate_series(1,3) n;`);
 for(const p of ['202610120001_secure_foundation.sql','202610140001_workspace_entitlements_savings.sql','202610140002_admin_manual_purchases.sql']) if(existsSync('supabase/migrations/'+p)) await db.exec(readFileSync('supabase/migrations/'+p,'utf8'));
 await db.exec("UPDATE public.release_controls SET sales_activation=true");
+await db.exec('CREATE ROLE service_role BYPASSRLS');
+await installHostedPlannerFixture(db, { preserveExistingPlanner: true });
 await db.exec(readFileSync('supabase/activation/paid-enforcement.sql','utf8'));
 const user=async n=>db.exec(`RESET ROLE; SET ROLE authenticated; SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-00000000000${n}',false)`);
 let passed=0; const test=async(name,fn)=>{await fn();console.log(`PASS ${++passed}: ${name}`)};
