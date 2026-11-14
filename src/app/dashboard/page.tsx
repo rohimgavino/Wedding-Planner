@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import "./dashboard.css";
 import { PlannerDialog } from "@/components/everrae/planner-dialog";
 import { FillingExample } from "@/components/everrae/filling-example";
+import { EditableStarter } from "@/components/everrae/editable-starter";
 import { PlanningReset } from "@/components/everrae/planning-reset";
 import { WorkspaceActivation } from "@/components/everrae/workspace-activation";
 import { SharedSavings } from "@/components/everrae/shared-savings";
@@ -28,8 +29,8 @@ export default function DashboardPage() {
   const { user } = useAuth();
   const { 
     workspace, budgets, tasks, guests, inviteToken, isLoaded,
-    addBudget, deleteBudget, toggleTask, addTask, deleteTask,
-    addGuest, updateGuest, deleteGuest, issueInvite, members, busy, entitlements, developerTestAccess
+    addBudget, updateBudget, deleteBudget, toggleTask, updateTask, addTask, deleteTask,
+    addGuest, updateGuest, deleteGuest, issueInvite, members, busy, entitlements, developerTestAccess, error
   } = useWorkspace();
 
   const [activeTab, setActiveTab] = useState<"overview" | "budget" | "tasks" | "guests" | "savings" | "pairing">("overview");
@@ -37,6 +38,7 @@ export default function DashboardPage() {
   // Modals state
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
+  const [editingBudget, setEditingBudget] = useState<string | null>(null);
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
   const [showAddGuestModal, setShowAddGuestModal] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
@@ -48,6 +50,11 @@ export default function DashboardPage() {
   const [newBudgetSpent, setNewBudgetSpent] = useState(0);
   const [newBudgetStatus, setNewBudgetStatus] = useState<BudgetItem["payment_status"]>("unpaid");
 
+  const [budgetOriginal,setBudgetOriginal]=useState<BudgetItem | null>(null);
+  const [taskOriginal,setTaskOriginal]=useState<TaskItem | null>(null);
+  const [editorIdentity,setEditorIdentity]=useState('');
+  const editorCurrent=editorIdentity===`${user?.id}:${workspace?.id}`;
+  const [editingTask,setEditingTask]=useState<string | null>(null);
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskPhase, setNewTaskPhase] = useState<TaskItem["phase"]>("H-3 Bulan");
   const [newTaskPic, setNewTaskPic] = useState<TaskItem["pic"]>("both");
@@ -56,6 +63,8 @@ export default function DashboardPage() {
   const [newGuestCategory, setNewGuestCategory] = useState<GuestItem["category"]>("teman_kantor");
   const [newGuestPax, setNewGuestPax] = useState(1);
   const [newGuestPhone, setNewGuestPhone] = useState("");
+
+  useEffect(()=>{setShowAddBudgetModal(false);setShowAddTaskModal(false);setEditingBudget(null);setEditingTask(null);},[user?.id,workspace?.id]);
 
   // Filters
   const [taskPhaseFilter, setTaskPhaseFilter] = useState<string>("all");
@@ -154,6 +163,7 @@ export default function DashboardPage() {
         <main className="planner-main">
           <FillingExample />
           {(activeTab === 'overview' || activeTab === 'pairing') && <PlanningReset />}
+          {activeTab === 'pairing' && <EditableStarter />}
           <section className="planner-heading"><div><span className="planner-eyebrow">RENCANA PERNIKAHANMU</span><h1>Halo, {workspace.title.replace(/^Pernikahan\s+/i, '')}.</h1><p>Satu langkah lebih dekat ke hari bahagia.</p></div><div className="planner-date"><Calendar size={20}/><div><strong>{formatDateID(workspace.wedding_date)}</strong><span>{daysRemaining > 0 ? `${daysRemaining} hari lagi` : daysRemaining === 0 ? 'Hari pernikahanmu' : 'Tanggal pernikahan telah berlalu'}</span></div></div></section>
           <div className="planner-mobile-progress"><div><span>Progres persiapan</span><strong>{taskProgressPercent}%</strong></div><progress max="100" value={taskProgressPercent}/></div>
           <nav className="planner-shortcuts" aria-label="Pintasan workspace">{([['overview','Ringkasan',Sparkles],['tasks','Timeline',CheckSquare],['budget','Budget',Wallet],['guests','Tamu',Users],['savings','Tabungan',Wallet],['pairing','Pengaturan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={19}/><span>{label}</span></button>)}</nav>
@@ -168,9 +178,9 @@ export default function DashboardPage() {
             <div className="planner-panels">
               <section className="planner-panel"><div className="planner-panel-heading"><div><h2>Langkah berikutnya</h2><p>Tugas belum selesai, diurutkan menurut fase.</p></div><button onClick={() => setActiveTab('tasks')}>Lihat semua →</button></div>
                 {tasks.filter(t => !t.is_completed).sort((a,b) => ['Dokumen KUA','H-6 Bulan','H-3 Bulan','H-1 Bulan','H-1 Minggu','Hari H'].indexOf(a.phase) - ['Dokumen KUA','H-6 Bulan','H-3 Bulan','H-1 Bulan','H-1 Minggu','Hari H'].indexOf(b.phase)).slice(0,5).map(task => <div key={task.id} className="planner-next-task"><button aria-label={`Selesaikan ${task.title}`} onClick={() => toggleTask(task.id)}><Check size={16}/></button><div><strong>{task.title}</strong><span>{task.phase} · {task.pic === 'both' ? 'Berdua' : task.pic === 'groom' ? 'Calon pengantin pria' : 'Calon pengantin wanita'}</span></div><span className="planner-task-status">Belum selesai</span></div>)}
-                {!tasks.some(t => !t.is_completed) && <div className="planner-empty-inline"><CheckCircle2 size={26}/><h3>{tasks.length ? 'Semua tugas selesai' : 'Mulai dari satu langkah kecil'}</h3><p>{tasks.length ? 'Kamu dapat menambahkan tugas berikutnya kapan saja.' : 'Belum ada tugas. Tambahkan persiapan pertamamu.'}</p><button onClick={() => setShowAddTaskModal(true)}>Tambah tugas</button></div>}
+                {!tasks.some(t => !t.is_completed) && <div className="planner-empty-inline"><CheckCircle2 size={26}/><h3>{tasks.length ? 'Semua tugas selesai' : 'Mulai dari satu langkah kecil'}</h3><p>{tasks.length ? 'Kamu dapat menambahkan tugas berikutnya kapan saja.' : 'Belum ada tugas. Tambahkan persiapan pertamamu.'}</p><button onClick={() => {setEditingTask(null);setNewTaskTitle('');setShowAddTaskModal(true);}}>Tambah tugas</button></div>}
               </section>
-              <section className="planner-panel planner-actions"><h2>Aksi cepat</h2><p>Catat detail, lanjutkan rencana.</p><button onClick={() => setShowAddTaskModal(true)}><Plus size={18}/>Tambah tugas</button><button onClick={() => setShowAddBudgetModal(true)}><Wallet size={18}/>Tambah pos anggaran</button><button onClick={() => setShowAddGuestModal(true)}><Users size={18}/>Tambah tamu</button><button onClick={() => setActiveTab('tasks')}><Calendar size={18}/>Lihat timeline</button></section>
+              <section className="planner-panel planner-actions"><h2>Aksi cepat</h2><p>Catat detail, lanjutkan rencana.</p><button onClick={() => {setEditingTask(null);setNewTaskTitle('');setShowAddTaskModal(true);}}><Plus size={18}/>Tambah tugas</button><button onClick={() => {setEditingBudget(null);setNewBudgetTitle('');setNewBudgetAllocated(0);setNewBudgetSpent(0);setNewBudgetStatus('unpaid');setShowAddBudgetModal(true);}}><Wallet size={18}/>Tambah pos anggaran</button><button onClick={() => setShowAddGuestModal(true)}><Users size={18}/>Tambah tamu</button><button onClick={() => setActiveTab('tasks')}><Calendar size={18}/>Lihat timeline</button></section>
             </div>
             <section className="planner-budget-note"><Wallet size={20}/><div><strong>Ruang untuk setiap kebutuhan</strong><p>Alokasi {formatRupiah(totalAllocatedBudget)} · Sisa target {formatRupiah(workspace.target_budget - totalSpentBudget)}</p></div><button onClick={() => setActiveTab('budget')}>Kelola budget →</button></section>
             <p className="planner-local-note">Data dimuat dari workspace cloud. RSVP dicatat manual; WhatsApp membuka pesan, bukan mengirim otomatis.</p>
@@ -186,7 +196,7 @@ export default function DashboardPage() {
                 <p className="text-xs text-slate-500">Pantau plafon anggaran per pos dan status pelunasan vendor.</p>
               </div>
               <button
-                onClick={() => setShowAddBudgetModal(true)}
+                onClick={() => {setEditingBudget(null);setNewBudgetTitle('');setNewBudgetAllocated(0);setNewBudgetSpent(0);setNewBudgetStatus('unpaid');setShowAddBudgetModal(true);}}
                 className="px-4 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs shadow-md hover:bg-rose-600 transition flex items-center justify-center gap-1.5 self-start"
               >
                 <Plus className="w-4 h-4" />
@@ -211,6 +221,7 @@ export default function DashboardPage() {
                       }`}>
                         {item.payment_status === 'paid' ? 'Lunas' : item.payment_status === 'dp' ? 'Sudah DP' : 'Belum DP'}
                       </span>
+                      <button type="button" aria-label={`Edit pos ${item.title}`} disabled={busy} className="p-2 text-rose-700" onClick={()=>{setBudgetOriginal({...item});setEditorIdentity(`${user?.id}:${workspace?.id}`);setEditingBudget(item.id);setNewBudgetCategory(item.category);setNewBudgetTitle(item.title);setNewBudgetAllocated(item.allocated_amount);setNewBudgetSpent(item.spent_amount);setNewBudgetStatus(item.payment_status);setShowAddBudgetModal(true);}}>Edit</button>
                       <button
                         onClick={() => deleteBudget(item.id)}
                         className="text-slate-300 hover:text-rose-500 p-1"
@@ -244,7 +255,7 @@ export default function DashboardPage() {
                     Belum ada pos alokasi biaya yang dicatat. Klik tombol di bawah untuk menambahkan pos anggaran pertama Anda.
                   </p>
                   <button
-                    onClick={() => setShowAddBudgetModal(true)}
+                    onClick={() => {setEditingBudget(null);setNewBudgetTitle('');setNewBudgetAllocated(0);setNewBudgetSpent(0);setNewBudgetStatus('unpaid');setShowAddBudgetModal(true);}}
                     className="px-4 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs shadow-xs hover:bg-rose-600 transition inline-flex items-center gap-1.5"
                   >
                     <Plus className="w-4 h-4" />
@@ -265,7 +276,7 @@ export default function DashboardPage() {
                 <p className="text-xs text-slate-500">Daftar berkas resmi KUA dan timeline mundur pernikahan.</p>
               </div>
               <button
-                onClick={() => setShowAddTaskModal(true)}
+                onClick={() => {setEditingTask(null);setNewTaskTitle('');setShowAddTaskModal(true);}}
                 className="px-4 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs shadow-md hover:bg-rose-600 transition flex items-center justify-center gap-1.5 self-start"
               >
                 <Plus className="w-4 h-4" />
@@ -322,6 +333,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
 
+                    <button type="button" disabled={busy} aria-label={`Edit tugas ${task.title}`} className="p-2 text-rose-700" onClick={()=>{setTaskOriginal({...task});setEditorIdentity(`${user?.id}:${workspace?.id}`);setEditingTask(task.id);setNewTaskTitle(task.title);setNewTaskPhase(task.phase);setNewTaskPic(task.pic);setShowAddTaskModal(true);}}>Edit</button>
                     <button
                       onClick={() => deleteTask(task.id)}
                       className="text-slate-300 hover:text-rose-500 p-1"
@@ -340,7 +352,7 @@ export default function DashboardPage() {
                     Belum ada tugas atau dokumen yang dicatat. Klik tombol di bawah untuk menambahkan to-do list pertama.
                   </p>
                   <button
-                    onClick={() => setShowAddTaskModal(true)}
+                    onClick={() => {setEditingTask(null);setNewTaskTitle('');setShowAddTaskModal(true);}}
                     className="px-4 py-2.5 rounded-xl bg-rose-500 text-white font-semibold text-xs shadow-xs hover:bg-rose-600 transition inline-flex items-center gap-1.5"
                   >
                     <Plus className="w-4 h-4" />
@@ -590,19 +602,21 @@ export default function DashboardPage() {
             )}
 
       {/* Modal: Add Budget */}
-      {showAddBudgetModal && (
-              <PlannerDialog title="Tambah Pos Anggaran" onClose={() => setShowAddBudgetModal(false)}>
+      {showAddBudgetModal && (!editingBudget || editorCurrent) && (
+              <PlannerDialog title={editingBudget ? "Edit Pos Anggaran" : "Tambah Pos Anggaran"} onClose={() => setShowAddBudgetModal(false)}>
                 <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-rose-100">
-                  <h3 className="font-serif font-bold text-slate-900 text-lg mb-4">Tambah Pos Anggaran</h3>
+                  <h3 className="font-serif font-bold text-slate-900 text-lg mb-4">{editingBudget ? "Edit Pos Anggaran" : "Tambah Pos Anggaran"}</h3>
                   <form onSubmit={async (e) => {
                     e.preventDefault();
-                    const ok = await addBudget({
+                    const payload = {
                       category: newBudgetCategory,
                       title: newBudgetTitle || newBudgetCategory,
                       allocated_amount: Number(newBudgetAllocated) || 0,
                       spent_amount: Number(newBudgetSpent) || 0,
                       payment_status: newBudgetStatus,
-                    });
+                    };
+                    if(editingBudget && !editorCurrent)return;
+                    const ok = editingBudget ? await updateBudget(editingBudget,payload,budgetOriginal!,user!.id) : await addBudget(payload);
                     if (!ok) return;
                     setShowAddBudgetModal(false);
                     setNewBudgetTitle("");
@@ -615,6 +629,7 @@ export default function DashboardPage() {
                           onChange={(e) => setNewBudgetCategory(e.target.value)}
                           className="w-full p-2.5 rounded-xl border border-slate-200 text-xs"
                         >
+                          {!["Venue & Gedung","Katering","Rias & Busana","Dekorasi","Dokumentasi","Undangan & Souvenir","Mahar & Seserahan","Hiburan / MC","Lain-lain"].includes(newBudgetCategory) && <option value={newBudgetCategory}>{newBudgetCategory}</option>}
                           <option value="Venue & Gedung">Venue & Gedung</option>
                           <option value="Katering">Katering</option>
                           <option value="Rias & Busana">Rias & Busana</option>
@@ -678,6 +693,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
 
+                    {error && <p role="alert">{error}</p>}
                     <div className="flex gap-2 mt-6">
                       <button
                         type="button"
@@ -699,17 +715,19 @@ export default function DashboardPage() {
             )}
 
       {/* Modal: Add Task */}
-      {showAddTaskModal && (
-              <PlannerDialog title="Tambah Tugas" onClose={() => setShowAddTaskModal(false)}>
+      {showAddTaskModal && (!editingTask || editorCurrent) && (
+              <PlannerDialog title={editingTask ? "Edit Tugas" : "Tambah Tugas"} onClose={() => setShowAddTaskModal(false)}>
                 <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-rose-100">
-                  <h3 className="font-serif font-bold text-slate-900 text-lg mb-4">Tambah Tugas / Checklist</h3>
+                  <h3 className="font-serif font-bold text-slate-900 text-lg mb-4">{editingTask ? "Edit Tugas" : "Tambah Tugas / Checklist"}</h3>
                   <form onSubmit={async (e) => {
                     e.preventDefault();
-                    const ok = await addTask({
+                    const payload = {
                       title: newTaskTitle,
                       phase: newTaskPhase,
                       pic: newTaskPic,
-                    });
+                    };
+                    if(editingTask && !editorCurrent)return;
+                    const ok = editingTask ? await updateTask(editingTask,payload,taskOriginal!,user!.id) : await addTask(payload);
                     if (!ok) return;
                     setShowAddTaskModal(false);
                     setNewTaskTitle("");
@@ -758,6 +776,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
 
+                    {error && <p role="alert">{error}</p>}
                     <div className="flex gap-2 mt-6">
                       <button
                         type="button"
@@ -852,6 +871,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
 
+                    {error && <p role="alert">{error}</p>}
                     <div className="flex gap-2 mt-6">
                       <button
                         type="button"

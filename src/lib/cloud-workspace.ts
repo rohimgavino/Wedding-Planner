@@ -45,10 +45,35 @@ export class CloudWorkspace {
   await this.requireUser();
   return checked(await this.db.from(table).update(clean(table,item)).eq('workspace_id',workspaceId).eq('id',id).select('*').single());
  }
+ async edit(table: 'budgets' | 'tasks', workspaceId: string, id: string, item: Record<string,unknown>, original: Record<string,unknown>, userId: string) {
+  const user=await this.requireUser();
+  if(user.id!==userId)throw new Error('Identitas berubah. Buka ulang editor.');
+  const dirty=Object.fromEntries(Object.entries(clean(table,item)).filter(([key,value])=>value!==original[key]));
+  if(!Object.keys(dirty).length)return;
+  const compared={...dirty};
+  if(table==='budgets' && ['allocated_amount','spent_amount','payment_status'].some(k=>k in dirty)) {
+   for(const key of ['allocated_amount','spent_amount','payment_status'])compared[key]=original[key];
+   const merged={...original,...dirty};
+   const allocated=Number(merged.allocated_amount),spent=Number(merged.spent_amount);
+   if(!Number.isSafeInteger(allocated)||!Number.isSafeInteger(spent)||allocated<0||spent<0 || (merged.payment_status==='unpaid' && spent!==0) || (merged.payment_status==='dp' && (spent<=0 || spent>=allocated)) || (merged.payment_status==='paid' && spent!==allocated))throw new Error('Jumlah dan status pembayaran tidak sesuai.');
+  }
+  let query=this.db.from(table).update(dirty).eq('workspace_id',workspaceId).eq('id',id);
+  for(const key of Object.keys(compared))query=original[key]===null?query.is(key,null):query.eq(key,original[key]);
+  const result=await query.select('*').single();
+  if(result.error || !result.data)throw new Error('Data berubah atau penyimpanan gagal. Input tetap disimpan; muat ulang dan buka editor untuk membandingkan.');
+  return result.data;
+ }
  async remove(table: Table, workspaceId: string, id: string) {
   await this.requireUser();
   const rows = checked(await this.db.from(table).delete().eq('workspace_id',workspaceId).eq('id',id).select('id'));
   if (!rows?.length) throw new Error('Data tidak ditemukan atau akses telah berubah. Muat ulang workspace.');
+ }
+ async applyEditableStarter(workspaceId: string, userId?: string) {
+  const user=await this.requireUser();
+  if(userId && user.id!==userId)throw new Error('Identitas berubah. Buka ulang pratinjau.');
+  const result=await this.db.rpc('apply_editable_starter_v1',{p_workspace_id:workspaceId,p_confirmation:'TAMBAH TEMPLATE'});
+  if(result.error)throw new Error('Template belum tersedia atau belum dapat dikonfirmasi. Pastikan Anda owner dan layanan template sudah dipasang; muat ulang sebelum mencoba lagi.');
+  return result.data;
  }
  async resetPlanningContent(workspaceId: string, confirmation: string) {
   if (confirmation !== 'RESET RENCANA') throw new Error('Ketik konfirmasi RESET RENCANA dengan tepat.');

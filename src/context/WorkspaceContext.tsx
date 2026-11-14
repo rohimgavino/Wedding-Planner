@@ -10,8 +10,9 @@ interface WorkspaceContextType extends CloudSnapshot {
  inviteToken: string; isLoaded: boolean; error: string; busy: boolean;
  createWorkspace: (params: WorkspaceParams) => Promise<boolean>;
  addBudget: (item: Omit<BudgetItem,'id'|'workspace_id'>) => Promise<boolean>;
- updateBudget: (id: string, updates: Partial<BudgetItem>) => Promise<boolean>;
+ updateBudget: (id: string, updates: Partial<BudgetItem>, original: BudgetItem, identity: string) => Promise<boolean>;
  deleteBudget: (id: string) => Promise<boolean>;
+ updateTask: (id: string, updates: Pick<TaskItem,'title'|'phase'|'pic'>, original: TaskItem, identity: string) => Promise<boolean>;
  toggleTask: (id: string) => Promise<boolean>;
  addTask: (item: Omit<TaskItem,'id'|'workspace_id'|'is_completed'>) => Promise<boolean>;
  deleteTask: (id: string) => Promise<boolean>;
@@ -24,6 +25,7 @@ interface WorkspaceContextType extends CloudSnapshot {
  addSaving: (item: Omit<SavingsContribution,'id'|'workspace_id'>) => Promise<boolean>;
  updateSaving: (id: string, item: Partial<SavingsContribution>) => Promise<boolean>;
  deleteSaving: (id: string) => Promise<boolean>;
+ applyEditableStarter: (workspaceId: string, userId: string) => Promise<boolean>;
  resetPlanningContent: (confirmation: string) => Promise<boolean>;
  reload: () => Promise<boolean>;
 }
@@ -72,9 +74,10 @@ export function WorkspaceProvider({children}: {children: React.ReactNode}) {
   ...visible,inviteToken: user && owner.current===user.id ? inviteToken : '',isLoaded:ready && loaded,error,busy,reload,
   createWorkspace: params=>run(async cloud=>{activeId.current=await cloud.create(params);},false),
   addBudget: item=>run((cloud,id)=>cloud.insert('budgets',id,{...item})),
-  updateBudget: (key,item)=>run((cloud,id)=>cloud.update('budgets',id,key,{...item})),
+  updateBudget: (key,item,original,uid)=>run((cloud,id)=>{if(original.workspace_id!==id || uid!==identity.current)throw new Error('Identitas berubah. Buka ulang editor.');return cloud.edit('budgets',id,key,{...item},{...original},uid);}),
   deleteBudget: key=>run((cloud,id)=>cloud.remove('budgets',id,key)),
   addTask: item=>run((cloud,id)=>cloud.insert('tasks',id,{...item,is_completed:false})),
+  updateTask: (key,item,original,uid)=>run((cloud,id)=>{if(original.workspace_id!==id || uid!==identity.current)throw new Error('Identitas berubah. Buka ulang editor.');return cloud.edit('tasks',id,key,{...item},{...original},uid);}),
   toggleTask: key=>run((cloud,id)=>{const task=visible.tasks.find(t=>t.id===key);if(!task)throw new Error('Tugas tidak ditemukan.');return cloud.update('tasks',id,key,{is_completed:!task.is_completed});}),
   deleteTask: key=>run((cloud,id)=>cloud.remove('tasks',id,key)),
   addGuest: item=>run((cloud,id)=>cloud.insert('guests',id,{...item})),
@@ -84,6 +87,7 @@ export function WorkspaceProvider({children}: {children: React.ReactNode}) {
   addSaving: item=>run((cloud,id)=>cloud.insert('savings_contributions',id,{...item})),
   updateSaving: (key,item)=>run((cloud,id)=>cloud.update('savings_contributions',id,key,{...item})),
   deleteSaving: key=>run((cloud,id)=>cloud.remove('savings_contributions',id,key)),
+  applyEditableStarter: (expectedId,uid)=>run((cloud,id)=>{if(id!==expectedId || uid!==identity.current)throw new Error('Identitas berubah. Buka ulang pratinjau.');return cloud.applyEditableStarter(id,uid);}),
   resetPlanningContent: confirmation=>run(async (cloud,id)=>{
    const resetUid=identity.current;
    await cloud.resetPlanningContent(id,confirmation);
