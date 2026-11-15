@@ -4,6 +4,7 @@ import {
   signDokuRequest,
   verifyDokuNotification,
   verifyDokuResponse,
+  verifyDokuStatusResponse,
 } from './doku-crypto.mjs';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -163,6 +164,27 @@ async function handleCatalog(env, fetchImpl) {
   });
 }
 
+async function readDokuStatusBody(response) {
+  if (!response.body) return new Uint8Array();
+  const reader = response.body.getReader();
+  const buffer = new Uint8Array(65536);
+  let size = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) return buffer.subarray(0, size);
+      if (value.byteLength > buffer.byteLength - size) {
+        try { await reader.cancel(); } catch { /* ignore cancellation failure */ }
+        return null;
+      }
+      buffer.set(value, size);
+      size += value.byteLength;
+    }
+  } finally {
+    reader.releaseLock();
+  }
+}
+
 async function syncPendingOrdersWithDoku(orders, env, fetchImpl) {
   if (!hasPaymentSecrets(env) || !Array.isArray(orders) || orders.length === 0) {
     return false;
@@ -217,7 +239,22 @@ async function syncPendingOrdersWithDoku(orders, env, fetchImpl) {
       continue;
     }
 
-    const respBytes = new Uint8Array(await dokuResp.arrayBuffer());
+    const authenticated = await verifyDokuStatusResponse({
+      clientId: env.DOKU_CLIENT_ID, requestId, target,
+      status: dokuResp.status, headers: dokuResp.headers,
+    }, env.DOKU_SECRET_KEY);
+    if (!authenticated.ok) {
+      try { await dokuResp.body?.cancel(); } catch { /* ignore cancellation failure */ }
+      continue;
+    }
+    let respBytes;
+    try {
+      respBytes = await readDokuStatusBody(dokuResp);
+    } catch {
+      // A failed/aborted provider stream must not prevent other invoices recovering.
+      continue;
+    }
+    if (!respBytes) continue;
     const parsed = await parseDokuStatusPayload(respBytes, ord.invoice);
     if (!parsed.ok) continue;
     if (parsed.txStatus !== 'SUCCESS' && parsed.txStatus !== 'EXPIRED' && parsed.txStatus !== 'FAILED') {

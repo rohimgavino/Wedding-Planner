@@ -349,6 +349,41 @@ export async function verifyDokuNotification(
   };
 }
 
+// Official Non-SNAP GET response components omit Digest. This authenticates
+// response context, NOT body bytes; payload integrity still relies on HTTPS.
+export async function verifyDokuStatusResponse({ clientId, requestId, target, status, headers }, secret) {
+  const headerNames = listSafeHeaderNames(headers);
+  const reject = reasonCode => ({ ok: false, reasonCode, headerNames });
+  if (status !== 200) return reject('HTTP_STATUS_NOT_200');
+  if (!TOKEN_RE.test(clientId || '') || !TOKEN_RE.test(requestId || '') ||
+      typeof target !== 'string' || !/^\/orders\/v1\/status\/[A-Za-z0-9._-]{1,30}$/.test(target) ||
+      typeof secret !== 'string' || !secret) return reject('INVALID_VERIFICATION_CONTEXT');
+  const names = ['Client-Id', 'Request-Id', 'Response-Timestamp', 'Signature'];
+  // Fetch Headers coalesces duplicates with commas; none of these fields allow commas.
+  for (const name of names) {
+    const matches = typeof headers?.get === 'function' ? null :
+      Object.keys(headers || {}).filter(k => k.toLowerCase() === name.toLowerCase());
+    if (matches && matches.length > 1) return reject('INVALID_RESPONSE_HEADERS');
+    const value = getHeaderValue(headers, name);
+    if (value?.includes(',')) return reject('INVALID_RESPONSE_HEADERS');
+  }
+  const [resClientId, resRequestId, timestamp, signature] = names.map(name => getHeaderValue(headers, name));
+  if (!resClientId || !resRequestId || !timestamp || !signature) return reject('MISSING_RESPONSE_HEADERS');
+  if (resClientId !== clientId) return reject('CLIENT_ID_MISMATCH');
+  if (resRequestId !== requestId) return reject('REQUEST_ID_MISMATCH');
+  if (!isValidUtcIso(timestamp)) return reject('INVALID_RESPONSE_TIMESTAMP');
+  if (!SIG_RE.test(signature)) return reject('SIGNATURE_FORMAT_INVALID');
+  const components = [
+    `Client-Id:${clientId}`,
+    `Request-Id:${requestId}`,
+    `Response-Timestamp:${timestamp}`,
+    `Request-Target:${target}`,
+  ].join('\n');
+  const expected = `HMACSHA256=${await hmacSha256Base64(secret, components)}`;
+  if (!timingSafeEqualStr(signature, expected)) return reject('SIGNATURE_MISMATCH');
+  return { ok: true, headerNames };
+}
+
 export async function parseDokuStatusPayload(rawBody, expectedInvoice) {
   const bytes = toBytes(rawBody);
   if (bytes.byteLength === 0 || bytes.byteLength > 65536) {
