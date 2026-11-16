@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
-import type { BudgetItem, TaskItem, GuestItem, SavingsContribution } from '@/types';
+import type { BudgetItem, TaskItem, GuestItem, SavingsContribution, WeddingInvitation, InvitationWish } from '@/types';
 import { CloudWorkspace, CloudSnapshot, WorkspaceParams } from '@/lib/cloud-workspace';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/context/auth-context';
@@ -25,11 +25,13 @@ interface WorkspaceContextType extends CloudSnapshot {
  addSaving: (item: Omit<SavingsContribution,'id'|'workspace_id'>) => Promise<boolean>;
  updateSaving: (id: string, item: Partial<SavingsContribution>) => Promise<boolean>;
  deleteSaving: (id: string) => Promise<boolean>;
+ saveInvitation: (item: Partial<WeddingInvitation>) => Promise<boolean>;
+ deleteWish: (wishId: string) => Promise<boolean>;
  applyEditableStarter: (workspaceId: string, userId: string) => Promise<boolean>;
  resetPlanningContent: (confirmation: string) => Promise<boolean>;
  reload: () => Promise<boolean>;
 }
-const empty = (): CloudSnapshot => ({workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],developerTestAccess:false});
+const empty = (): CloudSnapshot => ({workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],developerTestAccess:false});
 const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
 export function WorkspaceProvider({children}: {children: React.ReactNode}) {
  const {user,ready,configured} = useAuth();
@@ -87,12 +89,12 @@ export function WorkspaceProvider({children}: {children: React.ReactNode}) {
   addSaving: item=>run((cloud,id)=>cloud.insert('savings_contributions',id,{...item})),
   updateSaving: (key,item)=>run((cloud,id)=>cloud.update('savings_contributions',id,key,{...item})),
   deleteSaving: key=>run((cloud,id)=>cloud.remove('savings_contributions',id,key)),
+  saveInvitation: item=>run((cloud,id)=>cloud.saveInvitation(id,item)),
+  deleteWish: wishId=>run(cloud=>cloud.deleteWish(wishId)),
   applyEditableStarter: (expectedId,uid)=>run((cloud,id)=>{if(id!==expectedId || uid!==identity.current)throw new Error('Identitas berubah. Buka ulang pratinjau.');return cloud.applyEditableStarter(id,uid);}),
   resetPlanningContent: confirmation=>run(async (cloud,id)=>{
    const resetUid=identity.current;
    await cloud.resetPlanningContent(id,confirmation);
-   // RPC has committed. Clear stale planner rows even if the following refresh
-   // fails; retain identity/commerce and ignore any pre-reset load response.
    if(resetUid===identity.current && owner.current===resetUid) {++generation.current;setSnapshot(current=>({...current,budgets:[],tasks:[],guests:[],savings:[]}));}
   }),
   issueInvite: ()=>run(async (cloud,id)=>{const token=await cloud.issue(id);if(user && identity.current===user.id)setInviteToken(token);}),

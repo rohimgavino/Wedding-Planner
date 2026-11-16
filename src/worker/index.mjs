@@ -720,7 +720,12 @@ export async function handleRequest(request, env, fetchImpl = fetch) {
   }
 
   if (env?.ASSETS) {
-    return env.ASSETS.fetch(request);
+    const assetResp = await env.ASSETS.fetch(request);
+    if (assetResp.status === 404 && path.startsWith('/u/')) {
+      const fallbackUrl = new URL('/u/index.html', request.url);
+      return env.ASSETS.fetch(new Request(fallbackUrl, request));
+    }
+    return assetResp;
   }
   return new Response('Not found', { status: 404 });
 }

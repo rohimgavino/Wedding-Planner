@@ -87,3 +87,48 @@ export interface GuestItem {
   rsvp_status: RSVPStatus;
   notes?: string;
 }
+
+export type InvitationTheme = 'classic-ivory' | 'sage-garden' | 'romantic-rose' | 'midnight-gold';
+
+export interface WeddingInvitation {
+  id: string;
+  workspace_id: string;
+  slug: string;
+  is_published: boolean;
+  theme: InvitationTheme;
+  quote_title?: string;
+  quote_body?: string;
+  groom_full_name: string;
+  groom_nickname: string;
+  groom_parents?: string;
+  bride_full_name: string;
+  bride_nickname: string;
+  bride_parents?: string;
+  akad_date?: string;
+  akad_time?: string;
+  akad_venue?: string;
+  akad_address?: string;
+  akad_maps_url?: string;
+  resepsi_date?: string;
+  resepsi_time?: string;
+  resepsi_venue?: string;
+  resepsi_address?: string;
+  resepsi_maps_url?: string;
+  gift_bank_name?: string;
+  gift_account_number?: string;
+  gift_account_holder?: string;
+  gift_address?: string;
+  music_url?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface InvitationWish {
+  id: string;
+  invitation_id: string;
+  guest_name: string;
+  attendance: 'attending' | 'not_attending' | 'tentative';
+  pax: number;
+  message: string;
+  created_at: string;
+}

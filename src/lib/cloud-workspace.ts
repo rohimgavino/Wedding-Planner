@@ -1,8 +1,8 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { Workspace, BudgetItem, TaskItem, GuestItem, WorkspaceMember, SavingsContribution, WorkspaceEntitlement } from '@/types';
+import type { Workspace, BudgetItem, TaskItem, GuestItem, WorkspaceMember, SavingsContribution, WorkspaceEntitlement, WeddingInvitation, InvitationWish } from '@/types';
 type Table = 'budgets' | 'tasks' | 'guests' | 'savings_contributions';
 export interface WorkspaceParams { groom_name: string; bride_name: string; wedding_date: string; target_budget: number; target_savings: number }
-export interface CloudSnapshot { workspace: Workspace | null; budgets: BudgetItem[]; tasks: TaskItem[]; guests: GuestItem[]; members: WorkspaceMember[]; savings: SavingsContribution[]; entitlements: WorkspaceEntitlement[]; developerTestAccess: boolean }
+export interface CloudSnapshot { workspace: Workspace | null; budgets: BudgetItem[]; tasks: TaskItem[]; guests: GuestItem[]; members: WorkspaceMember[]; savings: SavingsContribution[]; entitlements: WorkspaceEntitlement[]; invitation: WeddingInvitation | null; wishes: InvitationWish[]; developerTestAccess: boolean }
 const fields: Record<Table, string[]> = {
  savings_contributions: ['contributor_id','amount','contributed_on','notes'],
  budgets: ['category','title','allocated_amount','spent_amount','payment_status','notes'],
@@ -20,10 +20,19 @@ export class CloudWorkspace {
   if (id) query = query.eq('id',id);
   const rows = checked(await query) as Workspace[];
   const workspace = rows[0] || null;
-  if (!workspace) return {workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],developerTestAccess:false};
-  const [budgets,tasks,guests,members,savings,entitlements] = await Promise.all(['budgets','tasks','guests','workspace_members','savings_contributions','workspace_entitlements'].map(table=>this.db.from(table).select('*').eq('workspace_id',workspace.id).order(table==='workspace_entitlements'?'verified_at':'created_at',{ascending:true})));
+  if (!workspace) return {workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],developerTestAccess:false};
+  const [budgets,tasks,guests,members,savings,entitlements,invitationsRes] = await Promise.all([
+    ...['budgets','tasks','guests','workspace_members','savings_contributions','workspace_entitlements'].map(table=>this.db.from(table).select('*').eq('workspace_id',workspace.id).order(table==='workspace_entitlements'?'verified_at':'created_at',{ascending:true})),
+    this.db.from('wedding_invitations').select('*').eq('workspace_id',workspace.id).maybeSingle()
+  ]);
   const testAccess=checked(await this.db.rpc('has_developer_test_access',{p_workspace_id:workspace.id}));
-  return {developerTestAccess:testAccess===true,workspace,budgets:checked(budgets) || [],tasks:checked(tasks) || [],guests:checked(guests) || [],members:checked(members) || [],savings:checked(savings) || [],entitlements:checked(entitlements) || []};
+  const invitation = (invitationsRes?.data || null) as WeddingInvitation | null;
+  let wishes: InvitationWish[] = [];
+  if (invitation?.id) {
+    const wishesRes = await this.db.from('wedding_invitation_wishes').select('*').eq('invitation_id', invitation.id).order('created_at', {ascending: false});
+    wishes = (wishesRes?.data || []) as InvitationWish[];
+  }
+  return {developerTestAccess:testAccess===true,workspace,budgets:checked(budgets) || [],tasks:checked(tasks) || [],guests:checked(guests) || [],members:checked(members) || [],savings:checked(savings) || [],entitlements:checked(entitlements) || [],invitation,wishes};
  }
  async create(params: WorkspaceParams) {
   await this.requireUser();
@@ -92,5 +101,23 @@ export class CloudWorkspace {
   if (!/^[a-f0-9]{64}$/.test(token)) throw new Error('Undangan tidak valid atau kedaluwarsa.');
   await this.requireUser();
   return checked(await this.db.rpc('accept_partner_invitation',{p_token:token})) as string;
+ }
+ async saveInvitation(workspaceId: string, item: Partial<WeddingInvitation>) {
+  await this.requireUser();
+  const existing = await this.db.from('wedding_invitations').select('id').eq('workspace_id', workspaceId).maybeSingle();
+  if (existing.data?.id) {
+    const res = await this.db.from('wedding_invitations').update({ ...item, updated_at: new Date().toISOString() }).eq('id', existing.data.id).select('*').single();
+    if (res.error) throw new Error('Gagal memperbarui undangan digital: ' + res.error.message);
+    return res.data as WeddingInvitation;
+  } else {
+    const res = await this.db.from('wedding_invitations').insert({ ...item, workspace_id: workspaceId }).select('*').single();
+    if (res.error) throw new Error('Gagal membuat undangan digital: ' + res.error.message);
+    return res.data as WeddingInvitation;
+  }
+ }
+ async deleteWish(wishId: string) {
+  await this.requireUser();
+  const res = await this.db.from('wedding_invitation_wishes').delete().eq('id', wishId);
+  if (res.error) throw new Error('Gagal menghapus ucapan: ' + res.error.message);
  }
 }
