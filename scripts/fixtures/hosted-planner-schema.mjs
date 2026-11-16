@@ -1,17 +1,27 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import assert from 'node:assert/strict';
 
 // REVIEW/TEST RECONSTRUCTION ONLY. Never a historical migration or deployment entrypoint.
 // No rows, network, credentials or migration-ledger replay. Existing local migrations
 // provide uncaptured prerequisites. Captured definitions are used verbatim, not guessed.
-export const captured = JSON.parse(readFileSync('docs/release/production-schema-drift-20261114.json','utf8'));
+const candidates = [
+  new URL('../../docs/release/production-schema-drift-20261114.json', import.meta.url),
+  'docs/release/production-schema-drift-20261114.json',
+  '/project/docs/release/production-schema-drift-20261114.json',
+  '../docs/release/production-schema-drift-20261114.json'
+];
+const driftFile = candidates.find(p => {
+  try { return existsSync(p); } catch { return false; }
+}) || candidates[0];
+
+export const captured = JSON.parse(readFileSync(driftFile, 'utf8'));
 export const plannerNames = ['budgets','tasks','guests','savings_accounts','savings_contributions','vendors','vendor_installments','vendor_payments'];
 const ident = s => `"${s.replaceAll('"','""')}"`;
 export async function installHostedPlannerFixture(db, { preserveExistingPlanner = false } = {}) {
   await db.exec('CREATE SCHEMA starter_private; REVOKE ALL ON SCHEMA starter_private FROM PUBLIC;');
   // Reconstruct the eight captured tables, including constraints, policies and user
   // triggers. PostgreSQL regenerates internal FK triggers (OID names are not stable).
-  if (!preserveExistingPlanner) await db.exec(`DROP TABLE ${plannerNames.slice(0,5).map(n=>'public.'+ident(n)).join(',')} CASCADE`);
+  if (!preserveExistingPlanner) await db.exec(`DROP TABLE IF EXISTS ${plannerNames.slice(0,5).map(n=>'public.'+ident(n)).join(',')} CASCADE`);
   const names = [...(preserveExistingPlanner ? plannerNames.slice(5) : plannerNames), 'applied','requests'];
   const tables = names.map(name => captured.tables.find(t=>t.name===name));
   for (const t of tables) {

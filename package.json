@@ -10,7 +10,8 @@
     "lint": "eslint src --ext .ts,.tsx --max-warnings 0",
     "graphify": "graphify update .",
     "test:backend": "node scripts/test-backend.mjs",
-    "test:paid-rls": "node scripts/test-paid-rls.mjs && node scripts/test-paid-stage.mjs"
+    "test:paid-rls": "node scripts/test-paid-rls.mjs && node scripts/test-paid-stage.mjs",
+    "test:release-gates": "node scripts/test-history-plan.mjs && node scripts/test-history-reconciliation.mjs && node scripts/verify-hosted-role-jwt-parity.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.5.0",

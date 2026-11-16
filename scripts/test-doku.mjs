@@ -11,6 +11,8 @@ import {
   verifyDokuResponse,
 } from '../src/worker/doku-crypto.mjs';
 import { handleRequest } from '../src/worker/index.mjs';
+// Tests must only use injected synthetic transport, never live fetch.
+globalThis.fetch = async () => { throw new Error('OFFLINE_NETWORK_DISABLED'); };
 
 let passed = 0;
 async function test(name, fn) {
@@ -212,6 +214,8 @@ await db.exec(`
 // Apply new DOKU migration & hardening
 await db.exec(readFileSync('supabase/migrations/202611120001_doku_checkout.sql', 'utf8'));
 await db.exec(readFileSync('supabase/migrations/202611120002_doku_checkout_hardening.sql', 'utf8'));
+// Explicit offline candidate under review; not a historical migration edit.
+await db.exec(readFileSync('supabase/candidates/202611150001_doku_failed_nonfinal.sql', 'utf8'));
 
 // Seed users & workspace
 const ADMIN_ID = '00000000-0000-0000-0000-000000000001';
@@ -566,7 +570,7 @@ await test('CRYPTO & SQL: verifyDokuNotification accepts .00 decimal IDR amount 
   assert.equal(futureRes.reasonCode, 'TIMESTAMP_OUT_OF_WINDOW');
 });
 
-await test('SQL: unknown order unblocks via FAILED webhook and audited admin_resolve_doku_order', async () => {
+await test('SQL: FAILED keeps unknown quarantined; separate audited admin resolution', async () => {
   await db.exec(`RESET ROLE; SET ROLE authenticated; SELECT set_config('request.jwt.claim.sub', '${STRANGER_ID}', false);`);
   const wsUnblock = (await db.query(`SELECT public.create_workspace('Unblock Test', '2027-07-01') AS id`)).rows[0].id;
 
@@ -583,10 +587,17 @@ await test('SQL: unknown order unblocks via FAILED webhook and audited admin_res
   assert.equal(failedWebhook.outcome, 'ignored');
 
   const statusAfterFail = (await db.query(`SELECT status FROM public.doku_orders WHERE invoice = 'pp-unk-1'`)).rows[0].status;
-  assert.equal(statusAfterFail, 'failed');
+  assert.equal(statusAfterFail, 'unknown');
+  const stillBlocked = (await db.query(`SELECT public.doku_reserve_order($1, $2, 'starter', 'pp-unk-next', 'req-unk-next') AS res`, [wsUnblock, STRANGER_ID])).rows[0].res;
+  assert.equal(stillBlocked.outcome, 'unresolved_unknown');
+  assert.equal(stillBlocked.order.invoice, 'pp-unk-1');
+  assert.deepEqual((await db.query(`SELECT feature FROM public.workspace_entitlements WHERE workspace_id = $1`, [wsUnblock])).rows, []);
 
-  // Now reserve another order, mark it unknown, and verify admin_resolve_doku_order
-  await db.query(`SELECT public.doku_reserve_order($1, $2, 'starter', 'pp-unk-3', 'req-unk-3')`, [wsUnblock, STRANGER_ID]);
+  // Admin resolution must not depend on unblocking the quarantined workspace.
+  await db.exec(`SET ROLE authenticated; SELECT set_config('request.jwt.claim.sub', '${STRANGER_ID}', false);`);
+  const wsAdminResolution = (await db.query(`SELECT public.create_workspace('Admin resolution', '2027-07-01') AS id`)).rows[0].id;
+  await db.exec('RESET ROLE');
+  await db.query(`SELECT public.doku_reserve_order($1, $2, 'starter', 'pp-unk-3', 'req-unk-3')`, [wsAdminResolution, STRANGER_ID]);
   await db.query(`SELECT public.doku_set_order_result('pp-unk-3', 'unknown', null, null, 'DOKU_HTTP_429')`);
 
   await db.exec(`RESET ROLE; SET ROLE authenticated; SELECT set_config('request.jwt.claim.sub', '${STRANGER_ID}', false);`);
@@ -715,13 +726,26 @@ await test('Worker: /api/payments/status reconciles pending order via DOKU Check
       dokuStatusTarget = u;
       dokuHadDigest = Boolean(init.headers?.Digest || init.headers?.digest);
       assert.match(init.headers?.Signature || '', /^HMACSHA256=[A-Za-z0-9+/]{43}=$/);
+      // Offline-only synthetic GET response: no Digest per Non-SNAP contract.
+      const responseTimestamp = formatUtcIso();
+      const responseHeaders = {
+        'Client-Id': CLIENT_ID,
+        'Request-Id': init.headers['Request-Id'],
+        'Response-Timestamp': responseTimestamp,
+        Signature: `HMACSHA256=${await hmacSha256Base64(SECRET, [
+          `Client-Id:${CLIENT_ID}`,
+          `Request-Id:${init.headers['Request-Id']}`,
+          `Response-Timestamp:${responseTimestamp}`,
+          'Request-Target:/orders/v1/status/pp-sync-01',
+        ].join('\n'))}`,
+      };
       return new Response(
         JSON.stringify({
           order: { invoice_number: 'pp-sync-01', amount: '10000.00' },
           transaction: { status: 'SUCCESS' },
           channel: { id: 'VIRTUAL_ACCOUNT_BNI' },
         }),
-        { status: 200 }
+        { status: 200, headers: responseHeaders }
       );
     }
     if (u.endsWith('/rest/v1/rpc/doku_apply_notification')) {

@@ -13,41 +13,21 @@ import {
   fetchPaymentCatalog,
   fetchWorkspaceBilling,
   formatOrderStatus,
+  formatPurchaseDuration,
   isOrderCheckoutActive,
   startDokuCheckout,
 } from '@/lib/commerce';
 import { formatRupiah } from '@/lib/utils';
 
-const TIER_RANK: Record<string, number> = {
-  starter: 1,
-  premium: 2,
-  wedding_pro: 3,
-};
-
-function hasActivePackageAccess(billing: WorkspaceBillingStatus | null, packageId?: string): boolean {
+function hasActiveCoreAccess(billing: WorkspaceBillingStatus | null): boolean {
   if (!billing) return false;
   const now = Date.now();
-  const activeFeatures = billing.entitlements
-    .filter((item) => {
-      if (item.revoked_at) return false;
-      if (!item.expires_at) return true;
-      const exp = Date.parse(item.expires_at);
-      return Number.isFinite(exp) && exp > now;
-    })
-    .map((item) => item.feature);
-
-  if (!packageId) {
-    return activeFeatures.some(
-      (f) => f === 'core' || f === 'starter' || f === 'premium' || f === 'wedding_pro'
-    );
-  }
-
-  const targetRank = TIER_RANK[packageId] ?? 0;
-  const maxTierRank = activeFeatures.reduce((max, f) => Math.max(max, TIER_RANK[f] ?? 0), 0);
-  if (maxTierRank > 0) {
-    return maxTierRank >= targetRank;
-  }
-  return activeFeatures.includes('core');
+  return billing.entitlements.some((item) => {
+    if (item.feature !== 'core' || item.revoked_at) return false;
+    if (item.expires_at === null) return true;
+    const expiresAt = Date.parse(item.expires_at);
+    return Number.isFinite(expiresAt) && expiresAt > now;
+  });
 }
 
 async function getAccessToken(): Promise<string | null> {
@@ -131,7 +111,7 @@ export default function PurchasePage() {
   }, []);
 
   const orders: DokuOrderSummary[] = useMemo(() => billing?.orders || [], [billing]);
-  const coreActive = useMemo(() => hasActivePackageAccess(billing), [billing]);
+  const coreActive = useMemo(() => hasActiveCoreAccess(billing), [billing]);
   const activeCheckoutOrder = useMemo(
     () => orders.find((order) => isOrderCheckoutActive(order)) || null,
     [orders]
@@ -140,7 +120,7 @@ export default function PurchasePage() {
   const canCheckout = Boolean(catalog?.salesEnabled && catalog?.dokuConfigured);
 
   const handleCheckout = async (packageId: string) => {
-    if (!workspaceId || busyPackageId || refreshing) return;
+    if (!workspaceId || coreActive || busyPackageId || refreshing) return;
     setBusyPackageId(packageId);
     setError('');
     setNotice('');
@@ -239,7 +219,7 @@ export default function PurchasePage() {
             <p className="text-slate-600 break-all">ID: {workspace.id}</p>
             {coreActive && (
               <p className="text-emerald-700 font-medium pt-1">
-                Akses paket aktif.{' '}
+                Akses paket aktif. Upgrade paket belum tersedia.{' '}
                 <Link href="/dashboard" className="underline inline-flex items-center min-h-11">
                   Buka dashboard planner
                 </Link>
@@ -279,13 +259,13 @@ export default function PurchasePage() {
                 pkg.price_idr ?? (pkg as unknown as { effective_amount_idr?: string | number }).effective_amount_idr ?? pkg.base_amount_idr ?? 0
               );
               const packageFeatures = Array.isArray(pkg.features) ? pkg.features : [];
-              const packageActive = hasActivePackageAccess(billing, packageId);
+
               const disabled =
                 !user ||
                 !workspace ||
                 !canCheckout ||
                 !pkg.checkout_eligible ||
-                packageActive ||
+                coreActive ||
                 busyPackageId !== null ||
                 refreshing;
 
@@ -314,8 +294,8 @@ export default function PurchasePage() {
                   >
                     {busyPackageId === packageId
                       ? 'Menyiapkan checkout…'
-                      : packageActive
-                        ? 'Paket sudah aktif'
+                      : coreActive
+                        ? 'Akses sudah aktif'
                         : 'Bayar via DOKU'}
                   </button>
                 </article>
@@ -366,7 +346,7 @@ export default function PurchasePage() {
                       </span>
                     </div>
                     <p className="text-slate-700">
-                      Paket {order.package_id} · {formatRupiah(order.amount_idr)} · {order.duration_days} hari
+                      Paket {order.package_id} · {formatRupiah(order.amount_idr)} · {formatPurchaseDuration(order)}
                     </p>
                     {order.payment_channel && (
                       <p className="text-xs text-slate-500">Kanal: {order.payment_channel}</p>

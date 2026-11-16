@@ -19,11 +19,28 @@ export interface PaymentCatalog {
   dokuConfigured: boolean;
 }
 
-export interface DokuOrderSummary {
+// Frozen settlement terms are optional on historical API rows.
+export interface PurchaseDuration {
+  duration_days: number | null;
+  terms?: { duration_months?: number | null; duration_days?: number | null } | null;
+}
+
+export function formatPurchaseDuration(value: PurchaseDuration): string {
+  const months = value.terms?.duration_months;
+  if (typeof months === 'number' && Number.isSafeInteger(months) && months > 0) {
+    return `${months} bulan kalender`;
+  }
+  const days = value.terms?.duration_days ?? value.duration_days;
+  return typeof days === 'number' && Number.isSafeInteger(days) && days > 0
+    ? `${days} hari`
+    : 'Durasi tidak tersedia';
+}
+
+export interface DokuOrderSummary extends PurchaseDuration {
+  revoked_at?: string | null;
   invoice: string;
   package_id: string;
   amount_idr: number;
-  duration_days: number;
   status: string;
   checkout_url: string | null;
   payment_channel: string | null;
