@@ -1,8 +1,8 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { Workspace, BudgetItem, TaskItem, GuestItem, WorkspaceMember, SavingsContribution, WorkspaceEntitlement, WeddingInvitation, InvitationWish } from '@/types';
+import type { Workspace, BudgetItem, TaskItem, GuestItem, WorkspaceMember, SavingsContribution, WorkspaceEntitlement, WeddingInvitation, InvitationWish, RundownEvent } from '@/types';
 type Table = 'budgets' | 'tasks' | 'guests' | 'savings_contributions';
 export interface WorkspaceParams { groom_name: string; bride_name: string; wedding_date: string; target_budget: number; target_savings: number }
-export interface CloudSnapshot { workspace: Workspace | null; budgets: BudgetItem[]; tasks: TaskItem[]; guests: GuestItem[]; members: WorkspaceMember[]; savings: SavingsContribution[]; entitlements: WorkspaceEntitlement[]; invitation: WeddingInvitation | null; wishes: InvitationWish[]; developerTestAccess: boolean }
+export interface CloudSnapshot { workspace: Workspace | null; budgets: BudgetItem[]; tasks: TaskItem[]; guests: GuestItem[]; members: WorkspaceMember[]; savings: SavingsContribution[]; entitlements: WorkspaceEntitlement[]; invitation: WeddingInvitation | null; wishes: InvitationWish[]; rundowns: RundownEvent[]; developerTestAccess: boolean }
 const fields: Record<Table, string[]> = {
  savings_contributions: ['contributor_id','amount','contributed_on','notes'],
  budgets: ['category','title','allocated_amount','spent_amount','payment_status','notes'],
@@ -20,10 +20,11 @@ export class CloudWorkspace {
   if (id) query = query.eq('id',id);
   const rows = checked(await query) as Workspace[];
   const workspace = rows[0] || null;
-  if (!workspace) return {workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],developerTestAccess:false};
-  const [budgets,tasks,guests,members,savings,entitlements,invitationsRes] = await Promise.all([
+  if (!workspace) return {workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],rundowns:[],developerTestAccess:false};
+  const [budgets,tasks,guests,members,savings,entitlements,invitationsRes,rundownsRes] = await Promise.all([
     ...['budgets','tasks','guests','workspace_members','savings_contributions','workspace_entitlements'].map(table=>this.db.from(table).select('*').eq('workspace_id',workspace.id).order(table==='workspace_entitlements'?'verified_at':'created_at',{ascending:true})),
-    this.db.from('wedding_invitations').select('*').eq('workspace_id',workspace.id).maybeSingle()
+    this.db.from('wedding_invitations').select('*').eq('workspace_id',workspace.id).maybeSingle(),
+    this.db.from('wedding_rundown_events').select('*').eq('workspace_id',workspace.id).order('sort_order',{ascending:true}).order('time_start',{ascending:true})
   ]);
   const testAccess=checked(await this.db.rpc('has_developer_test_access',{p_workspace_id:workspace.id}));
   const invitation = (invitationsRes?.data || null) as WeddingInvitation | null;
@@ -32,7 +33,7 @@ export class CloudWorkspace {
     const wishesRes = await this.db.from('wedding_invitation_wishes').select('*').eq('invitation_id', invitation.id).order('created_at', {ascending: false});
     wishes = (wishesRes?.data || []) as InvitationWish[];
   }
-  return {developerTestAccess:testAccess===true,workspace,budgets:checked(budgets) || [],tasks:checked(tasks) || [],guests:checked(guests) || [],members:checked(members) || [],savings:checked(savings) || [],entitlements:checked(entitlements) || [],invitation,wishes};
+  return {developerTestAccess:testAccess===true,workspace,budgets:checked(budgets) || [],tasks:checked(tasks) || [],guests:checked(guests) || [],members:checked(members) || [],savings:checked(savings) || [],entitlements:checked(entitlements) || [],invitation,wishes,rundowns:checked(rundownsRes) || []};
  }
  async create(params: WorkspaceParams) {
   await this.requireUser();
@@ -119,5 +120,29 @@ export class CloudWorkspace {
   await this.requireUser();
   const res = await this.db.from('wedding_invitation_wishes').delete().eq('id', wishId);
   if (res.error) throw new Error('Gagal menghapus ucapan: ' + res.error.message);
+ }
+ async createRundownEvent(workspaceId: string, item: Partial<RundownEvent>) {
+  await this.requireUser();
+  const res = await this.db.from('wedding_rundown_events').insert({ ...item, workspace_id: workspaceId }).select('*').single();
+  if (res.error) throw new Error('Gagal menambah agenda rundown: ' + res.error.message);
+  return res.data as RundownEvent;
+ }
+ async updateRundownEvent(workspaceId: string, id: string, item: Partial<RundownEvent>) {
+  await this.requireUser();
+  const res = await this.db.from('wedding_rundown_events').update({ ...item, updated_at: new Date().toISOString() }).eq('workspace_id', workspaceId).eq('id', id).select('*').single();
+  if (res.error) throw new Error('Gagal memperbarui agenda rundown: ' + res.error.message);
+  return res.data as RundownEvent;
+ }
+ async deleteRundownEvent(workspaceId: string, id: string) {
+  await this.requireUser();
+  const res = await this.db.from('wedding_rundown_events').delete().eq('workspace_id', workspaceId).eq('id', id);
+  if (res.error) throw new Error('Gagal menghapus agenda rundown: ' + res.error.message);
+ }
+ async insertRundownBatch(workspaceId: string, items: Partial<RundownEvent>[]) {
+  await this.requireUser();
+  const payload = items.map(item => ({ ...item, workspace_id: workspaceId }));
+  const res = await this.db.from('wedding_rundown_events').insert(payload).select('*');
+  if (res.error) throw new Error('Gagal menerapkan template rundown: ' + res.error.message);
+  return (res.data || []) as RundownEvent[];
  }
 }

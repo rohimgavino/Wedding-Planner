@@ -132,3 +132,21 @@ export interface InvitationWish {
   message: string;
   created_at: string;
 }
+
+export type RundownSession = 'persiapan' | 'akad' | 'temu_manten' | 'resepsi' | 'after_party' | 'lainnya';
+
+export interface RundownEvent {
+  id: string;
+  workspace_id: string;
+  session: RundownSession;
+  time_start: string;
+  time_end?: string | null;
+  activity: string;
+  pic_name?: string | null;
+  pic_phone?: string | null;
+  location?: string | null;
+  notes?: string | null;
+  sort_order: number;
+  created_at?: string;
+  updated_at?: string;
+}

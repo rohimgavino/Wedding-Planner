@@ -1,10 +1,11 @@
 "use client";
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
-import type { BudgetItem, TaskItem, GuestItem, SavingsContribution, WeddingInvitation, InvitationWish } from '@/types';
+import type { BudgetItem, TaskItem, GuestItem, SavingsContribution, WeddingInvitation, InvitationWish, RundownEvent } from '@/types';
 import { CloudWorkspace, CloudSnapshot, WorkspaceParams } from '@/lib/cloud-workspace';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/context/auth-context';
 import { STORAGE_KEY, LEGACY_KEY } from '@/lib/workspace-storage';
+import { getRundownTemplate, RundownTemplateType } from '@/lib/rundown-templates';
 type NewGuest = Omit<GuestItem,'id'|'workspace_id'>;
 interface WorkspaceContextType extends CloudSnapshot {
  inviteToken: string; isLoaded: boolean; error: string; busy: boolean;
@@ -27,11 +28,15 @@ interface WorkspaceContextType extends CloudSnapshot {
  deleteSaving: (id: string) => Promise<boolean>;
  saveInvitation: (item: Partial<WeddingInvitation>) => Promise<boolean>;
  deleteWish: (wishId: string) => Promise<boolean>;
+ createRundownEvent: (item: Partial<RundownEvent>) => Promise<boolean>;
+ updateRundownEvent: (id: string, item: Partial<RundownEvent>) => Promise<boolean>;
+ deleteRundownEvent: (id: string) => Promise<boolean>;
+ applyRundownTemplate: (template: RundownTemplateType) => Promise<boolean>;
  applyEditableStarter: (workspaceId: string, userId: string) => Promise<boolean>;
  resetPlanningContent: (confirmation: string) => Promise<boolean>;
  reload: () => Promise<boolean>;
 }
-const empty = (): CloudSnapshot => ({workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],developerTestAccess:false});
+const empty = (): CloudSnapshot => ({workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],rundowns:[],developerTestAccess:false});
 const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
 export function WorkspaceProvider({children}: {children: React.ReactNode}) {
  const {user,ready,configured} = useAuth();
@@ -91,6 +96,10 @@ export function WorkspaceProvider({children}: {children: React.ReactNode}) {
   deleteSaving: key=>run((cloud,id)=>cloud.remove('savings_contributions',id,key)),
   saveInvitation: item=>run((cloud,id)=>cloud.saveInvitation(id,item)),
   deleteWish: wishId=>run(cloud=>cloud.deleteWish(wishId)),
+  createRundownEvent: item=>run((cloud,id)=>cloud.createRundownEvent(id,item)),
+  updateRundownEvent: (key,item)=>run((cloud,id)=>cloud.updateRundownEvent(id,key,item)),
+  deleteRundownEvent: key=>run((cloud,id)=>cloud.deleteRundownEvent(id,key)),
+  applyRundownTemplate: template=>run((cloud,id)=>cloud.insertRundownBatch(id,getRundownTemplate(template))),
   applyEditableStarter: (expectedId,uid)=>run((cloud,id)=>{if(id!==expectedId || uid!==identity.current)throw new Error('Identitas berubah. Buka ulang pratinjau.');return cloud.applyEditableStarter(id,uid);}),
   resetPlanningContent: confirmation=>run(async (cloud,id)=>{
    const resetUid=identity.current;
