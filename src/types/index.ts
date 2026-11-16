@@ -11,7 +11,7 @@ export interface SavingsContribution {
  id: string; workspace_id: string; contributor_id: string; amount: number; contributed_on: string; notes: string; created_at?: string;
 }
 export interface WorkspaceEntitlement {
- workspace_id: string; feature: 'core' | 'lamaran' | 'honeymoon' | 'starter' | 'premium' | 'wedding_pro'; verified_at: string; expires_at: string | null; revoked_at: string | null;
+ workspace_id: string; feature: 'core' | 'lamaran' | 'honeymoon' | 'starter' | 'premium' | 'wedding_pro' | 'moodboard' | 'shared_savings'; verified_at: string; expires_at: string | null; revoked_at: string | null;
 }
 
 export type MemberRole = 'owner' | 'partner';
@@ -146,6 +146,35 @@ export interface RundownEvent {
   pic_phone?: string | null;
   location?: string | null;
   notes?: string | null;
+  sort_order: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export type MoodboardCategory = 'dekorasi' | 'busana_pengantin' | 'rias_makeup' | 'bunga_handbouquet' | 'foto_video' | 'undangan_souvenir' | 'kue_catering' | 'lainnya';
+
+export interface ColorPalette {
+  id: string;
+  workspace_id: string;
+  name: string;
+  primary_color: string;
+  secondary_color: string;
+  accent_color: string;
+  neutral_color: string;
+  notes?: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface MoodboardItem {
+  id: string;
+  workspace_id: string;
+  category: MoodboardCategory;
+  title: string;
+  image_url: string;
+  color_hex?: string | null;
+  notes?: string | null;
+  source_link?: string | null;
   sort_order: number;
   created_at?: string;
   updated_at?: string;

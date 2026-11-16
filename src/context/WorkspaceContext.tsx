@@ -1,11 +1,12 @@
 "use client";
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
-import type { BudgetItem, TaskItem, GuestItem, SavingsContribution, WeddingInvitation, InvitationWish, RundownEvent } from '@/types';
+import type { BudgetItem, TaskItem, GuestItem, SavingsContribution, WeddingInvitation, InvitationWish, RundownEvent, ColorPalette, MoodboardItem } from '@/types';
 import { CloudWorkspace, CloudSnapshot, WorkspaceParams } from '@/lib/cloud-workspace';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/context/auth-context';
 import { STORAGE_KEY, LEGACY_KEY } from '@/lib/workspace-storage';
 import { getRundownTemplate, RundownTemplateType } from '@/lib/rundown-templates';
+import { getStarterMoodboardInspirations } from '@/lib/moodboard-presets';
 type NewGuest = Omit<GuestItem,'id'|'workspace_id'>;
 interface WorkspaceContextType extends CloudSnapshot {
  inviteToken: string; isLoaded: boolean; error: string; busy: boolean;
@@ -32,11 +33,16 @@ interface WorkspaceContextType extends CloudSnapshot {
  updateRundownEvent: (id: string, item: Partial<RundownEvent>) => Promise<boolean>;
  deleteRundownEvent: (id: string) => Promise<boolean>;
  applyRundownTemplate: (template: RundownTemplateType) => Promise<boolean>;
+ savePalette: (item: Partial<ColorPalette>) => Promise<boolean>;
+ createMoodboardItem: (item: Partial<MoodboardItem>) => Promise<boolean>;
+ updateMoodboardItem: (id: string, item: Partial<MoodboardItem>) => Promise<boolean>;
+ deleteMoodboardItem: (id: string) => Promise<boolean>;
+ applyStarterMoodboard: () => Promise<boolean>;
  applyEditableStarter: (workspaceId: string, userId: string) => Promise<boolean>;
  resetPlanningContent: (confirmation: string) => Promise<boolean>;
  reload: () => Promise<boolean>;
 }
-const empty = (): CloudSnapshot => ({workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],rundowns:[],developerTestAccess:false});
+const empty = (): CloudSnapshot => ({workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],rundowns:[],palette:null,moodboards:[],developerTestAccess:false});
 const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
 export function WorkspaceProvider({children}: {children: React.ReactNode}) {
  const {user,ready,configured} = useAuth();
@@ -100,6 +106,11 @@ export function WorkspaceProvider({children}: {children: React.ReactNode}) {
   updateRundownEvent: (key,item)=>run((cloud,id)=>cloud.updateRundownEvent(id,key,item)),
   deleteRundownEvent: key=>run((cloud,id)=>cloud.deleteRundownEvent(id,key)),
   applyRundownTemplate: template=>run((cloud,id)=>cloud.insertRundownBatch(id,getRundownTemplate(template))),
+  savePalette: item=>run((cloud,id)=>cloud.savePalette(id,item)),
+  createMoodboardItem: item=>run((cloud,id)=>cloud.createMoodboardItem(id,item)),
+  updateMoodboardItem: (key,item)=>run((cloud,id)=>cloud.updateMoodboardItem(id,key,item)),
+  deleteMoodboardItem: key=>run((cloud,id)=>cloud.deleteMoodboardItem(id,key)),
+  applyStarterMoodboard: ()=>run((cloud,id)=>cloud.insertMoodboardBatch(id,getStarterMoodboardInspirations())),
   applyEditableStarter: (expectedId,uid)=>run((cloud,id)=>{if(id!==expectedId || uid!==identity.current)throw new Error('Identitas berubah. Buka ulang pratinjau.');return cloud.applyEditableStarter(id,uid);}),
   resetPlanningContent: confirmation=>run(async (cloud,id)=>{
    const resetUid=identity.current;

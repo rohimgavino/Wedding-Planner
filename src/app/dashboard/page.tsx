@@ -12,6 +12,7 @@ import { WorkspaceActivation } from "@/components/everrae/workspace-activation";
 import { SharedSavings } from "@/components/everrae/shared-savings";
 import { DigitalInvitationManager } from "@/components/everrae/digital-invitation-manager";
 import { RundownManager } from "@/components/everrae/rundown-manager";
+import { MoodboardManager } from "@/components/everrae/moodboard-manager";
 import { entitlementActive } from "@/lib/savings";
 import { GuestCSVImport } from "@/components/everrae/guest-csv-import";
 import { serializeGuestCSV } from "@/lib/guest-csv";
@@ -21,7 +22,7 @@ import {
   Heart, Calendar, Wallet, CheckSquare, Users, Plus, 
   MessageCircle, Share2, Check, Trash2,
   Sparkles, Download, CheckCircle2, Copy,
-  Search, ShieldCheck, Mail, Clock
+  Search, ShieldCheck, Mail, Clock, Palette
 } from "lucide-react";
 import { formatRupiah, calculateDaysRemaining, formatDateID } from "@/lib/utils";
 import { generateWhatsAppLink } from "@/lib/whatsapp";
@@ -35,7 +36,7 @@ export default function DashboardPage() {
     addGuest, updateGuest, deleteGuest, issueInvite, members, busy, entitlements, developerTestAccess, error
   } = useWorkspace();
 
-  const [activeTab, setActiveTab] = useState<"overview" | "budget" | "tasks" | "guests" | "rundown" | "invitation" | "savings" | "pairing">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "budget" | "tasks" | "guests" | "rundown" | "moodboard" | "invitation" | "savings" | "pairing">("overview");
 
   // Modals state
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -157,21 +158,22 @@ export default function DashboardPage() {
       <aside className="planner-sidebar">
         <Link className="planner-brand" href="/" aria-label="Pocket Planner — Beranda"><Image src="/images/pocket-planner-logo.png" alt="Pocket Planner" width={176} height={104} unoptimized/><span>WEDDING PLANNER</span></Link>
         <p className="planner-nav-caption">RUANG PERENCANAAN</p>
-        <nav aria-label="Navigasi workspace">{([['overview','Dashboard',Sparkles],['tasks','Timeline & Checklist',CheckSquare],['rundown','Rundown Hari H',Clock],['budget','Budget & Biaya',Wallet],['guests','Buku Tamu',Users],['invitation','Undangan Digital',Mail],['savings','Tabungan Bersama',Wallet],['pairing','Pengaturan & Pasangan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={18}/>{label}</button>)}</nav>
+        <nav aria-label="Navigasi workspace">{([['overview','Dashboard',Sparkles],['tasks','Timeline & Checklist',CheckSquare],['rundown','Rundown Hari H',Clock],['moodboard','Moodboard Visual',Palette],['budget','Budget & Biaya',Wallet],['guests','Buku Tamu',Users],['invitation','Undangan Digital',Mail],['savings','Tabungan Bersama',Wallet],['pairing','Pengaturan & Pasangan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={18}/>{label}</button>)}</nav>
         <div className="planner-sidebar-note"><ShieldCheck size={22}/><strong>Rencana milikmu.</strong><p>Data tersimpan di workspace cloud dengan akses khusus pasangan.</p><Link href="/">Kembali ke beranda →</Link></div>
       </aside>
       <div className="planner-body">
-        <header className="planner-topbar"><span className="planner-topbar-brand">Pocket Planner</span><span className="planner-breadcrumb">Workspace / {activeTab === 'overview' ? 'Dashboard' : activeTab === 'pairing' ? 'Pengaturan' : activeTab === 'tasks' ? 'Timeline' : activeTab === 'rundown' ? 'Rundown Hari H' : activeTab === 'guests' ? 'Buku Tamu' : activeTab === 'savings' ? 'Tabungan Bersama' : activeTab === 'invitation' ? 'Undangan Digital' : 'Budget'}</span><button onClick={async () => { if (await issueInvite()) setShowInviteModal(true); }}><Share2 size={16}/><span>Tautan pasangan</span></button></header>
+        <header className="planner-topbar"><span className="planner-topbar-brand">Pocket Planner</span><span className="planner-breadcrumb">Workspace / {activeTab === 'overview' ? 'Dashboard' : activeTab === 'pairing' ? 'Pengaturan' : activeTab === 'tasks' ? 'Timeline' : activeTab === 'rundown' ? 'Rundown Hari H' : activeTab === 'moodboard' ? 'Moodboard' : activeTab === 'guests' ? 'Buku Tamu' : activeTab === 'savings' ? 'Tabungan Bersama' : activeTab === 'invitation' ? 'Undangan Digital' : 'Budget'}</span><button onClick={async () => { if (await issueInvite()) setShowInviteModal(true); }}><Share2 size={16}/><span>Tautan pasangan</span></button></header>
         <main className="planner-main">
           <FillingExample />
           {(activeTab === 'overview' || activeTab === 'pairing') && <PlanningReset />}
           {activeTab === 'pairing' && <EditableStarter />}
           <section className="planner-heading"><div><span className="planner-eyebrow">RENCANA PERNIKAHANMU</span><h1>Halo, {workspace.title.replace(/^Pernikahan\s+/i, '')}.</h1><p>Satu langkah lebih dekat ke hari bahagia.</p></div><div className="planner-date"><Calendar size={20}/><div><strong>{formatDateID(workspace.wedding_date)}</strong><span>{daysRemaining > 0 ? `${daysRemaining} hari lagi` : daysRemaining === 0 ? 'Hari pernikahanmu' : 'Tanggal pernikahan telah berlalu'}</span></div></div></section>
           <div className="planner-mobile-progress"><div><span>Progres persiapan</span><strong>{taskProgressPercent}%</strong></div><progress max="100" value={taskProgressPercent}/></div>
-          <nav className="planner-shortcuts" aria-label="Pintasan workspace">{([['overview','Ringkasan',Sparkles],['tasks','Timeline',CheckSquare],['rundown','Rundown',Clock],['budget','Budget',Wallet],['guests','Tamu',Users],['invitation','Undangan',Mail],['savings','Tabungan',Wallet],['pairing','Pengaturan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={19}/><span>{label}</span></button>)}</nav>
+          <nav className="planner-shortcuts" aria-label="Pintasan workspace">{([['overview','Ringkasan',Sparkles],['tasks','Timeline',CheckSquare],['rundown','Rundown',Clock],['moodboard','Moodboard',Palette],['budget','Budget',Wallet],['guests','Tamu',Users],['invitation','Undangan',Mail],['savings','Tabungan',Wallet],['pairing','Pengaturan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={19}/><span>{label}</span></button>)}</nav>
           {activeTab === 'savings' && <SharedSavings />}
           {activeTab === 'invitation' && <DigitalInvitationManager />}
           {activeTab === 'rundown' && <RundownManager />}
+          {activeTab === 'moodboard' && <MoodboardManager />}
           {activeTab === 'overview' && <section aria-label="Modul mendatang" className="my-4 grid sm:grid-cols-2 gap-3">{['Lamaran','Honeymoon Budgeting'].map(name=><div key={name} className="border rounded-2xl bg-white p-4"><strong>{name} · Terkunci</strong><p className="text-sm text-slate-600">Add-on berbayar mendatang. Modul belum tersedia, belum dapat dibeli di aplikasi ini.</p></div>)}</section>}
           {activeTab === 'overview' && <div className="planner-overview">
             <section className="planner-metrics" aria-label="Ringkasan rencana">
