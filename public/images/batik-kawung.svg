@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
+  <g fill="none" stroke="#9E7A3E" stroke-width="0.65" opacity="0.14">
+    <!-- Center Kawung Petals -->
+    <ellipse cx="30" cy="15" rx="7.5" ry="13.5"/>
+    <ellipse cx="30" cy="45" rx="7.5" ry="13.5"/>
+    <ellipse cx="15" cy="30" rx="13.5" ry="7.5"/>
+    <ellipse cx="45" cy="30" rx="13.5" ry="7.5"/>
+    <!-- Inner concentric contour (batik canting texture) -->
+    <ellipse cx="30" cy="15" rx="4.5" ry="9" stroke-dasharray="1.5,1.5"/>
+    <ellipse cx="30" cy="45" rx="4.5" ry="9" stroke-dasharray="1.5,1.5"/>
+    <ellipse cx="15" cy="30" rx="9" ry="4.5" stroke-dasharray="1.5,1.5"/>
+    <ellipse cx="45" cy="30" rx="9" ry="4.5" stroke-dasharray="1.5,1.5"/>
+    <!-- Corner Outer Petals (seamless repeating) -->
+    <ellipse cx="0" cy="15" rx="7.5" ry="13.5"/>
+    <ellipse cx="60" cy="15" rx="7.5" ry="13.5"/>
+    <ellipse cx="0" cy="45" rx="7.5" ry="13.5"/>
+    <ellipse cx="60" cy="45" rx="7.5" ry="13.5"/>
+    <ellipse cx="15" cy="0" rx="13.5" ry="7.5"/>
+    <ellipse cx="45" cy="0" rx="13.5" ry="7.5"/>
+    <ellipse cx="15" cy="60" rx="13.5" ry="7.5"/>
+    <ellipse cx="45" cy="60" rx="13.5" ry="7.5"/>
+    <!-- Corner Inner concentric contours -->
+    <ellipse cx="0" cy="15" rx="4.5" ry="9" stroke-dasharray="1.5,1.5"/>
+    <ellipse cx="60" cy="15" rx="4.5" ry="9" stroke-dasharray="1.5,1.5"/>
+    <ellipse cx="0" cy="45" rx="4.5" ry="9" stroke-dasharray="1.5,1.5"/>
+    <ellipse cx="60" cy="45" rx="4.5" ry="9" stroke-dasharray="1.5,1.5"/>
+    <ellipse cx="15" cy="0" rx="9" ry="4.5" stroke-dasharray="1.5,1.5"/>
+    <ellipse cx="45" cy="0" rx="9" ry="4.5" stroke-dasharray="1.5,1.5"/>
+    <ellipse cx="15" cy="60" rx="9" ry="4.5" stroke-dasharray="1.5,1.5"/>
+    <ellipse cx="45" cy="60" rx="9" ry="4.5" stroke-dasharray="1.5,1.5"/>
+    <!-- Center & Corner Truntum Blossom Stars / Dots -->
+    <circle cx="30" cy="30" r="2.2" fill="#9E7A3E"/>
+    <circle cx="0" cy="0" r="2.2" fill="#9E7A3E"/>
+    <circle cx="60" cy="0" r="2.2" fill="#9E7A3E"/>
+    <circle cx="0" cy="60" r="2.2" fill="#9E7A3E"/>
+    <circle cx="60" cy="60" r="2.2" fill="#9E7A3E"/>
+    <!-- Intersection Seeds -->
+    <circle cx="30" cy="0" r="1.5" fill="#9E7A3E"/>
+    <circle cx="30" cy="60" r="1.5" fill="#9E7A3E"/>
+    <circle cx="0" cy="30" r="1.5" fill="#9E7A3E"/>
+    <circle cx="60" cy="30" r="1.5" fill="#9E7A3E"/>
+  </g>
+</svg>

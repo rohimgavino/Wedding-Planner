@@ -348,6 +348,17 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
         aria-hidden="true"
       />
 
+      {/* 2. Traditional Indonesian Batik Kawung Watermark Pattern */}
+      <div 
+        className="pointer-events-none fixed inset-0 z-0 opacity-[0.6] mix-blend-multiply"
+        style={{
+          backgroundImage: "url('/images/batik-kawung.svg')",
+          backgroundSize: "64px 64px",
+          backgroundRepeat: "repeat"
+        }}
+        aria-hidden="true"
+      />
+
       {/* 2. Soft Radial Golden Ambient Glow Vignettes */}
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
         <div className="absolute -top-[10%] left-1/2 -translate-x-1/2 w-[720px] h-[720px] rounded-full bg-gradient-to-b from-amber-200/20 via-amber-100/10 to-transparent blur-3xl" />
