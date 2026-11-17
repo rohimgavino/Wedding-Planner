@@ -6,6 +6,12 @@ import {
   verifyDokuResponse,
   verifyDokuStatusResponse,
 } from './doku-crypto.mjs';
+import {
+  isMayarConfigured,
+  createMayarPayment,
+  handleMayarWebhook,
+  MAYAR_WEBHOOK_TARGET,
+} from './mayar.mjs';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const VALID_PACKAGES = new Set(['starter', 'premium', 'wedding_pro']);
@@ -139,8 +145,7 @@ function hasPaymentSecrets(env) {
   return Boolean(
     hasSupabaseConfig(env) &&
       env?.SUPABASE_SERVICE_ROLE_KEY &&
-      env?.DOKU_CLIENT_ID &&
-      env?.DOKU_SECRET_KEY
+      ((env?.DOKU_CLIENT_ID && env?.DOKU_SECRET_KEY) || isMayarConfigured(env))
   );
 }
 
@@ -154,13 +159,17 @@ async function handleCatalog(env, fetchImpl) {
   }
   const salesEnabled = Boolean(rpc.data.sales_enabled);
   const dokuConfigured = Boolean(env?.DOKU_CLIENT_ID && env?.DOKU_SECRET_KEY && env?.SUPABASE_SERVICE_ROLE_KEY);
+  const mayarConfigured = isMayarConfigured(env);
+  const paymentReady = dokuConfigured || mayarConfigured;
   const rawPackages = Array.isArray(rpc.data.packages) ? rpc.data.packages : [];
   return jsonResponse({
     salesEnabled,
     supportEmail: rpc.data.support_email || null,
     serverNow: rpc.data.server_now || null,
-    packages: rawPackages.map((pkg) => normalizeCatalogPackage(pkg, salesEnabled, dokuConfigured)),
-    dokuConfigured,
+    packages: rawPackages.map((pkg) => normalizeCatalogPackage(pkg, salesEnabled, paymentReady)),
+    dokuConfigured: paymentReady,
+    mayarConfigured,
+    activeGateway: (env?.PAYMENT_GATEWAY === 'mayar' || (!dokuConfigured && mayarConfigured)) ? 'mayar' : 'doku',
   });
 }
 
@@ -434,6 +443,57 @@ async function handleCheckout(request, env, fetchImpl) {
   }
 
   const origin = new URL(request.url).origin;
+  const dokuConfigured = Boolean(env?.DOKU_CLIENT_ID && env?.DOKU_SECRET_KEY);
+  const useMayar = env?.PAYMENT_GATEWAY === 'mayar' || (!dokuConfigured && isMayarConfigured(env));
+
+  if (useMayar) {
+    const mayarRes = await createMayarPayment({ env, order, user, origin, fetchImpl });
+    if (!mayarRes.ok) {
+      await callSupabaseRpc(
+        env,
+        'doku_set_order_result',
+        {
+          p_invoice: order.invoice,
+          p_status: 'failed',
+          p_http_status: 502,
+          p_error_code: mayarRes.error || 'MAYAR_FAILED',
+        },
+        env.SUPABASE_SERVICE_ROLE_KEY,
+        fetchImpl
+      );
+      return jsonResponse({ error: mayarRes.error, message: mayarRes.message }, 502);
+    }
+
+    const saved = await callSupabaseRpc(
+      env,
+      'doku_set_order_result',
+      {
+        p_invoice: order.invoice,
+        p_status: 'checkout_ready',
+        p_checkout_url: mayarRes.checkoutUrl,
+        p_http_status: 200,
+        p_error_code: null,
+      },
+      env.SUPABASE_SERVICE_ROLE_KEY,
+      fetchImpl
+    );
+
+    if (!saved.ok) {
+      return jsonResponse({ error: 'ORDER_SAVE_FAILED', invoice: order.invoice }, 502);
+    }
+
+    return jsonResponse({
+      status: 'checkout_ready',
+      invoice: order.invoice,
+      packageId: order.package_id,
+      amountIdr: order.amount_idr,
+      checkoutUrl: mayarRes.checkoutUrl,
+      expiresAt: order.expires_at,
+      reused: false,
+      gateway: 'mayar',
+    });
+  }
+
   const dokuPayload = {
     order: {
       amount: order.amount_idr,
@@ -737,6 +797,9 @@ export async function handleRequest(request, env, fetchImpl = fetch) {
   } else if (path === DOKU_NOTIFICATION_TARGET) {
     if (request.method !== 'POST') response = jsonResponse({ error: 'METHOD_NOT_ALLOWED' }, 405);
     else response = await handleNotification(request, env, fetchImpl);
+  } else if (path === MAYAR_WEBHOOK_TARGET || path === '/mayar/notifications') {
+    if (request.method !== 'POST') response = jsonResponse({ error: 'METHOD_NOT_ALLOWED' }, 405);
+    else response = await handleMayarWebhook(request, env, fetchImpl, callSupabaseRpc);
   } else if (env?.ASSETS) {
     const assetResp = await env.ASSETS.fetch(request);
     if (assetResp.status === 404 && path.startsWith('/u/')) {
