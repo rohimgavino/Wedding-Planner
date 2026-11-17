@@ -77,7 +77,7 @@ export function WorkspaceProvider({children}: {children: React.ReactNode}) {
    const data = await new CloudWorkspace(createClient()).load(activeId.current);
    if (uid !== identity.current || epoch !== generation.current) return false;
    owner.current = uid;setSnapshot(data);setError('');setLoaded(true);return true;
-  } catch {if(uid === identity.current && epoch === generation.current){setError('Workspace cloud tidak dapat dimuat. Tidak ada fallback ke data lokal. Coba muat ulang.');setLoaded(true);}return false;}
+  } catch (err) {if(typeof console !== 'undefined') console.error('Workspace load error:', err);if(uid === identity.current && epoch === generation.current){setError('Workspace cloud tidak dapat dimuat. Tidak ada fallback ke data lokal. Coba muat ulang.');setLoaded(true);}return false;}
  };
  useEffect(()=>{try {setLegacy(localStorage.getItem(STORAGE_KEY)!==null || localStorage.getItem(LEGACY_KEY)!==null);} catch {setLegacy(true);}},[]);
  useEffect(()=>{

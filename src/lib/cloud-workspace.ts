@@ -11,6 +11,20 @@ const fields: Record<Table, string[]> = {
 };
 function clean(table: Table, item: Record<string, unknown>) { return Object.fromEntries(Object.entries(item).filter(([key,value])=>fields[table].includes(key) && value !== undefined)); }
 function checked<T>(result: {data:T;error:unknown}): T { if (result.error) throw new Error('Operasi cloud gagal. Periksa koneksi dan konfigurasi database, lalu coba lagi.'); return result.data; }
+function safeRows<T>(result: { data: T[] | null; error: unknown }): T[] {
+  if (result.error) {
+    if (typeof console !== 'undefined') console.warn('Pemberitahuan query tabel modular:', result.error);
+    return [];
+  }
+  return Array.isArray(result.data) ? result.data : [];
+}
+function safeSingle<T>(result: { data: T | null; error: unknown }): T | null {
+  if (result.error) {
+    if (typeof console !== 'undefined') console.warn('Pemberitahuan query baris modular:', result.error);
+    return null;
+  }
+  return result.data ?? null;
+}
 export class CloudWorkspace {
  constructor(private db: SupabaseClient) {}
  private async requireUser() { const {data,error} = await this.db.auth.getUser(); if (error || !data.user) throw new Error('Login diperlukan. Silakan masuk kembali.'); return data.user; }
@@ -35,13 +49,13 @@ export class CloudWorkspace {
     this.db.from('wedding_engagement_rundowns').select('*').eq('workspace_id',workspace.id).order('sort_order',{ascending:true}).order('time_start',{ascending:true})
   ]);
   const testAccess=checked(await this.db.rpc('has_developer_test_access',{p_workspace_id:workspace.id}));
-  const invitation = (invitationsRes?.data || null) as WeddingInvitation | null;
+  const invitation = safeSingle(invitationsRes) as WeddingInvitation | null;
   let wishes: InvitationWish[] = [];
   if (invitation?.id) {
     const wishesRes = await this.db.from('wedding_invitation_wishes').select('*').eq('invitation_id', invitation.id).order('created_at', {ascending: false});
-    wishes = (wishesRes?.data || []) as InvitationWish[];
+    wishes = safeRows(wishesRes) as InvitationWish[];
   }
-  return {developerTestAccess:testAccess===true,workspace,budgets:checked(budgets) || [],tasks:checked(tasks) || [],guests:checked(guests) || [],members:checked(members) || [],savings:checked(savings) || [],entitlements:checked(entitlements) || [],invitation,wishes,rundowns:checked(rundownsRes) || [],palette:(paletteRes?.data || null) as ColorPalette | null,moodboards:checked(moodboardsRes) || [],honeymoonTrip:(honeymoonTripRes?.data || null) as HoneymoonTrip | null,honeymoonExpenses:checked(honeymoonExpRes) || [],honeymoonItineraries:checked(honeymoonItinRes) || [],engagementEvent:(engagementEventRes?.data || null) as EngagementEvent | null,engagementGifts:checked(engagementGiftsRes) || [],engagementRundowns:checked(engagementRundownsRes) || []};
+  return {developerTestAccess:testAccess===true,workspace,budgets:checked(budgets) || [],tasks:checked(tasks) || [],guests:checked(guests) || [],members:checked(members) || [],savings:checked(savings) || [],entitlements:checked(entitlements) || [],invitation,wishes,rundowns:safeRows(rundownsRes) as RundownEvent[],palette:safeSingle(paletteRes) as ColorPalette | null,moodboards:safeRows(moodboardsRes) as MoodboardItem[],honeymoonTrip:safeSingle(honeymoonTripRes) as HoneymoonTrip | null,honeymoonExpenses:safeRows(honeymoonExpRes) as HoneymoonExpense[],honeymoonItineraries:safeRows(honeymoonItinRes) as HoneymoonItinerary[],engagementEvent:safeSingle(engagementEventRes) as EngagementEvent | null,engagementGifts:safeRows(engagementGiftsRes) as EngagementGift[],engagementRundowns:safeRows(engagementRundownsRes) as EngagementRundown[]};
  }
  async create(params: WorkspaceParams) {
   await this.requireUser();
