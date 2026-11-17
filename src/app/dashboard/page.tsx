@@ -24,7 +24,8 @@ import {
   Heart, Calendar, Wallet, CheckSquare, Users, Plus, 
   MessageCircle, Share2, Check, Trash2,
   Sparkles, Download, CheckCircle2, Copy,
-  Search, ShieldCheck, Mail, Clock, Palette, Compass, Gift
+  Search, ShieldCheck, Mail, Clock, Palette, Compass, Gift,
+  Menu, X
 } from "lucide-react";
 import { formatRupiah, calculateDaysRemaining, formatDateID } from "@/lib/utils";
 import { generateWhatsAppLink } from "@/lib/whatsapp";
@@ -39,6 +40,7 @@ export default function DashboardPage() {
   } = useWorkspace();
 
   const [activeTab, setActiveTab] = useState<"overview" | "budget" | "tasks" | "guests" | "rundown" | "moodboard" | "honeymoon" | "engagement" | "invitation" | "savings" | "pairing">("overview");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Modals state
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -164,14 +166,81 @@ export default function DashboardPage() {
 
   return (
     <div className="planner-shell">
-      <aside className="planner-sidebar">
-        <Link className="planner-brand" href="/" aria-label="Pocket Planner — Beranda"><Image src="/images/pocket-planner-logo.png" alt="Pocket Planner" width={176} height={104} unoptimized/><span>WEDDING PLANNER</span></Link>
+      {sidebarOpen && (
+        <button
+          type="button"
+          className="planner-backdrop-overlay"
+          aria-label="Tutup navigasi sidebar"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      <aside className={`planner-sidebar${sidebarOpen ? " is-open" : ""}`} aria-label="Navigasi Ruang Perencanaan">
+        <div className="planner-sidebar-top">
+          <Link className="planner-brand" href="/" aria-label="Pocket Planner — Beranda">
+            <Image src="/images/pocket-planner-logo.png" alt="Pocket Planner" width={176} height={104} unoptimized/>
+            <span>WEDDING PLANNER</span>
+          </Link>
+          <button
+            type="button"
+            className="planner-sidebar-close"
+            aria-label="Tutup menu navigasi"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <X size={20} />
+          </button>
+        </div>
         <p className="planner-nav-caption">RUANG PERENCANAAN</p>
-        <nav aria-label="Navigasi workspace">{([['overview','Dashboard',Sparkles],['tasks','Timeline & Checklist',CheckSquare],['rundown','Rundown Hari H',Clock],['moodboard','Moodboard Visual',Palette],['engagement','Lamaran & Seserahan',Gift],['honeymoon','Honeymoon Planner',Compass],['budget','Budget & Biaya',Wallet],['guests','Buku Tamu',Users],['invitation','Undangan Digital',Mail],['savings','Tabungan Bersama',Wallet],['pairing','Pengaturan & Pasangan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={18}/>{label}</button>)}</nav>
-        <div className="planner-sidebar-note"><ShieldCheck size={22}/><strong>Rencana milikmu.</strong><p>Data tersimpan di workspace cloud dengan akses khusus pasangan.</p><Link href="/">Kembali ke beranda →</Link></div>
+        <nav aria-label="Navigasi workspace">
+          {([
+            ['overview','Dashboard',Sparkles],
+            ['tasks','Timeline & Checklist',CheckSquare],
+            ['rundown','Rundown Hari H',Clock],
+            ['moodboard','Moodboard Visual',Palette],
+            ['engagement','Lamaran & Seserahan',Gift],
+            ['honeymoon','Honeymoon Planner',Compass],
+            ['budget','Budget & Biaya',Wallet],
+            ['guests','Buku Tamu',Users],
+            ['invitation','Undangan Digital',Mail],
+            ['savings','Tabungan Bersama',Wallet],
+            ['pairing','Pengaturan & Pasangan',Heart]
+          ] as const).map(([tab,label,Icon]) => (
+            <button
+              key={tab}
+              aria-current={activeTab === tab ? 'page' : undefined}
+              onClick={() => {
+                setActiveTab(tab);
+                setSidebarOpen(false);
+              }}
+            >
+              <Icon size={18}/>
+              <span>{label}</span>
+            </button>
+          ))}
+        </nav>
+        <div className="planner-sidebar-note">
+          <ShieldCheck size={22}/>
+          <strong>Rencana milikmu.</strong>
+          <p>Data tersimpan di workspace cloud dengan akses khusus pasangan.</p>
+          <Link href="/">Kembali ke beranda →</Link>
+        </div>
       </aside>
       <div className="planner-body">
-        <header className="planner-topbar"><span className="planner-topbar-brand">Pocket Planner</span><span className="planner-breadcrumb">Workspace / {activeTab === 'overview' ? 'Dashboard' : activeTab === 'pairing' ? 'Pengaturan' : activeTab === 'tasks' ? 'Timeline' : activeTab === 'rundown' ? 'Rundown Hari H' : activeTab === 'moodboard' ? 'Moodboard' : activeTab === 'engagement' ? 'Lamaran' : activeTab === 'honeymoon' ? 'Honeymoon' : activeTab === 'guests' ? 'Buku Tamu' : activeTab === 'savings' ? 'Tabungan Bersama' : activeTab === 'invitation' ? 'Undangan Digital' : 'Budget'}</span><button onClick={async () => { if (await issueInvite()) setShowInviteModal(true); }}><Share2 size={16}/><span>Tautan pasangan</span></button></header>
+        <header className="planner-topbar">
+          <div className="planner-topbar-left">
+            <button
+              className="planner-menu-toggle"
+              type="button"
+              aria-label="Buka menu navigasi"
+              aria-expanded={sidebarOpen}
+              onClick={() => setSidebarOpen(true)}
+            >
+              <Menu size={22} />
+            </button>
+            <span className="planner-topbar-brand">Pocket Planner</span>
+          </div>
+          <span className="planner-breadcrumb">Workspace / {activeTab === 'overview' ? 'Dashboard' : activeTab === 'pairing' ? 'Pengaturan' : activeTab === 'tasks' ? 'Timeline' : activeTab === 'rundown' ? 'Rundown Hari H' : activeTab === 'moodboard' ? 'Moodboard' : activeTab === 'engagement' ? 'Lamaran' : activeTab === 'honeymoon' ? 'Honeymoon' : activeTab === 'guests' ? 'Buku Tamu' : activeTab === 'savings' ? 'Tabungan Bersama' : activeTab === 'invitation' ? 'Undangan Digital' : 'Budget'}</span>
+          <button onClick={async () => { if (await issueInvite()) setShowInviteModal(true); }}><Share2 size={16}/><span>Tautan pasangan</span></button>
+        </header>
         <main className="planner-main">
           <FillingExample />
           {(activeTab === 'overview' || activeTab === 'pairing') && <PlanningReset />}
