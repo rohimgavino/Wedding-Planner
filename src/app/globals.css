@@ -207,9 +207,9 @@ body {
 @media(max-width:480px){.planning-reset-backdrop>[role=dialog]>div{padding:20px;}}
 
 /* Auth toolbar: scoped to the shared account action, not planner controls. */
-.account-toolbar{display:flex;justify-content:flex-end;align-items:center;padding:10px 24px;background:#f6f4ec;border-bottom:1px solid #d8ddd3;}
-.account-logout{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;min-width:104px;padding:10px 16px;border:1px solid #b4c1b5;border-radius:12px;background:#f6f4ec;color:#233d32;font-family:inherit;font-size:14px;font-weight:600;line-height:1.4;cursor:pointer;text-decoration:none;transition:background-color .15s,border-color .15s;}
-.account-logout:hover{background:#e7ece2;border-color:#647b67;}
+.account-toolbar{display:flex;justify-content:flex-end;align-items:center;padding:10px 28px;background:#f8faf5;border-bottom:1px solid #e2e8de;}
+.account-logout{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:38px;padding:8px 16px;border:1px solid #c7d5c5;border-radius:10px;background:#ffffff;color:#233d32;font-family:inherit;font-size:13px;font-weight:600;line-height:1.4;cursor:pointer;text-decoration:none;box-shadow:0 1px 3px rgba(32,61,50,0.04);transition:all .18s ease;}
+.account-logout:hover{background:#edf5eb;border-color:#a2bba0;transform:translateY(-1px);box-shadow:0 3px 6px rgba(32,61,50,0.08);}
 .account-logout:focus-visible{outline:3px solid #233d32;outline-offset:3px;}
 .account-logout svg{flex-shrink:0;}
 @media(max-width:640px){.account-toolbar{padding:8px 16px;}}

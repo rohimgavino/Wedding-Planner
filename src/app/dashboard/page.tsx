@@ -25,7 +25,7 @@ import {
   MessageCircle, Share2, Check, Trash2,
   Sparkles, Download, CheckCircle2, Copy,
   Search, ShieldCheck, Mail, Clock, Palette, Compass, Gift,
-  Menu, X
+  Menu, X, PanelLeftClose, PanelLeftOpen
 } from "lucide-react";
 import { formatRupiah, calculateDaysRemaining, formatDateID } from "@/lib/utils";
 import { generateWhatsAppLink } from "@/lib/whatsapp";
@@ -40,7 +40,16 @@ export default function DashboardPage() {
   } = useWorkspace();
 
   const [activeTab, setActiveTab] = useState<"overview" | "budget" | "tasks" | "guests" | "rundown" | "moodboard" | "honeymoon" | "engagement" | "invitation" | "savings" | "pairing">("overview");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    if (typeof window !== "undefined" && window.innerWidth <= 800) {
+      setMobileDrawerOpen(prev => !prev);
+    } else {
+      setSidebarCollapsed(prev => !prev);
+    }
+  };
 
   // Modals state
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -165,16 +174,16 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="planner-shell">
-      {sidebarOpen && (
+    <div className={`planner-shell${sidebarCollapsed ? " sidebar-collapsed" : ""}`}>
+      {mobileDrawerOpen && (
         <button
           type="button"
           className="planner-backdrop-overlay"
           aria-label="Tutup navigasi sidebar"
-          onClick={() => setSidebarOpen(false)}
+          onClick={() => setMobileDrawerOpen(false)}
         />
       )}
-      <aside className={`planner-sidebar${sidebarOpen ? " is-open" : ""}`} aria-label="Navigasi Ruang Perencanaan">
+      <aside className={`planner-sidebar${mobileDrawerOpen ? " is-open" : ""}${sidebarCollapsed ? " is-collapsed" : ""}`} aria-label="Navigasi Ruang Perencanaan">
         <div className="planner-sidebar-top">
           <Link className="planner-brand" href="/" aria-label="Pocket Planner — Beranda">
             <Image src="/images/pocket-planner-logo.png" alt="Pocket Planner" width={176} height={104} unoptimized/>
@@ -184,7 +193,10 @@ export default function DashboardPage() {
             type="button"
             className="planner-sidebar-close"
             aria-label="Tutup menu navigasi"
-            onClick={() => setSidebarOpen(false)}
+            onClick={() => {
+              setMobileDrawerOpen(false);
+              setSidebarCollapsed(true);
+            }}
           >
             <X size={20} />
           </button>
@@ -209,7 +221,7 @@ export default function DashboardPage() {
               aria-current={activeTab === tab ? 'page' : undefined}
               onClick={() => {
                 setActiveTab(tab);
-                setSidebarOpen(false);
+                setMobileDrawerOpen(false);
               }}
             >
               <Icon size={18}/>
@@ -228,13 +240,17 @@ export default function DashboardPage() {
         <header className="planner-topbar">
           <div className="planner-topbar-left">
             <button
-              className="planner-menu-toggle"
+              className={`planner-menu-toggle${sidebarCollapsed ? " is-collapsed" : ""}`}
               type="button"
-              aria-label="Buka menu navigasi"
-              aria-expanded={sidebarOpen}
-              onClick={() => setSidebarOpen(true)}
+              aria-label={sidebarCollapsed ? "Buka menu samping" : "Sembunyikan menu samping"}
+              title={sidebarCollapsed ? "Buka menu samping" : "Sembunyikan menu samping"}
+              aria-expanded={!sidebarCollapsed}
+              onClick={toggleSidebar}
             >
-              <Menu size={22} />
+              {sidebarCollapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
+              <span className="planner-toggle-text">
+                {sidebarCollapsed ? "Buka menu" : "Sembunyikan"}
+              </span>
             </button>
             <span className="planner-topbar-brand">Pocket Planner</span>
           </div>
@@ -257,9 +273,24 @@ export default function DashboardPage() {
 
           {activeTab === 'overview' && <div className="planner-overview">
             <section className="planner-metrics" aria-label="Ringkasan rencana">
-              <button onClick={() => setActiveTab('tasks')}><span>Timeline <CheckSquare size={17}/></span><strong>{totalCompletedTasks}<small> / {totalTasksCount}</small></strong><p>Tugas selesai · {taskProgressPercent}%</p><progress value={taskProgressPercent} max="100"/></button>
-              <button onClick={() => setActiveTab('budget')}><span>Budget <Wallet size={17}/></span><strong className="planner-money">{formatRupiah(totalSpentBudget)}</strong><p>{workspace.target_budget > 0 ? `${Math.round(totalSpentBudget / workspace.target_budget * 100)}% dari ${formatRupiah(workspace.target_budget)}` : 'Target anggaran belum diatur'}</p><progress value={Math.min(100, workspace.target_budget > 0 ? totalSpentBudget / workspace.target_budget * 100 : 0)} max="100"/></button>
-              <button onClick={() => setActiveTab('guests')}><span>Tamu <Users size={17}/></span><strong>{totalConfirmedPax}<small> pax hadir</small></strong><p>{totalGuestsCount} undangan · {totalPaxCount} pax total</p><progress value={totalPaxCount > 0 ? totalConfirmedPax / totalPaxCount * 100 : 0} max="100"/></button>
+              <button onClick={() => setActiveTab('tasks')} className="metric-tasks">
+                <span>Timeline <CheckSquare size={17}/></span>
+                <strong>{totalCompletedTasks}<small> / {totalTasksCount}</small></strong>
+                <p>Tugas selesai · {taskProgressPercent}%</p>
+                <progress value={taskProgressPercent} max="100"/>
+              </button>
+              <button onClick={() => setActiveTab('budget')} className="metric-budget">
+                <span>Budget <Wallet size={17}/></span>
+                <strong className="planner-money">{formatRupiah(totalSpentBudget)}</strong>
+                <p>{workspace.target_budget > 0 ? `${Math.round(totalSpentBudget / workspace.target_budget * 100)}% dari ${formatRupiah(workspace.target_budget)}` : 'Target anggaran belum diatur'}</p>
+                <progress value={Math.min(100, workspace.target_budget > 0 ? totalSpentBudget / workspace.target_budget * 100 : 0)} max="100"/>
+              </button>
+              <button onClick={() => setActiveTab('guests')} className="metric-guests">
+                <span>Tamu <Users size={17}/></span>
+                <strong>{totalConfirmedPax}<small> pax hadir</small></strong>
+                <p>{totalGuestsCount} undangan · {totalPaxCount} pax total</p>
+                <progress value={totalPaxCount > 0 ? totalConfirmedPax / totalPaxCount * 100 : 0} max="100"/>
+              </button>
             </section>
             <div className="planner-panels">
               <section className="planner-panel"><div className="planner-panel-heading"><div><h2>Langkah berikutnya</h2><p>Tugas belum selesai, diurutkan menurut fase.</p></div><button onClick={() => setActiveTab('tasks')}>Lihat semua →</button></div>
