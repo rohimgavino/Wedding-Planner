@@ -1,12 +1,13 @@
 "use client";
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
-import type { BudgetItem, TaskItem, GuestItem, SavingsContribution, WeddingInvitation, InvitationWish, RundownEvent, ColorPalette, MoodboardItem } from '@/types';
+import type { BudgetItem, TaskItem, GuestItem, SavingsContribution, WeddingInvitation, InvitationWish, RundownEvent, ColorPalette, MoodboardItem, HoneymoonTrip, HoneymoonExpense, HoneymoonItinerary } from '@/types';
 import { CloudWorkspace, CloudSnapshot, WorkspaceParams } from '@/lib/cloud-workspace';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/context/auth-context';
 import { STORAGE_KEY, LEGACY_KEY } from '@/lib/workspace-storage';
 import { getRundownTemplate, RundownTemplateType } from '@/lib/rundown-templates';
 import { getStarterMoodboardInspirations } from '@/lib/moodboard-presets';
+import { HONEYMOON_PRESETS } from '@/lib/honeymoon-presets';
 type NewGuest = Omit<GuestItem,'id'|'workspace_id'>;
 interface WorkspaceContextType extends CloudSnapshot {
  inviteToken: string; isLoaded: boolean; error: string; busy: boolean;
@@ -38,11 +39,19 @@ interface WorkspaceContextType extends CloudSnapshot {
  updateMoodboardItem: (id: string, item: Partial<MoodboardItem>) => Promise<boolean>;
  deleteMoodboardItem: (id: string) => Promise<boolean>;
  applyStarterMoodboard: () => Promise<boolean>;
+ saveHoneymoonTrip: (item: Partial<HoneymoonTrip>) => Promise<boolean>;
+ createHoneymoonExpense: (item: Partial<HoneymoonExpense>) => Promise<boolean>;
+ updateHoneymoonExpense: (id: string, item: Partial<HoneymoonExpense>) => Promise<boolean>;
+ deleteHoneymoonExpense: (id: string) => Promise<boolean>;
+ createHoneymoonItinerary: (item: Partial<HoneymoonItinerary>) => Promise<boolean>;
+ updateHoneymoonItinerary: (id: string, item: Partial<HoneymoonItinerary>) => Promise<boolean>;
+ deleteHoneymoonItinerary: (id: string) => Promise<boolean>;
+ applyHoneymoonPreset: (presetKey: string) => Promise<boolean>;
  applyEditableStarter: (workspaceId: string, userId: string) => Promise<boolean>;
  resetPlanningContent: (confirmation: string) => Promise<boolean>;
  reload: () => Promise<boolean>;
 }
-const empty = (): CloudSnapshot => ({workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],rundowns:[],palette:null,moodboards:[],developerTestAccess:false});
+const empty = (): CloudSnapshot => ({workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],rundowns:[],palette:null,moodboards:[],honeymoonTrip:null,honeymoonExpenses:[],honeymoonItineraries:[],developerTestAccess:false});
 const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
 export function WorkspaceProvider({children}: {children: React.ReactNode}) {
  const {user,ready,configured} = useAuth();
@@ -111,6 +120,14 @@ export function WorkspaceProvider({children}: {children: React.ReactNode}) {
   updateMoodboardItem: (key,item)=>run((cloud,id)=>cloud.updateMoodboardItem(id,key,item)),
   deleteMoodboardItem: key=>run((cloud,id)=>cloud.deleteMoodboardItem(id,key)),
   applyStarterMoodboard: ()=>run((cloud,id)=>cloud.insertMoodboardBatch(id,getStarterMoodboardInspirations())),
+  saveHoneymoonTrip: item=>run((cloud,id)=>cloud.saveHoneymoonTrip(id,item)),
+  createHoneymoonExpense: item=>run((cloud,id)=>cloud.createHoneymoonExpense(id,item)),
+  updateHoneymoonExpense: (key,item)=>run((cloud,id)=>cloud.updateHoneymoonExpense(id,key,item)),
+  deleteHoneymoonExpense: key=>run((cloud,id)=>cloud.deleteHoneymoonExpense(id,key)),
+  createHoneymoonItinerary: item=>run((cloud,id)=>cloud.createHoneymoonItinerary(id,item)),
+  updateHoneymoonItinerary: (key,item)=>run((cloud,id)=>cloud.updateHoneymoonItinerary(id,key,item)),
+  deleteHoneymoonItinerary: key=>run((cloud,id)=>cloud.deleteHoneymoonItinerary(id,key)),
+  applyHoneymoonPreset: presetKey=>{const p=HONEYMOON_PRESETS[presetKey];if(!p)return Promise.resolve(false);return run((cloud,id)=>cloud.applyHoneymoonPreset(id,p));},
   applyEditableStarter: (expectedId,uid)=>run((cloud,id)=>{if(id!==expectedId || uid!==identity.current)throw new Error('Identitas berubah. Buka ulang pratinjau.');return cloud.applyEditableStarter(id,uid);}),
   resetPlanningContent: confirmation=>run(async (cloud,id)=>{
    const resetUid=identity.current;

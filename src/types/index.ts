@@ -179,3 +179,46 @@ export interface MoodboardItem {
   created_at?: string;
   updated_at?: string;
 }
+
+export type HoneymoonExpenseCategory = 'transportasi' | 'hotel_resort' | 'kuliner' | 'wisata' | 'belanja_souvenir' | 'lainnya';
+
+export interface HoneymoonTrip {
+  id: string;
+  workspace_id: string;
+  destination: string;
+  start_date?: string | null;
+  end_date?: string | null;
+  target_budget: number;
+  hotel_name?: string | null;
+  booking_code?: string | null;
+  notes?: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface HoneymoonExpense {
+  id: string;
+  workspace_id: string;
+  category: HoneymoonExpenseCategory;
+  title: string;
+  allocated_amount: number;
+  spent_amount: number;
+  payment_status: 'unpaid' | 'dp' | 'paid';
+  booking_reference?: string | null;
+  notes?: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface HoneymoonItinerary {
+  id: string;
+  workspace_id: string;
+  day_number: number;
+  time_start?: string | null;
+  activity: string;
+  location?: string | null;
+  notes?: string | null;
+  sort_order: number;
+  created_at?: string;
+  updated_at?: string;
+}
