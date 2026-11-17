@@ -16,7 +16,7 @@ export const demoPlans: PlanTier[] = [
     accessDuration: '6 Bulan Akses Penuh',
     description: 'Solusi esensial untuk pasangan yang ingin merapikan persiapan inti pernikahan.',
     features: [
-      'Kolaborasi Pasangan Real-time',
+      'Kolaborasi Pasangan Tersinkron Cloud',
       'Rundown Hari H & Timeline Acara',
       'Budget & Pelacakan Pengeluaran',
       'Wedding Checklist & Berkas KUA',

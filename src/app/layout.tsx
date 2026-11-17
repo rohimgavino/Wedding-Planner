@@ -11,6 +11,28 @@ export const metadata: Metadata = {
     icon: "/favicon.ico?v=pp-alpha-2",
     apple: "/apple-touch-icon.png?v=pp-alpha-2",
   },
+  openGraph: {
+    title: "Pocket Planner — Wujudkan Pernikahan Impian Tanpa Beban",
+    description: "Rencanakan pernikahan impianmu dengan lebih tenang. Checklist persiapan, anggaran, daftar tamu, dan undangan digital bersama Pocket Planner.",
+    url: "https://pocketwedding.id",
+    siteName: "Pocket Planner",
+    locale: "id_ID",
+    type: "website",
+    images: [
+      {
+        url: "https://pocketwedding.id/images/wedding-flowers.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Pocket Planner — Aplikasi Perencana Pernikahan Modern",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pocket Planner — Wujudkan Pernikahan Impian Tanpa Beban",
+    description: "Rencanakan pernikahan impianmu dengan lebih tenang. Checklist persiapan, anggaran, daftar tamu, dan undangan digital bersama Pocket Planner.",
+    images: ["https://pocketwedding.id/images/wedding-flowers.jpg"],
+  },
 };
 
 export const viewport: Viewport = {

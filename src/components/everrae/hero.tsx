@@ -3,13 +3,24 @@ import Link from "next/link";
 import { ArrowRight, Play } from "lucide-react";
 import { Navigation } from "./navigation";
 
+/**
+ * Konfigurasi Slot Foto Hero
+ * Untuk mengganti foto ke tema pernikahan (pasangan, cincin, atau dekorasi):
+ * 1. Simpan foto berlisensi resmi di folder public/images/ (misal: /images/wedding-hero.jpg)
+ * 2. Ubah nilai `src` di bawah ini menjadi "/images/wedding-hero.jpg"
+ */
+export const HERO_PHOTO_CONFIG = {
+  src: "/images/landscape-lake.jpg",
+  alt: "Lanskap danau biru di antara pegunungan, menghadirkan ketenangan dalam merencanakan pernikahan",
+};
+
 export function Hero() {
   return (
     <section id="home" className="er-hero">
       <Image
         className="er-hero-photo"
-        src="/images/landscape-lake.jpg"
-        alt="Danau biru di antara pegunungan, dibingkai pepohonan pinus"
+        src={HERO_PHOTO_CONFIG.src}
+        alt={HERO_PHOTO_CONFIG.alt}
         fill
         priority
         sizes="100vw"

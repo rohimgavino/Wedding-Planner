@@ -72,7 +72,7 @@ export function Features() {
             />
             <div className="er-invitation">
               <Flower2 size={38} strokeWidth={0.7} />
-              <small>THE WEDDING OF</small>
+              <small>PERNIKAHAN DARI</small>
               <span>
                 Alya
                 <br />

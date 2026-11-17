@@ -12,7 +12,7 @@ export function PlannerPreview({ interactive = true }: { interactive?: boolean }
     <div className="er-preview">
       <aside className="er-preview-sidebar">
         <span className="er-preview-brand">Pocket Planner</span>
-        <span className="er-preview-side-label">WEDDING WORKSPACE</span>
+        <span className="er-preview-side-label">RUANG PERENCANAAN</span>
         {[[LayoutDashboard, "Dashboard"], [CalendarDays, "Timeline"], [Wallet, "Budget"], [Users, "Guest List"]].map(([Icon, label]) => {
           const I = Icon as typeof CalendarDays;
           return (
@@ -26,7 +26,7 @@ export function PlannerPreview({ interactive = true }: { interactive?: boolean }
       </aside>
       <div className="er-preview-main">
         <div className="er-preview-top">
-          <span>THE WEDDING OF</span>
+          <span>PERNIKAHAN DARI</span>
           <span className="er-avatar">A & R</span>
         </div>
         <h3>Alya & Reza</h3>
@@ -51,7 +51,7 @@ export function PlannerPreview({ interactive = true }: { interactive?: boolean }
         </div>
         <div className="er-preview-grid">
           <div className="er-preview-panel">
-            <h4>{tab === "Timeline" ? "Wedding Timeline" : tab === "Budget" ? "Rincian anggaran" : "Guest List"}</h4>
+            <h4>{tab === "Timeline" ? "Timeline Persiapan" : tab === "Budget" ? "Rincian anggaran" : "Guest List"}</h4>
             {tab === "Timeline" ? (
               <>
                 <p className="er-preview-muted">SETIAP LANGKAH, LEBIH DEKAT</p>
@@ -99,10 +99,10 @@ export function PlannerPreview({ interactive = true }: { interactive?: boolean }
               height={330}
             />
             <div className="er-preview-panel">
-              <h4>Budget Progress</h4>
+              <h4>Progres Anggaran</h4>
               <strong>Rp 60.000.000</strong>
               <p className="er-preview-muted">dari Rp 100.000.000 · contoh</p>
-              <progress value={60} max={100} aria-label="Budget demo 60 persen" />
+              <progress value={60} max={100} aria-label="Progres anggaran demo 60 persen" />
               <div className="er-budget-footer">
                 <span>Terencana</span>
                 <b>60%</b>
