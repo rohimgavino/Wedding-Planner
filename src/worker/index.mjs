@@ -695,41 +695,66 @@ async function handleNotification(request, env, fetchImpl) {
   return jsonResponse({ status: 'ok', outcome });
 }
 
+export function withSecurityHeaders(response) {
+  if (!response) return response;
+  const newHeaders = new Headers(response.headers);
+  if (!newHeaders.has('X-Frame-Options')) {
+    newHeaders.set('X-Frame-Options', 'DENY');
+  }
+  if (!newHeaders.has('X-Content-Type-Options')) {
+    newHeaders.set('X-Content-Type-Options', 'nosniff');
+  }
+  if (!newHeaders.has('Referrer-Policy')) {
+    newHeaders.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  }
+  if (!newHeaders.has('Strict-Transport-Security')) {
+    newHeaders.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  }
+  if (!newHeaders.has('Permissions-Policy')) {
+    newHeaders.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  }
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: newHeaders,
+  });
+}
+
 export async function handleRequest(request, env, fetchImpl = fetch) {
   const url = new URL(request.url);
   const path = url.pathname;
 
+  let response;
   if (path === '/api/payments/catalog') {
-    if (request.method !== 'GET') return jsonResponse({ error: 'METHOD_NOT_ALLOWED' }, 405);
-    return handleCatalog(env, fetchImpl);
-  }
-
-  if (path === '/api/payments/status') {
-    if (request.method !== 'GET') return jsonResponse({ error: 'METHOD_NOT_ALLOWED' }, 405);
-    return handleStatus(request, env, fetchImpl);
-  }
-
-  if (path === '/api/payments/checkout') {
-    if (request.method !== 'POST') return jsonResponse({ error: 'METHOD_NOT_ALLOWED' }, 405);
-    return handleCheckout(request, env, fetchImpl);
-  }
-
-  if (path === DOKU_NOTIFICATION_TARGET) {
-    if (request.method !== 'POST') return jsonResponse({ error: 'METHOD_NOT_ALLOWED' }, 405);
-    return handleNotification(request, env, fetchImpl);
-  }
-
-  if (env?.ASSETS) {
+    if (request.method !== 'GET') response = jsonResponse({ error: 'METHOD_NOT_ALLOWED' }, 405);
+    else response = await handleCatalog(env, fetchImpl);
+  } else if (path === '/api/payments/status') {
+    if (request.method !== 'GET') response = jsonResponse({ error: 'METHOD_NOT_ALLOWED' }, 405);
+    else response = await handleStatus(request, env, fetchImpl);
+  } else if (path === '/api/payments/checkout') {
+    if (request.method !== 'POST') response = jsonResponse({ error: 'METHOD_NOT_ALLOWED' }, 405);
+    else response = await handleCheckout(request, env, fetchImpl);
+  } else if (path === DOKU_NOTIFICATION_TARGET) {
+    if (request.method !== 'POST') response = jsonResponse({ error: 'METHOD_NOT_ALLOWED' }, 405);
+    else response = await handleNotification(request, env, fetchImpl);
+  } else if (env?.ASSETS) {
     const assetResp = await env.ASSETS.fetch(request);
     if (assetResp.status === 404 && path.startsWith('/u/')) {
       const uResp = await env.ASSETS.fetch(new Request(new URL('/u', request.url), request));
-      if (uResp.status === 200) return uResp;
-      const uHtmlResp = await env.ASSETS.fetch(new Request(new URL('/u.html', request.url), request));
-      if (uHtmlResp.status === 200) return uHtmlResp;
+      if (uResp.status === 200) response = uResp;
+      else {
+        const uHtmlResp = await env.ASSETS.fetch(new Request(new URL('/u.html', request.url), request));
+        if (uHtmlResp.status === 200) response = uHtmlResp;
+        else response = assetResp;
+      }
+    } else {
+      response = assetResp;
     }
-    return assetResp;
+  } else {
+    response = new Response('Not found', { status: 404 });
   }
-  return new Response('Not found', { status: 404 });
+
+  return withSecurityHeaders(response);
 }
 
 export default {
