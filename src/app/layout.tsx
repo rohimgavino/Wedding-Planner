@@ -4,8 +4,8 @@ import "./everrae.css";
 import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
-  title: "Pocket Planner — Plan Your Dream Wedding, Effortlessly",
-  description: "Rencanakan pernikahan dengan lebih tenang. Checklist, anggaran, dan daftar tamu bersama Pocket Planner.",
+  title: "Pocket Planner — Wujudkan Pernikahan Impian Tanpa Beban",
+  description: "Rencanakan pernikahan impianmu dengan lebih tenang. Checklist persiapan, anggaran, daftar tamu, dan undangan digital bersama Pocket Planner.",
   manifest: "/manifest.json?v=pp-alpha-2",
   icons: {
     icon: "/favicon.ico?v=pp-alpha-2",

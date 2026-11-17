@@ -17,11 +17,11 @@ export function Hero() {
       <div className="er-hero-shade" />
       <Navigation />
       <div className="er-container er-hero-content">
-        <p className="er-eyebrow">THE MODERN WEDDING PLANNER</p>
+        <p className="er-eyebrow">APLIKASI PERENCANA PERNIKAHAN MODERN</p>
         <h1>
-          Plan Your Dream
+          Wujudkan Pernikahan Impian,
           <br />
-          Wedding, <em>Effortlessly.</em>
+          <em>Tanpa Beban.</em>
         </h1>
         <p className="er-hero-description">
           Dari rencana pertama hingga hari paling istimewa. Pocket Planner
@@ -35,6 +35,10 @@ export function Hero() {
             </span>
             Lihat Demo
           </Link>
+          <a className="er-button er-hero-cta" href="#pricing">
+            Lihat Paket
+            <ArrowRight size={15} />
+          </a>
         </div>
         <div className="er-hero-facts">
           <div>
@@ -51,13 +55,13 @@ export function Hero() {
           </div>
         </div>
         <p className="er-hero-note">
-          Prototype lokal · tanpa pembayaran atau sinkronisasi cloud
+          Workspace cloud bersama pasangan · Pembayaran resmi via DOKU
         </p>
       </div>
       <p className="er-hero-script">
-        More than a plan,
+        Bukan sekadar rencana,
         <br />
-        it’s a beautiful journey.
+        ini perjalanan bahagiamu.
       </p>
     </section>
   );

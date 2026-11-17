@@ -5,11 +5,11 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const links = [
-  ["Home", "#home"],
-  ["Features", "#features"],
+  ["Beranda", "#home"],
+  ["Fitur", "#features"],
   ["Paket", "#pricing"],
-  ["Templates", "#templates"],
-  ["Resources", "#resources"],
+  ["Template", "#templates"],
+  ["Panduan", "#resources"],
 ];
 
 export function Brand() {
@@ -41,10 +41,10 @@ export function Navigation() {
   const [open, setOpen] = useState(false);
   return (
     <header className="er-nav er-container">
-      <Link href="/" aria-label="Pocket Planner home">
+      <Link href="/" aria-label="Beranda Pocket Planner">
         <Brand />
       </Link>
-      <nav aria-label="Main navigation" className="er-desktop-nav">
+      <nav aria-label="Navigasi utama" className="er-desktop-nav">
         {links.map(([label, url]) => (
           <a key={label} href={url}>
             {label}
@@ -53,11 +53,11 @@ export function Navigation() {
       </nav>
       <div className="er-nav-actions">
         <Link className="er-login" href="/login">
-          Log In
+          Masuk
         </Link>
         <button
           className="er-menu-button"
-          aria-label={open ? "Close menu" : "Open menu"}
+          aria-label={open ? "Tutup menu" : "Buka menu"}
           aria-expanded={open}
           aria-controls="mobile-navigation"
           onClick={() => setOpen(!open)}
@@ -69,14 +69,14 @@ export function Navigation() {
         <nav
           id="mobile-navigation"
           className="er-mobile-nav"
-          aria-label="Mobile navigation"
+          aria-label="Navigasi mobile"
         >
           {links.map(([label, url]) => (
             <a key={label} href={url} onClick={() => setOpen(false)}>
               {label}
             </a>
           ))}
-          <Link href="/login">Log In</Link>
+          <Link href="/login">Masuk</Link>
         </nav>
       )}
     </header>
