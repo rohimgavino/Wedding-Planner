@@ -98,6 +98,15 @@
 * **Tabungan Bersama:** Catatan setoran tabungan bersama pasangan untuk transparansi finansial.
 * **Pengaturan & Pasangan:** Tautan undangan pasangan (*shared token*), sinkronisasi cloud, reset workspace aman.
 
+### 4. VIP & Tester Allowlist Bypass
+* **Daftar Email Terdaftar:** `setiarama1997@gmail.com`
+* **Mekanisme Bypass:**
+  - Fungsi helper `isTesterBypassEmail` di `src/lib/auth-policy.ts`.
+  - Otomatis membuka gate aktivasi (`WorkspaceActivation` / paywall) di `src/app/dashboard/page.tsx`.
+  - Menginjeksi `developerTestAccess = true` dan synthetic entitlements (`core`, `wedding_pro`) pada `CloudWorkspace.load` dan `WorkspaceContext.tsx`.
+  - Memberikan status aktif di `/purchase` tanpa perlu melakukan checkout pembayaran riil.
+* **Cakupan Akses:** Bebas mengecek dan menguji seluruh modul: Dashboard KPI, Master Budget, Timeline & Checklist, Rundown Hari H, Moodboard Visual, Lamaran & Seserahan, Honeymoon Planner, Tabungan Bersama, dan Undangan Digital.
+
 ---
 
 ## 5. Standar Verifikasi & Deployment

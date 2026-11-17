@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@/context/auth-context';
 import { useWorkspace } from '@/context/WorkspaceContext';
+import { isTesterBypassEmail } from '@/lib/auth-policy';
 import { createClient } from '@/lib/supabase/client';
 import {
   DokuOrderSummary,
@@ -111,7 +112,8 @@ export default function PurchasePage() {
   }, []);
 
   const orders: DokuOrderSummary[] = useMemo(() => billing?.orders || [], [billing]);
-  const coreActive = useMemo(() => hasActiveCoreAccess(billing), [billing]);
+  const isBypass = isTesterBypassEmail(user?.email);
+  const coreActive = useMemo(() => isBypass || hasActiveCoreAccess(billing), [billing, isBypass]);
   const activeCheckoutOrder = useMemo(
     () => orders.find((order) => isOrderCheckoutActive(order)) || null,
     [orders]

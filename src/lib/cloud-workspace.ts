@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Workspace, BudgetItem, TaskItem, GuestItem, WorkspaceMember, SavingsContribution, WorkspaceEntitlement, WeddingInvitation, InvitationWish, RundownEvent, MoodboardItem, ColorPalette, HoneymoonTrip, HoneymoonExpense, HoneymoonItinerary, EngagementEvent, EngagementGift, EngagementRundown } from '@/types';
+import { isTesterBypassEmail } from './auth-policy';
 type Table = 'budgets' | 'tasks' | 'guests' | 'savings_contributions';
 export interface WorkspaceParams { groom_name: string; bride_name: string; wedding_date: string; target_budget: number; target_savings: number }
 export interface CloudSnapshot { workspace: Workspace | null; budgets: BudgetItem[]; tasks: TaskItem[]; guests: GuestItem[]; members: WorkspaceMember[]; savings: SavingsContribution[]; entitlements: WorkspaceEntitlement[]; invitation: WeddingInvitation | null; wishes: InvitationWish[]; rundowns: RundownEvent[]; palette: ColorPalette | null; moodboards: MoodboardItem[]; honeymoonTrip: HoneymoonTrip | null; honeymoonExpenses: HoneymoonExpense[]; honeymoonItineraries: HoneymoonItinerary[]; engagementEvent: EngagementEvent | null; engagementGifts: EngagementGift[]; engagementRundowns: EngagementRundown[]; developerTestAccess: boolean }
@@ -29,12 +30,13 @@ export class CloudWorkspace {
  constructor(private db: SupabaseClient) {}
  private async requireUser() { const {data,error} = await this.db.auth.getUser(); if (error || !data.user) throw new Error('Login diperlukan. Silakan masuk kembali.'); return data.user; }
  async load(id?: string): Promise<CloudSnapshot> {
-  await this.requireUser();
+  const user = await this.requireUser();
+  const isBypass = isTesterBypassEmail(user?.email);
   let query = this.db.from('workspaces').select('*').order('created_at',{ascending:false}).limit(1);
   if (id) query = query.eq('id',id);
   const rows = checked(await query) as Workspace[];
   const workspace = rows[0] || null;
-  if (!workspace) return {workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],rundowns:[],palette:null,moodboards:[],honeymoonTrip:null,honeymoonExpenses:[],honeymoonItineraries:[],engagementEvent:null,engagementGifts:[],engagementRundowns:[],developerTestAccess:false};
+  if (!workspace) return {workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],rundowns:[],palette:null,moodboards:[],honeymoonTrip:null,honeymoonExpenses:[],honeymoonItineraries:[],engagementEvent:null,engagementGifts:[],engagementRundowns:[],developerTestAccess:isBypass};
   const [budgets,tasks,guests,members,savings,entitlements,invitationsRes,rundownsRes,paletteRes,moodboardsRes,honeymoonTripRes,honeymoonExpRes,honeymoonItinRes,engagementEventRes,engagementGiftsRes,engagementRundownsRes] = await Promise.all([
     ...['budgets','tasks','guests','workspace_members','savings_contributions','workspace_entitlements'].map(table=>this.db.from(table).select('*').eq('workspace_id',workspace.id).order(table==='workspace_entitlements'?'verified_at':'created_at',{ascending:true})),
     this.db.from('wedding_invitations').select('*').eq('workspace_id',workspace.id).maybeSingle(),
@@ -48,14 +50,40 @@ export class CloudWorkspace {
     this.db.from('wedding_engagement_gifts').select('*').eq('workspace_id',workspace.id).order('direction',{ascending:true}).order('box_number',{ascending:true}),
     this.db.from('wedding_engagement_rundowns').select('*').eq('workspace_id',workspace.id).order('sort_order',{ascending:true}).order('time_start',{ascending:true})
   ]);
-  const testAccess=checked(await this.db.rpc('has_developer_test_access',{p_workspace_id:workspace.id}));
+  let testAccess = isBypass;
+  if (!testAccess) {
+    try {
+      testAccess = checked(await this.db.rpc('has_developer_test_access',{p_workspace_id:workspace.id})) === true;
+    } catch {
+      testAccess = false;
+    }
+  }
+  const rawEntitlements = (checked(entitlements) as WorkspaceEntitlement[]) || [];
+  const resolvedEntitlements: WorkspaceEntitlement[] = isBypass && rawEntitlements.length === 0
+    ? [
+        {
+          workspace_id: workspace.id,
+          feature: 'core',
+          verified_at: new Date().toISOString(),
+          expires_at: '2099-12-31T23:59:59.000Z',
+          revoked_at: null,
+        },
+        {
+          workspace_id: workspace.id,
+          feature: 'wedding_pro',
+          verified_at: new Date().toISOString(),
+          expires_at: '2099-12-31T23:59:59.000Z',
+          revoked_at: null,
+        },
+      ]
+    : rawEntitlements;
   const invitation = safeSingle(invitationsRes) as WeddingInvitation | null;
   let wishes: InvitationWish[] = [];
   if (invitation?.id) {
     const wishesRes = await this.db.from('wedding_invitation_wishes').select('*').eq('invitation_id', invitation.id).order('created_at', {ascending: false});
     wishes = safeRows(wishesRes) as InvitationWish[];
   }
-  return {developerTestAccess:testAccess===true,workspace,budgets:checked(budgets) || [],tasks:checked(tasks) || [],guests:checked(guests) || [],members:checked(members) || [],savings:checked(savings) || [],entitlements:checked(entitlements) || [],invitation,wishes,rundowns:safeRows(rundownsRes) as RundownEvent[],palette:safeSingle(paletteRes) as ColorPalette | null,moodboards:safeRows(moodboardsRes) as MoodboardItem[],honeymoonTrip:safeSingle(honeymoonTripRes) as HoneymoonTrip | null,honeymoonExpenses:safeRows(honeymoonExpRes) as HoneymoonExpense[],honeymoonItineraries:safeRows(honeymoonItinRes) as HoneymoonItinerary[],engagementEvent:safeSingle(engagementEventRes) as EngagementEvent | null,engagementGifts:safeRows(engagementGiftsRes) as EngagementGift[],engagementRundowns:safeRows(engagementRundownsRes) as EngagementRundown[]};
+  return {developerTestAccess:testAccess===true,workspace,budgets:checked(budgets) || [],tasks:checked(tasks) || [],guests:checked(guests) || [],members:checked(members) || [],savings:checked(savings) || [],entitlements:resolvedEntitlements,invitation,wishes,rundowns:safeRows(rundownsRes) as RundownEvent[],palette:safeSingle(paletteRes) as ColorPalette | null,moodboards:safeRows(moodboardsRes) as MoodboardItem[],honeymoonTrip:safeSingle(honeymoonTripRes) as HoneymoonTrip | null,honeymoonExpenses:safeRows(honeymoonExpRes) as HoneymoonExpense[],honeymoonItineraries:safeRows(honeymoonItinRes) as HoneymoonItinerary[],engagementEvent:safeSingle(engagementEventRes) as EngagementEvent | null,engagementGifts:safeRows(engagementGiftsRes) as EngagementGift[],engagementRundowns:safeRows(engagementRundownsRes) as EngagementRundown[]};
  }
  async create(params: WorkspaceParams) {
   await this.requireUser();

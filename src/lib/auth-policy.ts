@@ -23,3 +23,13 @@ export async function completeCallback(auth: SupabaseClient['auth'], url: URL) {
   if (error || !data.user) throw new Error('Sesi tidak valid. Silakan masuk kembali.');
   return data.user;
 }
+
+export const TESTER_BYPASS_EMAILS = [
+  'setiarama1997@gmail.com',
+];
+
+export function isTesterBypassEmail(email?: string | null): boolean {
+  if (!email) return false;
+  return TESTER_BYPASS_EMAILS.includes(email.trim().toLowerCase());
+}
+

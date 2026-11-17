@@ -4,6 +4,7 @@ import type { BudgetItem, TaskItem, GuestItem, SavingsContribution, WeddingInvit
 import { CloudWorkspace, CloudSnapshot, WorkspaceParams } from '@/lib/cloud-workspace';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/context/auth-context';
+import { isTesterBypassEmail } from '@/lib/auth-policy';
 import { STORAGE_KEY, LEGACY_KEY } from '@/lib/workspace-storage';
 import { getRundownTemplate, RundownTemplateType } from '@/lib/rundown-templates';
 import { getStarterMoodboardInspirations } from '@/lib/moodboard-presets';
@@ -70,7 +71,29 @@ export function WorkspaceProvider({children}: {children: React.ReactNode}) {
  const [inviteToken,setInviteToken] = useState(''), [legacy,setLegacy] = useState(false);
  const identity = useRef(user?.id); identity.current = user?.id;
  const lock = useRef(false), generation = useRef(0), owner = useRef<string>(), activeId = useRef<string>();
- const visible = owner.current === user?.id && !!user ? snapshot : empty();
+ const isBypass = isTesterBypassEmail(user?.email);
+ const visible = owner.current === user?.id && !!user ? {
+  ...snapshot,
+  developerTestAccess: isBypass || snapshot.developerTestAccess,
+  entitlements: (isBypass && snapshot.entitlements.length === 0)
+    ? [
+        {
+          workspace_id: snapshot.workspace?.id || '',
+          feature: 'core' as const,
+          verified_at: new Date().toISOString(),
+          expires_at: '2099-12-31T23:59:59.000Z',
+          revoked_at: null,
+        },
+        {
+          workspace_id: snapshot.workspace?.id || '',
+          feature: 'wedding_pro' as const,
+          verified_at: new Date().toISOString(),
+          expires_at: '2099-12-31T23:59:59.000Z',
+          revoked_at: null,
+        },
+      ]
+    : snapshot.entitlements,
+ } : empty();
  const reload = async () => {
   const uid = identity.current, epoch = ++generation.current;
   if (!uid || !configured) return false;

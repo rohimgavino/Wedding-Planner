@@ -20,6 +20,7 @@ import { GuestCSVImport } from "@/components/everrae/guest-csv-import";
 import { serializeGuestCSV } from "@/lib/guest-csv";
 import { useWorkspace } from "@/context/WorkspaceContext";
 import { useAuth } from "@/context/auth-context";
+import { isTesterBypassEmail } from "@/lib/auth-policy";
 import { 
   Heart, Calendar, Wallet, CheckSquare, Users, Plus, 
   MessageCircle, Share2, Check, Trash2,
@@ -124,7 +125,8 @@ export default function DashboardPage() {
     );
   }
 
-  if (!entitlementActive(entitlements,'core') && !developerTestAccess && activeTab !== 'pairing') {
+  const isBypass = isTesterBypassEmail(user?.email);
+  if (!entitlementActive(entitlements,'core') && !developerTestAccess && !isBypass && activeTab !== 'pairing') {
     return <WorkspaceActivation onSettings={() => setActiveTab('pairing')} />;
   }
 
