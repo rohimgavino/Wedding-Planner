@@ -1,8 +1,8 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { Workspace, BudgetItem, TaskItem, GuestItem, WorkspaceMember, SavingsContribution, WorkspaceEntitlement, WeddingInvitation, InvitationWish, RundownEvent, MoodboardItem, ColorPalette, HoneymoonTrip, HoneymoonExpense, HoneymoonItinerary } from '@/types';
+import type { Workspace, BudgetItem, TaskItem, GuestItem, WorkspaceMember, SavingsContribution, WorkspaceEntitlement, WeddingInvitation, InvitationWish, RundownEvent, MoodboardItem, ColorPalette, HoneymoonTrip, HoneymoonExpense, HoneymoonItinerary, EngagementEvent, EngagementGift, EngagementRundown } from '@/types';
 type Table = 'budgets' | 'tasks' | 'guests' | 'savings_contributions';
 export interface WorkspaceParams { groom_name: string; bride_name: string; wedding_date: string; target_budget: number; target_savings: number }
-export interface CloudSnapshot { workspace: Workspace | null; budgets: BudgetItem[]; tasks: TaskItem[]; guests: GuestItem[]; members: WorkspaceMember[]; savings: SavingsContribution[]; entitlements: WorkspaceEntitlement[]; invitation: WeddingInvitation | null; wishes: InvitationWish[]; rundowns: RundownEvent[]; palette: ColorPalette | null; moodboards: MoodboardItem[]; honeymoonTrip: HoneymoonTrip | null; honeymoonExpenses: HoneymoonExpense[]; honeymoonItineraries: HoneymoonItinerary[]; developerTestAccess: boolean }
+export interface CloudSnapshot { workspace: Workspace | null; budgets: BudgetItem[]; tasks: TaskItem[]; guests: GuestItem[]; members: WorkspaceMember[]; savings: SavingsContribution[]; entitlements: WorkspaceEntitlement[]; invitation: WeddingInvitation | null; wishes: InvitationWish[]; rundowns: RundownEvent[]; palette: ColorPalette | null; moodboards: MoodboardItem[]; honeymoonTrip: HoneymoonTrip | null; honeymoonExpenses: HoneymoonExpense[]; honeymoonItineraries: HoneymoonItinerary[]; engagementEvent: EngagementEvent | null; engagementGifts: EngagementGift[]; engagementRundowns: EngagementRundown[]; developerTestAccess: boolean }
 const fields: Record<Table, string[]> = {
  savings_contributions: ['contributor_id','amount','contributed_on','notes'],
  budgets: ['category','title','allocated_amount','spent_amount','payment_status','notes'],
@@ -20,8 +20,8 @@ export class CloudWorkspace {
   if (id) query = query.eq('id',id);
   const rows = checked(await query) as Workspace[];
   const workspace = rows[0] || null;
-  if (!workspace) return {workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],rundowns:[],palette:null,moodboards:[],honeymoonTrip:null,honeymoonExpenses:[],honeymoonItineraries:[],developerTestAccess:false};
-  const [budgets,tasks,guests,members,savings,entitlements,invitationsRes,rundownsRes,paletteRes,moodboardsRes,honeymoonTripRes,honeymoonExpRes,honeymoonItinRes] = await Promise.all([
+  if (!workspace) return {workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],rundowns:[],palette:null,moodboards:[],honeymoonTrip:null,honeymoonExpenses:[],honeymoonItineraries:[],engagementEvent:null,engagementGifts:[],engagementRundowns:[],developerTestAccess:false};
+  const [budgets,tasks,guests,members,savings,entitlements,invitationsRes,rundownsRes,paletteRes,moodboardsRes,honeymoonTripRes,honeymoonExpRes,honeymoonItinRes,engagementEventRes,engagementGiftsRes,engagementRundownsRes] = await Promise.all([
     ...['budgets','tasks','guests','workspace_members','savings_contributions','workspace_entitlements'].map(table=>this.db.from(table).select('*').eq('workspace_id',workspace.id).order(table==='workspace_entitlements'?'verified_at':'created_at',{ascending:true})),
     this.db.from('wedding_invitations').select('*').eq('workspace_id',workspace.id).maybeSingle(),
     this.db.from('wedding_rundown_events').select('*').eq('workspace_id',workspace.id).order('sort_order',{ascending:true}).order('time_start',{ascending:true}),
@@ -29,7 +29,10 @@ export class CloudWorkspace {
     this.db.from('wedding_moodboard_items').select('*').eq('workspace_id',workspace.id).order('sort_order',{ascending:true}),
     this.db.from('wedding_honeymoon_trips').select('*').eq('workspace_id',workspace.id).maybeSingle(),
     this.db.from('wedding_honeymoon_expenses').select('*').eq('workspace_id',workspace.id).order('created_at',{ascending:true}),
-    this.db.from('wedding_honeymoon_itineraries').select('*').eq('workspace_id',workspace.id).order('day_number',{ascending:true}).order('sort_order',{ascending:true})
+    this.db.from('wedding_honeymoon_itineraries').select('*').eq('workspace_id',workspace.id).order('day_number',{ascending:true}).order('sort_order',{ascending:true}),
+    this.db.from('wedding_engagement_events').select('*').eq('workspace_id',workspace.id).maybeSingle(),
+    this.db.from('wedding_engagement_gifts').select('*').eq('workspace_id',workspace.id).order('direction',{ascending:true}).order('box_number',{ascending:true}),
+    this.db.from('wedding_engagement_rundowns').select('*').eq('workspace_id',workspace.id).order('sort_order',{ascending:true}).order('time_start',{ascending:true})
   ]);
   const testAccess=checked(await this.db.rpc('has_developer_test_access',{p_workspace_id:workspace.id}));
   const invitation = (invitationsRes?.data || null) as WeddingInvitation | null;
@@ -38,7 +41,7 @@ export class CloudWorkspace {
     const wishesRes = await this.db.from('wedding_invitation_wishes').select('*').eq('invitation_id', invitation.id).order('created_at', {ascending: false});
     wishes = (wishesRes?.data || []) as InvitationWish[];
   }
-  return {developerTestAccess:testAccess===true,workspace,budgets:checked(budgets) || [],tasks:checked(tasks) || [],guests:checked(guests) || [],members:checked(members) || [],savings:checked(savings) || [],entitlements:checked(entitlements) || [],invitation,wishes,rundowns:checked(rundownsRes) || [],palette:(paletteRes?.data || null) as ColorPalette | null,moodboards:checked(moodboardsRes) || [],honeymoonTrip:(honeymoonTripRes?.data || null) as HoneymoonTrip | null,honeymoonExpenses:checked(honeymoonExpRes) || [],honeymoonItineraries:checked(honeymoonItinRes) || []};
+  return {developerTestAccess:testAccess===true,workspace,budgets:checked(budgets) || [],tasks:checked(tasks) || [],guests:checked(guests) || [],members:checked(members) || [],savings:checked(savings) || [],entitlements:checked(entitlements) || [],invitation,wishes,rundowns:checked(rundownsRes) || [],palette:(paletteRes?.data || null) as ColorPalette | null,moodboards:checked(moodboardsRes) || [],honeymoonTrip:(honeymoonTripRes?.data || null) as HoneymoonTrip | null,honeymoonExpenses:checked(honeymoonExpRes) || [],honeymoonItineraries:checked(honeymoonItinRes) || [],engagementEvent:(engagementEventRes?.data || null) as EngagementEvent | null,engagementGifts:checked(engagementGiftsRes) || [],engagementRundowns:checked(engagementRundownsRes) || []};
  }
  async create(params: WorkspaceParams) {
   await this.requireUser();
@@ -247,6 +250,65 @@ export class CloudWorkspace {
   }
   if (preset.itineraries?.length) {
     await this.db.from('wedding_honeymoon_itineraries').insert(preset.itineraries.map(i => ({ ...i, workspace_id: workspaceId })));
+  }
+ }
+ async saveEngagementEvent(workspaceId: string, item: Partial<EngagementEvent>) {
+  await this.requireUser();
+  const existing = await this.db.from('wedding_engagement_events').select('id').eq('workspace_id', workspaceId).maybeSingle();
+  if (existing.data?.id) {
+    const res = await this.db.from('wedding_engagement_events').update({ ...item, updated_at: new Date().toISOString() }).eq('id', existing.data.id).select('*').single();
+    if (res.error) throw new Error('Gagal memperbarui info lamaran: ' + res.error.message);
+    return res.data as EngagementEvent;
+  } else {
+    const res = await this.db.from('wedding_engagement_events').insert({ ...item, workspace_id: workspaceId }).select('*').single();
+    if (res.error) throw new Error('Gagal menyimpan info lamaran: ' + res.error.message);
+    return res.data as EngagementEvent;
+  }
+ }
+ async createEngagementGift(workspaceId: string, item: Partial<EngagementGift>) {
+  await this.requireUser();
+  const res = await this.db.from('wedding_engagement_gifts').insert({ ...item, workspace_id: workspaceId }).select('*').single();
+  if (res.error) throw new Error('Gagal menambah kotak seserahan: ' + res.error.message);
+  return res.data as EngagementGift;
+ }
+ async updateEngagementGift(workspaceId: string, id: string, item: Partial<EngagementGift>) {
+  await this.requireUser();
+  const res = await this.db.from('wedding_engagement_gifts').update({ ...item, updated_at: new Date().toISOString() }).eq('workspace_id', workspaceId).eq('id', id).select('*').single();
+  if (res.error) throw new Error('Gagal memperbarui kotak seserahan: ' + res.error.message);
+  return res.data as EngagementGift;
+ }
+ async deleteEngagementGift(workspaceId: string, id: string) {
+  await this.requireUser();
+  const res = await this.db.from('wedding_engagement_gifts').delete().eq('workspace_id', workspaceId).eq('id', id);
+  if (res.error) throw new Error('Gagal menghapus kotak seserahan: ' + res.error.message);
+ }
+ async createEngagementRundown(workspaceId: string, item: Partial<EngagementRundown>) {
+  await this.requireUser();
+  const res = await this.db.from('wedding_engagement_rundowns').insert({ ...item, workspace_id: workspaceId }).select('*').single();
+  if (res.error) throw new Error('Gagal menambah agenda lamaran: ' + res.error.message);
+  return res.data as EngagementRundown;
+ }
+ async updateEngagementRundown(workspaceId: string, id: string, item: Partial<EngagementRundown>) {
+  await this.requireUser();
+  const res = await this.db.from('wedding_engagement_rundowns').update({ ...item, updated_at: new Date().toISOString() }).eq('workspace_id', workspaceId).eq('id', id).select('*').single();
+  if (res.error) throw new Error('Gagal memperbarui agenda lamaran: ' + res.error.message);
+  return res.data as EngagementRundown;
+ }
+ async deleteEngagementRundown(workspaceId: string, id: string) {
+  await this.requireUser();
+  const res = await this.db.from('wedding_engagement_rundowns').delete().eq('workspace_id', workspaceId).eq('id', id);
+  if (res.error) throw new Error('Gagal menghapus agenda lamaran: ' + res.error.message);
+ }
+ async applyEngagementPreset(workspaceId: string, preset: { event?: Partial<EngagementEvent>; gifts: Partial<EngagementGift>[]; rundowns: Partial<EngagementRundown>[] }) {
+  await this.requireUser();
+  if (preset.event) {
+    await this.saveEngagementEvent(workspaceId, preset.event);
+  }
+  if (preset.gifts?.length) {
+    await this.db.from('wedding_engagement_gifts').insert(preset.gifts.map(g => ({ ...g, workspace_id: workspaceId })));
+  }
+  if (preset.rundowns?.length) {
+    await this.db.from('wedding_engagement_rundowns').insert(preset.rundowns.map(r => ({ ...r, workspace_id: workspaceId })));
   }
  }
 }

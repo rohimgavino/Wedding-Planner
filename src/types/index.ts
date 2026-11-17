@@ -222,3 +222,59 @@ export interface HoneymoonItinerary {
   created_at?: string;
   updated_at?: string;
 }
+
+export type EngagementGiftCategory =
+  | 'cincin'
+  | 'ibadah'
+  | 'perhiasan'
+  | 'busana'
+  | 'makeup_skincare'
+  | 'sepatu_tas'
+  | 'makanan_buah'
+  | 'lainnya';
+
+export type EngagementGiftDirection = 'groom_to_bride' | 'bride_to_groom';
+export type EngagementGiftStatus = 'planned' | 'purchased' | 'decorating' | 'ready';
+
+export interface EngagementEvent {
+  id: string;
+  workspace_id: string;
+  event_date?: string | null;
+  event_time?: string | null;
+  venue_name: string;
+  venue_address?: string | null;
+  spokesperson_groom?: string | null;
+  spokesperson_bride?: string | null;
+  target_budget: number;
+  guest_count?: number | null;
+  notes?: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface EngagementGift {
+  id: string;
+  workspace_id: string;
+  direction: EngagementGiftDirection;
+  box_number: number;
+  title: string;
+  category: EngagementGiftCategory;
+  status: EngagementGiftStatus;
+  estimated_cost: number;
+  notes?: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface EngagementRundown {
+  id: string;
+  workspace_id: string;
+  time_start: string;
+  time_end?: string | null;
+  activity: string;
+  pic_name?: string | null;
+  notes?: string | null;
+  sort_order: number;
+  created_at?: string;
+  updated_at?: string;
+}

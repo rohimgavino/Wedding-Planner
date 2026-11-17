@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
-import type { BudgetItem, TaskItem, GuestItem, SavingsContribution, WeddingInvitation, InvitationWish, RundownEvent, ColorPalette, MoodboardItem, HoneymoonTrip, HoneymoonExpense, HoneymoonItinerary } from '@/types';
+import type { BudgetItem, TaskItem, GuestItem, SavingsContribution, WeddingInvitation, InvitationWish, RundownEvent, ColorPalette, MoodboardItem, HoneymoonTrip, HoneymoonExpense, HoneymoonItinerary, EngagementEvent, EngagementGift, EngagementRundown } from '@/types';
 import { CloudWorkspace, CloudSnapshot, WorkspaceParams } from '@/lib/cloud-workspace';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/context/auth-context';
@@ -8,6 +8,7 @@ import { STORAGE_KEY, LEGACY_KEY } from '@/lib/workspace-storage';
 import { getRundownTemplate, RundownTemplateType } from '@/lib/rundown-templates';
 import { getStarterMoodboardInspirations } from '@/lib/moodboard-presets';
 import { HONEYMOON_PRESETS } from '@/lib/honeymoon-presets';
+import { ENGAGEMENT_DEFAULT_EVENT, ENGAGEMENT_PRESET_GIFTS, ENGAGEMENT_PRESET_RUNDOWNS } from '@/lib/engagement-presets';
 type NewGuest = Omit<GuestItem,'id'|'workspace_id'>;
 interface WorkspaceContextType extends CloudSnapshot {
  inviteToken: string; isLoaded: boolean; error: string; busy: boolean;
@@ -47,11 +48,19 @@ interface WorkspaceContextType extends CloudSnapshot {
  updateHoneymoonItinerary: (id: string, item: Partial<HoneymoonItinerary>) => Promise<boolean>;
  deleteHoneymoonItinerary: (id: string) => Promise<boolean>;
  applyHoneymoonPreset: (presetKey: string) => Promise<boolean>;
+ saveEngagementEvent: (item: Partial<EngagementEvent>) => Promise<boolean>;
+ createEngagementGift: (item: Partial<EngagementGift>) => Promise<boolean>;
+ updateEngagementGift: (id: string, item: Partial<EngagementGift>) => Promise<boolean>;
+ deleteEngagementGift: (id: string) => Promise<boolean>;
+ createEngagementRundown: (item: Partial<EngagementRundown>) => Promise<boolean>;
+ updateEngagementRundown: (id: string, item: Partial<EngagementRundown>) => Promise<boolean>;
+ deleteEngagementRundown: (id: string) => Promise<boolean>;
+ applyEngagementPreset: () => Promise<boolean>;
  applyEditableStarter: (workspaceId: string, userId: string) => Promise<boolean>;
  resetPlanningContent: (confirmation: string) => Promise<boolean>;
  reload: () => Promise<boolean>;
 }
-const empty = (): CloudSnapshot => ({workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],rundowns:[],palette:null,moodboards:[],honeymoonTrip:null,honeymoonExpenses:[],honeymoonItineraries:[],developerTestAccess:false});
+const empty = (): CloudSnapshot => ({workspace:null,budgets:[],tasks:[],guests:[],members:[],savings:[],entitlements:[],invitation:null,wishes:[],rundowns:[],palette:null,moodboards:[],honeymoonTrip:null,honeymoonExpenses:[],honeymoonItineraries:[],engagementEvent:null,engagementGifts:[],engagementRundowns:[],developerTestAccess:false});
 const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
 export function WorkspaceProvider({children}: {children: React.ReactNode}) {
  const {user,ready,configured} = useAuth();
@@ -128,6 +137,14 @@ export function WorkspaceProvider({children}: {children: React.ReactNode}) {
   updateHoneymoonItinerary: (key,item)=>run((cloud,id)=>cloud.updateHoneymoonItinerary(id,key,item)),
   deleteHoneymoonItinerary: key=>run((cloud,id)=>cloud.deleteHoneymoonItinerary(id,key)),
   applyHoneymoonPreset: presetKey=>{const p=HONEYMOON_PRESETS[presetKey];if(!p)return Promise.resolve(false);return run((cloud,id)=>cloud.applyHoneymoonPreset(id,p));},
+  saveEngagementEvent: item=>run((cloud,id)=>cloud.saveEngagementEvent(id,item)),
+  createEngagementGift: item=>run((cloud,id)=>cloud.createEngagementGift(id,item)),
+  updateEngagementGift: (key,item)=>run((cloud,id)=>cloud.updateEngagementGift(id,key,item)),
+  deleteEngagementGift: key=>run((cloud,id)=>cloud.deleteEngagementGift(id,key)),
+  createEngagementRundown: item=>run((cloud,id)=>cloud.createEngagementRundown(id,item)),
+  updateEngagementRundown: (key,item)=>run((cloud,id)=>cloud.updateEngagementRundown(id,key,item)),
+  deleteEngagementRundown: key=>run((cloud,id)=>cloud.deleteEngagementRundown(id,key)),
+  applyEngagementPreset: ()=>run((cloud,id)=>cloud.applyEngagementPreset(id,{event:ENGAGEMENT_DEFAULT_EVENT,gifts:ENGAGEMENT_PRESET_GIFTS,rundowns:ENGAGEMENT_PRESET_RUNDOWNS})),
   applyEditableStarter: (expectedId,uid)=>run((cloud,id)=>{if(id!==expectedId || uid!==identity.current)throw new Error('Identitas berubah. Buka ulang pratinjau.');return cloud.applyEditableStarter(id,uid);}),
   resetPlanningContent: confirmation=>run(async (cloud,id)=>{
    const resetUid=identity.current;
