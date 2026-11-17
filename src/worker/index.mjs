@@ -722,8 +722,10 @@ export async function handleRequest(request, env, fetchImpl = fetch) {
   if (env?.ASSETS) {
     const assetResp = await env.ASSETS.fetch(request);
     if (assetResp.status === 404 && path.startsWith('/u/')) {
-      const fallbackUrl = new URL('/u/index.html', request.url);
-      return env.ASSETS.fetch(new Request(fallbackUrl, request));
+      const uResp = await env.ASSETS.fetch(new Request(new URL('/u', request.url), request));
+      if (uResp.status === 200) return uResp;
+      const uHtmlResp = await env.ASSETS.fetch(new Request(new URL('/u.html', request.url), request));
+      if (uHtmlResp.status === 200) return uHtmlResp;
     }
     return assetResp;
   }

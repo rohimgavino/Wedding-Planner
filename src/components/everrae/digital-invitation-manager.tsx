@@ -187,7 +187,7 @@ export function DigitalInvitationManager() {
               {publicUrl}
             </div>
           </div>
-          <div className="flex items-center gap-2 self-start sm:self-center">
+          <div className="flex flex-wrap items-center gap-2 self-start sm:self-center">
             <button
               onClick={() => handleCopyLink(publicUrl)}
               className="px-3.5 py-2 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-semibold flex items-center gap-1.5 transition"
@@ -196,15 +196,38 @@ export function DigitalInvitationManager() {
               {copiedLink ? 'Tersalin!' : 'Salin Tautan'}
             </button>
             <Link
+              href={`/u/${sanitizedSlug || 'undangan'}?preview=true`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold flex items-center gap-1.5 transition"
+              title="Lihat simulasi undangan sekarang tanpa harus melengkapi semua data"
+            >
+              <Sparkles size={14} className="text-amber-500" />
+              Pratinjau Live
+              <ExternalLink size={12} />
+            </Link>
+            <Link
               href={`/u/${sanitizedSlug || 'undangan'}`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-3.5 py-2 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-semibold flex items-center gap-1.5 transition shadow-sm"
             >
               <Eye size={14} />
-              Lihat Undangan
+              Buka Halaman Publik
               <ExternalLink size={12} />
             </Link>
+          </div>
+        </div>
+
+        {/* Petunjuk Penggunaan */}
+        <div className="p-3.5 bg-rose-50/60 border border-rose-100 rounded-2xl flex items-start gap-2.5 text-xs text-slate-600">
+          <Sparkles className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <span className="font-semibold text-slate-800">Petunjuk Penggunaan Undangan Digital:</span>
+            <ul className="list-disc list-inside space-y-0.5 text-slate-500">
+              <li><strong>Tidak harus lengkap dulu:</strong> Anda dapat langsung mengklik tombol <em>Pratinjau Live</em> untuk melihat tampilan contoh.</li>
+              <li><strong>Publikasikan Saat Siap:</strong> Klik tombol hijau <em>Publikasikan Sekarang</em> di atas agar undangan resmi online dan dapat dibuka oleh para tamu via WhatsApp.</li>
+            </ul>
           </div>
         </div>
 

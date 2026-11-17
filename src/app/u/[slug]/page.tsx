@@ -5,6 +5,7 @@ export function generateStaticParams() {
   return [
     { slug: 'preview' },
     { slug: 'undangan-kami' },
+    { slug: 'rohim-wiwit' },
   ];
 }
 

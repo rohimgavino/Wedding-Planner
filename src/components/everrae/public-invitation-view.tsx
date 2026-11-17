@@ -31,7 +31,8 @@ interface PublicInvitationViewProps {
 export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewProps = {}) {
   const params = useParams();
   const searchParams = useSearchParams();
-  const slug = (params?.slug as string) || '';
+  const pathnameSlug = typeof window !== 'undefined' ? window.location.pathname.replace(/^\/u\/?/, '').split('/')[0].split('?')[0] : '';
+  const slug = propSlug || (params?.slug as string) || pathnameSlug || '';
   const guestName = searchParams?.get('to') || '';
 
   const [invitation, setInvitation] = useState<WeddingInvitation | null>(null);
@@ -63,14 +64,44 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
       setLoading(true);
       const supabase = createClient();
       
+      const isPreview = searchParams?.get('preview') === 'true';
       const { data: inv, error: invError } = await supabase
         .from('wedding_invitations')
         .select('*')
         .eq('slug', slug)
-        .eq('is_published', true)
         .maybeSingle();
 
-      if (invError || !inv) {
+      if (invError || !inv || (!inv.is_published && !isPreview)) {
+        if (slug === 'preview' || isPreview) {
+          setInvitation({
+            id: 'preview-id',
+            workspace_id: 'preview-ws',
+            slug: slug || 'preview',
+            is_published: true,
+            theme: 'classic-ivory',
+            quote_title: 'Surat Ar-Rum : 21',
+            quote_body: 'Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.',
+            groom_full_name: 'Ahmad Nur Rohim',
+            groom_nickname: 'Rohim',
+            groom_parents: 'Putra dari Bpk. H. Ahmad & Ibu Hj. Siti',
+            bride_full_name: 'Wiwit',
+            bride_nickname: 'Wiwit',
+            bride_parents: 'Putri dari Bpk. Drs. H. Subagyo & Ibu Hj. Aminah',
+            akad_date: '2027-03-24',
+            akad_time: '08:00 - 10:00 WIB',
+            akad_venue: "Masjid Jami' Yogyakarta",
+            akad_address: 'Jl. Kaliurang KM 9, Sleman, D.I. Yogyakarta',
+            resepsi_date: '2027-03-24',
+            resepsi_time: '11:00 - 14:00 WIB',
+            resepsi_venue: 'Ballroom Hotel Grand Keisha',
+            resepsi_address: 'Jl. Affandi No. 9, Gejayan, Sleman, D.I. Yogyakarta',
+            gift_bank_name: 'BCA',
+            gift_account_number: '1234567890',
+            gift_account_holder: 'Ahmad Nur Rohim',
+          });
+          setLoading(false);
+          return;
+        }
         setNotFound(true);
         setLoading(false);
         return;
@@ -90,7 +121,7 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
     };
 
     void load();
-  }, [slug]);
+  }, [slug, searchParams]);
 
   // Update senderName when guestName query param loads
   useEffect(() => {
