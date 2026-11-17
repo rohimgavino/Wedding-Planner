@@ -335,6 +335,108 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
       {/* Background Audio Track */}
       <audio ref={audioRef} loop src={invitation.music_url || '/audio/wedding-acoustic.mp3'} preload="auto" />
 
+      {/* ========================================================
+          DECORATIVE BACKGROUND TEXTURES, AURA & ROMANTIC PETALS
+          ======================================================== */}
+      {/* 1. Fine Linen Art Paper Grain Texture */}
+      <div 
+        className="pointer-events-none fixed inset-0 z-0 opacity-40 mix-blend-multiply"
+        style={{
+          backgroundImage: `radial-gradient(circle at 50% 50%, rgba(198, 170, 120, 0.05) 1px, transparent 1px), radial-gradient(circle at 0% 0%, rgba(160, 125, 75, 0.04) 1px, transparent 1px)`,
+          backgroundSize: '18px 18px, 28px 28px'
+        }}
+        aria-hidden="true"
+      />
+
+      {/* 2. Soft Radial Golden Ambient Glow Vignettes */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+        <div className="absolute -top-[10%] left-1/2 -translate-x-1/2 w-[720px] h-[720px] rounded-full bg-gradient-to-b from-amber-200/20 via-amber-100/10 to-transparent blur-3xl" />
+        <div className="absolute top-[35%] -left-[15%] w-[520px] h-[520px] rounded-full bg-gradient-to-tr from-amber-300/15 via-rose-200/10 to-transparent blur-3xl" />
+        <div className="absolute top-[65%] -right-[15%] w-[560px] h-[560px] rounded-full bg-gradient-to-bl from-amber-200/20 via-emerald-100/10 to-transparent blur-3xl" />
+        <div className="absolute bottom-[2%] left-1/2 -translate-x-1/2 w-[650px] h-[650px] rounded-full bg-gradient-to-t from-amber-300/15 via-amber-100/5 to-transparent blur-3xl" />
+      </div>
+
+      {/* 3. Luxury Botanical Filigree Watermarks (SVG Corner Ornaments) */}
+      <div className="pointer-events-none fixed inset-0 z-0 select-none overflow-hidden" aria-hidden="true">
+        {/* Top-Left Botanical Branch */}
+        <svg className="absolute -top-4 -left-4 w-52 h-52 text-[#C6AA78] opacity-[0.14] rotate-[-15deg]" viewBox="0 0 200 200" fill="none" stroke="currentColor">
+          <path d="M20,180 Q60,120 120,80 T190,20" strokeWidth="1.5" strokeLinecap="round" />
+          <path d="M60,120 Q45,100 40,85 Q55,95 60,120" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
+          <path d="M85,105 Q105,95 115,80 Q105,100 85,105" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
+          <path d="M120,80 Q110,55 100,45 Q120,60 120,80" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
+          <path d="M150,60 Q170,50 175,35 Q165,55 150,60" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
+          <circle cx="120" cy="80" r="2.5" fill="currentColor" />
+          <circle cx="150" cy="60" r="2" fill="currentColor" />
+          <circle cx="190" cy="20" r="3" fill="currentColor" />
+        </svg>
+
+        {/* Top-Right Botanical Branch */}
+        <svg className="absolute -top-4 -right-4 w-52 h-52 text-[#C6AA78] opacity-[0.14] scale-x-[-1] rotate-[-15deg]" viewBox="0 0 200 200" fill="none" stroke="currentColor">
+          <path d="M20,180 Q60,120 120,80 T190,20" strokeWidth="1.5" strokeLinecap="round" />
+          <path d="M60,120 Q45,100 40,85 Q55,95 60,120" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
+          <path d="M85,105 Q105,95 115,80 Q105,100 85,105" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
+          <path d="M120,80 Q110,55 100,45 Q120,60 120,80" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
+          <path d="M150,60 Q170,50 175,35 Q165,55 150,60" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
+          <circle cx="120" cy="80" r="2.5" fill="currentColor" />
+          <circle cx="150" cy="60" r="2" fill="currentColor" />
+          <circle cx="190" cy="20" r="3" fill="currentColor" />
+        </svg>
+
+        {/* Bottom-Left Floral Sprig */}
+        <svg className="absolute -bottom-6 -left-6 w-60 h-60 text-[#C6AA78] opacity-[0.12] rotate-[45deg]" viewBox="0 0 200 200" fill="none" stroke="currentColor">
+          <path d="M180,20 Q120,60 80,120 T20,190" strokeWidth="1.5" strokeLinecap="round" />
+          <path d="M120,60 Q100,45 85,40 Q95,55 120,60" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
+          <path d="M105,85 Q95,105 80,115 Q100,105 105,85" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
+          <path d="M80,120 Q55,110 45,100 Q60,120 80,120" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
+        </svg>
+
+        {/* Bottom-Right Floral Sprig */}
+        <svg className="absolute -bottom-6 -right-6 w-60 h-60 text-[#C6AA78] opacity-[0.12] scale-x-[-1] rotate-[45deg]" viewBox="0 0 200 200" fill="none" stroke="currentColor">
+          <path d="M180,20 Q120,60 80,120 T20,190" strokeWidth="1.5" strokeLinecap="round" />
+          <path d="M120,60 Q100,45 85,40 Q95,55 120,60" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
+          <path d="M105,85 Q95,105 80,115 Q100,105 105,85" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
+          <path d="M80,120 Q55,110 45,100 Q60,120 80,120" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
+        </svg>
+      </div>
+
+      {/* 4. Falling Gentle Golden Rose Petals (Romantic Atmosphere) */}
+      {isOpened && (
+        <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+          {[
+            { left: '10%', delay: '0s', dur: '14s', size: 14, rot: 35 },
+            { left: '26%', delay: '4s', dur: '18s', size: 18, rot: 60 },
+            { left: '44%', delay: '7s', dur: '16s', size: 12, rot: 15 },
+            { left: '62%', delay: '2s', dur: '15s', size: 16, rot: 45 },
+            { left: '79%', delay: '9s', dur: '20s', size: 19, rot: 80 },
+            { left: '92%', delay: '5s', dur: '17s', size: 13, rot: 25 },
+          ].map((petal, idx) => (
+            <div
+              key={idx}
+              className="absolute top-[-40px] pointer-events-none opacity-40 animate-fall-petal"
+              style={{
+                left: petal.left,
+                animationDelay: petal.delay,
+                animationDuration: petal.dur,
+              }}
+            >
+              <svg
+                width={petal.size}
+                height={petal.size * 1.3}
+                viewBox="0 0 24 32"
+                fill="none"
+                style={{ transform: `rotate(${petal.rot}deg)` }}
+              >
+                <path
+                  d="M12,0 C20,8 24,18 20,26 C16,32 8,32 4,26 C0,18 4,8 12,0 Z"
+                  fill="currentColor"
+                  className="text-amber-300/40"
+                />
+              </svg>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Floating Audio Controller */}
       {isOpened && (
         <button
@@ -469,7 +571,7 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
       {/* ========================================================
           2. ISI UNDANGAN LENGKAP (MAIN CONTENT)
           ======================================================== */}
-      <main className="max-w-2xl mx-auto px-4 py-12 sm:py-20 space-y-20 relative">
+      <main className="max-w-2xl mx-auto px-4 py-12 sm:py-20 space-y-20 relative z-10">
         
         {/* ================= HERO SECTION ================= */}
         <section className="text-center space-y-6 pt-4">

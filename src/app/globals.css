@@ -213,3 +213,36 @@ body {
 .account-logout:focus-visible{outline:3px solid #233d32;outline-offset:3px;}
 .account-logout svg{flex-shrink:0;}
 @media(max-width:640px){.account-toolbar{padding:8px 16px;}}
+
+/* =========================================================
+   WEDDING INVITATION BACKGROUND PARTICLES & PETALS
+   ========================================================= */
+@keyframes fallPetal {
+  0% {
+    transform: translateY(-40px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.55;
+  }
+  85% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translateY(105vh) translateX(35px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.animate-fall-petal {
+  animation-name: fallPetal;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation-iteration-count: infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fall-petal {
+    animation: none !important;
+  }
+}
+
