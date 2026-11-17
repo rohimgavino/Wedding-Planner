@@ -18,29 +18,35 @@ const VALID_PACKAGES = new Set(['starter', 'premium', 'wedding_pro']);
 const PACKAGE_METADATA = {
   starter: {
     name: 'Starter',
-    description: 'Awal yang lebih terarah untuk merapikan rencana inti berdua.',
+    description: 'Solusi esensial untuk merapikan persiapan inti pernikahan berdua.',
     features: [
-      '1 wedding workspace berdua',
-      'Checklist persiapan & timeline',
-      'Anggaran, tabungan & daftar tamu',
+      '1 workspace kolaborasi berdua',
+      'Checklist persiapan & berkas KUA',
+      'Alokasi anggaran & status pengeluaran',
+      'Buku tamu & RSVP via WhatsApp',
+      'Undangan digital web & WhatsApp',
     ],
   },
   premium: {
     name: 'Premium',
-    description: 'Ruang lengkap untuk setiap detail acara bersama pasangan.',
+    description: 'Ruang komprehensif dengan manajemen tabungan dan moodboard visual.',
     features: [
-      'Seluruh fitur Starter',
-      'Kolaborasi pasangan real-time',
-      'Prioritas pembaruan fitur undangan',
+      'Seluruh fitur paket Starter',
+      'Tabungan bersama & target berdua',
+      'Moodboard visual & palet warna tema',
+      'Preset inspirasi busana & dekorasi',
+      'Prioritas pembaruan fitur',
     ],
   },
   wedding_pro: {
     name: 'Wedding Pro',
-    description: 'Kapasitas penuh untuk persiapan menyeluruh hingga hari H.',
+    description: 'Kapasitas terlengkap dari lamaran hingga bulan madu impian.',
     features: [
-      'Seluruh fitur Premium',
-      'Dukungan perencanaan menyeluruh',
-      'Akses penuh selama 365 hari',
+      'Seluruh fitur paket Premium & Starter',
+      'Engagement / Lamaran planner resmi',
+      'Checklist seserahan & angsul-angsul',
+      'Honeymoon planner & itinerary harian',
+      'Budgeting & tracking biaya honeymoon',
     ],
   },
 };

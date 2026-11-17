@@ -106,7 +106,7 @@ export default function PurchasePage() {
     const params = new URLSearchParams(window.location.search);
     if (params.get('invoice') || params.get('payment') || params.get('status')) {
       setNotice(
-        'Anda kembali dari halaman pembayaran DOKU. Status akses aktif otomatis setelah notifikasi resmi dari gateway DOKU diterima.'
+        'Kamu kembali dari halaman pembayaran. Status akses aktif otomatis setelah notifikasi resmi pembayaran diterima.'
       );
     }
   }, []);
@@ -175,15 +175,15 @@ export default function PurchasePage() {
       </div>
 
       <section className="bg-white rounded-3xl border border-rose-100 p-6 space-y-4">
-        <p className="text-xs tracking-widest text-rose-700">POCKET PLANNER · PEMBAYARAN RESMI DOKU CHECKOUT</p>
+        <p className="text-xs tracking-widest text-rose-700">POCKET PLANNER · AKTIVASI PAKET WORKSPACE</p>
         <h1 className="font-serif text-3xl">Aktivasi paket workspace</h1>
         <p className="text-slate-600">
-          Satu paket membuka fitur penuh perencanaan pernikahan untuk workspace Anda dan pasangan (anggaran, checklist, daftar tamu, dan tabungan).
+          Satu paket membuka fitur penuh perencanaan pernikahan untuk workspace kamu dan pasangan (anggaran, checklist, daftar tamu, dan tabungan).
         </p>
 
         {authReady && !user && (
           <div className="rounded-2xl bg-[#FAF7F5] border border-rose-100 p-4 text-sm space-y-3">
-            <p className="text-slate-800">Masuk dengan akun Google untuk memilih workspace dan melanjutkan pembayaran melalui DOKU Checkout.</p>
+            <p className="text-slate-800">Masuk dengan akun Google untuk memilih workspace dan mengaktifkan paket perencanaan.</p>
             <Link
               href="/login?next=%2Fpurchase"
               className="min-h-11 inline-flex items-center rounded-xl bg-rose-700 px-4 py-2.5 text-white font-medium"
@@ -232,7 +232,7 @@ export default function PurchasePage() {
 
         {catalog && !canCheckout && (
           <p className="rounded-xl bg-amber-50 text-amber-900 p-3 text-sm">
-            Penjualan saat ini belum dibuka atau gateway DOKU sedang dalam pemeliharaan. Pembayaran baru hanya melalui DOKU Checkout; jangan transfer manual di luar sistem.
+            Penjualan saat ini belum dibuka atau gateway pembayaran sedang dalam pemeliharaan. Pembayaran baru hanya melalui sistem resmi; jangan transfer manual di luar sistem.
           </p>
         )}
 
@@ -248,7 +248,7 @@ export default function PurchasePage() {
               href={activeCheckoutOrder.checkout_url}
               className="inline-flex items-center justify-center min-h-11 rounded-xl bg-rose-700 text-white px-4 py-2 font-medium"
             >
-              Lanjutkan pembayaran DOKU
+              Lanjutkan pembayaran
             </a>
           </div>
         )}
@@ -295,10 +295,10 @@ export default function PurchasePage() {
                     className="w-full min-h-11 rounded-xl bg-rose-700 text-white px-4 py-2.5 text-sm font-medium disabled:opacity-50"
                   >
                     {busyPackageId === packageId
-                      ? 'Menyiapkan checkout…'
+                      ? 'Menyiapkan pembayaran…'
                       : coreActive
                         ? 'Akses sudah aktif'
-                        : 'Bayar via DOKU'}
+                        : 'Bayar Sekarang'}
                   </button>
                 </article>
               );
@@ -307,7 +307,7 @@ export default function PurchasePage() {
         )}
 
         <p className="text-xs text-slate-600 pt-2">
-          Pembayaran hanya tersedia melalui DOKU Checkout (QRIS, Virtual Account, e-Wallet, atau kanal aktif DOKU lainnya). Login, redirect pembayaran, atau screenshot tidak mengaktifkan akses secara sepihak. Jangan kirim data kartu, password, atau kode OTP.
+          Pembayaran resmi mendukung QRIS, Virtual Account, dan e-Wallet. Login, redirect pembayaran, atau tangkapan layar tidak mengaktifkan akses secara sepihak. Jangan pernah mengirimkan data kartu, password, atau kode OTP.
         </p>
 
         {catalog?.supportEmail && (
@@ -333,7 +333,7 @@ export default function PurchasePage() {
               </button>
             </div>
 
-            {!orders.length && <p className="text-sm text-slate-500">Belum ada transaksi DOKU untuk workspace ini.</p>}
+            {!orders.length && <p className="text-sm text-slate-500">Belum ada riwayat transaksi untuk workspace ini.</p>}
 
             <div className="space-y-3">
               {orders.map((order) => {
@@ -358,7 +358,7 @@ export default function PurchasePage() {
                         href={order.checkout_url}
                         className="inline-block min-h-11 underline text-rose-700 pt-1"
                       >
-                        Buka halaman pembayaran DOKU
+                        Buka halaman pembayaran
                       </a>
                     )}
                   </article>

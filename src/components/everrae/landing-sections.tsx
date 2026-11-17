@@ -103,7 +103,7 @@ export function Pricing() {
           <p>
             Satu paket per workspace berlaku untuk berdua bersama pasangan.
             <br />
-            Pembayaran resmi diproses melalui DOKU Checkout.{" "}
+            Pembayaran resmi &amp; aman dengan aktivasi otomatis.{" "}
             <Link href="/purchase" className="underline">
               Lihat paket &amp; aktivasi
             </Link>
@@ -149,15 +149,15 @@ const faqs = [
   ],
   [
     "Bagaimana cara membeli paket?",
-    "Masuk ke akunmu, buat atau pilih workspace, lalu buka halaman aktivasi paket untuk membayar secara resmi melalui DOKU Checkout (QRIS, Virtual Account, atau kanal lain yang aktif).",
+    "Masuk ke akunmu, buat atau pilih workspace, lalu buka halaman aktivasi paket untuk membayar secara resmi (mendukung QRIS, Virtual Account, dan e-Wallet).",
   ],
   [
     "Apakah akses langsung aktif setelah bayar?",
-    "Ya. Setelah pembayaran lunas terverifikasi melalui notifikasi resmi dari gateway DOKU, akses workspace aktif otomatis untuk kamu dan pasangan.",
+    "Ya. Setelah pembayaran lunas terverifikasi secara otomatis oleh sistem, akses workspace langsung aktif seketika untuk kamu dan pasangan.",
   ],
   [
     "Bagaimana keamanan dan penyimpanan data?",
-    "Data workspace disimpan di database Supabase dengan pembatasan akses berbasis autentikasi dan Row Level Security, sedangkan transaksi pembayaran ditangani langsung oleh gateway resmi DOKU Checkout tanpa menyimpan data kartumu di aplikasi.",
+    "Data workspace tersimpan aman di database cloud Supabase dengan proteksi Row Level Security, sedangkan transaksi diproses secara terenkripsi melalui gateway pembayaran resmi tanpa menyimpan data perbankanmu di aplikasi.",
   ],
 ];
 
@@ -218,7 +218,7 @@ export function Footer() {
             <p>
               Workspace cloud bersama pasangan.
               <br />
-              Pembayaran resmi via DOKU Checkout.
+              Pembayaran aman &amp; aktivasi otomatis.
             </p>
           </div>
         </div>

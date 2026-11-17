@@ -26,13 +26,13 @@ export function WorkspaceActivation({ onSettings }: { onSettings: () => void }) 
      <h2 id="activation-guide-title">Cara mengaktifkan</h2>
      <ol>
       <li><span aria-hidden="true">1</span><div><strong>Pilih paket</strong><p>Bandingkan paket Starter, Premium, atau Wedding Pro di halaman aktivasi.</p></div></li>
-      <li><span aria-hidden="true">2</span><div><strong>Bayar lewat DOKU Checkout</strong><p>Pembayaran resmi mendukung QRIS, Virtual Account, dan kanal aktif DOKU lainnya.</p></div></li>
-      <li><span aria-hidden="true">3</span><div><strong>Aktif otomatis untuk berdua</strong><p>Akses terbuka setelah notifikasi resmi DOKU diterima; hindari pembayaran di luar kanal resmi.</p></div></li>
+      <li><span aria-hidden="true">2</span><div><strong>Bayar secara resmi</strong><p>Pembayaran aman mendukung QRIS, Virtual Account, dan transfer bank.</p></div></li>
+      <li><span aria-hidden="true">3</span><div><strong>Aktif otomatis untuk berdua</strong><p>Akses terbuka otomatis setelah pembayaran terverifikasi sistem; hindari transfer di luar sistem.</p></div></li>
      </ol>
     </section>
     <details className="activation-payment">
      <summary>Pembayaran &amp; keamanan</summary>
-     <p>Tidak ada aktivasi otomatis dari redirect pembayaran. Akses aktif setelah notifikasi lunas dari gateway DOKU terverifikasi; jangan kirim data kartu, password, atau OTP.</p>
+     <p>Tidak ada aktivasi otomatis dari redirect pembayaran. Akses aktif otomatis setelah notifikasi pembayaran terverifikasi; jangan kirim data kartu, password, atau OTP.</p>
     </details>
    </section>
    <div className="activation-extras">
