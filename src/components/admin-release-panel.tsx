@@ -15,6 +15,15 @@ import {
   formatOrderStatus,
 } from '@/lib/commerce';
 import { formatRupiah } from '@/lib/utils';
+import {
+  Download,
+  TrendingUp,
+  CircleDollarSign,
+  CheckCircle2,
+  Clock,
+  CreditCard,
+  ArrowRight,
+} from 'lucide-react';
 import '../app/admin/admin.css';
 
 function Panel() {
@@ -45,6 +54,10 @@ function Panel() {
   const [searchQuery, setSearchQuery] = useState('');
   const [resolveInvoice, setResolveInvoice] = useState<string | null>(null);
   const [resolveReason, setResolveReason] = useState('');
+
+  const [financePeriod, setFinancePeriod] = useState<'all' | 'this_month' | 'last_30_days' | 'last_7_days'>('all');
+  const [financeChannel, setFinanceChannel] = useState('all');
+  const [financeSearch, setFinanceSearch] = useState('');
 
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
@@ -107,6 +120,168 @@ function Panel() {
       );
     });
   }, [orders, statusFilter, searchQuery]);
+
+  const financeFilteredOrders = useMemo(() => {
+    const now = new Date();
+    const startOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+    const sevenDaysAgo = now.getTime() - 7 * 24 * 60 * 60 * 1000;
+    const thirtyDaysAgo = now.getTime() - 30 * 24 * 60 * 60 * 1000;
+
+    return orders.filter((item) => {
+      const orderTime = new Date(item.paid_at || item.created_at).getTime();
+      if (financePeriod === 'this_month' && orderTime < startOfThisMonth) return false;
+      if (financePeriod === 'last_7_days' && orderTime < sevenDaysAgo) return false;
+      if (financePeriod === 'last_30_days' && orderTime < thirtyDaysAgo) return false;
+
+      if (financeChannel !== 'all') {
+        const ch = (item.payment_channel || '').toLowerCase();
+        if (financeChannel === 'qris' && !ch.includes('qris')) return false;
+        if (financeChannel === 'va' && !ch.includes('va') && !ch.includes('virtual')) return false;
+        if (financeChannel === 'other' && (ch.includes('qris') || ch.includes('va') || ch.includes('virtual'))) return false;
+      }
+
+      if (financeSearch.trim()) {
+        const q = financeSearch.trim().toLowerCase();
+        return (
+          item.invoice.toLowerCase().includes(q) ||
+          item.workspace_id.toLowerCase().includes(q) ||
+          item.package_id.toLowerCase().includes(q) ||
+          (item.payment_channel || '').toLowerCase().includes(q)
+        );
+      }
+
+      return true;
+    });
+  }, [orders, financePeriod, financeChannel, financeSearch]);
+
+  const financePaidOrders = useMemo(
+    () => financeFilteredOrders.filter((item) => item.status === 'paid'),
+    [financeFilteredOrders]
+  );
+
+  const financeTotalGross = useMemo(
+    () => financePaidOrders.reduce((sum, item) => sum + (Number(item.amount_idr) || 0), 0),
+    [financePaidOrders]
+  );
+
+  const financeTotalCount = financeFilteredOrders.length;
+  const financePaidCount = financePaidOrders.length;
+  const financeConversionRate = financeTotalCount > 0 ? Math.round((financePaidCount / financeTotalCount) * 100) : 0;
+  const financeAov = financePaidCount > 0 ? Math.round(financeTotalGross / financePaidCount) : 0;
+
+  const financePendingOrders = useMemo(
+    () => financeFilteredOrders.filter((item) => item.status === 'checkout_ready' || item.status === 'pending'),
+    [financeFilteredOrders]
+  );
+  const financePendingGross = useMemo(
+    () => financePendingOrders.reduce((sum, item) => sum + (Number(item.amount_idr) || 0), 0),
+    [financePendingOrders]
+  );
+
+  const financeTierBreakdown = useMemo(() => {
+    const map = new Map<string, { count: number; total: number }>();
+    for (const order of financePaidOrders) {
+      const pid = order.package_id || 'unassigned';
+      const prev = map.get(pid) || { count: 0, total: 0 };
+      prev.count += 1;
+      prev.total += Number(order.amount_idr) || 0;
+      map.set(pid, prev);
+    }
+    return Array.from(map.entries())
+      .map(([id, d]) => {
+        const matched = catalog?.packages.find((p) => p.id === id);
+        return {
+          id,
+          name: matched?.name || id.replace(/_/g, ' ').toUpperCase(),
+          count: d.count,
+          total: d.total,
+          percent: financeTotalGross > 0 ? Math.round((d.total / financeTotalGross) * 100) : 0,
+        };
+      })
+      .sort((a, b) => b.total - a.total);
+  }, [financePaidOrders, catalog?.packages, financeTotalGross]);
+
+  const financeChannelBreakdown = useMemo(() => {
+    const map = new Map<string, { count: number; total: number }>();
+    for (const order of financePaidOrders) {
+      const ch = order.payment_channel ? order.payment_channel.toUpperCase() : 'BELUM TERCATAT';
+      const prev = map.get(ch) || { count: 0, total: 0 };
+      prev.count += 1;
+      prev.total += Number(order.amount_idr) || 0;
+      map.set(ch, prev);
+    }
+    return Array.from(map.entries())
+      .map(([channel, d]) => ({
+        channel,
+        count: d.count,
+        total: d.total,
+        percent: financeTotalGross > 0 ? Math.round((d.total / financeTotalGross) * 100) : 0,
+      }))
+      .sort((a, b) => b.total - a.total);
+  }, [financePaidOrders, financeTotalGross]);
+
+  const financeMonthlySummary = useMemo(() => {
+    const map = new Map<string, { count: number; total: number }>();
+    for (const order of financePaidOrders) {
+      const date = new Date(order.paid_at || order.created_at);
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      const prev = map.get(key) || { count: 0, total: 0 };
+      prev.count += 1;
+      prev.total += Number(order.amount_idr) || 0;
+      map.set(key, prev);
+    }
+    return Array.from(map.entries())
+      .map(([key, d]) => {
+        const [year, month] = key.split('-');
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        const label = `${monthNames[Number(month) - 1]} ${year}`;
+        return { key, label, count: d.count, total: d.total };
+      })
+      .sort((a, b) => b.key.localeCompare(a.key));
+  }, [financePaidOrders]);
+
+  const exportFinanceCsv = useCallback(() => {
+    if (!financePaidOrders.length) {
+      alert('Tidak ada transaksi lunas untuk diekspor pada filter ini.');
+      return;
+    }
+    const headers = [
+      'No',
+      'Tanggal Bayar',
+      'Tanggal Order',
+      'Invoice',
+      'Workspace ID',
+      'Paket',
+      'Nominal IDR',
+      'Durasi Hari',
+      'Kanal Pembayaran',
+      'Status',
+    ];
+    const rows = financePaidOrders.map((o, idx) => [
+      idx + 1,
+      o.paid_at ? `"${new Date(o.paid_at).toLocaleString('id-ID')}"` : '-',
+      o.created_at ? `"${new Date(o.created_at).toLocaleString('id-ID')}"` : '-',
+      `"${o.invoice}"`,
+      `"${o.workspace_id}"`,
+      `"${o.package_id}"`,
+      o.amount_idr,
+      o.duration_days,
+      `"${o.payment_channel || '-'}"`,
+      `"${o.status}"`,
+    ]);
+
+    const csvContent = '\uFEFF' + [headers.join(','), ...rows.map((r) => r.join(','))].join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const nowStr = new Date().toISOString().slice(0, 10);
+    a.download = `laporan-keuangan-pocket-wedding-${financePeriod}-${nowStr}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [financePaidOrders, financePeriod]);
 
   if (state === 'loading') return <p role="status" className="p-6">Memvalidasi hak admin…</p>;
 
@@ -177,6 +352,21 @@ function Panel() {
               <p className="text-xs text-slate-500">Gross Lunas Tercatat</p>
               <strong className="text-lg block break-words">{formatRupiah(paidTotalIdr)}</strong>
             </article>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl border border-emerald-200 bg-emerald-50/70">
+            <div>
+              <strong className="text-sm font-semibold text-emerald-950 block">Laporan & Analisis Keuangan</strong>
+              <p className="text-xs text-emerald-800">Pantau detail omset, conversion rate, AOV, breakdown paket & kanal bayar, serta ekspor CSV pembukuan kas.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setMenu('Laporan Keuangan')}
+              className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-xl bg-[#163e33] text-white hover:bg-[#1f5244] min-h-11"
+            >
+              <span>Buka Laporan Keuangan</span>
+              <ArrowRight size={14} />
+            </button>
           </div>
 
           <section className="admin-panel space-y-4">
@@ -259,6 +449,267 @@ function Panel() {
                 Simpan kontrol penjualan
               </button>
             </form>
+          </section>
+        </div>
+      )}
+
+      {menu === 'Laporan Keuangan' && (
+        <div className="space-y-6">
+          {/* Header Controls & Export */}
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200">
+            <div className="flex flex-wrap items-center gap-2">
+              <label className="text-xs font-medium text-slate-600 self-center mr-1">Periode:</label>
+              <select
+                aria-label="Filter periode laporan"
+                value={financePeriod}
+                onChange={(e) => setFinancePeriod(e.target.value as 'all' | 'this_month' | 'last_30_days' | 'last_7_days')}
+                className="rounded-xl border px-3 py-2 text-xs bg-white min-h-11"
+              >
+                <option value="all">Semua Waktu</option>
+                <option value="this_month">Bulan Ini</option>
+                <option value="last_30_days">30 Hari Terakhir</option>
+                <option value="last_7_days">7 Hari Terakhir</option>
+              </select>
+
+              <label className="text-xs font-medium text-slate-600 self-center ml-2 mr-1">Kanal:</label>
+              <select
+                aria-label="Filter kanal pembayaran"
+                value={financeChannel}
+                onChange={(e) => setFinanceChannel(e.target.value)}
+                className="rounded-xl border px-3 py-2 text-xs bg-white min-h-11"
+              >
+                <option value="all">Semua Metode</option>
+                <option value="qris">QRIS</option>
+                <option value="va">Virtual Account</option>
+                <option value="other">Metode Lainnya</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <input
+                type="search"
+                aria-label="Cari transaksi laporan"
+                value={financeSearch}
+                onChange={(e) => setFinanceSearch(e.target.value)}
+                placeholder="Cari invoice / workspace..."
+                className="rounded-xl border px-3 py-2 text-xs bg-white min-h-11 w-48 sm:w-60"
+              />
+              <button
+                type="button"
+                onClick={exportFinanceCsv}
+                className="inline-flex items-center gap-2 rounded-xl bg-[#163e33] text-white px-4 py-2.5 text-xs font-semibold hover:bg-[#205244] min-h-11"
+              >
+                <Download size={15} />
+                <span>Ekspor CSV</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Financial KPIs */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <article className="admin-panel min-w-0">
+              <div className="flex items-center justify-between text-slate-500 mb-2">
+                <span className="text-xs font-medium">Omset Lunas (Gross)</span>
+                <CircleDollarSign size={16} className="text-emerald-700" />
+              </div>
+              <strong className="text-2xl font-bold text-slate-900 block font-variant-numeric:tabular-nums">
+                {formatRupiah(financeTotalGross)}
+              </strong>
+              <p className="text-[11px] text-slate-500 mt-2">
+                {financePaidCount} transaksi lunas tercatat
+              </p>
+            </article>
+
+            <article className="admin-panel min-w-0">
+              <div className="flex items-center justify-between text-slate-500 mb-2">
+                <span className="text-xs font-medium">Tingkat Konversi</span>
+                <TrendingUp size={16} className="text-emerald-700" />
+              </div>
+              <strong className="text-2xl font-bold text-slate-900 block font-variant-numeric:tabular-nums">
+                {financeConversionRate}%
+              </strong>
+              <p className="text-[11px] text-slate-500 mt-2">
+                {financePaidCount} lunas dari {financeTotalCount} total checkout
+              </p>
+            </article>
+
+            <article className="admin-panel min-w-0">
+              <div className="flex items-center justify-between text-slate-500 mb-2">
+                <span className="text-xs font-medium">Average Order Value (AOV)</span>
+                <CreditCard size={16} className="text-emerald-700" />
+              </div>
+              <strong className="text-2xl font-bold text-slate-900 block font-variant-numeric:tabular-nums">
+                {formatRupiah(financeAov)}
+              </strong>
+              <p className="text-[11px] text-slate-500 mt-2">
+                Rata-rata pendapatan per order lunas
+              </p>
+            </article>
+
+            <article className="admin-panel min-w-0">
+              <div className="flex items-center justify-between text-slate-500 mb-2">
+                <span className="text-xs font-medium">Potensi Tertahan</span>
+                <Clock size={16} className="text-amber-600" />
+              </div>
+              <strong className="text-2xl font-bold text-slate-900 block font-variant-numeric:tabular-nums">
+                {formatRupiah(financePendingGross)}
+              </strong>
+              <p className="text-[11px] text-slate-500 mt-2">
+                {financePendingOrders.length} order menunggu pembayaran
+              </p>
+            </article>
+          </div>
+
+          {/* Breakdown: Tier & Channels */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Tier Breakdown */}
+            <section className="admin-panel space-y-4">
+              <div className="flex items-center justify-between border-b pb-3">
+                <div>
+                  <h2 className="text-base font-semibold text-slate-900">Pendapatan Berdasarkan Paket</h2>
+                  <p className="text-xs text-slate-500">Kontribusi omset dari masing-masing paket langganan.</p>
+                </div>
+                <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">
+                  {financeTierBreakdown.length} Paket
+                </span>
+              </div>
+
+              {!financeTierBreakdown.length ? (
+                <div className="py-8 text-center text-slate-400 text-xs">
+                  Belum ada transaksi lunas pada filter ini.
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {financeTierBreakdown.map((tier) => (
+                    <div key={tier.id} className="space-y-1.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-semibold text-slate-800">{tier.name}</span>
+                        <div className="text-right">
+                          <span className="font-bold text-slate-900">{formatRupiah(tier.total)}</span>
+                          <span className="text-slate-400 ml-1.5">({tier.count} unit · {tier.percent}%)</span>
+                        </div>
+                      </div>
+                      <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-[#163e33] rounded-full transition-all duration-300"
+                          style={{ width: `${tier.percent}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+
+            {/* Payment Channel Breakdown & Run Rate */}
+            <section className="admin-panel space-y-4">
+              <div className="flex items-center justify-between border-b pb-3">
+                <div>
+                  <h2 className="text-base font-semibold text-slate-900">Kanal Pembayaran & Tren</h2>
+                  <p className="text-xs text-slate-500">Metode pembayaran yang digunakan oleh pelanggan.</p>
+                </div>
+              </div>
+
+              {!financeChannelBreakdown.length ? (
+                <div className="py-8 text-center text-slate-400 text-xs">
+                  Belum ada kanal pembayaran tercatat pada filter ini.
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="space-y-3">
+                    {financeChannelBreakdown.map((ch) => (
+                      <div key={ch.channel} className="flex items-center justify-between text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                        <div className="flex items-center gap-2">
+                          <CreditCard size={15} className="text-slate-500" />
+                          <span className="font-medium text-slate-800">{ch.channel}</span>
+                        </div>
+                        <div className="text-right">
+                          <span className="font-semibold text-slate-900">{formatRupiah(ch.total)}</span>
+                          <span className="text-slate-400 ml-1.5">({ch.count}x · {ch.percent}%)</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {financeMonthlySummary.length > 0 && (
+                    <div className="pt-3 border-t">
+                      <span className="text-xs font-semibold text-slate-700 block mb-2">Omset per Bulan</span>
+                      <div className="space-y-1.5">
+                        {financeMonthlySummary.map((m) => (
+                          <div key={m.key} className="flex justify-between text-xs text-slate-600">
+                            <span>{m.label} ({m.count} transaksi)</span>
+                            <strong className="text-slate-900 font-medium">{formatRupiah(m.total)}</strong>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </section>
+          </div>
+
+          {/* Financial Transactions Ledger Table */}
+          <section className="admin-panel space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-3">
+              <div>
+                <h2 className="text-base font-semibold text-slate-900">Buku Kas & Riwayat Transaksi Lunas</h2>
+                <p className="text-xs text-slate-500">Daftar transaksi yang telah terverifikasi lunas oleh sistem.</p>
+              </div>
+              <span className="text-xs text-slate-500">
+                Menampilkan <strong>{financePaidOrders.length}</strong> transaksi lunas
+              </span>
+            </div>
+
+            {!financePaidOrders.length ? (
+              <p className="text-xs text-slate-400 py-6 text-center">
+                Belum ada transaksi lunas yang sesuai dengan kriteria filter saat ini.
+              </p>
+            ) : (
+              <div className="admin-table-wrap">
+                <table className="w-full text-xs text-left">
+                  <thead>
+                    <tr className="border-b bg-slate-50 text-slate-600">
+                      <th className="p-3 font-semibold">TANGGAL BAYAR</th>
+                      <th className="p-3 font-semibold">NO. INVOICE</th>
+                      <th className="p-3 font-semibold">PAKET</th>
+                      <th className="p-3 font-semibold">KANAL</th>
+                      <th className="p-3 font-semibold text-right">NOMINAL</th>
+                      <th className="p-3 font-semibold text-center">STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {financePaidOrders.map((order) => (
+                      <tr key={order.invoice} className="hover:bg-slate-50/50">
+                        <td className="p-3 whitespace-nowrap text-slate-600" data-label="Tanggal">
+                          {order.paid_at ? new Date(order.paid_at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) : '-'}
+                        </td>
+                        <td className="p-3 font-mono font-medium text-slate-900" data-label="Invoice">
+                          {order.invoice}
+                        </td>
+                        <td className="p-3 capitalize text-slate-700" data-label="Paket">
+                          {order.package_id}
+                        </td>
+                        <td className="p-3 text-slate-600" data-label="Kanal">
+                          <span className="px-2 py-0.5 rounded bg-slate-100 text-[11px] font-medium">
+                            {order.payment_channel || 'DOKU'}
+                          </span>
+                        </td>
+                        <td className="p-3 text-right font-semibold text-emerald-950 font-variant-numeric:tabular-nums" data-label="Nominal">
+                          {formatRupiah(order.amount_idr)}
+                        </td>
+                        <td className="p-3 text-center" data-label="Status">
+                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                            <CheckCircle2 size={12} />
+                            Lunas
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </section>
         </div>
       )}
