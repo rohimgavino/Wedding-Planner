@@ -2,6 +2,9 @@
 
 Dokumen ini adalah Standard Operating Procedure (SOP) bagi AI Agent (Hermes, Claude Code, Codex, Antigravity) saat membaca, menguji, atau mengembangkan modul di repositori Wedding Planner.
 
+> [!IMPORTANT]
+> **Single Source of Truth:** Selalu baca file [MEMORY.md](MEMORY.md) sebelum memulai pekerjaan untuk mengetahui riwayat percakapan, preferensi pengguna, palet warna resmi (Forest Green, Champagne Gold, Romantic Rose, Batik Kawung), dan status implementasi fitur terkini.
+
 ---
 
 ## 1. Prinsip Utama Proyek
