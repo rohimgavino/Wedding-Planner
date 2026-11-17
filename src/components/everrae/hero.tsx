@@ -65,9 +65,6 @@ export function Hero() {
             <span>Daftar & status RSVP</span>
           </div>
         </div>
-        <p className="er-hero-note">
-          Workspace cloud bersama pasangan · Pembayaran resmi via DOKU
-        </p>
       </div>
       <p className="er-hero-script">
         Bukan sekadar rencana,
