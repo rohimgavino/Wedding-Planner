@@ -3,8 +3,11 @@ import { formatRupiah } from '@/lib/utils';
 
 /** Read-only guidance: no form defaults, database writes or sample seeding. */
 export function FillingExample() {
- return <details className="my-4 rounded-2xl border border-rose-200 bg-white p-4 text-sm text-slate-700">
-  <summary className="cursor-pointer min-h-11 font-semibold text-rose-800">Contoh pengisian</summary>
+ return <details className="my-4 rounded-2xl border border-amber-200/90 bg-gradient-to-r from-amber-50/50 via-white to-amber-50/30 p-4 sm:p-5 text-sm text-slate-700 shadow-xs transition hover:border-amber-300">
+  <summary className="cursor-pointer min-h-11 font-semibold text-amber-900 flex items-center gap-2 select-none">
+   <span className="w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center text-xs text-amber-800">💡</span>
+   <span>Panduan &amp; Contoh Pengisian Rencana (Klik untuk Membaca)</span>
+  </summary>
   <p className="mt-3">Semua nama, tanggal, dan nominal berikut fiktif, bukan harga paket atau rekomendasi biaya. Contoh hanya untuk dibaca; tidak mengisi formulir atau menyimpan data ke workspace.</p>
   <ol className="list-decimal pl-5 mt-3 space-y-3">
    <li><strong>Raka &amp; Nisa (fiktif)</strong>: isi nama kedua mempelai di langkah Mempelai.</li>

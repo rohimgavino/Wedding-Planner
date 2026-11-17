@@ -18,10 +18,13 @@ export function PlanningReset() {
   if(ok){setOpen(false);setConfirmation('');setMessage('Rencana berhasil dikosongkan. Identitas pernikahan dan akses paket tetap tersimpan.');}
   else setMessage('Reset atau penyegaran belum dapat dipastikan. Muat ulang sebelum mencoba lagi; jangan anggap kegagalan jaringan berarti data belum dihapus.');
  };
- return <section className="my-4 rounded-2xl border border-rose-200 bg-white p-4 text-sm" aria-label="Mulai rencana dari nol">
-  <h2 className="font-semibold">Mulai rencana dari nol</h2>
-  <p className="mt-2">Reset isi rencana bersama, bukan membuat akun atau workspace baru. Cadangkan data penting terlebih dahulu; tidak ada tombol urungkan.</p>
-  {isOwner ? <button type="button" disabled={busy || pending} className="mt-3 min-h-11 rounded-xl border border-rose-700 p-3 text-rose-800 disabled:opacity-50" onClick={()=>{setMessage('');setConfirmation('');setOpen(true);}}>Reset rencana dari nol</button> : <p className="mt-3">Hanya owner workspace yang dapat mereset rencana.</p>}
+ return <section className="my-4 rounded-2xl border border-slate-200/90 bg-white p-5 text-sm shadow-xs border-l-4 border-l-amber-500 transition hover:shadow-sm" aria-label="Mulai rencana dari nol">
+  <div className="flex items-center gap-2">
+   <span className="text-amber-600 font-bold">⚠️</span>
+   <h2 className="font-semibold text-slate-900 text-base">Mulai rencana dari nol</h2>
+  </div>
+  <p className="mt-2 text-slate-600">Reset isi rencana bersama, bukan membuat akun atau workspace baru. Cadangkan data penting terlebih dahulu; tidak ada tombol urungkan.</p>
+  {isOwner ? <button type="button" disabled={busy || pending} className="mt-3 min-h-11 rounded-xl border border-slate-300 hover:border-rose-400 hover:bg-rose-50 px-4 py-2.5 text-rose-700 font-semibold transition disabled:opacity-50" onClick={()=>{setMessage('');setConfirmation('');setOpen(true);}}>Reset rencana dari nol</button> : <p className="mt-3 text-slate-500">Hanya owner workspace yang dapat mereset rencana.</p>}
   {message && <p role="status" className="mt-3">{message}</p>}
   {open && <PlannerDialog title="Reset rencana dari nol" onClose={close} resetSurface>
    <div className="w-full max-w-lg max-h-[85vh] overflow-y-auto p-5 space-y-4 text-sm">
