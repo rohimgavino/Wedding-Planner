@@ -16,12 +16,27 @@ import {
   X,
   AlertCircle,
   HelpCircle,
-  Users
+  Users,
+  FastForward,
+  CheckCircle2
 } from 'lucide-react';
 import { useWorkspace } from '@/context/WorkspaceContext';
 import { RundownEvent, RundownSession } from '@/types';
 import { RundownTemplateType } from '@/lib/rundown-templates';
 import { formatDateID } from '@/lib/utils';
+
+function addMinutes(timeStr: string, minutes: number): string {
+  if (!timeStr || !timeStr.includes(':')) return timeStr;
+  const [hStr, mStr] = timeStr.split(':');
+  const h = parseInt(hStr, 10);
+  const m = parseInt(mStr, 10);
+  if (isNaN(h) || isNaN(m)) return timeStr;
+  const total = h * 60 + m + minutes;
+  const normalized = ((total % 1440) + 1440) % 1440;
+  const newH = Math.floor(normalized / 60);
+  const newM = normalized % 60;
+  return `${String(newH).padStart(2, '0')}:${String(newM).padStart(2, '0')}`;
+}
 
 const SESSION_META: Record<RundownSession, { label: string; bg: string; text: string; border: string }> = {
   persiapan: { label: 'Persiapan & Rias', bg: 'bg-amber-50', text: 'text-amber-800', border: 'border-amber-200' },
@@ -33,11 +48,15 @@ const SESSION_META: Record<RundownSession, { label: string; bg: string; text: st
 };
 
 export function RundownManager() {
-  const { workspace, rundowns, createRundownEvent, updateRundownEvent, deleteRundownEvent, applyRundownTemplate, busy } = useWorkspace();
+  const { workspace, rundowns, createRundownEvent, updateRundownEvent, updateRundownBatch, deleteRundownEvent, applyRundownTemplate, busy } = useWorkspace();
 
   const [sessionFilter, setSessionFilter] = useState<string>('all');
   const [showModal, setShowModal] = useState(false);
   const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [showShiftModal, setShowShiftModal] = useState(false);
+  const [shiftStartEventId, setShiftStartEventId] = useState<string>('all');
+  const [shiftMinutes, setShiftMinutes] = useState<number>(15);
+  const [shiftNotice, setShiftNotice] = useState<string>('');
   const [editingEvent, setEditingEvent] = useState<RundownEvent | null>(null);
 
   // Form states
@@ -148,6 +167,39 @@ export function RundownManager() {
   const earliestTime = rundowns.length > 0 ? rundowns.slice().sort((a,b) => a.time_start.localeCompare(b.time_start))[0].time_start : '--:--';
   const latestTime = rundowns.length > 0 ? rundowns.slice().sort((a,b) => (b.time_end || b.time_start).localeCompare(a.time_end || a.time_start))[0].time_end || rundowns[0].time_start : '--:--';
 
+  // Shift schedule calculations
+  const shiftAffectedEvents = useMemo(() => {
+    if (!rundowns.length) return [];
+    const sorted = rundowns.slice().sort((a, b) => {
+      if (a.time_start !== b.time_start) return a.time_start.localeCompare(b.time_start);
+      return a.sort_order - b.sort_order;
+    });
+
+    if (shiftStartEventId === 'all') {
+      return sorted;
+    }
+    const idx = sorted.findIndex((e) => e.id === shiftStartEventId);
+    if (idx === -1) return sorted;
+    return sorted.slice(idx);
+  }, [rundowns, shiftStartEventId]);
+
+  const handleApplyShift = async () => {
+    if (!shiftAffectedEvents.length) return;
+    const updates = shiftAffectedEvents.map((ev) => ({
+      id: ev.id,
+      time_start: addMinutes(ev.time_start, shiftMinutes),
+      time_end: ev.time_end ? addMinutes(ev.time_end, shiftMinutes) : null,
+    }));
+    const ok = await updateRundownBatch(updates);
+    if (ok) {
+      setShowShiftModal(false);
+      setShiftNotice(
+        `Jadwal berhasil digeser ${shiftMinutes > 0 ? `+${shiftMinutes}` : shiftMinutes} menit untuk ${updates.length} agenda.`
+      );
+      setTimeout(() => setShiftNotice(''), 6000);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Top Header */}
@@ -178,6 +230,17 @@ export function RundownManager() {
 
           <button
             type="button"
+            onClick={() => setShowShiftModal(true)}
+            disabled={busy || rundowns.length === 0}
+            className="px-3.5 py-2.5 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 font-semibold text-xs hover:bg-amber-100 transition flex items-center gap-1.5 shadow-xs"
+            title="Geser otomatis jam acara jika hari-H mengalami keterlambatan atau percepatan"
+          >
+            <FastForward className="w-4 h-4 text-amber-700" />
+            <span>Geser Jadwal (+15m)</span>
+          </button>
+
+          <button
+            type="button"
             onClick={() => setShowTemplateModal(true)}
             disabled={busy}
             className="px-3.5 py-2.5 rounded-xl bg-rose-50 text-rose-700 border border-rose-200 font-semibold text-xs hover:bg-rose-100 transition flex items-center gap-1.5"
@@ -197,6 +260,13 @@ export function RundownManager() {
           </button>
         </div>
       </div>
+
+      {shiftNotice && (
+        <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-center gap-2 shadow-xs print:hidden">
+          <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0" />
+          <span>{shiftNotice}</span>
+        </div>
+      )}
 
       {/* Summary Metrics Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 print:hidden">
@@ -663,6 +733,139 @@ export function RundownManager() {
                   className="w-full py-2.5 rounded-xl bg-emerald-600 text-white font-semibold text-xs shadow-xs hover:bg-emerald-700 transition"
                 >
                   Terapkan Template Adat Sunda
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: SHIFT RUNDOWN SCHEDULE (SIMULASI DELAY HARI-H) */}
+      {showShiftModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-amber-200">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+              <div className="flex items-center gap-2">
+                <FastForward className="w-5 h-5 text-amber-600" />
+                <h3 className="font-serif font-bold text-slate-900 text-lg">
+                  Geser Jadwal Acara Hari-H
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowShiftModal(false)}
+                className="p-1 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-500 mb-4 leading-relaxed">
+              Acara mengalami keterlambatan atau percepatan di lapangan? Geser jam seluruh agenda berikutnya secara otomatis dalam satu klik tanpa mengedit manual satu per satu.
+            </p>
+
+            <div className="space-y-4">
+              {/* Select Starting Event */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Mulai Geser Dari Agenda:
+                </label>
+                <select
+                  value={shiftStartEventId}
+                  onChange={(e) => setShiftStartEventId(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-xs bg-white focus:outline-rose-500"
+                >
+                  <option value="all">Semua Agenda ({rundowns.length} kegiatan)</option>
+                  {rundowns
+                    .slice()
+                    .sort((a, b) => a.time_start.localeCompare(b.time_start))
+                    .map((item) => (
+                      <option key={item.id} value={item.id}>
+                        [{item.time_start}] {item.activity}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              {/* Select Shift Duration Presets */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                  Durasi Pergeseran:
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { label: '+15 Mnt (Ngaret)', val: 15 },
+                    { label: '+30 Mnt', val: 30 },
+                    { label: '+45 Mnt', val: 45 },
+                    { label: '+60 Mnt', val: 60 },
+                    { label: '-15 Mnt (Maju)', val: -15 },
+                    { label: '-30 Mnt', val: -30 },
+                  ].map((p) => (
+                    <button
+                      key={p.val}
+                      type="button"
+                      onClick={() => setShiftMinutes(p.val)}
+                      className={`py-2 px-2 rounded-xl text-xs font-semibold border transition ${
+                        shiftMinutes === p.val
+                          ? p.val > 0
+                            ? 'bg-amber-500 text-white border-amber-500 shadow-xs'
+                            : 'bg-blue-600 text-white border-blue-600 shadow-xs'
+                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                      }`}
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Preview Box */}
+              <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-2">
+                <div className="flex items-center justify-between text-slate-500 font-semibold text-[11px]">
+                  <span>Pratinjau Perubahan Waktu:</span>
+                  <span className="text-amber-800 font-bold">
+                    {shiftAffectedEvents.length} agenda terpengaruh
+                  </span>
+                </div>
+                <div className="space-y-1 max-h-36 overflow-y-auto divide-y divide-slate-100 pr-1">
+                  {shiftAffectedEvents.slice(0, 4).map((ev) => (
+                    <div key={ev.id} className="pt-1 flex items-center justify-between text-xs">
+                      <span className="truncate max-w-[200px] text-slate-800 font-medium">
+                        {ev.activity}
+                      </span>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <span className="line-through text-slate-400">{ev.time_start}</span>
+                        <span className="text-slate-400">→</span>
+                        <strong className="text-amber-800 font-bold">
+                          {addMinutes(ev.time_start, shiftMinutes)}
+                        </strong>
+                      </div>
+                    </div>
+                  ))}
+                  {shiftAffectedEvents.length > 4 && (
+                    <p className="text-[10px] text-slate-400 pt-1 text-center">
+                      ...dan {shiftAffectedEvents.length - 4} agenda berikutnya otomatis menyesuaikan.
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setShowShiftModal(false)}
+                  className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition"
+                >
+                  Batal
+                </button>
+                <button
+                  type="button"
+                  disabled={busy || !shiftAffectedEvents.length}
+                  onClick={() => void handleApplyShift()}
+                  className="px-5 py-2.5 rounded-xl bg-amber-600 text-white font-semibold text-xs shadow-md hover:bg-amber-700 transition"
+                >
+                  {busy ? 'Menggeser...' : `Terapkan Geser ${shiftMinutes > 0 ? `+${shiftMinutes}` : shiftMinutes} Menit`}
                 </button>
               </div>
             </div>

@@ -122,6 +122,13 @@ export default function DashboardPage() {
   // Aggregate Metrics
   const totalAllocatedBudget = budgets.reduce((acc, b) => acc + (b.allocated_amount || 0), 0);
   const totalSpentBudget = budgets.reduce((acc, b) => acc + (b.spent_amount || 0), 0);
+  const totalPaidBudget = budgets.reduce((acc, b) => {
+    if (b.payment_status === 'paid') return acc + (b.spent_amount || b.allocated_amount || 0);
+    if (b.payment_status === 'dp') return acc + Math.round((b.spent_amount || b.allocated_amount || 0) * 0.5);
+    return acc;
+  }, 0);
+  const totalUnpaidBudget = Math.max(0, totalSpentBudget - totalPaidBudget);
+  const isOverBudget = workspace && workspace.target_budget > 0 ? totalSpentBudget > workspace.target_budget : false;
   const totalCompletedTasks = tasks.filter((t) => t.is_completed).length;
   const totalTasksCount = tasks.length;
   const taskProgressPercent = totalTasksCount > 0 ? Math.round((totalCompletedTasks / totalTasksCount) * 100) : 0;
@@ -212,6 +219,43 @@ export default function DashboardPage() {
                 <Plus className="w-4 h-4" />
                 <span>Tambah Pos Anggaran</span>
               </button>
+            </div>
+
+            {/* Master Budget KPI Cards (Pagu, Aktual, Sudah Dibayar, Sisa Tagihan) */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Pagu Target</span>
+                <p className="text-base sm:text-lg font-bold text-slate-900 mt-0.5 truncate">
+                  {formatRupiah(workspace?.target_budget || totalAllocatedBudget)}
+                </p>
+                <span className="text-[10px] text-slate-400">Batas maksimal anggaran</span>
+              </div>
+
+              <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Riil (Aktual)</span>
+                <p className={`text-base sm:text-lg font-bold mt-0.5 truncate ${isOverBudget ? 'text-rose-600' : 'text-slate-900'}`}>
+                  {formatRupiah(totalSpentBudget)}
+                </p>
+                <span className={`text-[10px] font-semibold ${isOverBudget ? 'text-rose-600' : 'text-emerald-700'}`}>
+                  {workspace && workspace.target_budget > 0 ? `${Math.round((totalSpentBudget / workspace.target_budget) * 100)}% dari pagu` : 'Sesuai catatan pos'}
+                </span>
+              </div>
+
+              <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Sudah Dibayar</span>
+                <p className="text-base sm:text-lg font-bold text-emerald-700 mt-0.5 truncate">
+                  {formatRupiah(totalPaidBudget)}
+                </p>
+                <span className="text-[10px] text-slate-400">Pos lunas & DP termin</span>
+              </div>
+
+              <div className={`p-4 rounded-2xl border shadow-xs ${totalUnpaidBudget > 0 ? 'bg-amber-50/60 border-amber-200' : 'bg-white border-slate-200/80'}`}>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800">Sisa Tagihan (Unpaid)</span>
+                <p className="text-base sm:text-lg font-bold text-amber-900 mt-0.5 truncate">
+                  {formatRupiah(totalUnpaidBudget)}
+                </p>
+                <span className="text-[10px] text-amber-700 font-medium">Wajib disiapkan sebelum H-H</span>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">

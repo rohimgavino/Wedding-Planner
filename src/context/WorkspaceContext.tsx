@@ -33,6 +33,7 @@ interface WorkspaceContextType extends CloudSnapshot {
  deleteWish: (wishId: string) => Promise<boolean>;
  createRundownEvent: (item: Partial<RundownEvent>) => Promise<boolean>;
  updateRundownEvent: (id: string, item: Partial<RundownEvent>) => Promise<boolean>;
+ updateRundownBatch: (items: { id: string; time_start: string; time_end?: string | null }[]) => Promise<boolean>;
  deleteRundownEvent: (id: string) => Promise<boolean>;
  applyRundownTemplate: (template: RundownTemplateType) => Promise<boolean>;
  savePalette: (item: Partial<ColorPalette>) => Promise<boolean>;
@@ -122,6 +123,7 @@ export function WorkspaceProvider({children}: {children: React.ReactNode}) {
   deleteWish: wishId=>run(cloud=>cloud.deleteWish(wishId)),
   createRundownEvent: item=>run((cloud,id)=>cloud.createRundownEvent(id,item)),
   updateRundownEvent: (key,item)=>run((cloud,id)=>cloud.updateRundownEvent(id,key,item)),
+  updateRundownBatch: items=>run((cloud,id)=>cloud.updateRundownBatch(id,items)),
   deleteRundownEvent: key=>run((cloud,id)=>cloud.deleteRundownEvent(id,key)),
   applyRundownTemplate: template=>run((cloud,id)=>cloud.insertRundownBatch(id,getRundownTemplate(template))),
   savePalette: item=>run((cloud,id)=>cloud.savePalette(id,item)),

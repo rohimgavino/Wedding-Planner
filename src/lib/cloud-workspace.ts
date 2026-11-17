@@ -167,6 +167,25 @@ export class CloudWorkspace {
   if (res.error) throw new Error('Gagal menerapkan template rundown: ' + res.error.message);
   return (res.data || []) as RundownEvent[];
  }
+ async updateRundownBatch(workspaceId: string, items: { id: string; time_start: string; time_end?: string | null }[]) {
+  await this.requireUser();
+  const promises = items.map(item =>
+    this.db
+      .from('wedding_rundown_events')
+      .update({
+        time_start: item.time_start,
+        time_end: item.time_end ?? null,
+        updated_at: new Date().toISOString()
+      })
+      .eq('workspace_id', workspaceId)
+      .eq('id', item.id)
+  );
+  const results = await Promise.all(promises);
+  for (const res of results) {
+    if (res.error) throw new Error('Gagal menggeser waktu agenda: ' + res.error.message);
+  }
+  return true;
+ }
  async savePalette(workspaceId: string, item: Partial<ColorPalette>) {
   await this.requireUser();
   const existing = await this.db.from('wedding_color_palettes').select('id').eq('workspace_id', workspaceId).maybeSingle();
