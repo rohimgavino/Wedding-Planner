@@ -30,7 +30,7 @@ self.addEventListener('fetch', (event) => {
         return response;
       } catch {
         const cached = publicNavigation ? await cache.match(request) : undefined;
-        return cached || new Response('EverRae is offline. Reconnect to open this page.', {
+        return cached || new Response('Pocket Planner sedang offline. Sambungkan kembali internet untuk membuka halaman.', {
           status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' }
         });
       }
