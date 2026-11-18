@@ -145,7 +145,7 @@
   7. *Floating Bottom Navigation Dock:* Menu bar melayang di bawah layar `[🏠 Sampul] [💍 Mempelai] [🗓️ Acara] [🎁 Hadiah] [💌 Ucapan]` untuk navigasi instan antar-seksi.
 * **Efisiensi & Performa Mobile:**
   - 0 MB video beban (bebas kuota), 100% murni *GPU-accelerated CSS 3D transforms* (`preserve-3d`, `rotateY`), dan aset vektor SVG tajam di semua layar Retina ponsel.
-  - File prototype interaktif tersimpan di `public/preview-themes.html`.
+  - **Status Integrasi:** Efek 3D Door Swing Reveal, ukiran pintu SVG, emblem budaya hero, dan bingkai arch photo kini telah **terintegrasi penuh secara native** di komponen Next.js (`src/components/everrae/public-invitation-view.tsx` & `src/components/everrae/invitation-theme-config.tsx`), serta tetap dapat diuji di file prototype standalone `public/preview-themes.html`.
 
 ---
 

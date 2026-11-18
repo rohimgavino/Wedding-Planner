@@ -249,3 +249,112 @@ body {
   }
 }
 
+/* =========================================================
+   WEDDING INVITATION 3D DOORS & SWING ANIMATIONS
+   ========================================================= */
+.pw-doors-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+  display: flex;
+  pointer-events: auto;
+  transition: visibility 0s 1.3s, opacity 0.5s 1.3s;
+}
+.pw-doors-wrapper.opened {
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+}
+.pw-door-leaf {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  box-shadow: 0 10px 45px rgba(0, 0, 0, 0.85);
+  transition: transform 1.3s cubic-bezier(0.2, 0.85, 0.25, 1), box-shadow 1.3s ease;
+}
+.pw-door-left {
+  transform-origin: left center;
+  border-right: 1px solid rgba(0, 0, 0, 0.7);
+}
+.pw-door-right {
+  transform-origin: right center;
+  border-left: 1px solid rgba(223, 186, 115, 0.3);
+}
+.pw-doors-wrapper.opened .pw-door-left {
+  transform: rotateY(-115deg);
+  box-shadow: 20px 0 45px rgba(0, 0, 0, 0.9);
+}
+.pw-doors-wrapper.opened .pw-door-right {
+  transform: rotateY(115deg);
+  box-shadow: -20px 0 45px rgba(0, 0, 0, 0.9);
+}
+
+.pw-door-ornament-frame {
+  position: absolute;
+  inset: 20px 14px;
+  border: 2px solid #DFBA73;
+  border-radius: 14px;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.7), 0 0 12px rgba(223, 186, 115, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 8px;
+}
+.pw-door-knocker {
+  position: absolute;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  z-index: 10;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #FFF2CC 0%, #DFBA73 50%, #8A6828 100%);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.7), inset 0 2px 4px rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.pw-door-left .pw-door-knocker {
+  right: 12px;
+}
+.pw-door-right .pw-door-knocker {
+  left: 12px;
+}
+.pw-knocker-ring {
+  width: 22px;
+  height: 22px;
+  border: 3.5px solid #5C4113;
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+}
+
+.pw-cover-center-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 60;
+  width: 90%;
+  max-width: 380px;
+  text-align: center;
+  pointer-events: auto;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pw-doors-wrapper.opened .pw-cover-center-badge {
+  opacity: 0;
+  transform: translate(-50%, -75%) scale(0.85);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pw-door-leaf {
+    transition: none !important;
+  }
+}
+
+

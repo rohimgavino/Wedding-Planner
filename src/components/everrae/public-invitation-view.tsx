@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { WeddingInvitation, InvitationWish } from '@/types';
+import { getInvitationThemeConfig } from './invitation-theme-config';
 
 interface PublicInvitationViewProps {
   slug?: string;
@@ -304,6 +305,7 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
 
   // Theme styling configurations (12 distinct options)
   const currentTheme = invitation.theme || 'classic-ivory';
+  const themeConfig = getInvitationThemeConfig(currentTheme);
 
   const themeClass = {
     'classic-ivory': 'bg-[#FBF9F5] text-slate-800 font-sans',
@@ -408,47 +410,14 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
         <div className="absolute bottom-[2%] left-1/2 -translate-x-1/2 w-[650px] h-[650px] rounded-full bg-gradient-to-t from-amber-300/15 via-amber-100/5 to-transparent blur-3xl" />
       </div>
 
-      {/* 3. Luxury Botanical Filigree Watermarks (SVG Corner Ornaments) */}
+      {/* 3. Luxury Cultural Corner Ornaments */}
       <div className="pointer-events-none fixed inset-0 z-0 select-none overflow-hidden" aria-hidden="true">
-        {/* Top-Left Botanical Branch */}
-        <svg className="absolute -top-4 -left-4 w-52 h-52 text-[#C6AA78] opacity-[0.14] rotate-[-15deg]" viewBox="0 0 200 200" fill="none" stroke="currentColor">
-          <path d="M20,180 Q60,120 120,80 T190,20" strokeWidth="1.5" strokeLinecap="round" />
-          <path d="M60,120 Q45,100 40,85 Q55,95 60,120" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-          <path d="M85,105 Q105,95 115,80 Q105,100 85,105" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-          <path d="M120,80 Q110,55 100,45 Q120,60 120,80" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-          <path d="M150,60 Q170,50 175,35 Q165,55 150,60" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-          <circle cx="120" cy="80" r="2.5" fill="currentColor" />
-          <circle cx="150" cy="60" r="2" fill="currentColor" />
-          <circle cx="190" cy="20" r="3" fill="currentColor" />
-        </svg>
-
-        {/* Top-Right Botanical Branch */}
-        <svg className="absolute -top-4 -right-4 w-52 h-52 text-[#C6AA78] opacity-[0.14] scale-x-[-1] rotate-[-15deg]" viewBox="0 0 200 200" fill="none" stroke="currentColor">
-          <path d="M20,180 Q60,120 120,80 T190,20" strokeWidth="1.5" strokeLinecap="round" />
-          <path d="M60,120 Q45,100 40,85 Q55,95 60,120" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-          <path d="M85,105 Q105,95 115,80 Q105,100 85,105" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-          <path d="M120,80 Q110,55 100,45 Q120,60 120,80" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-          <path d="M150,60 Q170,50 175,35 Q165,55 150,60" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-          <circle cx="120" cy="80" r="2.5" fill="currentColor" />
-          <circle cx="150" cy="60" r="2" fill="currentColor" />
-          <circle cx="190" cy="20" r="3" fill="currentColor" />
-        </svg>
-
-        {/* Bottom-Left Floral Sprig */}
-        <svg className="absolute -bottom-6 -left-6 w-60 h-60 text-[#C6AA78] opacity-[0.12] rotate-[45deg]" viewBox="0 0 200 200" fill="none" stroke="currentColor">
-          <path d="M180,20 Q120,60 80,120 T20,190" strokeWidth="1.5" strokeLinecap="round" />
-          <path d="M120,60 Q100,45 85,40 Q95,55 120,60" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-          <path d="M105,85 Q95,105 80,115 Q100,105 105,85" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-          <path d="M80,120 Q55,110 45,100 Q60,120 80,120" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-        </svg>
-
-        {/* Bottom-Right Floral Sprig */}
-        <svg className="absolute -bottom-6 -right-6 w-60 h-60 text-[#C6AA78] opacity-[0.12] scale-x-[-1] rotate-[45deg]" viewBox="0 0 200 200" fill="none" stroke="currentColor">
-          <path d="M180,20 Q120,60 80,120 T20,190" strokeWidth="1.5" strokeLinecap="round" />
-          <path d="M120,60 Q100,45 85,40 Q95,55 120,60" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-          <path d="M105,85 Q95,105 80,115 Q100,105 105,85" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-          <path d="M80,120 Q55,110 45,100 Q60,120 80,120" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-        </svg>
+        <div className="absolute top-2 left-2 opacity-40">
+          {themeConfig.cornerTopLeft}
+        </div>
+        <div className="absolute top-2 right-2 opacity-40">
+          {themeConfig.cornerTopRight}
+        </div>
       </div>
 
       {/* 4. Falling Gentle Golden Rose Petals (Romantic Atmosphere) */}
@@ -551,55 +520,79 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
       )}
 
       {/* ========================================================
-          1. COVER / AMPLOP PEMBUKA (LUXURY ROYAL WAX SEAL)
+          1. 3D DOORS ENTRANCE & ROYAL MONOGRAM WAX SEAL
           ======================================================== */}
-      {!isOpened && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
-          {/* Background Photo with Dark Luxury Scrim */}
-          <div className="absolute inset-0">
-            <Image
-              src="/images/wedding-flowers.jpg"
-              alt="Wedding Flowers"
-              fill
-              className="object-cover scale-105 filter blur-xs"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#1E1513]/90 via-[#18110F]/93 to-[#0E0B0A]/98 backdrop-blur-xs" />
+      <div className={`pw-doors-wrapper ${isOpened ? 'opened' : ''}`}>
+        {/* Left Door Leaf */}
+        <div 
+          className="pw-door-leaf pw-door-left" 
+          style={{ background: themeConfig.doorBg }}
+        >
+          <div className="pw-door-ornament-frame">
+            <div className="w-full max-w-[120px] opacity-90 filter drop-shadow">
+              {themeConfig.doorSvg}
+            </div>
+            <span className="text-[10px] tracking-[3px] font-serif text-amber-200/90 font-bold uppercase">
+              {themeConfig.doorLabelLeft}
+            </span>
+          </div>
+          <div className="pw-door-knocker">
+            <div className="pw-knocker-ring" />
+          </div>
+        </div>
+
+        {/* Right Door Leaf */}
+        <div 
+          className="pw-door-leaf pw-door-right" 
+          style={{ background: themeConfig.doorBg }}
+        >
+          <div className="pw-door-ornament-frame">
+            <div className="w-full max-w-[120px] opacity-90 filter drop-shadow scale-x-[-1]">
+              {themeConfig.doorSvg}
+            </div>
+            <span className="text-[10px] tracking-[3px] font-serif text-amber-200/90 font-bold uppercase">
+              {themeConfig.doorLabelRight}
+            </span>
+          </div>
+          <div className="pw-door-knocker">
+            <div className="pw-knocker-ring" />
+          </div>
+        </div>
+
+        {/* Center Plaque with Royal Monogram Wax Seal */}
+        <div className="pw-cover-center-badge">
+          {/* Royal Wax Seal Monogram */}
+          <div className="mx-auto w-24 h-24 rounded-full bg-gradient-to-tr from-[#FFF4CC] via-[#DFBA73] to-[#8A6828] p-[3px] shadow-2xl mb-4 border border-[#FFF8E7] flex flex-col items-center justify-center text-[#261706] font-serif font-black">
+            <span className="text-3xl leading-none tracking-tighter">
+              {invitation.groom_nickname[0] || 'R'}&{invitation.bride_nickname[0] || 'W'}
+            </span>
+            <span className="text-[8px] tracking-[2px] mt-1 font-bold uppercase">
+              {themeConfig.sealSubtitle}
+            </span>
           </div>
 
-          {/* Ornamental Golden Border Frame */}
-          <div className="relative max-w-md w-full bg-gradient-to-b from-white/12 to-white/5 border border-amber-300/40 rounded-[32px] p-6 sm:p-8 text-center space-y-6 shadow-2xl backdrop-blur-md animate-fade-in">
-            {/* Inner Gold Hairline Frame */}
-            <div className="absolute inset-2.5 rounded-[26px] border border-amber-200/25 pointer-events-none" />
-
-            {/* Royal Monogram Emblem */}
-            <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-tr from-amber-600 via-amber-400 to-amber-200 p-[2px] shadow-lg shadow-amber-950/40">
-              <div className="w-full h-full rounded-full bg-[#18110F] flex items-center justify-center text-amber-200 font-serif text-lg tracking-widest font-bold">
-                {invitation.groom_nickname[0] || 'R'}&{invitation.bride_nickname[0] || 'W'}
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <span className="text-[10px] sm:text-xs uppercase tracking-[0.35em] text-amber-200/90 font-serif block">
-                {themeCelebrationTag}
+          {/* Guest Greeting Box */}
+          <div className="bg-[#0E1A15]/95 border border-[#DFBA73]/60 rounded-3xl p-6 sm:p-7 backdrop-blur-md shadow-2xl text-center space-y-4">
+            <div className="space-y-1">
+              <span className="text-[10px] uppercase tracking-[0.25em] text-[#DFBA73] font-serif font-bold block">
+                {themeConfig.plaqueThemeTag}
               </span>
               <p className="text-[9px] tracking-widest text-white/60 font-sans uppercase">
                 THE WEDDING CELEBRATION OF
               </p>
-              <h1 className="font-serif text-4xl sm:text-5xl font-normal text-white tracking-wide pt-1">
+              <h1 className="font-serif text-3xl sm:text-4xl font-normal text-white tracking-wide pt-1">
                 {invitation.groom_nickname} <span className="font-light italic text-amber-300">&</span> {invitation.bride_nickname}
               </h1>
-              <p className="text-xs text-amber-100/80 font-serif tracking-widest pt-2">
+              <p className="text-xs text-amber-100/80 font-serif tracking-widest pt-1">
                 {dateFormatted}
               </p>
             </div>
 
-            {/* Guest Invitation Box */}
-            <div className="py-4 px-3 rounded-2xl bg-black/40 border border-white/15 my-4 space-y-1">
+            <div className="py-3 px-3 rounded-2xl bg-black/50 border border-white/10 space-y-1">
               <span className="text-[10px] uppercase tracking-widest text-amber-200/80 block">
                 Kepada Yth. Bapak/Ibu/Saudara/i:
               </span>
-              <strong className="text-lg sm:text-xl font-serif text-white block capitalize">
+              <strong className="text-base sm:text-lg font-serif text-white block capitalize">
                 {guestName || 'Tamu Undangan Yang Berbahagia'}
               </strong>
               <span className="text-[10px] text-white/50 block">Di Tempat</span>
@@ -608,17 +601,18 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
               </p>
             </div>
 
-            {/* Open Invitation CTA */}
+            {/* Buka Undangan CTA Button */}
             <button
               onClick={handleOpenInvitation}
-              className="w-full py-3.5 px-6 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-serif font-bold text-sm tracking-wider uppercase transition shadow-xl shadow-amber-500/20 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group"
+              className="w-full py-4 px-6 rounded-full bg-gradient-to-r from-[#FFE4A0] via-[#DFBA73] to-[#9E7A3E] hover:from-[#FFF0B8] hover:to-[#DFBA73] text-[#121A15] font-serif font-black text-xs tracking-[2px] uppercase transition shadow-2xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group border border-white/40"
             >
-              <MailOpen size={18} className="text-slate-950 transition-transform group-hover:-translate-y-0.5" />
+              <Sparkles size={16} className="text-[#121A15] transition-transform group-hover:rotate-12" />
               <span>Buka Undangan</span>
+              <Sparkles size={16} className="text-[#121A15] transition-transform group-hover:-rotate-12" />
             </button>
           </div>
         </div>
-      )}
+      </div>
 
       {/* ========================================================
           2. ISI UNDANGAN LENGKAP (MAIN CONTENT)
@@ -639,13 +633,35 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
             </div>
             <div className="absolute inset-2.5 rounded-[30px] border border-amber-200/20 pointer-events-none" />
 
-            <div className="relative space-y-4">
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-amber-300/30 bg-black/30 text-amber-200 text-[10px] font-serif tracking-[0.25em] uppercase">
-                <Sparkles size={12} className="text-amber-300" />
-                <span>The Wedding Celebration</span>
+            <div className="relative space-y-5">
+              {/* Theme Hero Cultural Emblem */}
+              <div className="drop-shadow-md">
+                {themeConfig.heroEmblem}
               </div>
 
-              <h2 className="font-serif text-5xl sm:text-6xl font-light tracking-tight text-white">
+              {/* Prewedding Arch Photo Frame */}
+              <div className={`w-44 h-60 sm:w-52 sm:h-72 mx-auto relative overflow-hidden shadow-2xl p-1 bg-gradient-to-tr from-[#FFE4A0] via-[#DFBA73] to-[#9E7A3E] ${themeConfig.archClass}`}>
+                <div className="w-full h-full relative overflow-hidden bg-black/60 rounded-[inherit]">
+                  <Image
+                    src="/images/wedding-flowers.jpg"
+                    alt="Prewedding Photo"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 py-2 bg-gradient-to-t from-black/90 to-transparent text-center">
+                    <span className="text-[9px] uppercase tracking-[2px] font-serif text-amber-200 font-bold block">
+                      {themeConfig.archTag}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-amber-300/30 bg-black/30 text-amber-200 text-[10px] font-serif tracking-[0.25em] uppercase">
+                <Sparkles size={12} className="text-amber-300" />
+                <span>{themeConfig.celebrationTag}</span>
+              </div>
+
+              <h2 className="font-serif text-4xl sm:text-6xl font-light tracking-tight text-white">
                 {invitation.groom_nickname} <span className="italic text-amber-300 font-normal">&</span> {invitation.bride_nickname}
               </h2>
 
