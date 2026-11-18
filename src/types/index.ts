@@ -88,7 +88,19 @@ export interface GuestItem {
   notes?: string;
 }
 
-export type InvitationTheme = 'classic-ivory' | 'sage-garden' | 'romantic-rose' | 'midnight-gold';
+export type InvitationTheme = 
+  | 'classic-ivory' 
+  | 'sage-garden' 
+  | 'romantic-rose' 
+  | 'midnight-gold'
+  | 'jawa-keraton'
+  | 'bugis-pinisi'
+  | 'minang-songket'
+  | 'bali-dewata'
+  | 'sunda-siger'
+  | 'batak-gorga'
+  | 'islamic-arabesque'
+  | 'monochrome-editorial';
 
 export interface WeddingInvitation {
   id: string;

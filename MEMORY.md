@@ -119,17 +119,25 @@
   6. *Feedback Visual di Login:* Halaman login menampilkan card info elegan bernuansa Amber/Gold yang menginformasikan bahwa sesi telah selesai dan pengguna dapat masuk kembali dengan Google.
 * **Pengujian Mandiri:** Script `scripts/test-session-limit.mjs` dijalankan via `npm run test:session` (8/8 skenario lulus).
 
-### 6. Desain & Arsitektur Tema Undangan 3D Nusantara (Standar Non-Polosan ala `our-wedding.link`)
+### 6. Desain & Arsitektur Tema Undangan 3D Nusantara & Luxury (Katalog 12 Template Lengkap)
 * **Prinsip Utama (Bukan Sekadar Ganti Warna):**
-  - Setiap tema budaya Nusantara wajib memiliki bentuk fisik pintu 3D, ornamen ukiran, emblem adat, hiasan sudut bunga (*floral watercolor framing*), pola watermark, bentuk bingkai foto prewedding (*arch frame*), dan istilah prosesi adat yang **berbeda total dan otentik**, bukan sekadar palet warna yang berganti.
-* **Katalog Varian Tema Budaya:**
-  1. *Traditional Bugis Pinisi:* Daun pintu ukiran geometris Saqbe Bugis, siluet megah perahu Pinisi 3D berlayar di atas ombak samudra emas, anyaman kisi-kisi sakral *Walasoji*, buket mawar maritim & melati, bingkai kubah maritim, serta istilah adat *Mappettuada, Sompa, & Mampacci*.
-  2. *Royal Keraton Jawa:* Daun pintu gebyok kayu jati Jepara berukir relief daun & sulur 3D, Gunungan Wayang Kulit keemasan, ronce bunga melati putih gantung (*hanging jasmine garlands*), motif *Batik Kawung Truntum*, bingkai kubah Joglo dobel, serta istilah adat *Pawiwahan & Panggih Penganten*.
-  3. *Minang Kemilau Songket:* Daun pintu berukir ornamen segitiga bertingkat *Pucuk Rebung*, siluet atap lancip *Gonjong Rumah Gadang*, rumbai bordir emas tenun songket (*golden tassels & Pandai Sikek*), bingkai kubah lancip Minang, serta istilah adat *Akad Nikah & Baralek Gadang*.
-  4. *Dewata Sanctuary Bali:* Gerbang kembar *Candi Bentar* batu andesit terbelah 3D, taburan kelopak bunga Kamboja (*Frangipani*) kuning-putih melayang, ukiran emas prada Bali, dan gamelan Semara Ratih.
+  - Setiap template wajib memiliki bentuk fisik pintu 3D, ornamen ukiran, emblem adat/budaya, hiasan sudut (*floral/filigree framing*), pola watermark, bentuk bingkai foto prewedding (*arch frame*), dan istilah prosesi adat yang **berbeda total dan otentik**, bukan sekadar palet warna yang berganti.
+* **Katalog 12 Varian Template Pilihan (Tersedia di Dashboard & Preview):**
+  1. *Royal Keraton Jawa (`jawa-keraton` / `jawa`):* Daun pintu gebyok kayu jati Jepara relief daun & sulur 3D, Gunungan Wayang Kulit emas, ronce melati gantung, Batik Kawung Truntum, kubah Joglo dobel, istilah *Pawiwahan & Panggih Penganten*.
+  2. *Traditional Bugis Pinisi (`bugis-pinisi` / `bugis`):* Daun pintu geometris Saqbe Bugis, siluet megah perahu Pinisi 3D berlayar di atas ombak samudra emas, anyaman kisi Walasoji, koral & mawar maritim, istilah *Mappettuada, Sompa, & Mampacci*.
+  3. *Minang Kemilau Songket (`minang-songket` / `minang`):* Daun pintu ukiran bertingkat Pucuk Rebung, siluet atap Gonjong Rumah Gadang, rumbai tenun songket Pandai Sikek, istilah *Akad Nikah & Baralek Gadang*.
+  4. *Dewata Sanctuary Bali (`bali-dewata` / `bali`):* Gerbang kembar Candi Bentar batu andesit terbelah 3D, taburan kelopak bunga Kamboja (Frangipani) kuning-putih, ukiran emas prada Bali, Meru suci, istilah *Pawiwahan Suci & Semara Ratih*.
+  5. *Sunda Parahyangan (`sunda-siger` / `sunda`):* Pintu bilik anyaman bambu halus dengan lengkung gapura, mahkota Siger Pasundan berhias ronce melati, dedaunan teh hijau segar, istilah *Walimatul Nikah & Sawer Panganten*.
+  6. *Batak Royal Ulos (`batak-gorga` / `batak`):* Pintu tiang kayu Rumah Bolon dengan pahatan relief Gorga sakral merah-hitam-putih, tanduk kerbau Sopo Guru, tenun Ulos Sadum berumbai benang emas, istilah *Pamasu-masuon & Ulaon Unjuk*.
+  7. *Madinah Arabesque Gold (`islamic-arabesque` / `islamic`):* Gerbang lengkung Moorish Horseshoe Arch, kisi Mashrabiya bintang 8 Andalusia (Girih), siluet Kubah Masjid Nabawi, zamrud emerald & emas, istilah *Walimatul 'Ursy*.
+  8. *Classic Ivory & Gold (`classic-ivory` / `ivory`):* Pintu panel Prancis beveled lis emas, stempel segel lilin wax seal monogram, French Rococo Acanthus scroll filigree, istilah *Holy Matrimony & Grand Reception*.
+  9. *Sage Garden Botanical (`sage-garden` / `sage`):* Pintu kisi-kisi trellis kayu rustic dengan tanaman rambat, karangan bunga eucalyptus & zaitun mekar, sejuknya pesta kebun outdoor, istilah *Intimate Garden Celebration*.
+  10. *Romantic Rose Peony (`romantic-rose` / `rose`):* Gerbang lengkung katedral berteralis mawar & pita sutra, buket mekar English Peony & Rose dusty blush, istilah *Sweet Romantic Evening*.
+  11. *Midnight Celestial Gold (`midnight-gold` / `midnight`):* Daun pintu obsidian gelap dengan rasi bintang geometris keemasan, bulan sabit berhias starlight galaxy, istilah *Midnight Starlight Gala*.
+  12. *Modern Minimalist Editorial (`monochrome-editorial` / `monochrome`):* Pintu arsitektural kaca fluted modern berhandle kuningan, tipografi majalah high-fashion Vogue, garis presisi kontemporer, istilah *Contemporary Matrimony*.
 * **Struktur Halaman Undangan Mewah (*Full-Bleed Scrolling Experience*):**
   1. *3D Door Swing Reveal:* Dua daun pintu berayun membuka 115° secara 3D dengan perspektif 1400px saat tombol *"✨ Buka Undangan ✨"* diklik, disertai kepakan sayap kupu-kupu emas (*fluttering 3D butterflies*) dan partikel bunga.
-  2. *Hero Section Kaya Ornamen:* Karangan bunga watercolor di sudut atas, emblem budaya adat, kaligrafi sambung megah (*Great Vibes script*) berbayang emas berkilau, bingkai foto kubah prewedding, serta Live Countdown Timer 4 Pilar (Hari, Jam, Menit, Detik).
+  2. *Hero Section Kaya Ornamen:* Karangan bunga/filigree di sudut atas, emblem budaya adat, kaligrafi sambung megah berbayang emas berkilau, bingkai foto kubah prewedding, serta Live Countdown Timer 4 Pilar (Hari, Jam, Menit, Detik).
   3. *Profil Kedua Mempelai:* Foto kubah mempelai pria & wanita, nama lengkap bergelar, nama orang tua, dan tombol tautan Instagram.
   4. *Rangkaian Acara:* Kartu kubah ganda dengan tombol 1-klik *"Simpan ke Google Calendar"* dan panduan rute *"Buka Google Maps"*.
   5. *VIP Cashless Digital Envelope:* Kartu ATM eksklusif dengan chip micro emas, nomor rekening timbul, dan tombol salin nomor rekening instan.

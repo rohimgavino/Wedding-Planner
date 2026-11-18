@@ -23,11 +23,132 @@ import {
 import { useWorkspace } from '@/context/WorkspaceContext';
 import { WeddingInvitation, InvitationTheme } from '@/types';
 
-const THEMES: { id: InvitationTheme; name: string; desc: string; previewColor: string }[] = [
-  { id: 'classic-ivory', name: 'Classic Ivory', desc: 'Broken white hangat dengan aksen emas elegan', previewColor: 'bg-amber-100 border-amber-300' },
-  { id: 'sage-garden', name: 'Sage Garden', desc: 'Nuansa hijau sage lembut & nuansa dedaunan alami', previewColor: 'bg-emerald-100 border-emerald-300' },
-  { id: 'romantic-rose', name: 'Romantic Rose', desc: 'Sentuhan dusty rose romantis & manis', previewColor: 'bg-rose-100 border-rose-300' },
-  { id: 'midnight-gold', name: 'Midnight Gold', desc: 'Kontras gelap mewah dengan tipografi emas bercahaya', previewColor: 'bg-slate-800 border-amber-400' },
+export type ThemeCategory = 'all' | 'nusantara' | 'modern' | 'luxury';
+
+export interface ThemeOption {
+  id: InvitationTheme;
+  name: string;
+  category: 'nusantara' | 'modern' | 'luxury';
+  badge: string;
+  desc: string;
+  previewColor: string;
+  culturalNote?: string;
+}
+
+const THEMES: ThemeOption[] = [
+  // 1. Adat Nusantara (6 Pilihan)
+  {
+    id: 'jawa-keraton',
+    name: 'Royal Keraton Jawa',
+    category: 'nusantara',
+    badge: 'Gebyok & Wayang',
+    desc: 'Nuansa Keraton megah, ukiran daun gebyok jati, Gunungan wayang kulit, dan ronce melati.',
+    previewColor: 'bg-amber-800 border-amber-600',
+    culturalNote: 'Pawiwahan & Panggih Penganten'
+  },
+  {
+    id: 'bugis-pinisi',
+    name: 'Bugis Makassar Pinisi',
+    category: 'nusantara',
+    badge: 'Pinisi & Saqbe',
+    desc: 'Keagungan maritim perahu Pinisi 3D, kisi bambu Walasoji, dan ornamen geometris Saqbe.',
+    previewColor: 'bg-emerald-900 border-emerald-500',
+    culturalNote: 'Mappettuada & Sompa'
+  },
+  {
+    id: 'minang-songket',
+    name: 'Minang Kemilau Songket',
+    category: 'nusantara',
+    badge: 'Gonjong & Songket',
+    desc: 'Atap Gonjong Rumah Gadang, ukiran bertingkat Pucuk Rebung, dan kilau emas tenun songket.',
+    previewColor: 'bg-rose-900 border-amber-500',
+    culturalNote: 'Baralek Gadang'
+  },
+  {
+    id: 'bali-dewata',
+    name: 'Dewata Sanctuary Bali',
+    category: 'nusantara',
+    badge: 'Candi Bentar & Kamboja',
+    desc: 'Kemegahan gerbang batu Candi Bentar, prada keemasan, dan keharuman kelopak bunga Kamboja.',
+    previewColor: 'bg-stone-800 border-yellow-500',
+    culturalNote: 'Pawiwahan Suci Semara Ratih'
+  },
+  {
+    id: 'sunda-siger',
+    name: 'Sunda Parahyangan',
+    category: 'nusantara',
+    badge: 'Siger Pasundan',
+    desc: 'Keanggunan mahkota Siger Pasundan, ronce kembang melati segar, dan nuansa sejuk Priangan.',
+    previewColor: 'bg-teal-900 border-teal-400',
+    culturalNote: 'Walimatul Nikah & Sawer'
+  },
+  {
+    id: 'batak-gorga',
+    name: 'Batak Royal Ulos',
+    category: 'nusantara',
+    badge: 'Gorga & Ragi Hotang',
+    desc: 'Pahatan ukiran sakral Gorga Batak merah-hitam-putih Rumah Bolon, tenun Ulos bertuah.',
+    previewColor: 'bg-neutral-900 border-red-600',
+    culturalNote: 'Pamasu-masuon & Ulaon Unjuk'
+  },
+
+  // 2. Modern & Floral (3 Pilihan)
+  {
+    id: 'classic-ivory',
+    name: 'Classic Ivory & Gold',
+    category: 'modern',
+    badge: 'Wax Seal & Damask',
+    desc: 'Broken white hangat dengan stempel lilin monogram emas, French rococo scroll, dan mewah abadi.',
+    previewColor: 'bg-amber-100 border-amber-300',
+    culturalNote: 'Holy Matrimony & Reception'
+  },
+  {
+    id: 'sage-garden',
+    name: 'Sage Garden Botanical',
+    category: 'modern',
+    badge: 'Eucalyptus & Mist',
+    desc: 'Nuansa hijau sage sejuk, dedaunan eucalyptus watercolor, dan kehangatan pesta kebun taman.',
+    previewColor: 'bg-emerald-100 border-emerald-300',
+    culturalNote: 'Intimate Garden Celebration'
+  },
+  {
+    id: 'romantic-rose',
+    name: 'Romantic Rose Peony',
+    category: 'modern',
+    badge: 'Rose Peony & Blush',
+    desc: 'Sentuhan kelopak dusty rose romantis, lengkungan renda katedral, dan buket peony manis.',
+    previewColor: 'bg-rose-100 border-rose-300',
+    culturalNote: 'Sweet Romantic Evening'
+  },
+
+  // 3. Luxury & Eksklusif (3 Pilihan)
+  {
+    id: 'midnight-gold',
+    name: 'Midnight Celestial Gold',
+    category: 'luxury',
+    badge: 'Starlight & Navy',
+    desc: 'Latar obsidian sapphire gelap mewah bertabur rasi bintang dan kaligrafi emas berkilau.',
+    previewColor: 'bg-slate-900 border-amber-400',
+    culturalNote: 'Midnight Starlight Gala'
+  },
+  {
+    id: 'islamic-arabesque',
+    name: 'Madinah Arabesque Gold',
+    category: 'luxury',
+    badge: 'Kubah & Geometri Islami',
+    desc: 'Kubah Masjid Nabawi agung, bintang geometris 8-sudut Andalusia (Girih), dan emas zamrud.',
+    previewColor: 'bg-emerald-950 border-amber-400',
+    culturalNote: 'Walimatul \'Ursy Penuh Berkah'
+  },
+  {
+    id: 'monochrome-editorial',
+    name: 'Modern Minimalist Editorial',
+    category: 'luxury',
+    badge: 'Vogue & High-Fashion',
+    desc: 'Tipografi majalah editorial high-fashion berkelas, garis arsitektur bersih, dan estetika kontemporer.',
+    previewColor: 'bg-stone-900 border-stone-300',
+    culturalNote: 'Contemporary Celebration'
+  },
 ];
 
 export function DigitalInvitationManager() {
@@ -37,6 +158,7 @@ export function DigitalInvitationManager() {
   const [selectedGuestId, setSelectedGuestId] = useState('');
   const [saveNotice, setSaveNotice] = useState('');
   const [errorNotice, setErrorNotice] = useState('');
+  const [themeFilter, setThemeFilter] = useState<ThemeCategory>('all');
 
   // Default initial values from workspace or existing invitation
   const initialGroom = invitation?.groom_full_name || workspace?.title.split('&')[0]?.replace(/^Pernikahan\s+/i, '').trim() || '';
@@ -334,27 +456,83 @@ export function DigitalInvitationManager() {
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-700 block mb-1">
-                Tema Visual Undangan:
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {THEMES.map(t => (
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2.5">
+                <div>
+                  <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                    <Palette size={14} className="text-rose-500" />
+                    <span>Pilihan Template & Tema Undangan (12 Pilihan):</span>
+                  </label>
+                  <p className="text-[11px] text-slate-500">Pilih tema dengan arsitektur pintu 3D, emblem adat otentik, dan palet warna khas</p>
+                </div>
+                <a
+                  href="/preview-themes.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs font-semibold hover:bg-amber-100 transition shadow-2xs self-start sm:self-auto"
+                >
+                  <Sparkles size={13} className="text-amber-600" />
+                  <span>Uji Pratinjau 3D Interaktif</span>
+                  <ExternalLink size={12} />
+                </a>
+              </div>
+
+              {/* Category Filter Pills */}
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {[
+                  { id: 'all', label: 'Semua (12)' },
+                  { id: 'nusantara', label: 'Adat Nusantara (6)' },
+                  { id: 'modern', label: 'Modern & Floral (3)' },
+                  { id: 'luxury', label: 'Luxury & Eksklusif (3)' },
+                ].map(cat => (
                   <button
-                    key={t.id}
+                    key={cat.id}
                     type="button"
-                    onClick={() => setTheme(t.id)}
-                    className={`p-2.5 rounded-xl border text-left flex items-center gap-2 transition ${
-                      theme === t.id 
-                        ? 'border-rose-500 ring-2 ring-rose-200 bg-rose-50' 
-                        : 'border-slate-200 hover:border-slate-300 bg-white'
+                    onClick={() => setThemeFilter(cat.id as ThemeCategory)}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
+                      themeFilter === cat.id
+                        ? 'bg-rose-600 text-white shadow-2xs'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                     }`}
                   >
-                    <span className={`w-4 h-4 rounded-full border ${t.previewColor}`} />
-                    <div>
-                      <strong className="block text-xs text-slate-900">{t.name}</strong>
-                    </div>
+                    {cat.label}
                   </button>
                 ))}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-[440px] overflow-y-auto pr-1">
+                {THEMES.filter(t => themeFilter === 'all' || t.category === themeFilter).map(t => {
+                  const isSelected = theme === t.id;
+                  return (
+                    <button
+                      key={t.id}
+                      type="button"
+                      onClick={() => setTheme(t.id)}
+                      className={`p-3 rounded-2xl border text-left flex flex-col justify-between gap-2 transition relative ${
+                        isSelected 
+                          ? 'border-rose-500 ring-2 ring-rose-200 bg-rose-50/70 shadow-xs' 
+                          : 'border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50/50'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-1.5">
+                        <div className="flex items-center gap-2">
+                          <span className={`w-3.5 h-3.5 rounded-full border shrink-0 ${t.previewColor}`} />
+                          <strong className="text-xs font-bold text-slate-900 leading-tight">{t.name}</strong>
+                        </div>
+                        {isSelected && (
+                          <span className="w-4 h-4 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0">
+                            <Check size={10} strokeWidth={3} />
+                          </span>
+                        )}
+                      </div>
+                      <span className="inline-block text-[10px] font-semibold text-amber-800 bg-amber-100/70 px-2 py-0.5 rounded-md self-start">
+                        {t.badge}
+                      </span>
+                      <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2">
+                        {t.desc}
+                      </p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>

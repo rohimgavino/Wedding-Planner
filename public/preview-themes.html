@@ -61,26 +61,69 @@
       letter-spacing: 0.5px;
     }
 
+    .theme-nav-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: center;
+      max-width: 880px;
+    }
+    .category-filter-nav {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .cat-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(223, 186, 115, 0.2);
+      padding: 3px 10px;
+      border-radius: 12px;
+      color: #CBDCD2;
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cat-btn.active {
+      background: rgba(223, 186, 115, 0.25);
+      border-color: #DFBA73;
+      color: #FFE4A0;
+      font-weight: 800;
+    }
     .theme-nav {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       background: rgba(0,0,0,0.45);
       padding: 4px;
       border-radius: 30px;
       border: 1px solid rgba(223, 186, 115, 0.25);
+      overflow-x: auto;
+      max-width: 100%;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(223, 186, 115, 0.3) transparent;
+    }
+    .theme-nav::-webkit-scrollbar {
+      height: 4px;
+    }
+    .theme-nav::-webkit-scrollbar-thumb {
+      background: rgba(223, 186, 115, 0.35);
+      border-radius: 4px;
     }
     .theme-btn {
       background: transparent;
       border: none;
-      padding: 8px 16px;
+      padding: 7px 13px;
       border-radius: 20px;
       color: #CBDCD2;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
+      white-space: nowrap;
+      flex-shrink: 0;
       transition: all 0.25s ease;
     }
     .theme-btn.active {
@@ -187,6 +230,103 @@
       opacity: 0.2;
     }
 
+    /* 4. BALI: Prada Gold & Andesite Stone */
+    .theme-bali .phone-container {
+      background: radial-gradient(circle at 50% 20%, #2A251D 0%, #171410 50%, #0A0907 100%);
+    }
+    .theme-bali .bg-pattern-layer {
+      background-image: radial-gradient(circle, #E6B800 1.2px, transparent 1.2px);
+      background-size: 20px 20px;
+      opacity: 0.18;
+    }
+
+    /* 5. SUNDA: Parahyangan Sage Bamboo */
+    .theme-sunda .phone-container {
+      background: radial-gradient(circle at 50% 20%, #1A3A2D 0%, #0E241A 50%, #06120C 100%);
+    }
+    .theme-sunda .bg-pattern-layer {
+      background-image: linear-gradient(90deg, rgba(223, 186, 115, 0.12) 1px, transparent 1px),
+                        linear-gradient(rgba(223, 186, 115, 0.12) 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: 0.2;
+    }
+
+    /* 6. BATAK: Gorga Sakral & Ulos */
+    .theme-batak .phone-container {
+      background: radial-gradient(circle at 50% 20%, #3D1212 0%, #220808 50%, #100303 100%);
+    }
+    .theme-batak .bg-pattern-layer {
+      background-image: linear-gradient(45deg, rgba(220, 38, 38, 0.12) 25%, transparent 25%),
+                        linear-gradient(-45deg, rgba(223, 186, 115, 0.12) 25%, transparent 25%);
+      background-size: 28px 28px;
+      opacity: 0.22;
+    }
+
+    /* 7. ISLAMIC: Madinah Arabesque & Star Lattice */
+    .theme-islamic .phone-container {
+      background: radial-gradient(circle at 50% 20%, #103828 0%, #092116 50%, #04120B 100%);
+    }
+    .theme-islamic .bg-pattern-layer {
+      background-image: 
+        radial-gradient(circle at 50% 50%, #DFBA73 1.5px, transparent 1.5px),
+        linear-gradient(45deg, transparent 40%, rgba(223,186,115,0.1) 40%, rgba(223,186,115,0.1) 60%, transparent 60%);
+      background-size: 32px 32px;
+      opacity: 0.22;
+    }
+
+    /* 8. IVORY: Classic French Baroque Filigree */
+    .theme-ivory .phone-container {
+      background: radial-gradient(circle at 50% 20%, #332B22 0%, #1D1812 50%, #0D0A07 100%);
+    }
+    .theme-ivory .bg-pattern-layer {
+      background-image: radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.2) 1px, transparent 1px);
+      background-size: 18px 18px;
+      opacity: 0.25;
+    }
+
+    /* 9. SAGE: Eucalyptus Garden Botanical */
+    .theme-sage .phone-container {
+      background: radial-gradient(circle at 50% 20%, #283C30 0%, #15241B 50%, #0A140E 100%);
+    }
+    .theme-sage .bg-pattern-layer {
+      background-image: radial-gradient(circle, rgba(167, 243, 208, 0.15) 1.2px, transparent 1.2px);
+      background-size: 22px 22px;
+      opacity: 0.2;
+    }
+
+    /* 10. ROSE: Romantic Rose Peony */
+    .theme-rose .phone-container {
+      background: radial-gradient(circle at 50% 20%, #441724 0%, #290B14 50%, #140409 100%);
+    }
+    .theme-rose .bg-pattern-layer {
+      background-image: radial-gradient(circle, rgba(251, 113, 133, 0.16) 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+      opacity: 0.22;
+    }
+
+    /* 11. MIDNIGHT: Celestial Sapphire & Star Clusters */
+    .theme-midnight .phone-container {
+      background: radial-gradient(circle at 50% 20%, #0D2042 0%, #071024 50%, #02050D 100%);
+    }
+    .theme-midnight .bg-pattern-layer {
+      background-image: radial-gradient(circle, #FFE4A0 1px, transparent 1px),
+                        radial-gradient(circle, #FFFFFF 1.5px, transparent 1.5px);
+      background-size: 36px 36px, 72px 72px;
+      background-position: 0 0, 18px 18px;
+      opacity: 0.35;
+    }
+
+    /* 12. MONOCHROME: Architectural Editorial Minimal */
+    .theme-monochrome .phone-container {
+      background: radial-gradient(circle at 50% 20%, #242424 0%, #141414 50%, #080808 100%);
+    }
+    .theme-monochrome .bg-pattern-layer {
+      background-image: linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.2;
+    }
+
     /* ========================================================
        STAGE 1: 3D DOORS WITH RADICALLY DIFFERENT CULTURAL CARVINGS
        ======================================================== */
@@ -247,6 +387,51 @@
       background: 
         radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.18) 0%, transparent 65%),
         linear-gradient(to bottom, #5A1221 0%, #350813 50%, #1A0208 100%);
+    }
+    .theme-bali .door-leaf {
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.15) 0%, transparent 65%),
+        linear-gradient(to bottom, #3A3226 0%, #201B13 50%, #110E0A 100%);
+    }
+    .theme-sunda .door-leaf {
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.15) 0%, transparent 65%),
+        linear-gradient(to bottom, #234E3C 0%, #143226 50%, #0A1A13 100%);
+    }
+    .theme-batak .door-leaf {
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.15) 0%, transparent 65%),
+        linear-gradient(to bottom, #4D1818 0%, #2E0B0B 50%, #180404 100%);
+    }
+    .theme-islamic .door-leaf {
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.2) 0%, transparent 65%),
+        linear-gradient(to bottom, #164833 0%, #0B2C1F 50%, #05160F 100%);
+    }
+    .theme-ivory .door-leaf {
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.18) 0%, transparent 65%),
+        linear-gradient(to bottom, #42382C 0%, #292219 50%, #15110C 100%);
+    }
+    .theme-sage .door-leaf {
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(167, 243, 208, 0.15) 0%, transparent 65%),
+        linear-gradient(to bottom, #2E4738 0%, #1C2E23 50%, #0D1711 100%);
+    }
+    .theme-rose .door-leaf {
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(251, 113, 133, 0.18) 0%, transparent 65%),
+        linear-gradient(to bottom, #541E2D 0%, #350F1B 50%, #1A060C 100%);
+    }
+    .theme-midnight .door-leaf {
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.22) 0%, transparent 65%),
+        linear-gradient(to bottom, #122852 0%, #0A1732 50%, #040916 100%);
+    }
+    .theme-monochrome .door-leaf {
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 65%),
+        linear-gradient(to bottom, #2E2E2E 0%, #1A1A1A 50%, #0D0D0D 100%);
     }
 
     .door-ornament-frame {
@@ -458,6 +643,33 @@
     .theme-minang .arch-photo-inner {
       border-radius: 115px 16px 115px 16px;
     }
+    /* 4. BALI: Candi Bentar Stepped Arch */
+    .theme-bali .arch-photo-wrapper { border-radius: 60px 60px 14px 14px; border: 2.5px solid #DFBA73; }
+    .theme-bali .arch-photo-inner { border-radius: 54px 54px 10px 10px; }
+    /* 5. SUNDA: Parahyangan Soft Arch */
+    .theme-sunda .arch-photo-wrapper { border-radius: 110px 110px 20px 20px; border: 2.5px solid #DFBA73; }
+    .theme-sunda .arch-photo-inner { border-radius: 104px 104px 16px 16px; }
+    /* 6. BATAK: Gable Roof Bolon Arch */
+    .theme-batak .arch-photo-wrapper { border-radius: 36px 36px 10px 10px; border: 3px solid #D4A76A; }
+    .theme-batak .arch-photo-inner { border-radius: 30px 30px 8px 8px; }
+    /* 7. ISLAMIC: Moorish Horseshoe Arch */
+    .theme-islamic .arch-photo-wrapper { border-radius: 125px 125px 14px 14px; border: 2.5px solid #DFBA73; }
+    .theme-islamic .arch-photo-inner { border-radius: 120px 120px 10px 10px; }
+    /* 8. IVORY: French Classical Arch */
+    .theme-ivory .arch-photo-wrapper { border-radius: 115px 115px 22px 22px; border: 2.5px solid #DFBA73; }
+    .theme-ivory .arch-photo-inner { border-radius: 110px 110px 18px 18px; }
+    /* 9. SAGE: Natural Rustic Arch */
+    .theme-sage .arch-photo-wrapper { border-radius: 95px 95px 18px 18px; border: 2.5px solid #CBDCD2; }
+    .theme-sage .arch-photo-inner { border-radius: 90px 90px 14px 14px; }
+    /* 10. ROSE: Romance Cathedral Arch */
+    .theme-rose .arch-photo-wrapper { border-radius: 130px 130px 24px 24px; border: 2.5px solid #F4B8C5; }
+    .theme-rose .arch-photo-inner { border-radius: 124px 124px 20px 20px; }
+    /* 11. MIDNIGHT: Star Diamond Arch */
+    .theme-midnight .arch-photo-wrapper { border-radius: 90px 90px 20px 20px; border: 2.5px solid #FFE4A0; box-shadow: 0 0 30px rgba(223, 186, 115, 0.45); }
+    .theme-midnight .arch-photo-inner { border-radius: 85px 85px 16px 16px; }
+    /* 12. MONOCHROME: Architectural Razor Square */
+    .theme-monochrome .arch-photo-wrapper { border-radius: 0px; border: 2.5px solid #FFFFFF; }
+    .theme-monochrome .arch-photo-inner { border-radius: 0px; }
 
     .arch-photo-inner {
       width: 100%;
@@ -833,17 +1045,57 @@
     </div>
 
     <!-- THEME SELECTION TABS -->
-    <nav class="theme-nav">
-      <button class="theme-btn active" onclick="applyCultureTheme('bugis')">
-        ⛵ Bugis Pinisi (Maritim & Saqbe)
-      </button>
-      <button class="theme-btn" onclick="applyCultureTheme('jawa')">
-        🏛️ Keraton Jawa (Gebyok & Gunungan)
-      </button>
-      <button class="theme-btn" onclick="applyCultureTheme('minang')">
-        🏰 Minang (Gonjong & Pucuk Rebung)
-      </button>
-    </nav>
+    <div class="theme-nav-wrapper">
+      <div class="category-filter-nav">
+        <button class="cat-btn active" onclick="filterCategory('all', this)">Semua (12)</button>
+        <button class="cat-btn" onclick="filterCategory('nusantara', this)">Adat Nusantara (6)</button>
+        <button class="cat-btn" onclick="filterCategory('modern', this)">Modern & Floral (3)</button>
+        <button class="cat-btn" onclick="filterCategory('luxury', this)">Luxury & Eksklusif (3)</button>
+      </div>
+      <nav class="theme-nav" id="themeNav">
+        <!-- Nusantara -->
+        <button class="theme-btn active" data-cat="nusantara" data-theme="bugis" onclick="applyCultureTheme('bugis')">
+          ⛵ Bugis Pinisi
+        </button>
+        <button class="theme-btn" data-cat="nusantara" data-theme="jawa" onclick="applyCultureTheme('jawa')">
+          🏛️ Keraton Jawa
+        </button>
+        <button class="theme-btn" data-cat="nusantara" data-theme="minang" onclick="applyCultureTheme('minang')">
+          🏰 Minang Songket
+        </button>
+        <button class="theme-btn" data-cat="nusantara" data-theme="bali" onclick="applyCultureTheme('bali')">
+          ⛩️ Dewata Bali
+        </button>
+        <button class="theme-btn" data-cat="nusantara" data-theme="sunda" onclick="applyCultureTheme('sunda')">
+          👑 Sunda Siger
+        </button>
+        <button class="theme-btn" data-cat="nusantara" data-theme="batak" onclick="applyCultureTheme('batak')">
+          🛡️ Batak Ulos
+        </button>
+
+        <!-- Modern & Floral -->
+        <button class="theme-btn" data-cat="modern" data-theme="ivory" onclick="applyCultureTheme('ivory')">
+          📜 Classic Ivory
+        </button>
+        <button class="theme-btn" data-cat="modern" data-theme="sage" onclick="applyCultureTheme('sage')">
+          🌿 Sage Botanical
+        </button>
+        <button class="theme-btn" data-cat="modern" data-theme="rose" onclick="applyCultureTheme('rose')">
+          🌹 Romantic Rose
+        </button>
+
+        <!-- Luxury & Eksklusif -->
+        <button class="theme-btn" data-cat="luxury" data-theme="midnight" onclick="applyCultureTheme('midnight')">
+          ✨ Midnight Celestial
+        </button>
+        <button class="theme-btn" data-cat="luxury" data-theme="islamic" onclick="applyCultureTheme('islamic')">
+          🕌 Madinah Arabesque
+        </button>
+        <button class="theme-btn" data-cat="luxury" data-theme="monochrome" onclick="applyCultureTheme('monochrome')">
+          🖤 Minimalist Editorial
+        </button>
+      </nav>
+    </div>
 
     <div>
       <button class="btn-toggle-view" id="viewBtn" onclick="toggleScreenMode()">
@@ -1325,11 +1577,455 @@
             <polygon points="35,15 45,35 35,55 25,35" fill="#FFE4A0"/>
           </svg>
         `
+      },
+      bali: {
+        bodyClass: 'theme-bali',
+        plaqueTag: 'DEWATA SANCTUARY BALI',
+        sealSubtitle: 'CANDI BENTAR',
+        celebrationTag: 'PAWIWAHAN SUCI DEWATA',
+        archPhotoTag: 'ROHIM & WIWIT · BALI',
+        doorLabelL: 'CANDI',
+        doorLabelR: 'BENTAR',
+        event1: 'PAWIWAHAN SUCI',
+        event2: 'RESEPSI SEMARA RATIH',
+        event1Venue: '📍 Pura Luhur Uluwatu Amphitheater<br>Badung, Bali',
+        event2Venue: '📍 The Royal Pita Maha Resort<br>Kedewatan, Ubud, Bali',
+        doorSvg: `
+          <svg class="door-svg-emblem" viewBox="0 0 100 220" fill="none" stroke="#DFBA73" stroke-width="1.8">
+            <!-- Candi Bentar Split Stone Relief & Patra Punggel -->
+            <path d="M85,10 L30,45 L30,70 L50,70 L30,95 L30,120 L50,120 L25,150 L25,215" stroke-width="2.2"/>
+            <polygon points="50,45 75,65 50,85 30,65" fill="#DFBA73" fill-opacity="0.45"/>
+            <polygon points="50,100 75,120 50,140 30,120" fill="#DFBA73" fill-opacity="0.45"/>
+            <circle cx="50" cy="175" r="8" fill="#FFE4A0"/>
+            <path d="M30,175 Q50,165 70,175" stroke="#DFBA73" stroke-width="2"/>
+          </svg>
+        `,
+        heroEmblem: `
+          <svg viewBox="0 0 100 70" fill="none" stroke="#DFBA73" stroke-width="2">
+            <!-- Balinese Meru & Patra Punggel -->
+            <path d="M50,4 L42,20 L58,20 Z" fill="#DFBA73" fill-opacity="0.8"/>
+            <path d="M50,20 L35,36 L65,36 Z" fill="#DFBA73" fill-opacity="0.6"/>
+            <path d="M50,36 L25,55 L75,55 Z" fill="#DFBA73" fill-opacity="0.45"/>
+            <path d="M15,62 L85,62 L80,68 L20,68 Z" fill="#DFBA73" fill-opacity="0.7"/>
+            <circle cx="50" cy="36" r="3" fill="#FFE4A0"/>
+          </svg>
+        `,
+        corners: `
+          <!-- Frangipani / Bunga Kamboja Bali -->
+          <svg class="floral-corner floral-tl" viewBox="0 0 100 100" fill="none">
+            <circle cx="35" cy="35" r="14" fill="#FFE4A0" fill-opacity="0.9"/>
+            <circle cx="35" cy="35" r="7" fill="#F59E0B"/>
+            <circle cx="20" cy="55" r="10" fill="#FFF" fill-opacity="0.9"/>
+            <circle cx="20" cy="55" r="5" fill="#F59E0B"/>
+            <path d="M5,5 Q45,20 65,65" stroke="#DFBA73" stroke-width="2"/>
+          </svg>
+          <svg class="floral-corner floral-tr" viewBox="0 0 100 100" fill="none">
+            <circle cx="35" cy="35" r="14" fill="#FFE4A0" fill-opacity="0.9"/>
+            <circle cx="35" cy="35" r="7" fill="#F59E0B"/>
+            <circle cx="20" cy="55" r="10" fill="#FFF" fill-opacity="0.9"/>
+            <circle cx="20" cy="55" r="5" fill="#F59E0B"/>
+            <path d="M5,5 Q45,20 65,65" stroke="#DFBA73" stroke-width="2"/>
+          </svg>
+        `
+      },
+      sunda: {
+        bodyClass: 'theme-sunda',
+        plaqueTag: 'SUNDA PARAHYANGAN',
+        sealSubtitle: 'SIGER PASUNDAN',
+        celebrationTag: 'WALIMATUL NIKAH & SAWER',
+        archPhotoTag: 'ROHIM & WIWIT · PASUNDAN',
+        doorLabelL: 'PRIANGAN',
+        doorLabelR: 'PARAHYANGAN',
+        event1: 'AKAD NIKAH KHIDMAT',
+        event2: 'RESEPSI & SAWER PANGANTEN',
+        event1Venue: '📍 Masjid Raya Al-Jabbar<br>Gedebage, Bandung',
+        event2Venue: '📍 Bumi Sangkuriang Pavilion<br>Ciumbuleuit, Bandung',
+        doorSvg: `
+          <svg class="door-svg-emblem" viewBox="0 0 100 220" fill="none" stroke="#DFBA73" stroke-width="1.8">
+            <!-- Siger Arch & Bamboo Bilik Lattice -->
+            <path d="M85,15 C50,35 25,75 25,130 C25,180 50,205 85,215" stroke-width="2.2"/>
+            <line x1="25" y1="60" x2="85" y2="60" stroke-dasharray="2,2"/>
+            <line x1="25" y1="110" x2="85" y2="110" stroke-dasharray="2,2"/>
+            <line x1="25" y1="160" x2="85" y2="160" stroke-dasharray="2,2"/>
+            <path d="M40,85 Q60,70 75,85 Q60,100 40,85 Z" fill="#DFBA73" fill-opacity="0.4"/>
+            <path d="M40,135 Q60,120 75,135 Q60,150 40,135 Z" fill="#DFBA73" fill-opacity="0.4"/>
+            <circle cx="60" cy="85" r="4" fill="#FFE4A0"/>
+            <circle cx="60" cy="135" r="4" fill="#FFE4A0"/>
+          </svg>
+        `,
+        heroEmblem: `
+          <svg viewBox="0 0 100 70" fill="none" stroke="#DFBA73" stroke-width="2">
+            <!-- Mahkota Siger Pasundan -->
+            <path d="M15,55 C20,38 30,22 35,16 C40,25 45,35 50,10 C55,35 60,25 65,16 C70,22 80,38 85,55 Z" fill="#DFBA73" fill-opacity="0.45"/>
+            <path d="M12,56 L88,56 L82,64 L18,64 Z" fill="#DFBA73" fill-opacity="0.75"/>
+            <circle cx="50" cy="16" r="4" fill="#FFE4A0"/>
+            <circle cx="35" cy="22" r="3" fill="#FFE4A0"/>
+            <circle cx="65" cy="22" r="3" fill="#FFE4A0"/>
+          </svg>
+        `,
+        corners: `
+          <!-- Jasmine & Green Tea Foliage -->
+          <svg class="floral-corner floral-tl" viewBox="0 0 100 100" fill="none">
+            <path d="M5,5 Q40,15 60,50" stroke="#DFBA73" stroke-width="2"/>
+            <circle cx="20" cy="15" r="4" fill="#FFF"/>
+            <circle cx="35" cy="22" r="4" fill="#FFF"/>
+            <circle cx="48" cy="35" r="5" fill="#FFE4A0"/>
+            <path d="M15,30 Q30,40 20,55 Q10,45 15,30 Z" fill="#10B981" fill-opacity="0.6"/>
+          </svg>
+          <svg class="floral-corner floral-tr" viewBox="0 0 100 100" fill="none">
+            <path d="M5,5 Q40,15 60,50" stroke="#DFBA73" stroke-width="2"/>
+            <circle cx="20" cy="15" r="4" fill="#FFF"/>
+            <circle cx="35" cy="22" r="4" fill="#FFF"/>
+            <circle cx="48" cy="35" r="5" fill="#FFE4A0"/>
+            <path d="M15,30 Q30,40 20,55 Q10,45 15,30 Z" fill="#10B981" fill-opacity="0.6"/>
+          </svg>
+        `
+      },
+      batak: {
+        bodyClass: 'theme-batak',
+        plaqueTag: 'BATAK ROYAL ULOS',
+        sealSubtitle: 'GORGA TOBA',
+        celebrationTag: 'PAMASU-MASUON & ULAON UNJUK',
+        archPhotoTag: 'ROHIM & WIWIT · TOBA',
+        doorLabelL: 'DALIHAN',
+        doorLabelR: 'NA TOLU',
+        event1: 'PAMASU-MASUON (PEMBERKATAN)',
+        event2: 'ULAON UNJUK (PESTA ADAT)',
+        event1Venue: '📍 Gereja HKBP Balige<br>Toba Samosir, Sumatera Utara',
+        event2Venue: '📍 Tiara Convention Center<br>Kota Medan, Sumatera Utara',
+        doorSvg: `
+          <svg class="door-svg-emblem" viewBox="0 0 100 220" fill="none" stroke="#DFBA73" stroke-width="1.8">
+            <!-- Gorga Simeol-meol & Rumah Bolon Column -->
+            <path d="M85,15 C45,35 25,80 25,130 C25,180 45,205 85,215" stroke-width="2.2"/>
+            <path d="M50,50 Q70,50 70,70 Q70,90 50,90 Q35,90 35,70 Q35,58 45,58" stroke="#DC2626" stroke-width="2.5"/>
+            <path d="M50,120 Q70,120 70,140 Q70,160 50,160 Q35,160 35,140 Q35,128 45,128" stroke="#DFBA73" stroke-width="2.5"/>
+            <circle cx="50" cy="70" r="4" fill="#FFF"/>
+            <circle cx="50" cy="140" r="4" fill="#DC2626"/>
+          </svg>
+        `,
+        heroEmblem: `
+          <svg viewBox="0 0 100 70" fill="none" stroke="#DFBA73" stroke-width="2">
+            <!-- Buffalo Horns & Rumah Bolon Gable -->
+            <path d="M10,22 Q35,48 50,14 Q65,48 90,22" stroke-width="2.5"/>
+            <path d="M25,48 L75,48 L65,60 L35,60 Z" fill="#DC2626" fill-opacity="0.55"/>
+            <circle cx="50" cy="35" r="7" fill="#DFBA73" fill-opacity="0.7"/>
+          </svg>
+        `,
+        corners: `
+          <!-- Ulos Sadum Red-Gold Geometric Border -->
+          <svg class="floral-corner floral-tl" viewBox="0 0 100 100" fill="none">
+            <rect x="0" y="0" width="80" height="15" fill="#DC2626" fill-opacity="0.6"/>
+            <rect x="0" y="0" width="15" height="80" fill="#DC2626" fill-opacity="0.6"/>
+            <polygon points="25,25 40,40 25,55 10,40" fill="#DFBA73"/>
+            <circle cx="25" cy="40" r="4" fill="#FFF"/>
+          </svg>
+          <svg class="floral-corner floral-tr" viewBox="0 0 100 100" fill="none">
+            <rect x="0" y="0" width="80" height="15" fill="#DC2626" fill-opacity="0.6"/>
+            <rect x="0" y="0" width="15" height="80" fill="#DC2626" fill-opacity="0.6"/>
+            <polygon points="25,25 40,40 25,55 10,40" fill="#DFBA73"/>
+            <circle cx="25" cy="40" r="4" fill="#FFF"/>
+          </svg>
+        `
+      },
+      islamic: {
+        bodyClass: 'theme-islamic',
+        plaqueTag: 'MADINAH ARABESQUE GOLD',
+        sealSubtitle: 'RUB EL HIZB',
+        celebrationTag: 'WALIMATUL \'URSY',
+        archPhotoTag: 'ROHIM & WIWIT · ARABESQUE',
+        doorLabelL: 'MADINAH',
+        doorLabelR: 'AL-MUNAWARAH',
+        event1: 'AKAD IJAB QABUL',
+        event2: 'WALIMATUL \'URSY',
+        event1Venue: '📍 Masjid Nasional Al-Akbar<br>Surabaya, Jawa Timur',
+        event2Venue: '📍 Grand City Convex Hall<br>Surabaya, Jawa Timur',
+        doorSvg: `
+          <svg class="door-svg-emblem" viewBox="0 0 100 220" fill="none" stroke="#DFBA73" stroke-width="1.8">
+            <!-- Moorish Horseshoe & 8-Point Star Mashrabiya -->
+            <path d="M85,15 C40,25 20,70 20,120 C20,170 40,205 85,215" stroke-width="2.2"/>
+            <rect x="36" y="55" width="28" height="28" fill="#DFBA73" fill-opacity="0.35"/>
+            <rect x="36" y="55" width="28" height="28" transform="rotate(45 50 69)" fill="#DFBA73" fill-opacity="0.35"/>
+            <rect x="36" y="125" width="28" height="28" fill="#DFBA73" fill-opacity="0.35"/>
+            <rect x="36" y="125" width="28" height="28" transform="rotate(45 50 139)" fill="#DFBA73" fill-opacity="0.35"/>
+            <circle cx="50" cy="69" r="4" fill="#FFE4A0"/>
+            <circle cx="50" cy="139" r="4" fill="#FFE4A0"/>
+          </svg>
+        `,
+        heroEmblem: `
+          <svg viewBox="0 0 100 70" fill="none" stroke="#DFBA73" stroke-width="2">
+            <!-- Kubah Masjid & Bintang 8 Andalusia -->
+            <path d="M50,8 C46,18 30,26 30,48 L70,48 C70,26 54,18 50,8 Z" fill="#DFBA73" fill-opacity="0.45"/>
+            <path d="M22,48 L78,48 L74,58 L26,58 Z" fill="#DFBA73" fill-opacity="0.75"/>
+            <circle cx="50" cy="8" r="3" fill="#FFE4A0"/>
+            <rect x="44" y="28" width="12" height="12" transform="rotate(45 50 34)" fill="#FFE4A0"/>
+          </svg>
+        `,
+        corners: `
+          <!-- Golden Arabesque Filigree & Emerald Gem -->
+          <svg class="floral-corner floral-tl" viewBox="0 0 100 100" fill="none">
+            <path d="M5,5 Q45,5 65,35 Q85,65 95,95" stroke="#DFBA73" stroke-width="2"/>
+            <circle cx="35" cy="35" r="12" fill="#10B981" fill-opacity="0.3"/>
+            <polygon points="35,25 42,35 35,45 28,35" fill="#FFE4A0"/>
+          </svg>
+          <svg class="floral-corner floral-tr" viewBox="0 0 100 100" fill="none">
+            <path d="M5,5 Q45,5 65,35 Q85,65 95,95" stroke="#DFBA73" stroke-width="2"/>
+            <circle cx="35" cy="35" r="12" fill="#10B981" fill-opacity="0.3"/>
+            <polygon points="35,25 42,35 35,45 28,35" fill="#FFE4A0"/>
+          </svg>
+        `
+      },
+      ivory: {
+        bodyClass: 'theme-ivory',
+        plaqueTag: 'CLASSIC IVORY & GOLD',
+        sealSubtitle: 'ROYAL WAX SEAL',
+        celebrationTag: 'HOLY MATRIMONY & RECEPTION',
+        archPhotoTag: 'ROHIM & WIWIT · LUXURY',
+        doorLabelL: 'CLASSIC',
+        doorLabelR: 'ESTATE',
+        event1: 'HOLY MATRIMONY',
+        event2: 'GRAND WEDDING RECEPTION',
+        event1Venue: '📍 The Glass House Cathedral<br>Jakarta Selatan',
+        event2Venue: '📍 The Mulia Grand Ballroom<br>Senayan, Jakarta Pusat',
+        doorSvg: `
+          <svg class="door-svg-emblem" viewBox="0 0 100 220" fill="none" stroke="#DFBA73" stroke-width="1.8">
+            <!-- French Beveled Panel Molding -->
+            <rect x="25" y="20" width="60" height="180" rx="8" stroke-width="2"/>
+            <rect x="35" y="35" width="40" height="65" rx="4" fill="#DFBA73" fill-opacity="0.25"/>
+            <rect x="35" y="115" width="40" height="65" rx="4" fill="#DFBA73" fill-opacity="0.25"/>
+            <circle cx="55" cy="67" r="8" fill="#DFBA73" fill-opacity="0.5"/>
+            <circle cx="55" cy="147" r="8" fill="#DFBA73" fill-opacity="0.5"/>
+          </svg>
+        `,
+        heroEmblem: `
+          <svg viewBox="0 0 100 70" fill="none" stroke="#DFBA73" stroke-width="2">
+            <!-- Laurel Wreath & Royal Monogram -->
+            <path d="M25,50 C18,35 22,18 50,15 C78,18 82,35 75,50" stroke-width="2.2"/>
+            <circle cx="50" cy="35" r="14" fill="#DFBA73" fill-opacity="0.4"/>
+            <text x="50" y="39" text-anchor="middle" fill="#FFE4A0" font-size="12" font-family="serif" font-weight="bold">R&W</text>
+          </svg>
+        `,
+        corners: `
+          <!-- French Rococo Acanthus Scroll -->
+          <svg class="floral-corner floral-tl" viewBox="0 0 100 100" fill="none">
+            <path d="M5,5 Q40,10 60,35 Q75,55 85,85" stroke="#DFBA73" stroke-width="2"/>
+            <circle cx="35" cy="35" r="14" fill="#DFBA73" fill-opacity="0.3"/>
+            <circle cx="35" cy="35" r="6" fill="#FFE4A0"/>
+          </svg>
+          <svg class="floral-corner floral-tr" viewBox="0 0 100 100" fill="none">
+            <path d="M5,5 Q40,10 60,35 Q75,55 85,85" stroke="#DFBA73" stroke-width="2"/>
+            <circle cx="35" cy="35" r="14" fill="#DFBA73" fill-opacity="0.3"/>
+            <circle cx="35" cy="35" r="6" fill="#FFE4A0"/>
+          </svg>
+        `
+      },
+      sage: {
+        bodyClass: 'theme-sage',
+        plaqueTag: 'SAGE GARDEN BOTANICAL',
+        sealSubtitle: 'EUCALYPTUS',
+        celebrationTag: 'INTIMATE GARDEN CELEBRATION',
+        archPhotoTag: 'ROHIM & WIWIT · GARDEN',
+        doorLabelL: 'NATURAL',
+        doorLabelR: 'BOTANIC',
+        event1: 'OUTDOOR GARDEN VOWS',
+        event2: 'SUNSET DINNER RECEPTION',
+        event1Venue: '📍 Pine Hill Forest Glasshouse<br>Lembang, Bandung',
+        event2Venue: '📍 The Gaia Hotel Mountain Terrace<br>Bandung, Jawa Barat',
+        doorSvg: `
+          <svg class="door-svg-emblem" viewBox="0 0 100 220" fill="none" stroke="#CBDCD2" stroke-width="1.8">
+            <!-- Wooden Trellis Lattice & Ivy Leaves -->
+            <path d="M85,15 C50,40 30,80 30,130 C30,175 50,200 85,215" stroke-width="2.2"/>
+            <line x1="30" y1="50" x2="85" y2="105" stroke="#CBDCD2" stroke-opacity="0.4"/>
+            <line x1="30" y1="100" x2="85" y2="155" stroke="#CBDCD2" stroke-opacity="0.4"/>
+            <line x1="85" y1="50" x2="30" y2="105" stroke="#CBDCD2" stroke-opacity="0.4"/>
+            <line x1="85" y1="100" x2="30" y2="155" stroke="#CBDCD2" stroke-opacity="0.4"/>
+            <circle cx="58" cy="102" r="5" fill="#A7F3D0"/>
+          </svg>
+        `,
+        heroEmblem: `
+          <svg viewBox="0 0 100 70" fill="none" stroke="#CBDCD2" stroke-width="2">
+            <!-- Eucalyptus Circle Wreath -->
+            <circle cx="50" cy="35" r="22" stroke-dasharray="4,4"/>
+            <path d="M30,35 Q40,25 50,35 Q60,45 70,35" fill="none"/>
+            <circle cx="40" cy="28" r="4" fill="#A7F3D0" fill-opacity="0.7"/>
+            <circle cx="60" cy="42" r="4" fill="#A7F3D0" fill-opacity="0.7"/>
+          </svg>
+        `,
+        corners: `
+          <!-- Eucalyptus Watercolor Foliage -->
+          <svg class="floral-corner floral-tl" viewBox="0 0 100 100" fill="none">
+            <path d="M5,5 Q35,25 55,65" stroke="#CBDCD2" stroke-width="2"/>
+            <circle cx="25" cy="20" r="8" fill="#A7F3D0" fill-opacity="0.5"/>
+            <circle cx="45" cy="38" r="10" fill="#A7F3D0" fill-opacity="0.4"/>
+            <circle cx="55" cy="65" r="6" fill="#A7F3D0" fill-opacity="0.6"/>
+          </svg>
+          <svg class="floral-corner floral-tr" viewBox="0 0 100 100" fill="none">
+            <path d="M5,5 Q35,25 55,65" stroke="#CBDCD2" stroke-width="2"/>
+            <circle cx="25" cy="20" r="8" fill="#A7F3D0" fill-opacity="0.5"/>
+            <circle cx="45" cy="38" r="10" fill="#A7F3D0" fill-opacity="0.4"/>
+            <circle cx="55" cy="65" r="6" fill="#A7F3D0" fill-opacity="0.6"/>
+          </svg>
+        `
+      },
+      rose: {
+        bodyClass: 'theme-rose',
+        plaqueTag: 'ROMANTIC ROSE PEONY',
+        sealSubtitle: 'PEONY BLUSH',
+        celebrationTag: 'SWEET ROMANTIC EVENING',
+        archPhotoTag: 'ROHIM & WIWIT · ROMANCE',
+        doorLabelL: 'SWEET',
+        doorLabelR: 'ROMANCE',
+        event1: 'AKAD NIKAH SAKINAH',
+        event2: 'ROMANTIC CANDLELIGHT DINNER',
+        event1Venue: '📍 Plataran Cilandak Garden<br>Jakarta Selatan',
+        event2Venue: '📍 Sampoerna Strategic Glass Pavilion<br>Jakarta Selatan',
+        doorSvg: `
+          <svg class="door-svg-emblem" viewBox="0 0 100 220" fill="none" stroke="#F4B8C5" stroke-width="1.8">
+            <!-- Cathedral Rose Arch & Peony Leaves -->
+            <path d="M85,15 C45,35 25,80 25,130 C25,180 45,205 85,215" stroke-width="2.2"/>
+            <circle cx="55" cy="70" r="16" fill="#FB7185" fill-opacity="0.35"/>
+            <circle cx="55" cy="70" r="8" fill="#FFE4E6"/>
+            <circle cx="55" cy="145" r="16" fill="#FB7185" fill-opacity="0.35"/>
+            <circle cx="55" cy="145" r="8" fill="#FFE4E6"/>
+          </svg>
+        `,
+        heroEmblem: `
+          <svg viewBox="0 0 100 70" fill="none" stroke="#F4B8C5" stroke-width="2">
+            <!-- English Rose & Peony Bouquet -->
+            <circle cx="50" cy="35" r="18" fill="#FB7185" fill-opacity="0.45"/>
+            <circle cx="42" cy="30" r="10" fill="#FB7185" fill-opacity="0.6"/>
+            <circle cx="58" cy="30" r="10" fill="#FB7185" fill-opacity="0.6"/>
+            <circle cx="50" cy="38" r="6" fill="#FFE4E6"/>
+          </svg>
+        `,
+        corners: `
+          <!-- Soft Blush Rose Petals -->
+          <svg class="floral-corner floral-tl" viewBox="0 0 100 100" fill="none">
+            <circle cx="35" cy="35" r="18" fill="#FB7185" fill-opacity="0.7"/>
+            <circle cx="35" cy="35" r="9" fill="#FFE4E6"/>
+            <circle cx="20" cy="60" r="10" fill="#FDA4AF" fill-opacity="0.8"/>
+            <path d="M5,5 Q35,35 60,70" stroke="#F4B8C5" stroke-width="2"/>
+          </svg>
+          <svg class="floral-corner floral-tr" viewBox="0 0 100 100" fill="none">
+            <circle cx="35" cy="35" r="18" fill="#FB7185" fill-opacity="0.7"/>
+            <circle cx="35" cy="35" r="9" fill="#FFE4E6"/>
+            <circle cx="20" cy="60" r="10" fill="#FDA4AF" fill-opacity="0.8"/>
+            <path d="M5,5 Q35,35 60,70" stroke="#F4B8C5" stroke-width="2"/>
+          </svg>
+        `
+      },
+      midnight: {
+        bodyClass: 'theme-midnight',
+        plaqueTag: 'MIDNIGHT CELESTIAL GOLD',
+        sealSubtitle: 'STARLIGHT',
+        celebrationTag: 'MIDNIGHT STARLIGHT GALA',
+        archPhotoTag: 'ROHIM & WIWIT · CELESTIAL',
+        doorLabelL: 'COSMIC',
+        doorLabelR: 'STARS',
+        event1: 'TWILIGHT VOWS',
+        event2: 'MIDNIGHT GALA UNDER STARS',
+        event1Venue: '📍 Sky Garden Rooftop Terrace<br>Kuningan, Jakarta',
+        event2Venue: '📍 The Ritz-Carlton Grand Ballroom<br>Mega Kuningan, Jakarta',
+        doorSvg: `
+          <svg class="door-svg-emblem" viewBox="0 0 100 220" fill="none" stroke="#FFE4A0" stroke-width="1.8">
+            <!-- Constellation Geometric Chart & Starlight -->
+            <path d="M85,15 C45,35 25,80 25,130 C25,180 45,205 85,215" stroke-width="2.2"/>
+            <polygon points="50,45 62,60 50,75 38,60" fill="#FFE4A0" fill-opacity="0.5"/>
+            <polygon points="50,125 62,140 50,155 38,140" fill="#FFE4A0" fill-opacity="0.5"/>
+            <line x1="50" y1="75" x2="50" y2="125" stroke="#FFE4A0" stroke-dasharray="3,3"/>
+            <circle cx="50" cy="60" r="4" fill="#FFF"/>
+            <circle cx="50" cy="140" r="4" fill="#FFF"/>
+          </svg>
+        `,
+        heroEmblem: `
+          <svg viewBox="0 0 100 70" fill="none" stroke="#FFE4A0" stroke-width="2">
+            <!-- Crescent Moon & Sparkling Galaxy Stars -->
+            <path d="M40,15 C52,18 60,30 58,45 C56,58 45,65 35,62 C48,58 52,42 46,30 C43,24 38,18 40,15 Z" fill="#FFE4A0" fill-opacity="0.8"/>
+            <polygon points="65,22 67,28 73,30 67,32 65,38 63,32 57,30 63,28" fill="#FFF"/>
+            <polygon points="75,42 76,46 80,47 76,48 75,52 74,48 70,47 74,46" fill="#FFF"/>
+          </svg>
+        `,
+        corners: `
+          <!-- Golden Constellations & Stardust -->
+          <svg class="floral-corner floral-tl" viewBox="0 0 100 100" fill="none">
+            <line x1="10" y1="10" x2="45" y2="25" stroke="#FFE4A0" stroke-width="1.5"/>
+            <line x1="45" y1="25" x2="65" y2="60" stroke="#FFE4A0" stroke-width="1.5"/>
+            <circle cx="10" cy="10" r="3.5" fill="#FFF"/>
+            <circle cx="45" cy="25" r="4" fill="#FFE4A0"/>
+            <circle cx="65" cy="60" r="5" fill="#FFF"/>
+            <circle cx="25" cy="50" r="2.5" fill="#FFE4A0"/>
+          </svg>
+          <svg class="floral-corner floral-tr" viewBox="0 0 100 100" fill="none">
+            <line x1="10" y1="10" x2="45" y2="25" stroke="#FFE4A0" stroke-width="1.5"/>
+            <line x1="45" y1="25" x2="65" y2="60" stroke="#FFE4A0" stroke-width="1.5"/>
+            <circle cx="10" cy="10" r="3.5" fill="#FFF"/>
+            <circle cx="45" cy="25" r="4" fill="#FFE4A0"/>
+            <circle cx="65" cy="60" r="5" fill="#FFF"/>
+            <circle cx="25" cy="50" r="2.5" fill="#FFE4A0"/>
+          </svg>
+        `
+      },
+      monochrome: {
+        bodyClass: 'theme-monochrome',
+        plaqueTag: 'MODERN EDITORIAL MINIMAL',
+        sealSubtitle: 'VOGUE ARCH',
+        celebrationTag: 'CONTEMPORARY MATRIMONY',
+        archPhotoTag: 'ROHIM & WIWIT · EDITORIAL',
+        doorLabelL: 'MODERN',
+        doorLabelR: 'MINIMAL',
+        event1: 'CEREMONY OF UNION',
+        event2: 'MODERN DINNER & COCKTAILS',
+        event1Venue: '📍 Museum MACAN Modern Space<br>Kebon Jeruk, Jakarta Barat',
+        event2Venue: '📍 The Langham Grand Ballroom<br>SCBD, Jakarta Selatan',
+        doorSvg: `
+          <svg class="door-svg-emblem" viewBox="0 0 100 220" fill="none" stroke="#FFFFFF" stroke-width="1.5">
+            <!-- Architectural Fluted Lines & Brass Pull -->
+            <rect x="25" y="20" width="60" height="180" stroke="#FFFFFF" stroke-opacity="0.7"/>
+            <line x1="40" y1="20" x2="40" y2="200" stroke="#FFFFFF" stroke-opacity="0.3"/>
+            <line x1="55" y1="20" x2="55" y2="200" stroke="#FFFFFF" stroke-opacity="0.3"/>
+            <line x1="70" y1="20" x2="70" y2="200" stroke="#FFFFFF" stroke-opacity="0.3"/>
+            <rect x="52" y="90" width="6" height="40" fill="#DFBA73"/>
+          </svg>
+        `,
+        heroEmblem: `
+          <svg viewBox="0 0 100 70" fill="none" stroke="#FFFFFF" stroke-width="1.5">
+            <!-- Minimal Typography Square Frame -->
+            <rect x="25" y="10" width="50" height="50" stroke="#FFFFFF"/>
+            <line x1="25" y1="35" x2="75" y2="35" stroke="#DFBA73" stroke-width="1"/>
+            <text x="50" y="28" text-anchor="middle" fill="#FFFFFF" font-size="10" font-family="sans-serif" letter-spacing="2">NO. 1</text>
+            <text x="50" y="48" text-anchor="middle" fill="#DFBA73" font-size="9" font-family="sans-serif" letter-spacing="1">ETERNAL</text>
+          </svg>
+        `,
+        corners: `
+          <!-- Hairline Crosshairs & Framing Brackets -->
+          <svg class="floral-corner floral-tl" viewBox="0 0 100 100" fill="none">
+            <line x1="10" y1="10" x2="60" y2="10" stroke="#FFF" stroke-width="1.5"/>
+            <line x1="10" y1="10" x2="10" y2="60" stroke="#FFF" stroke-width="1.5"/>
+            <circle cx="10" cy="10" r="2.5" fill="#DFBA73"/>
+          </svg>
+          <svg class="floral-corner floral-tr" viewBox="0 0 100 100" fill="none">
+            <line x1="10" y1="10" x2="60" y2="10" stroke="#FFF" stroke-width="1.5"/>
+            <line x1="10" y1="10" x2="10" y2="60" stroke="#FFF" stroke-width="1.5"/>
+            <circle cx="10" cy="10" r="2.5" fill="#DFBA73"/>
+          </svg>
+        `
       }
     };
 
+    function filterCategory(cat, el) {
+      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+      if (el) el.classList.add('active');
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        if (cat === 'all' || btn.getAttribute('data-cat') === cat) {
+          btn.style.display = 'inline-flex';
+        } else {
+          btn.style.display = 'none';
+        }
+      });
+    }
+
     function applyCultureTheme(themeKey) {
       const data = cultureProfiles[themeKey];
+      if (!data) return;
       document.body.className = data.bodyClass;
 
       // Update Doors
@@ -1356,7 +2052,7 @@
 
       // Update Button states
       document.querySelectorAll('.theme-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.textContent.toLowerCase().includes(themeKey));
+        btn.classList.toggle('active', btn.getAttribute('data-theme') === themeKey);
       });
 
       closeInvitationDoors();

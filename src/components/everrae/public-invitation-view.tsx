@@ -302,27 +302,68 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
     );
   }
 
-  // Theme styling configurations
+  // Theme styling configurations (12 distinct options)
+  const currentTheme = invitation.theme || 'classic-ivory';
+
   const themeClass = {
     'classic-ivory': 'bg-[#FBF9F5] text-slate-800 font-sans',
     'sage-garden': 'bg-[#F4F7F4] text-slate-800 font-sans',
     'romantic-rose': 'bg-[#FDF6F7] text-slate-800 font-sans',
     'midnight-gold': 'bg-[#0D1322] text-slate-100 font-sans',
-  }[invitation.theme || 'classic-ivory'];
+    'jawa-keraton': 'bg-[#F8F5EE] text-[#24170E] font-serif',
+    'bugis-pinisi': 'bg-[#F2F6F5] text-[#122B24] font-sans',
+    'minang-songket': 'bg-[#FDF7F8] text-[#3D0A14] font-serif',
+    'bali-dewata': 'bg-[#F9F7F2] text-[#2C261F] font-sans',
+    'sunda-siger': 'bg-[#F4F9F6] text-[#18362B] font-sans',
+    'batak-gorga': 'bg-[#F9F6F6] text-[#261515] font-serif',
+    'islamic-arabesque': 'bg-[#F4F8F5] text-[#0E291E] font-serif',
+    'monochrome-editorial': 'bg-[#F9F9F8] text-[#1A1A1A] font-sans',
+  }[currentTheme] || 'bg-[#FBF9F5] text-slate-800 font-sans';
 
   const accentColor = {
     'classic-ivory': 'text-amber-900 bg-[#FFFDF9] border-amber-200/90 shadow-sm',
     'sage-garden': 'text-emerald-950 bg-[#F9FBF9] border-emerald-200/90 shadow-sm',
     'romantic-rose': 'text-rose-950 bg-[#FFFDFD] border-rose-200/90 shadow-sm',
     'midnight-gold': 'text-amber-200 bg-[#141C30] border-amber-400/30 shadow-sm',
-  }[invitation.theme || 'classic-ivory'];
+    'jawa-keraton': 'text-[#422616] bg-[#FFFDF9] border-[#DFBA73]/80 shadow-md',
+    'bugis-pinisi': 'text-[#0F2E25] bg-[#FFFFFF] border-[#2C5F51]/50 shadow-md',
+    'minang-songket': 'text-[#4A0D19] bg-[#FFFFFF] border-[#B3243D]/40 shadow-md',
+    'bali-dewata': 'text-[#362D1D] bg-[#FFFFFF] border-[#D4AF37]/70 shadow-md',
+    'sunda-siger': 'text-[#133A2D] bg-[#FFFFFF] border-[#2E6B54]/40 shadow-md',
+    'batak-gorga': 'text-[#3D1414] bg-[#FFFFFF] border-[#8B2626]/50 shadow-md',
+    'islamic-arabesque': 'text-[#0D3021] bg-[#FFFFFF] border-[#D4AF37]/70 shadow-md',
+    'monochrome-editorial': 'text-slate-900 bg-[#FFFFFF] border-slate-300 shadow-sm',
+  }[currentTheme] || 'text-amber-900 bg-[#FFFDF9] border-amber-200/90 shadow-sm';
 
   const buttonAccent = {
     'classic-ivory': 'bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-800 hover:to-amber-900 text-white',
     'sage-garden': 'bg-gradient-to-r from-emerald-800 to-emerald-900 hover:from-emerald-900 hover:to-emerald-950 text-white',
     'romantic-rose': 'bg-gradient-to-r from-rose-700 to-rose-800 hover:from-rose-800 hover:to-rose-900 text-white',
     'midnight-gold': 'bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-bold',
-  }[invitation.theme || 'classic-ivory'];
+    'jawa-keraton': 'bg-gradient-to-r from-[#875525] via-[#B8863A] to-[#875525] hover:brightness-110 text-white font-serif shadow-amber-900/20',
+    'bugis-pinisi': 'bg-gradient-to-r from-[#17483C] to-[#0E2F26] hover:brightness-110 text-white font-serif shadow-emerald-900/20',
+    'minang-songket': 'bg-gradient-to-r from-[#7A1528] to-[#9E1E36] hover:brightness-110 text-white font-serif shadow-rose-900/20',
+    'bali-dewata': 'bg-gradient-to-r from-[#B8860B] to-[#DAA520] hover:brightness-110 text-[#1A1400] font-bold shadow-amber-900/20',
+    'sunda-siger': 'bg-gradient-to-r from-[#1E5C46] to-[#123E2F] hover:brightness-110 text-white font-serif shadow-teal-900/20',
+    'batak-gorga': 'bg-gradient-to-r from-[#701616] to-[#450C0C] hover:brightness-110 text-white font-serif shadow-red-900/20',
+    'islamic-arabesque': 'bg-gradient-to-r from-[#0E422C] via-[#1B6344] to-[#0E422C] hover:brightness-110 text-white font-serif shadow-emerald-900/20',
+    'monochrome-editorial': 'bg-gradient-to-r from-[#181818] to-[#2D2D2D] hover:from-black hover:to-[#181818] text-white font-sans tracking-widest uppercase shadow-slate-900/20',
+  }[currentTheme] || 'bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-800 hover:to-amber-900 text-white';
+
+  const themeCelebrationTag = {
+    'classic-ivory': 'HOLY MATRIMONY & RECEPTION',
+    'sage-garden': 'INTIMATE GARDEN CELEBRATION',
+    'romantic-rose': 'THE WEDDING CELEBRATION',
+    'midnight-gold': 'MIDNIGHT STARLIGHT GALA',
+    'jawa-keraton': 'PAWIWAHAN & PANGGIH',
+    'bugis-pinisi': 'MAPPETTUADA & SOMPA',
+    'minang-songket': 'BARALEK GADANG',
+    'bali-dewata': 'PAWIWAHAN SUCI DEWATA',
+    'sunda-siger': 'WALIMATUL NIKAH & SAWER',
+    'batak-gorga': 'PAMASU-MASUON & ULAON UNJUK',
+    'islamic-arabesque': "WALIMATUL 'URSY",
+    'monochrome-editorial': 'CONTEMPORARY MATRIMONY',
+  }[currentTheme] || "WALIMATUL 'URSY";
 
   const dateFormatted = invitation.resepsi_date 
     ? new Date(invitation.resepsi_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
@@ -540,7 +581,7 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
 
             <div className="space-y-1.5">
               <span className="text-[10px] sm:text-xs uppercase tracking-[0.35em] text-amber-200/90 font-serif block">
-                WALIMATUL &lsquo;URSY
+                {themeCelebrationTag}
               </span>
               <p className="text-[9px] tracking-widest text-white/60 font-sans uppercase">
                 THE WEDDING CELEBRATION OF
