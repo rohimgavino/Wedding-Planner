@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Undangan Digital 3D Nusantara — Pembedaan Ornamen Tiap Tema</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Great+Vibes&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-serif: 'Playfair Display', serif;
+      --font-royal: 'Cinzel', serif;
+      --font-script: 'Great Vibes', cursive;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background: #080C0B;
+      color: #FAF7F5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* TOP CONTROLLER BAR */
+    .top-control-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(10, 16, 13, 0.96);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(223, 186, 115, 0.35);
+      padding: 10px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+    }
+    .brand-tag {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-royal);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #E8D5B0;
+    }
+    .badge-diff {
+      background: linear-gradient(135deg, #FFE4A0, #DFBA73, #9E7A3E);
+      color: #121A15;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .theme-nav {
+      display: flex;
+      gap: 6px;
+      background: rgba(0,0,0,0.45);
+      padding: 4px;
+      border-radius: 30px;
+      border: 1px solid rgba(223, 186, 115, 0.25);
+    }
+    .theme-btn {
+      background: transparent;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      color: #CBDCD2;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+    }
+    .theme-btn.active {
+      background: linear-gradient(135deg, #FFE4A0, #DFBA73, #9E7A3E);
+      color: #121A15;
+      font-weight: 800;
+      box-shadow: 0 2px 14px rgba(223, 186, 115, 0.5);
+    }
+    .theme-btn:hover:not(.active) {
+      background: rgba(255,255,255,0.08);
+      color: #FFF;
+    }
+
+    .btn-toggle-view {
+      background: rgba(223, 186, 115, 0.15);
+      border: 1px solid rgba(223, 186, 115, 0.4);
+      color: #E8D5B0;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    /* MAIN VIEWPORT STAGE */
+    .viewport-stage {
+      flex: 1;
+      margin-top: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 14px 60px;
+      perspective: 1600px;
+    }
+
+    .phone-container {
+      width: 100%;
+      max-width: 420px;
+      height: 840px;
+      position: relative;
+      border-radius: 46px;
+      overflow: hidden;
+      box-shadow: 
+        0 35px 90px -15px rgba(0, 0, 0, 0.9), 
+        0 0 0 2px rgba(223, 186, 115, 0.4);
+      background: #0D1612;
+      display: flex;
+      flex-direction: column;
+      transform-style: preserve-3d;
+      transition: all 0.5s ease;
+    }
+    .phone-container.desktop-mode {
+      max-width: 880px;
+      border-radius: 26px;
+    }
+
+    /* ========================================================
+       CULTURAL THEME BACKGROUND PATTERNS & ATMOSPHERES
+       ======================================================== */
+    .bg-pattern-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.16;
+      background-repeat: repeat;
+      mix-blend-mode: overlay;
+      transition: all 0.6s ease;
+    }
+    /* 1. BUGIS: Saqbe Walasoji Diamond Grid */
+    .theme-bugis .phone-container {
+      background: radial-gradient(circle at 50% 20%, #173830 0%, #0E241E 50%, #071310 100%);
+    }
+    .theme-bugis .bg-pattern-layer {
+      background-image: 
+        linear-gradient(45deg, rgba(223, 186, 115, 0.2) 25%, transparent 25%), 
+        linear-gradient(-45deg, rgba(223, 186, 115, 0.2) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(223, 186, 115, 0.2) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(223, 186, 115, 0.2) 75%);
+      background-size: 30px 30px;
+    }
+
+    /* 2. JAWA: Batik Kawung Truntum */
+    .theme-jawa .phone-container {
+      background: radial-gradient(circle at 50% 20%, #2B1D14 0%, #1A1009 50%, #0C0704 100%);
+    }
+    .theme-jawa .bg-pattern-layer {
+      background-image: url('/images/batik-kawung.svg');
+      background-size: 60px 60px;
+      opacity: 0.22;
+    }
+
+    /* 3. MINANG: Songket Pucuk Rebung Geometris */
+    .theme-minang .phone-container {
+      background: radial-gradient(circle at 50% 20%, #541120 0%, #300610 50%, #150207 100%);
+    }
+    .theme-minang .bg-pattern-layer {
+      background-image: 
+        radial-gradient(circle, #DFBA73 1.5px, transparent 1.5px),
+        radial-gradient(circle, #DFBA73 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+      background-position: 0 0, 12px 12px;
+      opacity: 0.2;
+    }
+
+    /* ========================================================
+       STAGE 1: 3D DOORS WITH RADICALLY DIFFERENT CULTURAL CARVINGS
+       ======================================================== */
+    .doors-wrapper {
+      position: absolute;
+      inset: 0;
+      z-index: 50;
+      perspective: 1400px;
+      transform-style: preserve-3d;
+      display: flex;
+      pointer-events: auto;
+      transition: visibility 0s 1.3s;
+    }
+    .is-opened .doors-wrapper {
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    .door-leaf {
+      position: relative;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      box-shadow: 0 10px 45px rgba(0,0,0,0.85);
+      transition: transform 1.3s cubic-bezier(0.2, 0.85, 0.25, 1), box-shadow 1.3s ease;
+    }
+    .door-left {
+      transform-origin: left center;
+      border-right: 1px solid rgba(0, 0, 0, 0.7);
+    }
+    .door-right {
+      transform-origin: right center;
+      border-left: 1px solid rgba(223, 186, 115, 0.3);
+    }
+
+    .is-opened .door-left {
+      transform: rotateY(-115deg);
+      box-shadow: 20px 0 45px rgba(0,0,0,0.9);
+    }
+    .is-opened .door-right {
+      transform: rotateY(115deg);
+      box-shadow: -20px 0 45px rgba(0,0,0,0.9);
+    }
+
+    /* DOOR TEXTURES */
+    .theme-bugis .door-leaf {
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.16) 0%, transparent 65%),
+        linear-gradient(to bottom, #163830 0%, #0D221D 50%, #06120F 100%);
+    }
+    .theme-jawa .door-leaf {
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.14) 0%, transparent 65%),
+        linear-gradient(to bottom, #442111 0%, #2B140A 50%, #150904 100%);
+    }
+    .theme-minang .door-leaf {
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.18) 0%, transparent 65%),
+        linear-gradient(to bottom, #5A1221 0%, #350813 50%, #1A0208 100%);
+    }
+
+    .door-ornament-frame {
+      position: absolute;
+      inset: 22px 14px;
+      border: 2px solid #DFBA73;
+      border-radius: 14px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.7), 0 0 12px rgba(223, 186, 115, 0.25);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 8px;
+    }
+    .door-svg-emblem {
+      width: 100%;
+      max-width: 130px;
+      opacity: 0.9;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8));
+    }
+
+    .door-knocker {
+      position: absolute;
+      top: 52%;
+      width: 46px;
+      height: 46px;
+      z-index: 10;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #FFF2CC 0%, #DFBA73 50%, #8A6828 100%);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.7), inset 0 2px 4px rgba(255,255,255,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+    .door-left .door-knocker { right: 12px; }
+    .door-right .door-knocker { left: 12px; }
+    .knocker-ring {
+      width: 24px;
+      height: 24px;
+      border: 3.5px solid #5C4113;
+      border-radius: 50%;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.6);
+    }
+
+    /* COVER CENTER BADGE */
+    .cover-center-badge {
+      position: absolute;
+      top: 42%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 60;
+      width: 320px;
+      text-align: center;
+      pointer-events: auto;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .is-opened .cover-center-badge {
+      opacity: 0;
+      transform: translate(-50%, -85%) scale(0.8);
+      pointer-events: none;
+    }
+
+    .wax-seal-circle {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #FFF4CC 0%, #DFBA73 45%, #9E7A3E 85%, #4A3512 100%);
+      border: 3px solid #FFF8E7;
+      box-shadow: 
+        0 14px 35px rgba(0,0,0,0.75),
+        0 0 25px rgba(223, 186, 115, 0.45),
+        inset 0 3px 6px rgba(255,255,255,0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-royal);
+      color: #261706;
+      font-weight: 900;
+    }
+    .wax-seal-circle .initials { font-size: 28px; line-height: 1; letter-spacing: -1px; }
+    .wax-seal-circle .subtitle { font-size: 8px; letter-spacing: 2px; margin-top: 2px; font-weight: 700; }
+
+    .cover-guest-plaque {
+      background: rgba(14, 26, 21, 0.92);
+      border: 1px solid rgba(223, 186, 115, 0.6);
+      border-radius: 18px;
+      padding: 16px 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+      margin-bottom: 22px;
+      position: relative;
+    }
+    .cover-guest-plaque .eyebrow {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #DFBA73;
+      text-transform: uppercase;
+      font-family: var(--font-royal);
+      font-weight: 700;
+    }
+    .cover-guest-plaque .couple-title {
+      font-family: var(--font-script);
+      font-size: 44px;
+      line-height: 1.1;
+      color: #FFF;
+      margin: 4px 0 8px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 15px rgba(223, 186, 115, 0.4);
+    }
+    .cover-guest-plaque .guest-info {
+      font-size: 11px;
+      color: #C6AA78;
+      border-top: 1px dashed rgba(223, 186, 115, 0.35);
+      padding-top: 8px;
+    }
+    .cover-guest-plaque .guest-name {
+      font-weight: 700;
+      color: #FFF;
+      font-size: 15px;
+      margin-top: 2px;
+    }
+
+    .btn-open-grand {
+      background: linear-gradient(135deg, #FFF0B8 0%, #DFBA73 45%, #9E7A3E 100%);
+      color: #171107;
+      border: none;
+      font-family: var(--font-royal);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 15px 32px;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 
+        0 12px 28px rgba(0,0,0,0.65),
+        0 0 30px rgba(223, 186, 115, 0.6),
+        inset 0 1px 3px rgba(255,255,255,0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+    .btn-open-grand:hover {
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.75), 0 0 40px rgba(223, 186, 115, 0.8);
+    }
+
+    /* ========================================================
+       STAGE 2: SCROLLING INVITATION CONTENT
+       ======================================================== */
+    .invitation-scroll-body {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 100px;
+      opacity: 0;
+      transform: scale(0.94) translateY(40px);
+      transition: all 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+      scroll-behavior: smooth;
+    }
+    .is-opened .invitation-scroll-body {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    /* HERO SECTION */
+    .hero-arch-section {
+      position: relative;
+      padding: 50px 20px 40px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* THEME SPECIFIC ARCH PHOTO WRAPPER */
+    .arch-photo-wrapper {
+      width: 220px;
+      height: 290px;
+      margin: 0 auto 24px;
+      position: relative;
+      padding: 6px;
+      background: linear-gradient(135deg, #FFE4A0 0%, #DFBA73 50%, #9E7A3E 100%);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.7), 0 0 25px rgba(223, 186, 115, 0.35);
+      transition: all 0.5s ease;
+    }
+    /* 1. BUGIS: Oval Arch */
+    .theme-bugis .arch-photo-wrapper {
+      border-radius: 120px 120px 20px 20px;
+    }
+    .theme-bugis .arch-photo-inner {
+      border-radius: 115px 115px 16px 16px;
+    }
+    /* 2. JAWA: Gebyok Pointed Joglo Arch */
+    .theme-jawa .arch-photo-wrapper {
+      border-radius: 30px;
+      border: 3px solid #DFBA73;
+    }
+    .theme-jawa .arch-photo-inner {
+      border-radius: 24px;
+    }
+    /* 3. MINANG: Pointed Gonjong Arch */
+    .theme-minang .arch-photo-wrapper {
+      border-radius: 120px 20px 120px 20px;
+    }
+    .theme-minang .arch-photo-inner {
+      border-radius: 115px 16px 115px 16px;
+    }
+
+    .arch-photo-inner {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      background: #111;
+    }
+    .arch-photo-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .arch-watermark-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 30px 10px 12px;
+      background: linear-gradient(to top, rgba(13, 26, 21, 0.95), transparent);
+      text-align: center;
+      font-family: var(--font-royal);
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #DFBA73;
+    }
+
+    .hero-script-names {
+      font-family: var(--font-script);
+      font-size: 58px;
+      line-height: 1.1;
+      color: #FFF;
+      margin: 10px 0 6px;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 25px rgba(223, 186, 115, 0.5);
+    }
+    .hero-wedding-date {
+      font-family: var(--font-royal);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: #DFBA73;
+      margin-bottom: 24px;
+    }
+
+    /* COUNTDOWN */
+    .countdown-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-width: 320px;
+      margin: 0 auto 30px;
+    }
+    .countdown-card {
+      background: rgba(18, 36, 29, 0.85);
+      border: 1px solid rgba(223, 186, 115, 0.45);
+      border-radius: 14px;
+      padding: 10px 6px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      backdrop-filter: blur(6px);
+    }
+    .countdown-num {
+      font-family: var(--font-royal);
+      font-size: 20px;
+      font-weight: 800;
+      color: #FFF;
+      line-height: 1;
+    }
+    .countdown-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #C6AA78;
+      margin-top: 4px;
+    }
+
+    /* BLESSING CARD */
+    .blessing-section { padding: 0 20px 30px; }
+    .blessing-card {
+      background: rgba(22, 42, 34, 0.85);
+      border: 1px solid rgba(223, 186, 115, 0.35);
+      border-radius: 22px;
+      padding: 26px 20px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+    }
+    .blessing-card::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 1px dashed rgba(223, 186, 115, 0.3);
+      border-radius: 16px;
+      pointer-events: none;
+    }
+    .blessing-title {
+      font-family: var(--font-royal);
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      color: #DFBA73;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .blessing-quote {
+      font-size: 13px;
+      font-style: italic;
+      color: #E2ECE6;
+      line-height: 1.6;
+    }
+    .blessing-surah {
+      font-family: var(--font-royal);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: #DFBA73;
+      margin-top: 10px;
+      font-weight: 700;
+    }
+
+    /* PROFILES SECTION */
+    .profiles-section { padding: 0 20px 30px; }
+    .section-headline { text-align: center; margin-bottom: 24px; }
+    .section-eyebrow {
+      font-family: var(--font-royal);
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: #DFBA73;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 700;
+      color: #FFF;
+      margin-top: 2px;
+    }
+
+    .profile-card {
+      background: rgba(18, 36, 29, 0.9);
+      border: 1px solid rgba(223, 186, 115, 0.4);
+      border-radius: 24px;
+      padding: 24px 18px;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 14px 35px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .profile-avatar-frame {
+      width: 130px;
+      height: 165px;
+      margin: 0 auto 16px;
+      border-radius: 70px 70px 14px 14px;
+      padding: 4px;
+      background: linear-gradient(135deg, #FFE4A0, #DFBA73, #9E7A3E);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.6);
+    }
+    .profile-avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 66px 66px 12px 12px;
+      overflow: hidden;
+      background: #111;
+    }
+    .profile-avatar-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .profile-name {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 700;
+      color: #FFF;
+      margin-bottom: 4px;
+    }
+    .profile-parents {
+      font-size: 12px;
+      color: #CBDCD2;
+      line-height: 1.5;
+    }
+    .profile-parents strong { color: #DFBA73; }
+    .btn-instagram {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(223, 186, 115, 0.15);
+      border: 1px solid rgba(223, 186, 115, 0.4);
+      color: #DFBA73;
+      font-size: 11px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* EVENTS TIMELINE */
+    .events-section { padding: 0 20px 30px; }
+    .event-card {
+      background: linear-gradient(135deg, rgba(22, 44, 35, 0.92) 0%, rgba(13, 27, 22, 0.92) 100%);
+      border: 1px solid rgba(223, 186, 115, 0.4);
+      border-radius: 22px;
+      padding: 24px 20px;
+      text-align: center;
+      margin-bottom: 18px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+    }
+    .event-badge {
+      display: inline-block;
+      font-family: var(--font-royal);
+      font-size: 10px;
+      letter-spacing: 2px;
+      font-weight: 800;
+      color: #121A15;
+      background: linear-gradient(135deg, #FFE4A0, #DFBA73);
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .event-date {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 700;
+      color: #FFF;
+      margin-bottom: 4px;
+    }
+    .event-time { font-size: 13px; color: #CBDCD2; margin-bottom: 12px; }
+    .event-venue {
+      font-size: 13px;
+      font-weight: 600;
+      color: #DFBA73;
+      line-height: 1.4;
+      margin-bottom: 16px;
+    }
+
+    /* VIP CASHLESS DIGITAL ENVELOPE */
+    .gift-section { padding: 0 20px 30px; }
+    .vip-card-box {
+      background: linear-gradient(135deg, #1C2B24 0%, #0F1A15 100%);
+      border: 1px solid rgba(223, 186, 115, 0.5);
+      border-radius: 20px;
+      padding: 20px 18px;
+      color: #FFF;
+      box-shadow: 0 14px 35px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    .chip-micro {
+      width: 38px;
+      height: 28px;
+      background: linear-gradient(135deg, #FFE4A0 0%, #DFBA73 60%, #9E7A3E 100%);
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.3);
+      margin-bottom: 14px;
+    }
+    .card-number-gold {
+      font-family: monospace;
+      font-size: 17px;
+      letter-spacing: 2px;
+      color: #DFBA73;
+      margin: 6px 0 12px;
+      font-weight: 700;
+    }
+    .btn-copy-account {
+      background: linear-gradient(135deg, #FFE4A0, #DFBA73);
+      color: #121A15;
+      border: none;
+      font-family: var(--font-royal);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 9px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    /* WISHES & RSVP */
+    .wishes-section { padding: 0 20px 30px; }
+    .wishes-box {
+      background: rgba(18, 36, 29, 0.9);
+      border: 1px solid rgba(223, 186, 115, 0.4);
+      border-radius: 22px;
+      padding: 22px 18px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+    }
+    .input-field {
+      width: 100%;
+      background: rgba(8, 16, 13, 0.75);
+      border: 1px solid rgba(223, 186, 115, 0.3);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: #FFF;
+      font-size: 13px;
+      margin-bottom: 12px;
+      outline: none;
+    }
+    .btn-submit-wish {
+      width: 100%;
+      background: linear-gradient(135deg, #FFE4A0, #DFBA73);
+      color: #121A15;
+      border: none;
+      font-family: var(--font-royal);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    /* FLOATING BOTTOM DOCK */
+    .bottom-dock {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      background: rgba(12, 24, 19, 0.92);
+      border: 1px solid rgba(223, 186, 115, 0.4);
+      padding: 6px 14px;
+      border-radius: 40px;
+      backdrop-filter: blur(12px);
+      display: flex;
+      gap: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.6s ease;
+    }
+    .is-opened .bottom-dock { opacity: 1; pointer-events: auto; }
+    .dock-btn {
+      background: transparent;
+      border: none;
+      color: #C6AA78;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .dock-btn:hover { color: #FFE4A0; }
+    .dock-btn svg { width: 16px; height: 16px; }
+
+    /* RESET DOOR BUTTON */
+    .btn-reset-doors {
+      position: fixed;
+      bottom: 24px;
+      left: 20px;
+      z-index: 999;
+      background: rgba(10, 18, 14, 0.92);
+      border: 1px solid #DFBA73;
+      color: #DFBA73;
+      padding: 9px 18px;
+      border-radius: 30px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: none;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    }
+    .is-opened .btn-reset-doors { display: block; }
+  </style>
+</head>
+<body class="theme-bugis">
+
+  <!-- TOP BAR CONTROL -->
+  <header class="top-control-bar">
+    <div class="brand-tag">
+      <span class="badge-diff">ORNAMEN BERBEDA</span>
+      BUKAN HANYA GANTI WARNA
+    </div>
+
+    <!-- THEME SELECTION TABS -->
+    <nav class="theme-nav">
+      <button class="theme-btn active" onclick="applyCultureTheme('bugis')">
+        ⛵ Bugis Pinisi (Maritim & Saqbe)
+      </button>
+      <button class="theme-btn" onclick="applyCultureTheme('jawa')">
+        🏛️ Keraton Jawa (Gebyok & Gunungan)
+      </button>
+      <button class="theme-btn" onclick="applyCultureTheme('minang')">
+        🏰 Minang (Gonjong & Pucuk Rebung)
+      </button>
+    </nav>
+
+    <div>
+      <button class="btn-toggle-view" id="viewBtn" onclick="toggleScreenMode()">
+        📱 Mode HP (390px)
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN STAGE -->
+  <main class="viewport-stage">
+    
+    <div class="phone-container" id="phoneContainer">
+      
+      <!-- BACKGROUND CULTURAL PATTERN WATERMARK -->
+      <div class="bg-pattern-layer"></div>
+
+      <!-- ====================================================
+           STAGE 1: 3D DOORS WITH TOTALLY DIFFERENT CULTURAL RELIEFS
+           ==================================================== -->
+      <div class="doors-wrapper" id="doorsWrapper">
+        
+        <!-- LEFT DOOR LEAF -->
+        <div class="door-leaf door-left">
+          <div class="door-ornament-frame">
+            <!-- DYNAMIC DOOR EMBLEM LEFT -->
+            <div id="doorSvgLeftWrapper" style="width: 100%; display: flex; justify-content: center;"></div>
+            <div id="doorLabelLeft" style="font-family: var(--font-royal); font-size: 9px; letter-spacing: 2px; color: #DFBA73; opacity: 0.7;">
+              SULAWESI
+            </div>
+          </div>
+          <div class="door-knocker">
+            <div class="knocker-ring"></div>
+          </div>
+        </div>
+
+        <!-- RIGHT DOOR LEAF (MIRRORED) -->
+        <div class="door-leaf door-right">
+          <div class="door-ornament-frame">
+            <!-- DYNAMIC DOOR EMBLEM RIGHT -->
+            <div id="doorSvgRightWrapper" style="width: 100%; display: flex; justify-content: center;"></div>
+            <div id="doorLabelRight" style="font-family: var(--font-royal); font-size: 9px; letter-spacing: 2px; color: #DFBA73; opacity: 0.7;">
+              PINISI
+            </div>
+          </div>
+          <div class="door-knocker">
+            <div class="knocker-ring"></div>
+          </div>
+        </div>
+
+        <!-- CENTER EMBOSSED SEAL & "BUKA UNDANGAN" -->
+        <div class="cover-center-badge">
+          <div class="wax-seal-circle">
+            <span class="initials">R&W</span>
+            <span class="subtitle" id="sealSubtitle">WALASOJI</span>
+          </div>
+
+          <div class="cover-guest-plaque">
+            <p class="eyebrow" id="plaqueThemeTag">TRADITIONAL BUGIS PINISI</p>
+            <h1 class="couple-title">Rohim & Wiwit</h1>
+            <div class="guest-info">
+              <span>Kepada Yth. Bapak/Ibu/Saudara/i:</span>
+              <p class="guest-name">Tamu Undangan Istimewa</p>
+            </div>
+          </div>
+
+          <button class="btn-open-grand" onclick="openInvitationDoors()">
+            <span>✨</span>
+            <span>Buka Undangan</span>
+            <span>✨</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- ====================================================
+           STAGE 2: SCROLLING INVITATION (RICH & DISTINCT ORNAMENTS!)
+           ==================================================== -->
+      <div class="invitation-scroll-body" id="invitationBody">
+        
+        <!-- SECTION 1: HERO ARCH SECTION -->
+        <section class="hero-arch-section" id="secCover">
+          
+          <!-- DYNAMIC CORNER FLORAL / ORNAMENT WATERMARK -->
+          <div id="cornerOrnaments"></div>
+
+          <!-- DYNAMIC CULTURAL TOP EMBLEM -->
+          <div style="width: 80px; height: 60px; margin: 0 auto 12px;" id="heroEmblem"></div>
+
+          <p id="heroCelebrationTag" style="font-family: var(--font-royal); font-size: 11px; letter-spacing: 3px; color: #DFBA73; font-weight: 800; text-transform: uppercase;">
+            MAPPETTUADA & SOMPA
+          </p>
+
+          <h1 class="hero-script-names">Rohim & Wiwit</h1>
+          <p class="hero-wedding-date" id="heroDateTag">MINGGU, 20 DESEMBER 2026</p>
+
+          <!-- ARCH PHOTO PREWEDDING -->
+          <div class="arch-photo-wrapper">
+            <div class="arch-photo-inner">
+              <img src="/images/wedding-flowers.jpg" alt="Foto Pengantin">
+              <div class="arch-watermark-overlay" id="archPhotoTag">
+                ROHIM & WIWIT · PINISI
+              </div>
+            </div>
+          </div>
+
+          <!-- COUNTDOWN TIMER LIVE 4 PILLARS -->
+          <div class="countdown-container">
+            <div class="countdown-card">
+              <div class="countdown-num">28</div>
+              <div class="countdown-label">Hari</div>
+            </div>
+            <div class="countdown-card">
+              <div class="countdown-num">14</div>
+              <div class="countdown-label">Jam</div>
+            </div>
+            <div class="countdown-card">
+              <div class="countdown-num">35</div>
+              <div class="countdown-label">Menit</div>
+            </div>
+            <div class="countdown-card">
+              <div class="countdown-num">48</div>
+              <div class="countdown-label">Detik</div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- SECTION 2: QURANIC BLESSING CARD -->
+        <section class="blessing-section">
+          <div class="blessing-card">
+            <p class="blessing-title">SURAT AR-RUM : 21</p>
+            <p class="blessing-quote">
+              "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."
+            </p>
+            <p class="blessing-surah">Q.S AR-RUM AYAT 21</p>
+          </div>
+        </section>
+
+        <!-- SECTION 3: BRIDE & GROOM PROFILES -->
+        <section class="profiles-section" id="secCouple">
+          <div class="section-headline">
+            <span class="section-eyebrow" id="coupleEyebrow">MEMPELAI PENGANTIN</span>
+            <h2 class="section-title">Kedua Mempelai</h2>
+            <div style="color: #DFBA73; margin-top: 4px;">✦ ❖ ✦</div>
+          </div>
+
+          <!-- MEMPELAI PRIA -->
+          <div class="profile-card">
+            <div class="profile-avatar-frame">
+              <div class="profile-avatar-inner">
+                <img src="/images/landscape-lake.jpg" alt="Mempelai Pria">
+              </div>
+            </div>
+            <h3 class="profile-name">Rohim Setiarama, S.Kom</h3>
+            <p class="profile-parents" id="groomParents">
+              Putra pertama dari pasangan<br>
+              <strong>Bpk. Drs. H. Subagyo</strong> & <strong>Ibu Hj. Aminah</strong>
+            </p>
+            <a href="https://instagram.com" target="_blank" class="btn-instagram">
+              <span>📷 @rohimsetia</span>
+            </a>
+          </div>
+
+          <!-- MEMPELAI WANITA -->
+          <div class="profile-card">
+            <div class="profile-avatar-frame">
+              <div class="profile-avatar-inner">
+                <img src="/images/wedding-flowers.jpg" alt="Mempelai Wanita">
+              </div>
+            </div>
+            <h3 class="profile-name">Wiwit Rahmawati, S.E</h3>
+            <p class="profile-parents" id="brideParents">
+              Putri kedua dari pasangan<br>
+              <strong>Bpk. H. Bambang Priyono</strong> & <strong>Ibu Hj. Sri Lestari</strong>
+            </p>
+            <a href="https://instagram.com" target="_blank" class="btn-instagram">
+              <span>📷 @wiwitrahma</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- SECTION 4: EVENTS TIMELINE -->
+        <section class="events-section" id="secEvent">
+          <div class="section-headline">
+            <span class="section-eyebrow" id="eventsEyebrow">RANGKAIAN ACARA</span>
+            <h2 class="section-title">Waktu & Tempat</h2>
+            <div style="color: #DFBA73; margin-top: 4px;">✦ ❖ ✦</div>
+          </div>
+
+          <!-- ACARA 1 -->
+          <div class="event-card">
+            <span class="event-badge" id="event1Badge">AKAD NIKAH / SOMPA</span>
+            <h3 class="event-date">Minggu, 20 Desember 2026</h3>
+            <p class="event-time">⏰ Pukul 08.00 - 10.00 WITA / WIB</p>
+            <p class="event-venue" id="event1Venue">📍 Kediaman Mempelai Wanita<br>Kawasan Somba Opu / Sleman</p>
+            <button onclick="alert('Ditambahkan ke Google Calendar!')" style="background: rgba(223, 186, 115, 0.2); border: 1px solid #DFBA73; color: #FFE4A0; padding: 8px 18px; border-radius: 20px; font-size: 11px; font-weight: 700; cursor: pointer;">
+              📅 Simpan ke Google Calendar
+            </button>
+          </div>
+
+          <!-- ACARA 2 -->
+          <div class="event-card">
+            <span class="event-badge" id="event2Badge">RESEPSI / MAMPACCI</span>
+            <h3 class="event-date">Minggu, 20 Desember 2026</h3>
+            <p class="event-time">⏰ Pukul 11.00 - 14.00 WITA / WIB</p>
+            <p class="event-venue" id="event2Venue">📍 Grand Ballroom Nusantara<br>Convention Hall</p>
+            <button onclick="alert('Membuka rute Google Maps...')" style="background: linear-gradient(135deg, #FFE4A0, #DFBA73); border: none; color: #121A15; padding: 9px 20px; border-radius: 20px; font-size: 11px; font-weight: 800; cursor: pointer;">
+              🗺️ Buka Panduan Google Maps
+            </button>
+          </div>
+        </section>
+
+        <!-- SECTION 5: VIP DIGITAL ENVELOPE -->
+        <section class="gift-section" id="secGift">
+          <div class="section-headline">
+            <span class="section-eyebrow">TANDA KASIH</span>
+            <h2 class="section-title">Amplop Digital</h2>
+            <div style="color: #DFBA73; margin-top: 4px;">✦ ❖ ✦</div>
+          </div>
+
+          <div class="vip-card-box">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 11px; letter-spacing: 2px; color: #DFBA73; font-weight: 800;">VIP WEDDING GIFT CARD</span>
+              <span style="font-size: 16px;">💳</span>
+            </div>
+            <div class="chip-micro"></div>
+            <p style="font-size: 12px; color: #CBDCD2;">Bank Central Asia (BCA)</p>
+            <p class="card-number-gold">8910 •••• •••• 421</p>
+            <p style="font-size: 12px; color: #FFF; font-weight: 600; margin-bottom: 14px;">a.n ROHIM SETIARAMA</p>
+            <button class="btn-copy-account" onclick="alert('Nomor Rekening BCA berhasil disalin!')">
+              📋 Salin Nomor Rekening
+            </button>
+          </div>
+        </section>
+
+        <!-- SECTION 6: GUESTBOOK & RSVP -->
+        <section class="wishes-section" id="secWish">
+          <div class="section-headline">
+            <span class="section-eyebrow">BUKU TAMU</span>
+            <h2 class="section-title">Doa & Restu</h2>
+            <div style="color: #DFBA73; margin-top: 4px;">✦ ❖ ✦</div>
+          </div>
+
+          <div class="wishes-box">
+            <input type="text" class="input-field" placeholder="Nama Anda (Bapak/Ibu/Saudara/i)">
+            <select class="input-field">
+              <option value="hadir">Konfirmasi: Ya, Saya Akan Hadir</option>
+              <option value="ragu">Konfirmasi: Masih Ragu-ragu</option>
+              <option value="berhalangan">Konfirmasi: Maaf, Belum Bisa Hadir</option>
+            </select>
+            <textarea class="input-field" rows="3" placeholder="Tuliskan untaian doa dan ucapan selamat untuk kedua mempelai..."></textarea>
+            <button class="btn-submit-wish" onclick="alert('Terima kasih! Doa restu Anda telah tersimpan.')">
+              KIRIM DOA RESTU
+            </button>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- FLOATING BOTTOM DOCK -->
+      <nav class="bottom-dock" aria-label="Navigasi Undangan">
+        <button class="dock-btn" onclick="scrollToSec('secCover')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+          <span>Sampul</span>
+        </button>
+        <button class="dock-btn" onclick="scrollToSec('secCouple')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          <span>Mempelai</span>
+        </button>
+        <button class="dock-btn" onclick="scrollToSec('secEvent')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
+          <span>Acara</span>
+        </button>
+        <button class="dock-btn" onclick="scrollToSec('secGift')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.1-.9-2-2-2z"/></svg>
+          <span>Hadiah</span>
+        </button>
+        <button class="dock-btn" onclick="scrollToSec('secWish')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+          <span>Ucapan</span>
+        </button>
+      </nav>
+
+      <!-- RESET BUTTON -->
+      <button class="btn-reset-doors" onclick="closeInvitationDoors()">
+        🔄 Tutup Pintu & Coba Lagi
+      </button>
+
+    </div>
+
+  </main>
+
+  <script>
+    let isDesktop = false;
+
+    function openInvitationDoors() {
+      document.getElementById('phoneContainer').classList.add('is-opened');
+    }
+
+    function closeInvitationDoors() {
+      document.getElementById('phoneContainer').classList.remove('is-opened');
+      document.getElementById('invitationBody').scrollTop = 0;
+    }
+
+    function toggleScreenMode() {
+      isDesktop = !isDesktop;
+      const container = document.getElementById('phoneContainer');
+      const btn = document.getElementById('viewBtn');
+      if (isDesktop) {
+        container.classList.add('desktop-mode');
+        btn.textContent = '💻 Mode Layar Lebar';
+      } else {
+        container.classList.remove('desktop-mode');
+        btn.textContent = '📱 Mode HP (390px)';
+      }
+    }
+
+    function scrollToSec(secId) {
+      const el = document.getElementById(secId);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /* ========================================================
+       CULTURAL THEMES DEFINITION (ORNAMENTS, DOORS, SYMBOLS)
+       ======================================================== */
+    const cultureProfiles = {
+      bugis: {
+        bodyClass: 'theme-bugis',
+        plaqueTag: 'TRADITIONAL BUGIS PINISI',
+        sealSubtitle: 'WALASOJI',
+        celebrationTag: 'MAPPETTUADA & SOMPA',
+        archPhotoTag: 'ROHIM & WIWIT · PINISI',
+        doorLabelL: 'SULAWESI',
+        doorLabelR: 'PINISI',
+        event1: 'AKAD NIKAH / SOMPA',
+        event2: 'RESEPSI / MAMPACCI',
+        event1Venue: '📍 Kediaman Mempelai Wanita<br>Kawasan Pantai Losari / Somba Opu',
+        event2Venue: '📍 Grand Phinisi Ballroom<br>Makassar, Sulawesi Selatan',
+        doorSvg: `
+          <svg class="door-svg-emblem" viewBox="0 0 100 220" fill="none" stroke="#DFBA73" stroke-width="1.8">
+            <!-- Pinisi Hull & Geometric Saqbe Bugis Lattice -->
+            <path d="M85,15 C60,40 30,80 30,130 C30,170 50,195 85,210" stroke-width="2.2"/>
+            <polygon points="50,55 65,70 50,85 35,70" fill="#DFBA73" fill-opacity="0.4"/>
+            <polygon points="50,105 65,120 50,135 35,120" fill="#DFBA73" fill-opacity="0.4"/>
+            <polygon points="50,155 65,170 50,185 35,170" fill="#DFBA73" fill-opacity="0.4"/>
+            <circle cx="50" cy="120" r="4" fill="#FFE4A0"/>
+          </svg>
+        `,
+        heroEmblem: `
+          <svg viewBox="0 0 100 70" fill="none" stroke="#DFBA73" stroke-width="2">
+            <!-- Kapal Pinisi Berlayar di Samudra -->
+            <path d="M15,50 Q50,60 85,50 L75,62 Q50,66 25,62 Z" fill="#DFBA73" fill-opacity="0.4"/>
+            <path d="M50,10 L50,50" stroke-width="2.5"/>
+            <path d="M50,12 L80,38 L50,42 Z" fill="#DFBA73" fill-opacity="0.7"/>
+            <path d="M50,15 L25,40 L50,44 Z" fill="#DFBA73" fill-opacity="0.5"/>
+            <path d="M5,55 Q25,50 45,55 T85,55 T100,55" stroke-dasharray="2,2"/>
+          </svg>
+        `,
+        corners: `
+          <!-- Tropical Bouquets & Golden Coral Filigree -->
+          <svg class="floral-corner floral-tl" viewBox="0 0 100 100" fill="none">
+            <path d="M5,5 Q40,10 70,35 Q90,55 95,95 Q55,90 35,70 Q10,40 5,5 Z" fill="#DFBA73" fill-opacity="0.25"/>
+            <circle cx="35" cy="35" r="20" fill="#871A2E" fill-opacity="0.85"/>
+            <circle cx="35" cy="35" r="10" fill="#FFE4A0"/>
+            <path d="M5,5 Q35,35 65,15" stroke="#DFBA73" stroke-width="2.5"/>
+            <path d="M5,5 Q35,35 15,65" stroke="#DFBA73" stroke-width="2.5"/>
+          </svg>
+          <svg class="floral-corner floral-tr" viewBox="0 0 100 100" fill="none">
+            <path d="M5,5 Q40,10 70,35 Q90,55 95,95 Q55,90 35,70 Q10,40 5,5 Z" fill="#DFBA73" fill-opacity="0.25"/>
+            <circle cx="35" cy="35" r="20" fill="#871A2E" fill-opacity="0.85"/>
+            <circle cx="35" cy="35" r="10" fill="#FFE4A0"/>
+            <path d="M5,5 Q35,35 65,15" stroke="#DFBA73" stroke-width="2.5"/>
+            <path d="M5,5 Q35,35 15,65" stroke="#DFBA73" stroke-width="2.5"/>
+          </svg>
+        `
+      },
+      jawa: {
+        bodyClass: 'theme-jawa',
+        plaqueTag: 'ROYAL KERATON JAWA',
+        sealSubtitle: 'GUNUNGAN',
+        celebrationTag: 'PAWIWAHAN & PANGGIH',
+        archPhotoTag: 'ROHIM & WIWIT · KERATON',
+        doorLabelL: 'KERATON',
+        doorLabelR: 'JAWADWIPA',
+        event1: 'AKAD NIKAH KUDUS',
+        event2: 'RESEPSI & PANGGIH',
+        event1Venue: '📍 Dalem Ageng Sasana Krida<br>Kawasan Keraton Ngayogyakarta',
+        event2Venue: '📍 Pendopo Agung Ambarrukmo<br>D.I. Yogyakarta',
+        doorSvg: `
+          <svg class="door-svg-emblem" viewBox="0 0 100 220" fill="none" stroke="#DFBA73" stroke-width="1.8">
+            <!-- Gebyok Kayu Ukir Jati & Ronce Sulur Jawa -->
+            <path d="M85,15 C45,45 25,85 25,130 C25,175 45,200 85,215" stroke-width="2.2"/>
+            <path d="M85,35 Q35,75 35,130 Q35,185 85,195" stroke-dasharray="2,2"/>
+            <!-- Ukiran Daun Jati -->
+            <path d="M45,70 Q60,50 75,70 Q60,90 45,70 Z" fill="#DFBA73" fill-opacity="0.4"/>
+            <path d="M45,120 Q60,100 75,120 Q60,140 45,120 Z" fill="#DFBA73" fill-opacity="0.4"/>
+            <path d="M45,170 Q60,150 75,170 Q60,190 45,170 Z" fill="#DFBA73" fill-opacity="0.4"/>
+            <circle cx="60" cy="120" r="5" fill="#FFE4A0"/>
+          </svg>
+        `,
+        heroEmblem: `
+          <svg viewBox="0 0 100 70" fill="none" stroke="#DFBA73" stroke-width="2">
+            <!-- Gunungan Wayang Kulit Keraton Jawa -->
+            <path d="M50,5 C50,5 20,30 20,55 C20,65 35,68 50,68 C65,68 80,65 80,55 C80,30 50,5 50,5 Z" fill="#DFBA73" fill-opacity="0.35"/>
+            <line x1="50" y1="5" x2="50" y2="68" stroke-dasharray="2,2"/>
+            <circle cx="50" cy="36" r="8" fill="#DFBA73" fill-opacity="0.6"/>
+            <path d="M35,48 Q50,40 65,48"/>
+          </svg>
+        `,
+        corners: `
+          <!-- Hanging Jasmine Garland (Ronce Melati) -->
+          <svg class="floral-corner floral-tl" viewBox="0 0 100 100" fill="none">
+            <path d="M10,0 L10,60" stroke="#DFBA73" stroke-width="2" stroke-dasharray="3,3"/>
+            <path d="M25,0 L25,45" stroke="#DFBA73" stroke-width="2" stroke-dasharray="3,3"/>
+            <circle cx="10" cy="15" r="4" fill="#FFF"/>
+            <circle cx="10" cy="30" r="4" fill="#FFF"/>
+            <circle cx="10" cy="45" r="4" fill="#FFF"/>
+            <circle cx="10" cy="60" r="6" fill="#FFE4A0"/>
+            <circle cx="25" cy="15" r="4" fill="#FFF"/>
+            <circle cx="25" cy="30" r="4" fill="#FFF"/>
+            <circle cx="25" cy="45" r="6" fill="#FFE4A0"/>
+          </svg>
+          <svg class="floral-corner floral-tr" viewBox="0 0 100 100" fill="none">
+            <path d="M10,0 L10,60" stroke="#DFBA73" stroke-width="2" stroke-dasharray="3,3"/>
+            <path d="M25,0 L25,45" stroke="#DFBA73" stroke-width="2" stroke-dasharray="3,3"/>
+            <circle cx="10" cy="15" r="4" fill="#FFF"/>
+            <circle cx="10" cy="30" r="4" fill="#FFF"/>
+            <circle cx="10" cy="45" r="4" fill="#FFF"/>
+            <circle cx="10" cy="60" r="6" fill="#FFE4A0"/>
+            <circle cx="25" cy="15" r="4" fill="#FFF"/>
+            <circle cx="25" cy="30" r="4" fill="#FFF"/>
+            <circle cx="25" cy="45" r="6" fill="#FFE4A0"/>
+          </svg>
+        `
+      },
+      minang: {
+        bodyClass: 'theme-minang',
+        plaqueTag: 'MINANG KEMILAU SONGKET',
+        sealSubtitle: 'GONJONG',
+        celebrationTag: 'BARALEK GADANG',
+        archPhotoTag: 'ROHIM & WIWIT · MINANG',
+        doorLabelL: 'RANAH',
+        doorLabelR: 'MINANG',
+        event1: 'AKAD NIKAH',
+        event2: 'BARALEK GADANG',
+        event1Venue: '📍 Masjid Raya Sumatera Barat<br>Kota Padang',
+        event2Venue: '📍 Istano Basa Pagaruyung Hall<br>Batusangkar, Tanah Datar',
+        doorSvg: `
+          <svg class="door-svg-emblem" viewBox="0 0 100 220" fill="none" stroke="#DFBA73" stroke-width="1.8">
+            <!-- Atap Gonjong & Songket Pucuk Rebung Minang -->
+            <path d="M85,15 C40,30 20,80 20,130 C20,180 40,205 85,215" stroke-width="2.2"/>
+            <!-- Triangle Pucuk Rebung -->
+            <polygon points="50,40 70,80 30,80" fill="#DFBA73" fill-opacity="0.45"/>
+            <polygon points="50,95 70,135 30,135" fill="#DFBA73" fill-opacity="0.45"/>
+            <polygon points="50,150 70,190 30,190" fill="#DFBA73" fill-opacity="0.45"/>
+          </svg>
+        `,
+        heroEmblem: `
+          <svg viewBox="0 0 100 70" fill="none" stroke="#DFBA73" stroke-width="2">
+            <!-- Siluet Atap Gonjong Rumah Gadang -->
+            <path d="M10,48 C20,30 30,12 35,8 C40,18 45,35 50,40 C55,35 60,18 65,8 C70,12 80,30 90,48 Z" fill="#DFBA73" fill-opacity="0.45"/>
+            <path d="M10,48 L90,48 L80,58 L20,58 Z" fill="#DFBA73" fill-opacity="0.7"/>
+            <line x1="35" y1="8" x2="35" y2="48" stroke-dasharray="2,2"/>
+            <line x1="65" y1="8" x2="65" y2="48" stroke-dasharray="2,2"/>
+          </svg>
+        `,
+        corners: `
+          <!-- Golden Tassels & Songket Embroidery Borders -->
+          <svg class="floral-corner floral-tl" viewBox="0 0 100 100" fill="none">
+            <path d="M0,0 L90,0 L70,20 L0,20 Z" fill="#DFBA73" fill-opacity="0.5"/>
+            <path d="M0,0 L0,90 L20,70 L20,0 Z" fill="#DFBA73" fill-opacity="0.5"/>
+            <circle cx="35" cy="35" r="14" fill="#DFBA73" fill-opacity="0.6"/>
+            <polygon points="35,15 45,35 35,55 25,35" fill="#FFE4A0"/>
+          </svg>
+          <svg class="floral-corner floral-tr" viewBox="0 0 100 100" fill="none">
+            <path d="M0,0 L90,0 L70,20 L0,20 Z" fill="#DFBA73" fill-opacity="0.5"/>
+            <path d="M0,0 L0,90 L20,70 L20,0 Z" fill="#DFBA73" fill-opacity="0.5"/>
+            <circle cx="35" cy="35" r="14" fill="#DFBA73" fill-opacity="0.6"/>
+            <polygon points="35,15 45,35 35,55 25,35" fill="#FFE4A0"/>
+          </svg>
+        `
+      }
+    };
+
+    function applyCultureTheme(themeKey) {
+      const data = cultureProfiles[themeKey];
+      document.body.className = data.bodyClass;
+
+      // Update Doors
+      document.getElementById('doorSvgLeftWrapper').innerHTML = data.doorSvg;
+      document.getElementById('doorSvgRightWrapper').innerHTML = `<div style="transform: scaleX(-1);">${data.doorSvg}</div>`;
+      document.getElementById('doorLabelLeft').textContent = data.doorLabelL;
+      document.getElementById('doorLabelRight').textContent = data.doorLabelR;
+
+      // Update Cover Plaque
+      document.getElementById('plaqueThemeTag').textContent = data.plaqueTag;
+      document.getElementById('sealSubtitle').textContent = data.sealSubtitle;
+
+      // Update Hero Content
+      document.getElementById('heroEmblem').innerHTML = data.heroEmblem;
+      document.getElementById('heroCelebrationTag').textContent = data.celebrationTag;
+      document.getElementById('archPhotoTag').textContent = data.archPhotoTag;
+      document.getElementById('cornerOrnaments').innerHTML = data.corners;
+
+      // Update Events
+      document.getElementById('event1Badge').textContent = data.event1;
+      document.getElementById('event2Badge').textContent = data.event2;
+      document.getElementById('event1Venue').innerHTML = data.event1Venue;
+      document.getElementById('event2Venue').innerHTML = data.event2Venue;
+
+      // Update Button states
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toLowerCase().includes(themeKey));
+      });
+
+      closeInvitationDoors();
+    }
+
+    // Default Init
+    applyCultureTheme('bugis');
+  </script>
+</body>
+</html>

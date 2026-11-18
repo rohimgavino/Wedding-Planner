@@ -6,13 +6,24 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { safeNext } from "@/lib/auth-policy";
 import { createClient } from "@/lib/supabase/client";
-import { Heart, Sparkles, ArrowRight, Mail, ShieldCheck, CheckCircle2 } from "lucide-react";
+import { Heart, Sparkles, ArrowRight, Mail, ShieldCheck, CheckCircle2, Clock } from "lucide-react";
 
 export default function LoginPage() {
   const {configured, user, ready} = useAuth();
   const router = useRouter();
   const [loading,setLoading] = useState(false);
   const [message,setMessage] = useState<string | null>(null);
+  const [sessionExpiredNotice, setSessionExpiredNotice] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('reason') === 'session_expired') {
+        setSessionExpiredNotice(true);
+      }
+    }
+  }, []);
+
   useEffect(()=>{if(ready && user)router.replace(safeNext(new URLSearchParams(window.location.search).get('next')));},[user,ready,router]);
   const handleGoogleLogin = async () => {
     if(!configured) {setMessage('Login cloud belum dikonfigurasi. Tidak ada akses demo.');return;}
@@ -45,6 +56,21 @@ export default function LoginPage() {
             Masuk dengan Google untuk mengakses workspace cloud pribadi dan pasangan.
           </p>
         </div>
+
+        {sessionExpiredNotice && (
+          <div
+            role="status"
+            className="p-4 mb-6 rounded-2xl bg-amber-50/90 border border-amber-200/80 text-amber-900 text-center space-y-1.5 shadow-sm"
+          >
+            <div className="flex items-center justify-center gap-2 text-amber-800 font-semibold text-xs sm:text-sm">
+              <Clock className="w-4 h-4 text-amber-700" />
+              <span>Sesi Berakhir (Batas 1 Jam)</span>
+            </div>
+            <p className="text-xs text-amber-700/90 leading-relaxed">
+              Sesi login Anda telah berakhir otomatis demi keamanan akun. Silakan masuk kembali dengan Google untuk melanjutkan perencanaan.
+            </p>
+          </div>
+        )}
 
         {message && (
           <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-center space-y-2">

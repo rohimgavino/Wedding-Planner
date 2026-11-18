@@ -107,6 +107,38 @@
   - Memberikan status aktif di `/purchase` tanpa perlu melakukan checkout pembayaran riil.
 * **Cakupan Akses:** Bebas mengecek dan menguji seluruh modul: Dashboard KPI, Master Budget, Timeline & Checklist, Rundown Hari H, Moodboard Visual, Lamaran & Seserahan, Honeymoon Planner, Tabungan Bersama, dan Undangan Digital.
 
+### 5. Batas Sesi Login & Auto-Logout 1 Jam (`session limit`)
+* **Durasi Maksimal Sesi:** 1 jam (`SESSION_DURATION_MS = 60 * 60 * 1000` = 3.600.000 ms) terhitung sejak login berhasil.
+* **Penyimpanan Status Sesi:** Disimpan di `localStorage` (`pw_session_login_time`, `pw_session_expires_at`, `pw_session_user_id`).
+* **Mekanisme Otomatis:**
+  1. *Realtime Timer:* `auth-context.tsx` memasang timer timeout presisi dan interval pemeriksaan tiap 10 detik.
+  2. *Wake-from-sleep & Tab-focus:* Event listener `visibilitychange` dan `focus` memastikan sesi yang ditinggal tidur / minimasi lebih dari 1 jam langsung mendeteksi kadaluwarsa begitu dibuka kembali.
+  3. *Multi-tab Sync:* Event listener `storage` menyinkronkan logout ke seluruh tab yang terbuka.
+  4. *Warning State:* Jika sisa waktu <= 5 menit, indikator sesi berubah menjadi badge peringatan amber lembut dan menampilkan bar status peringatan.
+  5. *Graceful Auto-Logout:* Mengosongkan data sesi lokal via `signOut({ scope: 'local' })` dan mengarahkan pengguna ke `/login?reason=session_expired`.
+  6. *Feedback Visual di Login:* Halaman login menampilkan card info elegan bernuansa Amber/Gold yang menginformasikan bahwa sesi telah selesai dan pengguna dapat masuk kembali dengan Google.
+* **Pengujian Mandiri:** Script `scripts/test-session-limit.mjs` dijalankan via `npm run test:session` (8/8 skenario lulus).
+
+### 6. Desain & Arsitektur Tema Undangan 3D Nusantara (Standar Non-Polosan ala `our-wedding.link`)
+* **Prinsip Utama (Bukan Sekadar Ganti Warna):**
+  - Setiap tema budaya Nusantara wajib memiliki bentuk fisik pintu 3D, ornamen ukiran, emblem adat, hiasan sudut bunga (*floral watercolor framing*), pola watermark, bentuk bingkai foto prewedding (*arch frame*), dan istilah prosesi adat yang **berbeda total dan otentik**, bukan sekadar palet warna yang berganti.
+* **Katalog Varian Tema Budaya:**
+  1. *Traditional Bugis Pinisi:* Daun pintu ukiran geometris Saqbe Bugis, siluet megah perahu Pinisi 3D berlayar di atas ombak samudra emas, anyaman kisi-kisi sakral *Walasoji*, buket mawar maritim & melati, bingkai kubah maritim, serta istilah adat *Mappettuada, Sompa, & Mampacci*.
+  2. *Royal Keraton Jawa:* Daun pintu gebyok kayu jati Jepara berukir relief daun & sulur 3D, Gunungan Wayang Kulit keemasan, ronce bunga melati putih gantung (*hanging jasmine garlands*), motif *Batik Kawung Truntum*, bingkai kubah Joglo dobel, serta istilah adat *Pawiwahan & Panggih Penganten*.
+  3. *Minang Kemilau Songket:* Daun pintu berukir ornamen segitiga bertingkat *Pucuk Rebung*, siluet atap lancip *Gonjong Rumah Gadang*, rumbai bordir emas tenun songket (*golden tassels & Pandai Sikek*), bingkai kubah lancip Minang, serta istilah adat *Akad Nikah & Baralek Gadang*.
+  4. *Dewata Sanctuary Bali:* Gerbang kembar *Candi Bentar* batu andesit terbelah 3D, taburan kelopak bunga Kamboja (*Frangipani*) kuning-putih melayang, ukiran emas prada Bali, dan gamelan Semara Ratih.
+* **Struktur Halaman Undangan Mewah (*Full-Bleed Scrolling Experience*):**
+  1. *3D Door Swing Reveal:* Dua daun pintu berayun membuka 115° secara 3D dengan perspektif 1400px saat tombol *"✨ Buka Undangan ✨"* diklik, disertai kepakan sayap kupu-kupu emas (*fluttering 3D butterflies*) dan partikel bunga.
+  2. *Hero Section Kaya Ornamen:* Karangan bunga watercolor di sudut atas, emblem budaya adat, kaligrafi sambung megah (*Great Vibes script*) berbayang emas berkilau, bingkai foto kubah prewedding, serta Live Countdown Timer 4 Pilar (Hari, Jam, Menit, Detik).
+  3. *Profil Kedua Mempelai:* Foto kubah mempelai pria & wanita, nama lengkap bergelar, nama orang tua, dan tombol tautan Instagram.
+  4. *Rangkaian Acara:* Kartu kubah ganda dengan tombol 1-klik *"Simpan ke Google Calendar"* dan panduan rute *"Buka Google Maps"*.
+  5. *VIP Cashless Digital Envelope:* Kartu ATM eksklusif dengan chip micro emas, nomor rekening timbul, dan tombol salin nomor rekening instan.
+  6. *Buku Tamu Doa Restu & RSVP:* Form konfirmasi kehadiran dan kolom doa restu real-time ke Supabase.
+  7. *Floating Bottom Navigation Dock:* Menu bar melayang di bawah layar `[🏠 Sampul] [💍 Mempelai] [🗓️ Acara] [🎁 Hadiah] [💌 Ucapan]` untuk navigasi instan antar-seksi.
+* **Efisiensi & Performa Mobile:**
+  - 0 MB video beban (bebas kuota), 100% murni *GPU-accelerated CSS 3D transforms* (`preserve-3d`, `rotateY`), dan aset vektor SVG tajam di semua layar Retina ponsel.
+  - File prototype interaktif tersimpan di `public/preview-themes.html`.
+
 ---
 
 ## 5. Standar Verifikasi & Deployment
@@ -119,13 +151,16 @@ npm run lint
 # 2. Type Checking TypeScript (Wajib 0 error)
 npx tsc --noEmit
 
-# 3. Backend & Supabase RLS Tests (Wajib 20/20 lulus)
+# 3. Unit Test Session Limit & Auto-Logout (8/8 lulus)
+npm run test:session
+
+# 4. Backend & Supabase RLS Tests (Wajib 20/20 lulus)
 npm run test:backend
 
-# 4. Next.js Static Export Build
+# 5. Next.js Static Export Build
 npm run build
 
-# 5. Cloudflare Workers Deploy
+# 6. Cloudflare Workers Deploy
 npx wrangler deploy
 ```
 

@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
-import { completeCallback, safeNext } from '@/lib/auth-policy';
+import { completeCallback, initSessionLimit, safeNext } from '@/lib/auth-policy';
 import { useAuth } from '@/context/auth-context';
 export default function CallbackPage() {
  const started=useRef(false);const [error,setError]=useState('');const {refresh}=useAuth();
@@ -11,7 +11,8 @@ export default function CallbackPage() {
   const url=new URL(window.location.href);
   const next=safeNext(url.searchParams.get('next'));
   void (async()=>{try {
-   await completeCallback(createClient().auth,url);
+   const user = await completeCallback(createClient().auth,url);
+   initSessionLimit(user.id);
    window.history.replaceState(null,'','/auth/callback');
    await refresh();window.location.replace(next);
   } catch(err){window.history.replaceState(null,'','/auth/callback');setError(err instanceof Error?err.message:'Login gagal.');}})();

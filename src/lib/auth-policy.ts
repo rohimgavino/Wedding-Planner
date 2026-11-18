@@ -33,3 +33,119 @@ export function isTesterBypassEmail(email?: string | null): boolean {
   return TESTER_BYPASS_EMAILS.includes(email.trim().toLowerCase());
 }
 
+// =========================================================
+// SESSION LIMIT MANAGEMENT (1 Jam Auto-Logout)
+// =========================================================
+
+export const SESSION_DURATION_MS = 60 * 60 * 1000; // 1 jam (3.600.000 ms)
+export const SESSION_WARNING_BEFORE_MS = 5 * 60 * 1000; // 5 menit sebelum batas waktu
+
+export const SESSION_KEYS = {
+  LOGIN_TIME: 'pw_session_login_time',
+  EXPIRES_AT: 'pw_session_expires_at',
+  USER_ID: 'pw_session_user_id',
+  REASON: 'pw_session_logout_reason',
+} as const;
+
+export interface SessionLimitInfo {
+  loginTime: number;
+  expiresAt: number;
+  remainingMs: number;
+  isExpired: boolean;
+  isWarning: boolean;
+  userId: string;
+}
+
+export function initSessionLimit(userId: string, durationMs: number = SESSION_DURATION_MS): SessionLimitInfo {
+  const now = Date.now();
+  const expiresAt = now + durationMs;
+  if (typeof window !== 'undefined' && window.localStorage) {
+    try {
+      localStorage.setItem(SESSION_KEYS.LOGIN_TIME, now.toString());
+      localStorage.setItem(SESSION_KEYS.EXPIRES_AT, expiresAt.toString());
+      localStorage.setItem(SESSION_KEYS.USER_ID, userId);
+      localStorage.removeItem(SESSION_KEYS.REASON);
+    } catch {
+      // LocalStorage fallback for sandbox / restricted mode
+    }
+  }
+  return {
+    loginTime: now,
+    expiresAt,
+    remainingMs: durationMs,
+    isExpired: false,
+    isWarning: false,
+    userId,
+  };
+}
+
+export function clearSessionLimit(reason?: string): void {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    try {
+      localStorage.removeItem(SESSION_KEYS.LOGIN_TIME);
+      localStorage.removeItem(SESSION_KEYS.EXPIRES_AT);
+      localStorage.removeItem(SESSION_KEYS.USER_ID);
+      if (reason) {
+        localStorage.setItem(SESSION_KEYS.REASON, reason);
+      } else {
+        localStorage.removeItem(SESSION_KEYS.REASON);
+      }
+    } catch {
+      // LocalStorage fallback
+    }
+  }
+}
+
+export function getSessionExpiration(userId?: string | null, durationMs: number = SESSION_DURATION_MS): SessionLimitInfo | null {
+  if (typeof window === 'undefined' || !window.localStorage) return null;
+  try {
+    const rawExpiresAt = localStorage.getItem(SESSION_KEYS.EXPIRES_AT);
+    const rawLoginTime = localStorage.getItem(SESSION_KEYS.LOGIN_TIME);
+    const storedUserId = localStorage.getItem(SESSION_KEYS.USER_ID);
+
+    if (!rawExpiresAt || !storedUserId) {
+      if (userId) {
+        return initSessionLimit(userId, durationMs);
+      }
+      return null;
+    }
+
+    if (userId && storedUserId !== userId) {
+      return initSessionLimit(userId, durationMs);
+    }
+
+    const expiresAt = Number(rawExpiresAt);
+    const loginTime = rawLoginTime ? Number(rawLoginTime) : expiresAt - durationMs;
+    const now = Date.now();
+    const remainingMs = Math.max(0, expiresAt - now);
+    const isExpired = now >= expiresAt;
+    const isWarning = !isExpired && remainingMs <= SESSION_WARNING_BEFORE_MS;
+
+    return {
+      loginTime,
+      expiresAt,
+      remainingMs,
+      isExpired,
+      isWarning,
+      userId: storedUserId,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function isSessionLimitExpired(userId?: string | null): boolean {
+  const session = getSessionExpiration(userId);
+  return session ? session.isExpired : false;
+}
+
+export function formatRemainingTime(ms: number): string {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  if (minutes > 0) {
+    return `${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
+  }
+  return `${seconds}s`;
+}
+
