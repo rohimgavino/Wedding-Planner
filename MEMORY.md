@@ -146,6 +146,60 @@
 * **Efisiensi & Performa Mobile:**
   - 0 MB video beban (bebas kuota), 100% murni *GPU-accelerated CSS 3D transforms* (`preserve-3d`, `rotateY`), dan aset vektor SVG tajam di semua layar Retina ponsel.
   - **Status Integrasi:** Efek 3D Door Swing Reveal, ukiran pintu SVG, emblem budaya hero, dan bingkai arch photo kini telah **terintegrasi penuh secara native** di komponen Next.js (`src/components/everrae/public-invitation-view.tsx` & `src/components/everrae/invitation-theme-config.tsx`), serta tetap dapat diuji di file prototype standalone `public/preview-themes.html`.
+* **Miniature Preview Thumbnails di Dashboard (`theme-thumbnail.tsx`):**
+  - Setiap kartu template di Dashboard dilengkapi thumbnail pratinjau mini visual yang merefleksikan gradasi atmosfer pintu, pola watermark latar, emblem budaya, bingkai kubah foto, dan segel wax seal.
+  - Interaksi hover *"👁️ Pratinjau Desain"* yang membuka live preview simulasi secara langsung.
+* **Kustomisasi Foto Prewedding & Akun Instagram:**
+  - Input URL foto prewedding di Tab 2 (*Data Mempelai*) dengan tombol pilihan cepat (*🌸 Bunga Mewah*, *🏞️ Panorama Danau*) dan kotak pratinjau live langsung di dashboard.
+  - Input akun Instagram mempelai pria (`groom_instagram`) & wanita (`bride_instagram`) dengan prefix `@` yang otomatis memunculkan tombol tautan Instagram di kartu profil kedua mempelai pada undangan publik.
+* **Pemilih Musik Latar Belakang (Audio Backsound MP3) & Audio Test Player:**
+  - Preset audio siap pakai: *🎵 Akustik Pop Romantis*, *🏛️ Gamelan Tradisional Jawa (Sakral)*, *🌴 Rindik Tradisional Bali (Damai)*, *🪕 Gambus & Oud Islami (Syahdu)*.
+  - Opsi memasukkan URL audio MP3 kustom dari hosting sendiri.
+  - Tombol kontrol Uji Dengar (*Play/Pause*) langsung di dalam dashboard.
+* **Skema Database SQL Migration 12 Tema (`202611180002_invitations_extra_columns.sql`):**
+  - Memperbarui check constraint tabel `wedding_invitations` dari 4 tema menjadi 12 tema lengkap.
+  - Menambahkan kolom `cover_photo_url`, `groom_instagram`, dan `bride_instagram`.
+
+### 7. Arsitektur Paket Pembelian & Pembatasan Hak Akses (Tier Gating)
+Tiap paket memiliki hak akses modul yang terisolasi secara ketat dan terverifikasi baik di sisi database (Supabase RLS & entitlements) maupun antarmuka dashboard:
+
+1. **Belum Membayar (Unactivated / Free Workspace):**
+   - **Status:** Terkunci total oleh gerbang `WorkspaceActivation` (`!entitlementActive(entitlements, 'core')`).
+   - Seluruh tab dashboard ditutup kecuali menu pengaturan / tautan pasangan (`pairing`), dengan arahan aktivasi ke [`/purchase`](https://pocketwedding.id/purchase).
+2. **Paket Starter (Rp 49.900 · 6 Bulan Akses Cloud):**
+   - **Fitur Terbuka (Unlocked):**
+     - Dashboard Ringkasan & Progres Persiapan
+     - Timeline & Wedding Checklist (termasuk Berkas KUA)
+     - Rundown Hari H (Akad & Resepsi)
+     - Master Budget & Pelacakan Pengeluaran
+     - Buku Tamu & RSVP WhatsApp (termasuk Export CSV)
+     - Undangan Digital 3D (12 Tema Lengkap, Foto Prewedding, Backsound Musik)
+     - Tautan Pasangan (Kolaborasi Akun Berdua)
+   - **Fitur Terkunci (Locked / Paywall):**
+     - 🔒 **Moodboard Visual & Palet Warna:** Berstatus *Mode Pratinjau*. Tombol tambah inspirasi & ganti palet warna dinonaktifkan (Memerlukan paket Premium).
+     - 🔒 **Tabungan Bersama Pasangan (`shared-savings.tsx`):** Berstatus *Mode Pratinjau*. Form pencatatan kontribusi dinonaktifkan (Memerlukan paket Premium).
+     - 👑 **Lamaran & Seserahan Planner:** Berstatus *Mode Pratinjau*. Form susunan prosesi & checklist seserahan dinonaktifkan (Memerlukan paket Wedding Pro).
+     - 👑 **Honeymoon Planner:** Berstatus *Mode Pratinjau*. Form itinerary & pos biaya liburan dinonaktifkan (Memerlukan paket Wedding Pro).
+3. **Paket Premium (Rp 79.900 · 1 Tahun Akses Cloud):**
+   - **Fitur Terbuka (Unlocked):**
+     - Seluruh fitur pada paket Starter.
+     - 🔓 **Moodboard Visual & Palet Warna:** Terbuka penuh tanpa batasan.
+     - 🔓 **Tabungan Bersama Pasangan:** Terbuka penuh untuk mencatat setoran berdua dan grafik target.
+     - Masa aktif 365 hari (12 bulan kalender).
+   - **Fitur Terkunci (Locked):**
+     - 👑 **Lamaran & Seserahan Planner:** (Khusus Wedding Pro).
+     - 👑 **Honeymoon Planner:** (Khusus Wedding Pro).
+4. **Paket Wedding Pro (Rp 99.900 · Akses Penuh VIP):**
+   - **Semua Fitur Terbuka 100% (Fully Unlocked):**
+     - Seluruh fitur Starter & Premium.
+     - 🔓 **Engagement / Lamaran Planner:** Terbuka penuh.
+     - 🔓 **Honeymoon Planner:** Terbuka penuh.
+     - Tanpa banner gembok, tanpa batasan formulir.
+5. **Indikator Visual di Menu Dashboard:**
+   - Bilah navigasi sidebar menampilkan badge penanda status paket:
+     - Badge emas `🔒 Premium` pada tab Moodboard & Tabungan Bersama (jika belum aktif).
+     - Badge ungu `👑 Pro` pada tab Lamaran & Honeymoon (jika belum aktif).
+   - Bilah pintasan mobile (*shortcuts*) menampilkan dot indikator peringatan amber pada fitur yang memerlukan upgrade tier.
 
 ---
 
@@ -165,7 +219,7 @@ npm run test:session
 # 4. Backend & Supabase RLS Tests (Wajib 20/20 lulus)
 npm run test:backend
 
-# 5. Digital Invitation & 12 Theme Integration Tests (Wajib 11/11 lulus)
+# 5. Digital Invitation & 12 Theme Integration Tests (Wajib 12/12 lulus)
 npm run test:invitation
 
 # 6. Next.js Static Export Build
@@ -177,7 +231,16 @@ npx wrangler deploy
 
 ---
 
-## 6. Preferensi & Catatan Khusus Pengguna (Rohim)
+## 6. Riwayat Versi & Deployment Produksi
+* **Domain Utama:** `https://pocketwedding.id`
+* **Edge Worker:** `https://everrae.taarufplanner12.workers.dev`
+* **Git Commit Terakhir:** `2b3e9a9` on branch `main` (`origin/main`)
+* **Cloudflare Workers Version ID:** `752b1cd1-353b-4432-969f-97038e7d1672`
+* **Status Terakhir:** Bersih (*working tree clean*), seluruh test suite lulus 100%, semua halaman static diekspor sempurna.
+
+---
+
+## 7. Preferensi & Catatan Khusus Pengguna (Rohim)
 * **Gaya Komunikasi:** Ramah, solutif, to the point, berbahasa Indonesia dengan format GitHub-style markdown.
 * **Kerapian & Estetika:** Sangat menyukai detail visual bernilai seni tinggi (perpaduan modern luxury dengan sentuhan tradisional Nusantara seperti Batik Kawung).
 * **Keberlanjutan Memori:** AI Agent wajib membaca dokumen ini di awal percakapan dan memperbaruinya setiap kali ada fitur baru atau keputusan desain penting yang disepakati bersama.
