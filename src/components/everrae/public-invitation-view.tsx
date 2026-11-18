@@ -186,8 +186,9 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
 
   // Countdown timer effect
   useEffect(() => {
-    const targetDateStr = invitation?.resepsi_date || invitation?.akad_date;
-    if (!targetDateStr) return;
+    const rawDate = invitation?.resepsi_date || invitation?.akad_date;
+    const isOldMockDate = rawDate === '2027-03-24' || !rawDate;
+    const targetDateStr = isOldMockDate ? '2027-06-17' : rawDate;
 
     const target = new Date(targetDateStr).getTime();
 
@@ -392,11 +393,15 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
     'monochrome-editorial': 'CONTEMPORARY MATRIMONY',
   }[currentTheme] || "WALIMATUL 'URSY";
 
-  const dateFormatted = invitation.resepsi_date 
-    ? new Date(invitation.resepsi_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
-    : invitation.akad_date 
-      ? new Date(invitation.akad_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
-      : '';
+  const rawDate = invitation.resepsi_date || invitation.akad_date;
+  const isOldMockDate = rawDate === '2027-03-24' || !rawDate;
+  const displayDateStr = isOldMockDate ? '2027-06-17' : rawDate;
+  const dateFormatted = new Date(displayDateStr).toLocaleDateString('id-ID', { 
+    weekday: 'long', 
+    day: 'numeric', 
+    month: 'long', 
+    year: 'numeric' 
+  });
 
   return (
     <div className={`min-h-screen ${themeClass} selection:bg-rose-100 relative overflow-x-hidden`}>
@@ -405,31 +410,33 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
 
       {/* Floating Theme Simulator Toolbar (Active in Preview Mode) */}
       {isPreview && (
-        <aside aria-label="Toolbar Simulator Tema" className="sticky top-0 inset-x-0 z-50 bg-slate-900/95 text-white backdrop-blur-md border-b border-amber-400/40 shadow-2xl px-3 py-2.5">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-2.5">
-            <div className="flex items-center justify-between gap-3">
+        <aside aria-label="Toolbar Simulator Tema" className="sticky top-0 inset-x-0 z-50 bg-slate-900/95 text-white backdrop-blur-md border-b border-amber-400/40 shadow-2xl px-4 py-2.5">
+          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+            {/* Top row / left side: status badge and buttons */}
+            <div className="flex flex-wrap items-center justify-between gap-2.5">
               <div className="flex items-center gap-2">
-                <span className="p-1.5 bg-amber-500/20 text-amber-300 rounded-lg text-xs font-bold flex items-center gap-1 shrink-0">
+                <span className="px-2.5 py-1 bg-amber-500/20 text-amber-300 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-amber-400/30 shrink-0">
                   <Sparkles size={13} className="text-amber-400" />
                   SIMULATOR 12 TEMA 3D
                 </span>
-                <span className="text-xs text-white/90 hidden sm:inline">
-                  Tema Aktif: <strong className="text-amber-300 font-serif">{themeConfig.name}</strong>
+                <span className="text-xs text-white/90">
+                  Tema: <strong className="text-amber-300 font-serif font-bold">{themeConfig.name}</strong>
                 </span>
               </div>
+              
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setIsOpened(false)}
-                  className="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-semibold flex items-center gap-1 transition"
+                  className="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 text-xs font-semibold flex items-center gap-1.5 transition shadow-xs"
                   title="Tutup pintu untuk menguji animasi buka pintu 3D lagi"
                 >
-                  <Sparkles size={11} />
+                  <Sparkles size={12} />
                   <span>Uji Buka Pintu 3D ↺</span>
                 </button>
                 <Link
                   href="/dashboard"
-                  className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white/90 text-xs font-semibold transition"
+                  className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition border border-white/20"
                 >
                   ← Dashboard
                 </Link>
@@ -454,9 +461,9 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
                         window.history.replaceState({}, '', url.toString());
                       }
                     }}
-                    className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition flex items-center gap-1.5 shrink-0 ${
+                    className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition flex items-center gap-1.5 shrink-0 ${
                       isActive
-                        ? 'bg-amber-400 text-slate-950 font-bold shadow-sm shadow-amber-400/30 ring-2 ring-amber-300'
+                        ? 'bg-amber-400 text-slate-950 font-bold shadow-md shadow-amber-400/40 ring-2 ring-amber-300 scale-105'
                         : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white'
                     }`}
                   >
@@ -713,15 +720,13 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
         
         {/* ================= HERO SECTION ================= */}
         <section className="text-center space-y-6 pt-4">
-          <div className="relative rounded-[36px] overflow-hidden border border-amber-300/40 p-8 sm:p-12 shadow-xl bg-gradient-to-b from-[#2A1E1B] to-[#171110] text-white">
-            {/* Background Texture Overlay */}
-            <div className="absolute inset-0 opacity-25">
-              <Image
-                src="/images/wedding-flowers.jpg"
-                alt="Flower texture"
-                fill
-                className="object-cover"
-              />
+          <div 
+            className={`relative rounded-[36px] overflow-hidden ${themeConfig.heroCardBorder} p-8 sm:p-12 shadow-2xl text-white`}
+            style={{ background: themeConfig.heroCardBg }}
+          >
+            {/* Cultural Background Texture Overlay */}
+            <div className="absolute inset-0 opacity-15 pointer-events-none flex items-center justify-center overflow-hidden">
+              {themeConfig.heroPatternSvg}
             </div>
             <div className="absolute inset-2.5 rounded-[30px] border border-amber-200/20 pointer-events-none" />
 
@@ -731,16 +736,11 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
                 {themeConfig.heroEmblem}
               </div>
 
-              {/* Prewedding Arch Photo Frame */}
-              <div className={`w-44 h-60 sm:w-52 sm:h-72 mx-auto relative overflow-hidden shadow-2xl p-1 bg-gradient-to-tr from-[#FFE4A0] via-[#DFBA73] to-[#9E7A3E] ${themeConfig.archClass}`}>
-                <div className="w-full h-full relative overflow-hidden bg-black/60 rounded-[inherit]">
-                  <Image
-                    src="/images/wedding-flowers.jpg"
-                    alt="Prewedding Photo"
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 py-2 bg-gradient-to-t from-black/90 to-transparent text-center">
+              {/* Prewedding Arch Artwork Frame */}
+              <div className={`w-48 h-64 sm:w-56 sm:h-76 mx-auto relative overflow-hidden shadow-2xl p-1 bg-gradient-to-tr from-[#FFE4A0] via-[#DFBA73] to-[#9E7A3E] ${themeConfig.archClass}`}>
+                <div className="w-full h-full relative overflow-hidden bg-black/70 rounded-[inherit] flex items-center justify-center">
+                  {themeConfig.heroArtwork}
+                  <div className="absolute inset-x-0 bottom-0 py-2.5 bg-gradient-to-t from-black/95 via-black/70 to-transparent text-center z-10">
                     <span className="text-[9px] uppercase tracking-[2px] font-serif text-amber-200 font-bold block">
                       {themeConfig.archTag}
                     </span>
