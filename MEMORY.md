@@ -165,10 +165,13 @@ npm run test:session
 # 4. Backend & Supabase RLS Tests (Wajib 20/20 lulus)
 npm run test:backend
 
-# 5. Next.js Static Export Build
+# 5. Digital Invitation & 12 Theme Integration Tests (Wajib 11/11 lulus)
+npm run test:invitation
+
+# 6. Next.js Static Export Build
 npm run build
 
-# 6. Cloudflare Workers Deploy
+# 7. Cloudflare Workers Deploy
 npx wrangler deploy
 ```
 
