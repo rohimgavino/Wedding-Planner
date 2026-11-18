@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { useWorkspace } from '@/context/WorkspaceContext';
 import { WeddingInvitation, InvitationTheme } from '@/types';
+import { ThemeCardThumbnail } from './theme-thumbnail';
 
 export type ThemeCategory = 'all' | 'nusantara' | 'modern' | 'luxury';
 
@@ -505,16 +506,19 @@ export function DigitalInvitationManager() {
                 return (
                   <div
                     key={t.id}
-                    className={`p-4 rounded-2xl border flex flex-col justify-between gap-3 transition relative ${
+                    className={`p-4 rounded-2xl border flex flex-col justify-between gap-3.5 transition relative ${
                       isSelected 
                         ? 'border-rose-500 ring-2 ring-rose-200 bg-rose-50/50 shadow-sm' 
                         : 'border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50/60'
                     }`}
                   >
-                    <div className="space-y-2">
+                    <div className="space-y-3">
+                      {/* Miniature Visual Preview Thumbnail */}
+                      <ThemeCardThumbnail themeId={t.id} slug={sanitizedSlug || 'rohim-wiwit'} />
+
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex items-center gap-2">
-                          <span className={`w-4 h-4 rounded-full border shadow-2xs ${t.previewColor}`} />
+                          <span className={`w-3.5 h-3.5 rounded-full border shadow-2xs shrink-0 ${t.previewColor}`} />
                           <h4 className="text-sm font-bold text-slate-900 leading-tight">{t.name}</h4>
                         </div>
                         {isSelected && (
@@ -525,7 +529,7 @@ export function DigitalInvitationManager() {
                         )}
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className="inline-block text-[10px] font-semibold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-md">
                           {t.badge}
                         </span>
