@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { 
   Globe, 
@@ -20,7 +20,14 @@ import {
   Palette,
   AlertCircle,
   FileText,
-  ChevronRight
+  ChevronRight,
+  Music,
+  Camera,
+  Instagram,
+  Play,
+  Pause,
+  Volume2,
+  Image as ImageIcon
 } from 'lucide-react';
 import { useWorkspace } from '@/context/WorkspaceContext';
 import { WeddingInvitation, InvitationTheme } from '@/types';
@@ -213,6 +220,27 @@ export function DigitalInvitationManager() {
   const [giftAccountHolder, setGiftAccountHolder] = useState(invitation?.gift_account_holder || initialGroom);
   const [giftAddress, setGiftAddress] = useState(invitation?.gift_address || '');
 
+  const [coverPhotoUrl, setCoverPhotoUrl] = useState(invitation?.cover_photo_url || '/images/wedding-flowers.jpg');
+  const [groomInstagram, setGroomInstagram] = useState(invitation?.groom_instagram || '');
+  const [brideInstagram, setBrideInstagram] = useState(invitation?.bride_instagram || '');
+  const [musicUrl, setMusicUrl] = useState(invitation?.music_url || '/audio/wedding-acoustic.mp3');
+  const [isPlayingAudioPreview, setIsPlayingAudioPreview] = useState(false);
+  const audioPreviewRef = useRef<HTMLAudioElement | null>(null);
+
+  const toggleAudioPreview = () => {
+    if (!audioPreviewRef.current) return;
+    if (isPlayingAudioPreview) {
+      audioPreviewRef.current.pause();
+      setIsPlayingAudioPreview(false);
+    } else {
+      audioPreviewRef.current.play().then(() => {
+        setIsPlayingAudioPreview(true);
+      }).catch(() => {
+        setIsPlayingAudioPreview(false);
+      });
+    }
+  };
+
   if (!workspace) return null;
 
   const sanitizedSlug = slug.toLowerCase().replace(/[^a-z0-9-]+/g, '').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
@@ -248,9 +276,13 @@ export function DigitalInvitationManager() {
       groom_full_name: groomFullName.trim(),
       groom_nickname: groomNickname.trim(),
       groom_parents: groomParents.trim(),
+      groom_instagram: groomInstagram.trim(),
       bride_full_name: brideFullName.trim(),
       bride_nickname: brideNickname.trim(),
       bride_parents: brideParents.trim(),
+      bride_instagram: brideInstagram.trim(),
+      cover_photo_url: coverPhotoUrl.trim(),
+      music_url: musicUrl.trim(),
       akad_date: akadDate || undefined,
       akad_time: akadTime.trim(),
       akad_venue: akadVenue.trim(),
@@ -711,6 +743,24 @@ export function DigitalInvitationManager() {
                     className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500"
                   />
                 </div>
+                <div>
+                  <label className="text-xs font-medium text-slate-600 block mb-1">
+                    <span className="inline-flex items-center gap-1">
+                      <Instagram size={13} className="text-rose-500" />
+                      Akun Instagram (Opsional):
+                    </span>
+                  </label>
+                  <div className="flex items-center">
+                    <span className="bg-slate-200/80 border border-r-0 border-slate-300 rounded-l-xl px-2.5 py-2.5 text-xs text-slate-600 font-mono">@</span>
+                    <input
+                      type="text"
+                      value={groomInstagram.replace(/^@/, '')}
+                      onChange={e => setGroomInstagram(e.target.value.replace(/[^a-zA-Z0-9._]/g, ''))}
+                      placeholder="ahmad.rohim"
+                      className="w-full bg-white border border-slate-300 rounded-r-xl p-2.5 text-sm outline-none focus:border-rose-500 font-mono"
+                    />
+                  </div>
+                </div>
               </div>
 
               {/* Pengantin Wanita */}
@@ -747,6 +797,195 @@ export function DigitalInvitationManager() {
                     placeholder="Putri kedua dari Bpk. H. Fulan & Ibu Hj. Fulanah"
                     className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500"
                   />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-slate-600 block mb-1">
+                    <span className="inline-flex items-center gap-1">
+                      <Instagram size={13} className="text-rose-500" />
+                      Akun Instagram (Opsional):
+                    </span>
+                  </label>
+                  <div className="flex items-center">
+                    <span className="bg-rose-100 border border-r-0 border-rose-300 rounded-l-xl px-2.5 py-2.5 text-xs text-rose-700 font-mono">@</span>
+                    <input
+                      type="text"
+                      value={brideInstagram.replace(/^@/, '')}
+                      onChange={e => setBrideInstagram(e.target.value.replace(/[^a-zA-Z0-9._]/g, ''))}
+                      placeholder="wiwit.lestari"
+                      className="w-full bg-white border border-rose-300 rounded-r-xl p-2.5 text-sm outline-none focus:border-rose-500 font-mono"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Foto Prewedding & Musik Latar Belakang */}
+          <section className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
+            <div className="flex items-center gap-2 border-b pb-3">
+              <Camera size={18} className="text-rose-500" />
+              <h3 className="font-serif text-lg font-bold text-slate-900">Foto Prewedding &amp; Musik Latar Belakang</h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Card 1: Foto Prewedding */}
+              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Foto Cover / Prewedding</span>
+                    <span className="text-[11px] text-slate-500">Lengkungan gerbang</span>
+                  </div>
+
+                  {/* Preset Quick-Buttons */}
+                  <div className="space-y-1.5">
+                    <span className="text-[11px] font-semibold text-slate-600 block">Pilihan Cepat Foto:</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {[
+                        { label: '🌸 Bunga Mewah', url: '/images/wedding-flowers.jpg' },
+                        { label: '🏞️ Danau Romantis', url: '/images/landscape-lake.jpg' },
+                      ].map(preset => (
+                        <button
+                          key={preset.url}
+                          type="button"
+                          onClick={() => setCoverPhotoUrl(preset.url)}
+                          className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition ${
+                            coverPhotoUrl === preset.url 
+                              ? 'bg-rose-50 border-rose-400 text-rose-700 font-semibold' 
+                              : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100'
+                          }`}
+                        >
+                          {preset.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-medium text-slate-600 block mb-1">URL Foto (Link Gambar Eksternal / Cloud):</label>
+                    <input
+                      type="url"
+                      value={coverPhotoUrl}
+                      onChange={e => setCoverPhotoUrl(e.target.value)}
+                      placeholder="https://images.unsplash.com/... atau /images/..."
+                      className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs font-mono outline-none focus:border-rose-500"
+                    />
+                  </div>
+                </div>
+
+                {/* Live Photo Preview */}
+                <div className="pt-2">
+                  <span className="text-[11px] font-semibold text-slate-500 block mb-1.5">Pratinjau Foto Cover:</span>
+                  <div className="relative w-full h-36 rounded-xl overflow-hidden bg-slate-200 border border-slate-300 flex items-center justify-center">
+                    {coverPhotoUrl ? (
+                      <img
+                        src={coverPhotoUrl}
+                        alt="Pratinjau Cover"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLElement).style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <div className="text-slate-400 text-xs flex flex-col items-center gap-1">
+                        <ImageIcon size={24} />
+                        <span>Belum ada foto yang dipilih</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 2: Musik Latar Belakang */}
+              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Musik Latar (Backsound MP3)</span>
+                    <span className="text-[11px] text-slate-500">Auto-play saat dibuka</span>
+                  </div>
+
+                  {/* Hidden Audio Player for Preview */}
+                  <audio ref={audioPreviewRef} src={musicUrl} preload="none" onEnded={() => setIsPlayingAudioPreview(false)} />
+
+                  {/* Preset Audio Selection */}
+                  <div className="space-y-1.5">
+                    <span className="text-[11px] font-semibold text-slate-600 block">Pilihan Musik Siap Pakai:</span>
+                    <div className="grid grid-cols-1 gap-1.5">
+                      {[
+                        { label: '🎵 Akustik Pop Romantis', url: '/audio/wedding-acoustic.mp3', tag: 'Populer' },
+                        { label: '🏛️ Gamelan Tradisional Jawa', url: 'https://assets.pocketwedding.id/audio/gamelan-wedding.mp3', tag: 'Sakral' },
+                        { label: '🌴 Rindik Tradisional Bali', url: 'https://assets.pocketwedding.id/audio/rindik-bali.mp3', tag: 'Damai' },
+                        { label: '🪕 Gambus & Oud Islami', url: 'https://assets.pocketwedding.id/audio/islamic-wedding.mp3', tag: 'Syahdu' },
+                      ].map(preset => {
+                        const isSelected = musicUrl === preset.url;
+                        return (
+                          <button
+                            key={preset.url}
+                            type="button"
+                            onClick={() => {
+                              setMusicUrl(preset.url);
+                              if (isPlayingAudioPreview && audioPreviewRef.current) {
+                                audioPreviewRef.current.pause();
+                                setIsPlayingAudioPreview(false);
+                              }
+                            }}
+                            className={`p-2 rounded-xl text-left text-xs border transition flex items-center justify-between gap-2 ${
+                              isSelected 
+                                ? 'bg-rose-50 border-rose-400 text-rose-900 font-semibold' 
+                                : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-100'
+                            }`}
+                          >
+                            <span className="truncate">{preset.label}</span>
+                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-200/70 text-slate-600 shrink-0 font-normal">
+                              {preset.tag}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-medium text-slate-600 block mb-1">URL Audio Kustom (.mp3):</label>
+                    <input
+                      type="url"
+                      value={musicUrl}
+                      onChange={e => {
+                        setMusicUrl(e.target.value);
+                        if (isPlayingAudioPreview && audioPreviewRef.current) {
+                          audioPreviewRef.current.pause();
+                          setIsPlayingAudioPreview(false);
+                        }
+                      }}
+                      placeholder="https://domain.com/musik-pilihan.mp3"
+                      className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs font-mono outline-none focus:border-rose-500"
+                    />
+                  </div>
+                </div>
+
+                {/* Audio Preview Control Button */}
+                <div className="pt-2 flex items-center justify-between gap-2 bg-white p-3 rounded-xl border border-slate-200">
+                  <div className="flex items-center gap-2">
+                    <span className="p-2 bg-rose-50 text-rose-600 rounded-lg">
+                      <Volume2 size={16} />
+                    </span>
+                    <div className="text-left">
+                      <p className="text-xs font-bold text-slate-800">Uji Dengar Musik</p>
+                      <p className="text-[10px] text-slate-500 truncate max-w-[150px] sm:max-w-xs">{musicUrl}</p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={toggleAudioPreview}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
+                      isPlayingAudioPreview
+                        ? 'bg-amber-600 text-white hover:bg-amber-700'
+                        : 'bg-rose-600 text-white hover:bg-rose-700'
+                    }`}
+                  >
+                    {isPlayingAudioPreview ? <Pause size={13} /> : <Play size={13} />}
+                    <span>{isPlayingAudioPreview ? 'Jeda Audio' : 'Putar Audio'}</span>
+                  </button>
                 </div>
               </div>
             </div>

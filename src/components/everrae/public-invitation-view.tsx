@@ -351,9 +351,9 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
           {/* ====================================================
               STAGE 1: 3D DOORS WITH RADICAL CULTURAL ORNAMENTS
               ==================================================== */}
-          <div className="doors-wrapper">
+          <div className="doors-wrapper pw-doors-wrapper">
             {/* Left Door Leaf */}
-            <div className="door-leaf door-left">
+            <div className="door-leaf door-left pw-door-leaf pw-door-left">
               <div className="door-ornament-frame">
                 {themeConfig.doorSvg}
                 <span style={{ fontSize: '10px', letterSpacing: '3px', fontFamily: 'var(--font-royal)', color: '#DFBA73', fontWeight: 800, textTransform: 'uppercase' }}>
@@ -366,7 +366,7 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
             </div>
 
             {/* Right Door Leaf */}
-            <div className="door-leaf door-right">
+            <div className="door-leaf door-right pw-door-leaf pw-door-right">
               <div className="door-ornament-frame">
                 <div style={{ width: '100%', transform: 'scaleX(-1)' }}>
                   {themeConfig.doorSvg}
@@ -381,7 +381,7 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
             </div>
 
             {/* Cover Center Badge (Wax Seal & Guest Plaque) */}
-            <div className="cover-center-badge">
+            <div className="cover-center-badge pw-cover-center-badge">
               <div className="wax-seal-circle">
                 <span className="initials">
                   {(invitation.groom_nickname?.[0] || 'R')}&amp;{(invitation.bride_nickname?.[0] || 'W')}

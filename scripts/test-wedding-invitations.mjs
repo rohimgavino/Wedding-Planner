@@ -36,6 +36,8 @@ await db.exec(installSql);
 // Load the new invitations migration
 const invSql = readFileSync(new URL('../supabase/migrations/202611170001_wedding_invitations.sql', import.meta.url), 'utf8');
 await db.exec(invSql);
+const extraSql = readFileSync(new URL('../supabase/migrations/202611180002_invitations_extra_columns.sql', import.meta.url), 'utf8');
+await db.exec(extraSql);
 
 // Setup workspace
 await setSession(db, 'authenticated', id(1));
@@ -140,6 +142,24 @@ await test('T5: Stranger user cannot edit or delete workspace invitation', async
     db.query("INSERT INTO public.wedding_invitations(workspace_id, slug) VALUES($1, 'stranger-hijack')", [wsId]),
     /row-level security/i
   );
+});
+
+await test('T6: Can save and read 12 themes, prewedding photo, and instagram handles', async () => {
+  await setSession(db, 'authenticated', id(1));
+  await db.query(`
+    UPDATE public.wedding_invitations 
+    SET theme = 'bali-dewata',
+        cover_photo_url = 'https://images.unsplash.com/photo-1519741497674-611481863552',
+        groom_instagram = '@ahmad.rohim',
+        bride_instagram = '@wiwit.lestari'
+    WHERE id = $1
+  `, [invId]);
+
+  const row = (await db.query("SELECT * FROM public.wedding_invitations WHERE id = $1", [invId])).rows[0];
+  assert.equal(row.theme, 'bali-dewata');
+  assert.equal(row.cover_photo_url, 'https://images.unsplash.com/photo-1519741497674-611481863552');
+  assert.equal(row.groom_instagram, '@ahmad.rohim');
+  assert.equal(row.bride_instagram, '@wiwit.lestari');
 });
 
 await db.close();

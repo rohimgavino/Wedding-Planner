@@ -5,6 +5,7 @@ export interface ThemeVisualConfig {
   id: InvitationTheme;
   bodyClass: string;
   name: string;
+  doorBg: string;
   plaqueThemeTag: string;
   sealSubtitle: string;
   celebrationTag: string;
@@ -49,6 +50,7 @@ export function getInvitationThemeConfig(themeKey: string): ThemeVisualConfig {
         id: 'bugis-pinisi',
         bodyClass: 'theme-bugis',
         name: 'Bugis Makassar Pinisi',
+        doorBg: 'linear-gradient(135deg, #4A0E17 0%, #1A0508 100%)',
         plaqueThemeTag: 'TRADITIONAL BUGIS PINISI',
         sealSubtitle: 'WALASOJI',
         celebrationTag: 'MAPPETTUADA & SOMPA',
@@ -104,6 +106,7 @@ export function getInvitationThemeConfig(themeKey: string): ThemeVisualConfig {
         id: 'jawa-keraton',
         bodyClass: 'theme-jawa',
         name: 'Royal Keraton Jawa',
+        doorBg: 'linear-gradient(135deg, #1C3325 0%, #0B1710 100%)',
         plaqueThemeTag: 'ROYAL KERATON JAWA',
         sealSubtitle: 'GUNUNGAN',
         celebrationTag: 'PAWIWAHAN & PANGGIH',
@@ -167,6 +170,7 @@ export function getInvitationThemeConfig(themeKey: string): ThemeVisualConfig {
         id: 'minang-songket',
         bodyClass: 'theme-minang',
         name: 'Minang Kemilau Songket',
+        doorBg: 'linear-gradient(135deg, #7A1719 0%, #2A0506 100%)',
         plaqueThemeTag: 'MINANG KEMILAU SONGKET',
         sealSubtitle: 'GONJONG',
         celebrationTag: 'BARALEK GADANG',
@@ -218,6 +222,7 @@ export function getInvitationThemeConfig(themeKey: string): ThemeVisualConfig {
         id: 'bali-dewata',
         bodyClass: 'theme-bali',
         name: 'Dewata Sanctuary Bali',
+        doorBg: 'linear-gradient(135deg, #182822 0%, #0A120F 100%)',
         plaqueThemeTag: 'DEWATA SANCTUARY BALI',
         sealSubtitle: 'CANDI BENTAR',
         celebrationTag: 'PAWIWAHAN SUCI DEWATA',
@@ -273,6 +278,7 @@ export function getInvitationThemeConfig(themeKey: string): ThemeVisualConfig {
         id: 'sunda-siger',
         bodyClass: 'theme-sunda',
         name: 'Sunda Parahyangan',
+        doorBg: 'linear-gradient(135deg, #0D3A2F 0%, #051A14 100%)',
         plaqueThemeTag: 'SUNDA PARAHYANGAN',
         sealSubtitle: 'SIGER PASUNDAN',
         celebrationTag: 'WALIMATUL NIKAH & SAWER',
@@ -331,6 +337,7 @@ export function getInvitationThemeConfig(themeKey: string): ThemeVisualConfig {
         id: 'batak-gorga',
         bodyClass: 'theme-batak',
         name: 'Batak Royal Ulos',
+        doorBg: 'linear-gradient(135deg, #3B1214 0%, #150506 100%)',
         plaqueThemeTag: 'BATAK ROYAL ULOS',
         sealSubtitle: 'GORGA TOBA',
         celebrationTag: 'PAMASU-MASUON & ULAON UNJUK',
@@ -382,6 +389,7 @@ export function getInvitationThemeConfig(themeKey: string): ThemeVisualConfig {
         id: 'islamic-arabesque',
         bodyClass: 'theme-islamic',
         name: 'Madinah Arabesque Gold',
+        doorBg: 'linear-gradient(135deg, #162B22 0%, #0A1410 100%)',
         plaqueThemeTag: 'MADINAH ARABESQUE GOLD',
         sealSubtitle: 'RUB EL HIZB',
         celebrationTag: "WALIMATUL 'URSY",
@@ -434,6 +442,7 @@ export function getInvitationThemeConfig(themeKey: string): ThemeVisualConfig {
         id: 'classic-ivory',
         bodyClass: 'theme-ivory',
         name: 'Classic Ivory & Gold',
+        doorBg: 'linear-gradient(135deg, #FAF7F0 0%, #E8E0D0 100%)',
         plaqueThemeTag: 'CLASSIC IVORY & GOLD',
         sealSubtitle: 'ROYAL WAX SEAL',
         celebrationTag: 'HOLY MATRIMONY & RECEPTION',
@@ -483,6 +492,7 @@ export function getInvitationThemeConfig(themeKey: string): ThemeVisualConfig {
         id: 'sage-garden',
         bodyClass: 'theme-sage',
         name: 'Sage Garden Botanical',
+        doorBg: 'linear-gradient(135deg, #E6EFE9 0%, #C4D7CB 100%)',
         plaqueThemeTag: 'SAGE GARDEN BOTANICAL',
         sealSubtitle: 'EUCALYPTUS',
         celebrationTag: 'INTIMATE GARDEN CELEBRATION',
@@ -536,6 +546,7 @@ export function getInvitationThemeConfig(themeKey: string): ThemeVisualConfig {
         id: 'romantic-rose',
         bodyClass: 'theme-rose',
         name: 'Romantic Rose Peony',
+        doorBg: 'linear-gradient(135deg, #FFF0F3 0%, #F5D0D9 100%)',
         plaqueThemeTag: 'ROMANTIC ROSE PEONY',
         sealSubtitle: 'PEONY BLUSH',
         celebrationTag: 'SWEET ROMANTIC EVENING',
@@ -588,6 +599,7 @@ export function getInvitationThemeConfig(themeKey: string): ThemeVisualConfig {
         id: 'midnight-gold',
         bodyClass: 'theme-midnight',
         name: 'Midnight Celestial Gold',
+        doorBg: 'linear-gradient(135deg, #0E1626 0%, #05080E 100%)',
         plaqueThemeTag: 'MIDNIGHT CELESTIAL GOLD',
         sealSubtitle: 'STARLIGHT',
         celebrationTag: 'MIDNIGHT STARLIGHT GALA',
@@ -645,6 +657,7 @@ export function getInvitationThemeConfig(themeKey: string): ThemeVisualConfig {
         id: 'monochrome-editorial',
         bodyClass: 'theme-monochrome',
         name: 'Modern Editorial Minimal',
+        doorBg: 'linear-gradient(135deg, #1A1A1A 0%, #0A0A0A 100%)',
         plaqueThemeTag: 'MODERN EDITORIAL MINIMAL',
         sealSubtitle: 'VOGUE ARCH',
         celebrationTag: 'CONTEMPORARY MATRIMONY',
