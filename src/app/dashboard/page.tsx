@@ -43,6 +43,18 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<"overview" | "budget" | "tasks" | "guests" | "rundown" | "moodboard" | "honeymoon" | "engagement" | "invitation" | "savings" | "pairing">("overview");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileViewport(window.innerWidth <= 800);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const isMenuVisible = isMobileViewport ? mobileDrawerOpen : !sidebarCollapsed;
 
   const toggleSidebar = () => {
     if (typeof window !== "undefined" && window.innerWidth <= 800) {
@@ -242,16 +254,16 @@ export default function DashboardPage() {
         <header className="planner-topbar">
           <div className="planner-topbar-left">
             <button
-              className={`planner-menu-toggle${sidebarCollapsed ? " is-collapsed" : ""}`}
+              className={`planner-menu-toggle${!isMenuVisible ? " is-collapsed" : ""}`}
               type="button"
-              aria-label={sidebarCollapsed ? "Buka menu samping" : "Sembunyikan menu samping"}
-              title={sidebarCollapsed ? "Buka menu samping" : "Sembunyikan menu samping"}
-              aria-expanded={!sidebarCollapsed}
+              aria-label={isMenuVisible ? "Sembunyikan menu samping" : "Buka menu samping"}
+              title={isMenuVisible ? "Sembunyikan menu samping" : "Buka menu samping"}
+              aria-expanded={isMenuVisible}
               onClick={toggleSidebar}
             >
-              {sidebarCollapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
+              {isMenuVisible ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
               <span className="planner-toggle-text">
-                {sidebarCollapsed ? "Buka menu" : "Sembunyikan"}
+                {isMenuVisible ? "Sembunyikan" : "Buka menu"}
               </span>
             </button>
             <span className="planner-topbar-brand">Pocket Planner</span>

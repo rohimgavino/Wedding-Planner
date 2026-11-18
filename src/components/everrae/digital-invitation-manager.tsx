@@ -18,7 +18,9 @@ import {
   MessageSquareHeart, 
   Share2, 
   Palette,
-  AlertCircle
+  AlertCircle,
+  FileText,
+  ChevronRight
 } from 'lucide-react';
 import { useWorkspace } from '@/context/WorkspaceContext';
 import { WeddingInvitation, InvitationTheme } from '@/types';
@@ -159,6 +161,7 @@ export function DigitalInvitationManager() {
   const [saveNotice, setSaveNotice] = useState('');
   const [errorNotice, setErrorNotice] = useState('');
   const [themeFilter, setThemeFilter] = useState<ThemeCategory>('all');
+  const [activeSubTab, setActiveSubTab] = useState<'templates' | 'details' | 'whatsapp'>('templates');
 
   // Default initial values from workspace or existing invitation
   const initialGroom = invitation?.groom_full_name || workspace?.title.split('&')[0]?.replace(/^Pernikahan\s+/i, '').trim() || '';
@@ -168,6 +171,18 @@ export function DigitalInvitationManager() {
   const [slug, setSlug] = useState(invitation?.slug || defaultSlug);
   const [isPublished, setIsPublished] = useState(invitation?.is_published ?? false);
   const [theme, setTheme] = useState<InvitationTheme>(invitation?.theme || 'classic-ivory');
+
+  const currentThemeObj = THEMES.find(t => t.id === theme) || THEMES[0];
+
+  const handleSelectTheme = async (selectedTheme: InvitationTheme) => {
+    setTheme(selectedTheme);
+    const success = await saveInvitation({ theme: selectedTheme });
+    if (success) {
+      const selectedObj = THEMES.find(t => t.id === selectedTheme);
+      setSaveNotice(`Tema aktif berhasil diubah ke "${selectedObj?.name || selectedTheme}"!`);
+      setTimeout(() => setSaveNotice(''), 3500);
+    }
+  };
   
   const [quoteTitle, setQuoteTitle] = useState(invitation?.quote_title || 'Surat Ar-Rum : 21');
   const [quoteBody, setQuoteBody] = useState(invitation?.quote_body || 'Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.');
@@ -341,13 +356,36 @@ export function DigitalInvitationManager() {
           </div>
         </div>
 
-        {/* Petunjuk Penggunaan */}
+        {/* Active Theme Bar indicator inside Top Banner */}
+        <div className="p-3 bg-gradient-to-r from-rose-50 to-amber-50 border border-rose-100/90 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="font-bold text-slate-700">Tema Aktif Sekarang:</span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-rose-200 text-xs font-bold text-rose-800 shadow-2xs">
+              <span className={`w-2.5 h-2.5 rounded-full border ${currentThemeObj.previewColor}`} />
+              {currentThemeObj.name}
+              <span className="text-[10px] text-amber-700 font-semibold bg-amber-50 px-1.5 py-0.5 rounded">
+                {currentThemeObj.badge}
+              </span>
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setActiveSubTab('templates')}
+            className="text-xs font-semibold text-rose-700 hover:text-rose-800 flex items-center gap-1 self-start sm:self-auto hover:underline"
+          >
+            <span>Ganti Desain Template (12 Pilihan Tersedia)</span>
+            <ChevronRight size={14} />
+          </button>
+        </div>
+
+        {/* Petunjuk Penggunaan Ringkas */}
         <div className="p-3.5 bg-rose-50/60 border border-rose-100 rounded-2xl flex items-start gap-2.5 text-xs text-slate-600">
           <Sparkles className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
           <div className="space-y-1">
             <span className="font-semibold text-slate-800">Petunjuk Penggunaan Undangan Digital:</span>
             <ul className="list-disc list-inside space-y-0.5 text-slate-500">
-              <li><strong>Tidak harus lengkap dulu:</strong> Anda dapat langsung mengklik tombol <em>Pratinjau Live</em> untuk melihat tampilan contoh.</li>
+              <li><strong>Pilih Template Terlebih Dahulu:</strong> Pilih dari 12 template 3D di tab <em>Pilihan Template</em> di bawah.</li>
+              <li><strong>Tidak harus lengkap dulu:</strong> Anda dapat langsung mengklik tombol <em>Pratinjau Live</em> untuk melihat tampilan contoh tema.</li>
               <li><strong>Publikasikan Saat Siap:</strong> Klik tombol hijau <em>Publikasikan Sekarang</em> di atas agar undangan resmi online dan dapat dibuka oleh para tamu via WhatsApp.</li>
             </ul>
           </div>
@@ -367,509 +405,689 @@ export function DigitalInvitationManager() {
         )}
       </section>
 
-      {/* WhatsApp Generator for Guest List */}
-      <section className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-3xl p-6 space-y-4">
-        <div className="flex items-center gap-2">
-          <span className="p-2 bg-emerald-500 text-white rounded-xl">
-            <Send size={18} />
-          </span>
-          <div>
-            <h3 className="font-serif text-lg font-bold text-slate-900">Kirim Undangan via WhatsApp ke Buku Tamu</h3>
-            <p className="text-xs text-slate-600">Pilih tamu dari buku tamu untuk membuat tautan dengan nama tamu otomatis.</p>
-          </div>
-        </div>
+      {/* Primary Sub-Navigation Tabs */}
+      <nav aria-label="Menu Navigasi Undangan Digital" className="bg-slate-100 p-1.5 rounded-2xl flex flex-wrap sm:flex-nowrap gap-1.5 border border-slate-200">
+        <button
+          type="button"
+          onClick={() => setActiveSubTab('templates')}
+          className={`flex-1 min-w-[140px] py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition ${
+            activeSubTab === 'templates'
+              ? 'bg-white text-rose-700 shadow-sm ring-1 ring-black/5'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+          }`}
+        >
+          <Palette size={16} className={activeSubTab === 'templates' ? 'text-rose-600' : 'text-slate-500'} />
+          <span>1. Pilihan Template (12 Desain 3D)</span>
+        </button>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div className="sm:col-span-1">
-            <label className="text-xs font-medium text-slate-700 block mb-1">Pilih Tamu Undangan:</label>
-            <select
-              aria-label="Pilih Tamu Undangan"
-              value={selectedGuestId}
-              onChange={e => setSelectedGuestId(e.target.value)}
-              className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm"
-            >
-              <option value="">-- Tamu Umum (Tanpa Nama Khusus) --</option>
-              {guests.map(g => (
-                <option key={g.id} value={g.id}>
-                  {g.name} ({g.pax} pax) {g.phone ? `· ${g.phone}` : ''}
-                </option>
-              ))}
-            </select>
-          </div>
+        <button
+          type="button"
+          onClick={() => setActiveSubTab('details')}
+          className={`flex-1 min-w-[140px] py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition ${
+            activeSubTab === 'details'
+              ? 'bg-white text-rose-700 shadow-sm ring-1 ring-black/5'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+          }`}
+        >
+          <FileText size={16} className={activeSubTab === 'details' ? 'text-rose-600' : 'text-slate-500'} />
+          <span>2. Data Mempelai & Acara</span>
+        </button>
 
-          <div className="sm:col-span-2 space-y-2">
-            <label className="text-xs font-medium text-slate-700 block">Preview Teks WhatsApp Siap Kirim:</label>
-            <div className="bg-white border border-emerald-200 rounded-xl p-3 text-xs text-slate-700 font-mono whitespace-pre-wrap max-h-28 overflow-y-auto">
-              {whatsappTemplate}
-            </div>
-            <div className="flex items-center gap-2 pt-1">
+        <button
+          type="button"
+          onClick={() => setActiveSubTab('whatsapp')}
+          className={`flex-1 min-w-[140px] py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition ${
+            activeSubTab === 'whatsapp'
+              ? 'bg-white text-emerald-700 shadow-sm ring-1 ring-black/5'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+          }`}
+        >
+          <Send size={16} className={activeSubTab === 'whatsapp' ? 'text-emerald-600' : 'text-slate-500'} />
+          <span>3. Kirim via WhatsApp</span>
+        </button>
+      </nav>
+
+      {/* TAB 1: Pilihan Template (12 Desain) */}
+      {activeSubTab === 'templates' && (
+        <div className="space-y-6">
+          <section className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <Palette size={20} className="text-rose-500" />
+                  <h3 className="font-serif text-xl font-bold text-slate-900">Koleksi Template Undangan 3D (12 Pilihan)</h3>
+                </div>
+                <p className="text-xs text-slate-500 mt-1">
+                  Dilengkapi arsitektur pintu 3D otentik khas Nusantara, ornamen adat, tata warna elegan, dan musik latar.
+                </p>
+              </div>
+
               <a
-                href={whatsappUrl}
+                href="/preview-themes.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition shadow-sm"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-50 to-rose-50 border border-amber-300 text-amber-900 text-xs font-bold hover:from-amber-100 hover:to-rose-100 transition shadow-2xs self-start sm:self-auto"
               >
-                <Share2 size={14} />
-                Buka & Kirim di WhatsApp
+                <Sparkles size={14} className="text-amber-600" />
+                <span>Buka Simulator Pintu 3D Full Screen</span>
+                <ExternalLink size={13} />
               </a>
-              <button
-                onClick={() => handleCopyLink(guestPersonalUrl)}
-                className="px-3.5 py-2 bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-50 rounded-xl text-xs font-medium flex items-center gap-1.5 transition"
-              >
-                <Copy size={13} />
-                Salin Link Personal
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Editor Form */}
-      <form onSubmit={e => { e.preventDefault(); handleSave(); }} className="space-y-6">
-        
-        {/* Section 1: Tema & Tautan */}
-        <section className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
-          <div className="flex items-center gap-2 border-b pb-3">
-            <Palette size={18} className="text-rose-500" />
-            <h3 className="font-serif text-lg font-bold text-slate-900">Pilihan Tema & Tautan Web</h3>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="text-xs font-semibold text-slate-700 block mb-1">
-                Tautan Slug Khusus (Custom URL):
-              </label>
-              <div className="flex items-center">
-                <span className="bg-slate-100 border border-r-0 border-slate-300 rounded-l-xl px-3 py-2.5 text-xs text-slate-500">
-                  pocketwedding.id/u/
-                </span>
-                <input
-                  required
-                  type="text"
-                  value={slug}
-                  onChange={e => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
-                  placeholder="rohim-wiwit"
-                  className="w-full border border-slate-300 rounded-r-xl p-2.5 text-sm font-mono focus:border-rose-500 outline-none"
-                />
-              </div>
-              <p className="text-xs text-slate-500 mt-1">Gunakan huruf kecil, angka, dan tanda hubung (-).</p>
             </div>
 
-            <div>
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2.5">
-                <div>
-                  <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                    <Palette size={14} className="text-rose-500" />
-                    <span>Pilihan Template & Tema Undangan (12 Pilihan):</span>
-                  </label>
-                  <p className="text-[11px] text-slate-500">Pilih tema dengan arsitektur pintu 3D, emblem adat otentik, dan palet warna khas</p>
-                </div>
-                <a
-                  href="/preview-themes.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs font-semibold hover:bg-amber-100 transition shadow-2xs self-start sm:self-auto"
+            {/* Filter Pills */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-semibold text-slate-600 mr-1">Kategori:</span>
+              {[
+                { id: 'all', label: 'Semua Template (12)' },
+                { id: 'nusantara', label: '🏛️ Adat Nusantara (6)' },
+                { id: 'modern', label: '🌿 Modern & Floral (3)' },
+                { id: 'luxury', label: '💎 Luxury & Eksklusif (3)' },
+              ].map(cat => (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => setThemeFilter(cat.id as ThemeCategory)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition ${
+                    themeFilter === cat.id
+                      ? 'bg-rose-600 text-white shadow-xs'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
                 >
-                  <Sparkles size={13} className="text-amber-600" />
-                  <span>Uji Pratinjau 3D Interaktif</span>
-                  <ExternalLink size={12} />
-                </a>
-              </div>
+                  {cat.label}
+                </button>
+              ))}
+            </div>
 
-              {/* Category Filter Pills */}
-              <div className="flex flex-wrap gap-1.5 mb-3">
-                {[
-                  { id: 'all', label: 'Semua (12)' },
-                  { id: 'nusantara', label: 'Adat Nusantara (6)' },
-                  { id: 'modern', label: 'Modern & Floral (3)' },
-                  { id: 'luxury', label: 'Luxury & Eksklusif (3)' },
-                ].map(cat => (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    onClick={() => setThemeFilter(cat.id as ThemeCategory)}
-                    className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
-                      themeFilter === cat.id
-                        ? 'bg-rose-600 text-white shadow-2xs'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            {/* 12 Themes Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {THEMES.filter(t => themeFilter === 'all' || t.category === themeFilter).map(t => {
+                const isSelected = theme === t.id;
+                return (
+                  <div
+                    key={t.id}
+                    className={`p-4 rounded-2xl border flex flex-col justify-between gap-3 transition relative ${
+                      isSelected 
+                        ? 'border-rose-500 ring-2 ring-rose-200 bg-rose-50/50 shadow-sm' 
+                        : 'border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50/60'
                     }`}
                   >
-                    {cat.label}
-                  </button>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-[440px] overflow-y-auto pr-1">
-                {THEMES.filter(t => themeFilter === 'all' || t.category === themeFilter).map(t => {
-                  const isSelected = theme === t.id;
-                  return (
-                    <button
-                      key={t.id}
-                      type="button"
-                      onClick={() => setTheme(t.id)}
-                      className={`p-3 rounded-2xl border text-left flex flex-col justify-between gap-2 transition relative ${
-                        isSelected 
-                          ? 'border-rose-500 ring-2 ring-rose-200 bg-rose-50/70 shadow-xs' 
-                          : 'border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50/50'
-                      }`}
-                    >
-                      <div className="flex items-start justify-between gap-1.5">
+                    <div className="space-y-2">
+                      <div className="flex items-start justify-between gap-2">
                         <div className="flex items-center gap-2">
-                          <span className={`w-3.5 h-3.5 rounded-full border shrink-0 ${t.previewColor}`} />
-                          <strong className="text-xs font-bold text-slate-900 leading-tight">{t.name}</strong>
+                          <span className={`w-4 h-4 rounded-full border shadow-2xs ${t.previewColor}`} />
+                          <h4 className="text-sm font-bold text-slate-900 leading-tight">{t.name}</h4>
                         </div>
                         {isSelected && (
-                          <span className="w-4 h-4 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0">
+                          <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold flex items-center gap-1 shrink-0">
                             <Check size={10} strokeWidth={3} />
+                            Aktif
                           </span>
                         )}
                       </div>
-                      <span className="inline-block text-[10px] font-semibold text-amber-800 bg-amber-100/70 px-2 py-0.5 rounded-md self-start">
-                        {t.badge}
-                      </span>
-                      <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2">
+
+                      <div className="flex items-center gap-2">
+                        <span className="inline-block text-[10px] font-semibold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-md">
+                          {t.badge}
+                        </span>
+                        <span className="text-[10px] text-slate-500 font-medium">
+                          {t.culturalNote}
+                        </span>
+                      </div>
+
+                      <p className="text-xs text-slate-600 leading-relaxed">
                         {t.desc}
                       </p>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
+                    </div>
 
-        {/* Section 2: Profil Kedua Mempelai */}
-        <section className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
-          <div className="flex items-center gap-2 border-b pb-3">
-            <Heart size={18} className="text-rose-500" />
-            <h3 className="font-serif text-lg font-bold text-slate-900">Profil Kedua Mempelai</h3>
-          </div>
+                    <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
+                      {isSelected ? (
+                        <button
+                          type="button"
+                          disabled
+                          className="flex-1 py-2 px-3 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold flex items-center justify-center gap-1"
+                        >
+                          <Check size={13} />
+                          Tema Sedang Aktif
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          disabled={busy}
+                          onClick={() => handleSelectTheme(t.id)}
+                          className="flex-1 py-2 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold transition shadow-2xs flex items-center justify-center gap-1"
+                        >
+                          <Sparkles size={12} />
+                          Terapkan Tema Ini
+                        </button>
+                      )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {/* Pengantin Pria */}
-            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Pengantin Pria (Groom)</span>
-              <div>
-                <label className="text-xs font-medium text-slate-600 block mb-1">Nama Lengkap & Gelar:</label>
-                <input
-                  required
-                  type="text"
-                  value={groomFullName}
-                  onChange={e => setGroomFullName(e.target.value)}
-                  placeholder="Ahmad Nur Rochim, S.Kom."
-                  className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-slate-600 block mb-1">Nama Panggilan:</label>
-                <input
-                  required
-                  type="text"
-                  value={groomNickname}
-                  onChange={e => setGroomNickname(e.target.value)}
-                  placeholder="Rohim"
-                  className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-slate-600 block mb-1">Nama Orang Tua (Putra dari):</label>
-                <input
-                  type="text"
-                  value={groomParents}
-                  onChange={e => setGroomParents(e.target.value)}
-                  placeholder="Putra pertama dari Bpk. Fulan & Ibu Fulanah"
-                  className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500"
-                />
-              </div>
-            </div>
-
-            {/* Pengantin Wanita */}
-            <div className="p-4 bg-rose-50/50 rounded-2xl border border-rose-200 space-y-3">
-              <span className="text-xs font-bold text-rose-800 uppercase tracking-wider block">Pengantin Wanita (Bride)</span>
-              <div>
-                <label className="text-xs font-medium text-slate-600 block mb-1">Nama Lengkap & Gelar:</label>
-                <input
-                  required
-                  type="text"
-                  value={brideFullName}
-                  onChange={e => setBrideFullName(e.target.value)}
-                  placeholder="Wiwit Lestari, S.Pd."
-                  className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-slate-600 block mb-1">Nama Panggilan:</label>
-                <input
-                  required
-                  type="text"
-                  value={brideNickname}
-                  onChange={e => setBrideNickname(e.target.value)}
-                  placeholder="Wiwit"
-                  className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-slate-600 block mb-1">Nama Orang Tua (Putri dari):</label>
-                <input
-                  type="text"
-                  value={brideParents}
-                  onChange={e => setBrideParents(e.target.value)}
-                  placeholder="Putri kedua dari Bpk. H. Fulan & Ibu Hj. Fulanah"
-                  className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Section 3: Jadwal & Lokasi Acara */}
-        <section className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
-          <div className="flex items-center gap-2 border-b pb-3">
-            <Calendar size={18} className="text-rose-500" />
-            <h3 className="font-serif text-lg font-bold text-slate-900">Jadwal & Lokasi Acara</h3>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {/* Akad Nikah */}
-            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Akad Nikah / Pemberkatan</span>
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="text-xs font-medium text-slate-600 block mb-1">Tanggal:</label>
-                  <input
-                    type="date"
-                    value={akadDate}
-                    onChange={e => setAkadDate(e.target.value)}
-                    className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-medium text-slate-600 block mb-1">Waktu:</label>
-                  <input
-                    type="text"
-                    value={akadTime}
-                    onChange={e => setAkadTime(e.target.value)}
-                    placeholder="08:00 - 10:00 WIB"
-                    className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="text-xs font-medium text-slate-600 block mb-1">Nama Tempat / Gedung:</label>
-                <input
-                  type="text"
-                  value={akadVenue}
-                  onChange={e => setAkadVenue(e.target.value)}
-                  placeholder="Masjid Agung / Rumah Mempelai"
-                  className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-slate-600 block mb-1">Alamat Lengkap:</label>
-                <textarea
-                  rows={2}
-                  value={akadAddress}
-                  onChange={e => setAkadAddress(e.target.value)}
-                  placeholder="Jl. Malioboro No. 1, Yogyakarta"
-                  className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-slate-600 block mb-1">Tautan Google Maps:</label>
-                <input
-                  type="url"
-                  value={akadMapsUrl}
-                  onChange={e => setAkadMapsUrl(e.target.value)}
-                  placeholder="https://maps.app.goo.gl/..."
-                  className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs font-mono"
-                />
-              </div>
-            </div>
-
-            {/* Resepsi */}
-            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Resepsi Pernikahan</span>
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="text-xs font-medium text-slate-600 block mb-1">Tanggal:</label>
-                  <input
-                    type="date"
-                    value={resepsiDate}
-                    onChange={e => setResepsiDate(e.target.value)}
-                    className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-medium text-slate-600 block mb-1">Waktu:</label>
-                  <input
-                    type="text"
-                    value={resepsiTime}
-                    onChange={e => setResepsiTime(e.target.value)}
-                    placeholder="11:00 - 14:00 WIB"
-                    className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="text-xs font-medium text-slate-600 block mb-1">Nama Tempat / Ballroom:</label>
-                <input
-                  type="text"
-                  value={resepsiVenue}
-                  onChange={e => setResepsiVenue(e.target.value)}
-                  placeholder="Grand Ballroom Hotel..."
-                  className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-slate-600 block mb-1">Alamat Lengkap:</label>
-                <textarea
-                  rows={2}
-                  value={resepsiAddress}
-                  onChange={e => setResepsiAddress(e.target.value)}
-                  placeholder="Jl. Solo Km. 9, Yogyakarta"
-                  className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-slate-600 block mb-1">Tautan Google Maps:</label>
-                <input
-                  type="url"
-                  value={resepsiMapsUrl}
-                  onChange={e => setResepsiMapsUrl(e.target.value)}
-                  placeholder="https://maps.app.goo.gl/..."
-                  className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs font-mono"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Section 4: Amplop Digital & Hadiah */}
-        <section className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
-          <div className="flex items-center gap-2 border-b pb-3">
-            <Gift size={18} className="text-rose-500" />
-            <h3 className="font-serif text-lg font-bold text-slate-900">Amplop Digital & Kado Pernikahan</h3>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div>
-              <label className="text-xs font-medium text-slate-600 block mb-1">Nama Bank / e-Wallet:</label>
-              <input
-                type="text"
-                value={giftBankName}
-                onChange={e => setGiftBankName(e.target.value)}
-                placeholder="BCA / Mandiri / Dana"
-                className="w-full border border-slate-300 rounded-xl p-2.5 text-sm"
-              />
-            </div>
-            <div>
-              <label className="text-xs font-medium text-slate-600 block mb-1">Nomor Rekening:</label>
-              <input
-                type="text"
-                value={giftAccountNumber}
-                onChange={e => setGiftAccountNumber(e.target.value)}
-                placeholder="1234567890"
-                className="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-mono"
-              />
-            </div>
-            <div>
-              <label className="text-xs font-medium text-slate-600 block mb-1">Atas Nama Pemilik Rekening:</label>
-              <input
-                type="text"
-                value={giftAccountHolder}
-                onChange={e => setGiftAccountHolder(e.target.value)}
-                placeholder="Ahmad Nur Rochim"
-                className="w-full border border-slate-300 rounded-xl p-2.5 text-sm"
-              />
-            </div>
-          </div>
-          <div>
-            <label className="text-xs font-medium text-slate-600 block mb-1">Alamat Pengiriman Kado Fisik (Opsional):</label>
-            <input
-              type="text"
-              value={giftAddress}
-              onChange={e => setGiftAddress(e.target.value)}
-              placeholder="Jl. Perumahan Indah No. 12, Sleman, D.I. Yogyakarta (Up: Wiwit)"
-              className="w-full border border-slate-300 rounded-xl p-2.5 text-sm"
-            />
-          </div>
-        </section>
-
-        {/* Submit Actions */}
-        <div className="flex items-center justify-end gap-3 pt-2">
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => handleSave(false)}
-            className="px-5 py-3 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 text-sm font-semibold transition"
-          >
-            Simpan sebagai Draft
-          </button>
-          <button
-            type="submit"
-            disabled={busy}
-            className="px-6 py-3 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-sm font-semibold transition shadow-md flex items-center gap-2"
-          >
-            <Sparkles size={16} />
-            {busy ? 'Menyimpan…' : 'Simpan Perubahan'}
-          </button>
-        </div>
-      </form>
-
-      {/* Wishes Wall Management */}
-      <section className="bg-white rounded-3xl p-6 border border-rose-100 shadow-sm space-y-4">
-        <div className="flex items-center justify-between border-b pb-3">
-          <div className="flex items-center gap-2">
-            <MessageSquareHeart size={20} className="text-rose-500" />
-            <h3 className="font-serif text-lg font-bold text-slate-900">
-              Daftar Ucapan & Doa dari Tamu ({wishes.length})
-            </h3>
-          </div>
-        </div>
-
-        {wishes.length === 0 ? (
-          <div className="text-center py-8 text-slate-500 text-sm">
-            Belum ada ucapan doa dari tamu. Sebarkan tautan undangan digital untuk mengumpulkan ucapan dan konfirmasi kehadiran.
-          </div>
-        ) : (
-          <div className="space-y-3 max-h-96 overflow-y-auto pr-1">
-            {wishes.map(wish => (
-              <div key={wish.id} className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <strong className="text-sm font-bold text-slate-900">{wish.guest_name}</strong>
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
-                      wish.attendance === 'attending' 
-                        ? 'bg-emerald-100 text-emerald-800' 
-                        : wish.attendance === 'not_attending'
-                          ? 'bg-rose-100 text-rose-800'
-                          : 'bg-amber-100 text-amber-800'
-                    }`}>
-                      {wish.attendance === 'attending' ? `Hadir (${wish.pax} pax)` : wish.attendance === 'not_attending' ? 'Tidak Hadir' : 'Ragu-ragu'}
-                    </span>
-                    <span className="text-[11px] text-slate-400">
-                      {new Date(wish.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
-                    </span>
+                      <Link
+                        href={`/u/${sanitizedSlug || 'undangan'}?preview=true`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="py-2 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium transition"
+                        title="Lihat Pratinjau Tema"
+                      >
+                        <ExternalLink size={13} />
+                      </Link>
+                    </div>
                   </div>
-                  <p className="text-xs text-slate-700 whitespace-pre-wrap">{wish.message}</p>
+                );
+              })}
+            </div>
+
+            {/* Custom URL Slug Editor */}
+            <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2 mt-4">
+              <label className="text-xs font-bold text-slate-800 block">
+                Pengaturan Tautan Slug Khusus (Custom Link):
+              </label>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                <div className="flex items-center flex-1">
+                  <span className="bg-slate-200/80 border border-r-0 border-slate-300 rounded-l-xl px-3 py-2.5 text-xs text-slate-600 font-mono">
+                    pocketwedding.id/u/
+                  </span>
+                  <input
+                    required
+                    type="text"
+                    value={slug}
+                    onChange={e => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                    placeholder="rohim-wiwit"
+                    className="w-full border border-slate-300 bg-white rounded-r-xl p-2.5 text-sm font-mono focus:border-rose-500 outline-none"
+                  />
                 </div>
                 <button
+                  type="button"
                   disabled={busy}
-                  onClick={async () => {
-                    if (window.confirm(`Hapus ucapan dari ${wish.guest_name}?`)) {
-                      await deleteWish(wish.id);
-                    }
-                  }}
-                  className="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition self-end sm:self-start"
-                  title="Hapus ucapan"
+                  onClick={() => handleSave()}
+                  className="px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold rounded-xl transition shadow-xs shrink-0"
                 >
-                  <Trash2 size={15} />
+                  Simpan Slug
                 </button>
               </div>
-            ))}
+              <p className="text-[11px] text-slate-500">
+                Gunakan huruf kecil, angka, dan strip (-). Contoh: <code>rohim-wiwit</code> menghasilkan <code>https://pocketwedding.id/u/rohim-wiwit</code>.
+              </p>
+            </div>
+
+            {/* Next Step Banner */}
+            <div className="p-4 bg-gradient-to-r from-rose-50 to-pink-50 border border-rose-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h4 className="text-sm font-bold text-rose-950">Sudah memilih template favorit?</h4>
+                <p className="text-xs text-slate-600 mt-0.5">
+                  Lanjutkan dengan melengkapi nama mempelai, tanggal akad, lokasi resepsi, dan rekening hadiah.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveSubTab('details')}
+                className="px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-xs self-start sm:self-auto shrink-0"
+              >
+                <span>Lanjut ke Data Mempelai & Acara</span>
+                <ChevronRight size={14} />
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
+
+      {/* TAB 2: Data Mempelai & Acara Form */}
+      {activeSubTab === 'details' && (
+        <form onSubmit={e => { e.preventDefault(); handleSave(); }} className="space-y-6">
+          {/* Ayat / Kutipan Suci */}
+          <section className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div className="flex items-center gap-2 border-b pb-3">
+              <Sparkles size={18} className="text-rose-500" />
+              <h3 className="font-serif text-lg font-bold text-slate-900">Ayat / Kutipan Suci Pernikahan</h3>
+            </div>
+
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs font-medium text-slate-700 block mb-1">Judul Kutipan / Nama Surat:</label>
+                <input
+                  type="text"
+                  value={quoteTitle}
+                  onChange={e => setQuoteTitle(e.target.value)}
+                  placeholder="Surat Ar-Rum : 21"
+                  className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-slate-700 block mb-1">Isi Kutipan / Terjemahan Ayat:</label>
+                <textarea
+                  rows={3}
+                  value={quoteBody}
+                  onChange={e => setQuoteBody(e.target.value)}
+                  placeholder="Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu..."
+                  className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500 leading-relaxed"
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* Profil Kedua Mempelai */}
+          <section className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div className="flex items-center gap-2 border-b pb-3">
+              <Heart size={18} className="text-rose-500" />
+              <h3 className="font-serif text-lg font-bold text-slate-900">Profil Kedua Mempelai</h3>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Pengantin Pria */}
+              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Pengantin Pria (Groom)</span>
+                <div>
+                  <label className="text-xs font-medium text-slate-600 block mb-1">Nama Lengkap & Gelar:</label>
+                  <input
+                    required
+                    type="text"
+                    value={groomFullName}
+                    onChange={e => setGroomFullName(e.target.value)}
+                    placeholder="Ahmad Nur Rochim, S.Kom."
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-slate-600 block mb-1">Nama Panggilan:</label>
+                  <input
+                    required
+                    type="text"
+                    value={groomNickname}
+                    onChange={e => setGroomNickname(e.target.value)}
+                    placeholder="Rohim"
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-slate-600 block mb-1">Nama Orang Tua (Putra dari):</label>
+                  <input
+                    type="text"
+                    value={groomParents}
+                    onChange={e => setGroomParents(e.target.value)}
+                    placeholder="Putra pertama dari Bpk. Fulan & Ibu Fulanah"
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500"
+                  />
+                </div>
+              </div>
+
+              {/* Pengantin Wanita */}
+              <div className="p-4 bg-rose-50/50 rounded-2xl border border-rose-200 space-y-3">
+                <span className="text-xs font-bold text-rose-800 uppercase tracking-wider block">Pengantin Wanita (Bride)</span>
+                <div>
+                  <label className="text-xs font-medium text-slate-600 block mb-1">Nama Lengkap & Gelar:</label>
+                  <input
+                    required
+                    type="text"
+                    value={brideFullName}
+                    onChange={e => setBrideFullName(e.target.value)}
+                    placeholder="Wiwit Lestari, S.Pd."
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-slate-600 block mb-1">Nama Panggilan:</label>
+                  <input
+                    required
+                    type="text"
+                    value={brideNickname}
+                    onChange={e => setBrideNickname(e.target.value)}
+                    placeholder="Wiwit"
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-slate-600 block mb-1">Nama Orang Tua (Putri dari):</label>
+                  <input
+                    type="text"
+                    value={brideParents}
+                    onChange={e => setBrideParents(e.target.value)}
+                    placeholder="Putri kedua dari Bpk. H. Fulan & Ibu Hj. Fulanah"
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-rose-500"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Jadwal & Lokasi Acara */}
+          <section className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div className="flex items-center gap-2 border-b pb-3">
+              <Calendar size={18} className="text-rose-500" />
+              <h3 className="font-serif text-lg font-bold text-slate-900">Jadwal & Lokasi Acara</h3>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Akad Nikah */}
+              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Akad Nikah / Pemberkatan</span>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-xs font-medium text-slate-600 block mb-1">Tanggal:</label>
+                    <input
+                      type="date"
+                      value={akadDate}
+                      onChange={e => setAkadDate(e.target.value)}
+                      className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-slate-600 block mb-1">Waktu:</label>
+                    <input
+                      type="text"
+                      value={akadTime}
+                      onChange={e => setAkadTime(e.target.value)}
+                      placeholder="08:00 - 10:00 WIB"
+                      className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-slate-600 block mb-1">Nama Tempat / Gedung:</label>
+                  <input
+                    type="text"
+                    value={akadVenue}
+                    onChange={e => setAkadVenue(e.target.value)}
+                    placeholder="Masjid Agung / Rumah Mempelai"
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-slate-600 block mb-1">Alamat Lengkap:</label>
+                  <textarea
+                    rows={2}
+                    value={akadAddress}
+                    onChange={e => setAkadAddress(e.target.value)}
+                    placeholder="Jl. Malioboro No. 1, Yogyakarta"
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-slate-600 block mb-1">Tautan Google Maps:</label>
+                  <input
+                    type="url"
+                    value={akadMapsUrl}
+                    onChange={e => setAkadMapsUrl(e.target.value)}
+                    placeholder="https://maps.app.goo.gl/..."
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs font-mono"
+                  />
+                </div>
+              </div>
+
+              {/* Resepsi */}
+              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Resepsi Pernikahan</span>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-xs font-medium text-slate-600 block mb-1">Tanggal:</label>
+                    <input
+                      type="date"
+                      value={resepsiDate}
+                      onChange={e => setResepsiDate(e.target.value)}
+                      className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-slate-600 block mb-1">Waktu:</label>
+                    <input
+                      type="text"
+                      value={resepsiTime}
+                      onChange={e => setResepsiTime(e.target.value)}
+                      placeholder="11:00 - 14:00 WIB"
+                      className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-slate-600 block mb-1">Nama Tempat / Ballroom:</label>
+                  <input
+                    type="text"
+                    value={resepsiVenue}
+                    onChange={e => setResepsiVenue(e.target.value)}
+                    placeholder="Grand Ballroom Hotel..."
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-slate-600 block mb-1">Alamat Lengkap:</label>
+                  <textarea
+                    rows={2}
+                    value={resepsiAddress}
+                    onChange={e => setResepsiAddress(e.target.value)}
+                    placeholder="Jl. Solo Km. 9, Yogyakarta"
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-slate-600 block mb-1">Tautan Google Maps:</label>
+                  <input
+                    type="url"
+                    value={resepsiMapsUrl}
+                    onChange={e => setResepsiMapsUrl(e.target.value)}
+                    placeholder="https://maps.app.goo.gl/..."
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2 text-xs font-mono"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Amplop Digital & Hadiah */}
+          <section className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div className="flex items-center gap-2 border-b pb-3">
+              <Gift size={18} className="text-rose-500" />
+              <h3 className="font-serif text-lg font-bold text-slate-900">Amplop Digital & Kado Pernikahan</h3>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label className="text-xs font-medium text-slate-600 block mb-1">Nama Bank / e-Wallet:</label>
+                <input
+                  type="text"
+                  value={giftBankName}
+                  onChange={e => setGiftBankName(e.target.value)}
+                  placeholder="BCA / Mandiri / Dana"
+                  className="w-full border border-slate-300 rounded-xl p-2.5 text-sm"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-slate-600 block mb-1">Nomor Rekening:</label>
+                <input
+                  type="text"
+                  value={giftAccountNumber}
+                  onChange={e => setGiftAccountNumber(e.target.value)}
+                  placeholder="1234567890"
+                  className="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-mono"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-slate-600 block mb-1">Atas Nama Pemilik Rekening:</label>
+                <input
+                  type="text"
+                  value={giftAccountHolder}
+                  onChange={e => setGiftAccountHolder(e.target.value)}
+                  placeholder="Ahmad Nur Rochim"
+                  className="w-full border border-slate-300 rounded-xl p-2.5 text-sm"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs font-medium text-slate-600 block mb-1">Alamat Pengiriman Kado Fisik (Opsional):</label>
+              <input
+                type="text"
+                value={giftAddress}
+                onChange={e => setGiftAddress(e.target.value)}
+                placeholder="Jl. Perumahan Indah No. 12, Sleman, D.I. Yogyakarta (Up: Wiwit)"
+                className="w-full border border-slate-300 rounded-xl p-2.5 text-sm"
+              />
+            </div>
+          </section>
+
+          {/* Submit Actions */}
+          <div className="flex items-center justify-between gap-3 pt-2">
+            <button
+              type="button"
+              onClick={() => setActiveSubTab('templates')}
+              className="px-4 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition"
+            >
+              ← Kembali ke Pilihan Template
+            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => handleSave(false)}
+                className="px-5 py-3 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 text-sm font-semibold transition"
+              >
+                Simpan sebagai Draft
+              </button>
+              <button
+                type="submit"
+                disabled={busy}
+                className="px-6 py-3 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-sm font-semibold transition shadow-md flex items-center gap-2"
+              >
+                <Sparkles size={16} />
+                {busy ? 'Menyimpan…' : 'Simpan Perubahan'}
+              </button>
+            </div>
           </div>
-        )}
-      </section>
+
+          {/* Wishes Wall Management */}
+          <section className="bg-white rounded-3xl p-6 border border-rose-100 shadow-sm space-y-4 mt-6">
+            <div className="flex items-center justify-between border-b pb-3">
+              <div className="flex items-center gap-2">
+                <MessageSquareHeart size={20} className="text-rose-500" />
+                <h3 className="font-serif text-lg font-bold text-slate-900">
+                  Daftar Ucapan & Doa dari Tamu ({wishes.length})
+                </h3>
+              </div>
+            </div>
+
+            {wishes.length === 0 ? (
+              <div className="text-center py-8 text-slate-500 text-sm">
+                Belum ada ucapan doa dari tamu. Sebarkan tautan undangan digital untuk mengumpulkan ucapan dan konfirmasi kehadiran.
+              </div>
+            ) : (
+              <div className="space-y-3 max-h-96 overflow-y-auto pr-1">
+                {wishes.map(wish => (
+                  <div key={wish.id} className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <strong className="text-sm font-bold text-slate-900">{wish.guest_name}</strong>
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                          wish.attendance === 'attending' 
+                            ? 'bg-emerald-100 text-emerald-800' 
+                            : wish.attendance === 'not_attending'
+                              ? 'bg-rose-100 text-rose-800'
+                              : 'bg-amber-100 text-amber-800'
+                        }`}>
+                          {wish.attendance === 'attending' ? `Hadir (${wish.pax} pax)` : wish.attendance === 'not_attending' ? 'Tidak Hadir' : 'Ragu-ragu'}
+                        </span>
+                        <span className="text-[11px] text-slate-400">
+                          {new Date(wish.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-700 whitespace-pre-wrap">{wish.message}</p>
+                    </div>
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={async () => {
+                        if (window.confirm(`Hapus ucapan dari ${wish.guest_name}?`)) {
+                          await deleteWish(wish.id);
+                        }
+                      }}
+                      className="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition self-end sm:self-start"
+                      title="Hapus ucapan"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* Next Step Banner to WhatsApp */}
+          <div className="p-4 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h4 className="text-sm font-bold text-emerald-950">Data undangan sudah lengkap?</h4>
+              <p className="text-xs text-slate-600 mt-0.5">
+                Kirim tautan personal undangan ke teman dan kerabat melalui generator WhatsApp.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setActiveSubTab('whatsapp')}
+              className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-xs self-start sm:self-auto shrink-0"
+            >
+              <span>Kirim via WhatsApp</span>
+              <ChevronRight size={14} />
+            </button>
+          </div>
+        </form>
+      )}
+
+      {/* TAB 3: WhatsApp Sender */}
+      {activeSubTab === 'whatsapp' && (
+        <section className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-3xl p-6 space-y-5">
+          <div className="flex items-center gap-2 border-b border-emerald-200/80 pb-3">
+            <span className="p-2 bg-emerald-500 text-white rounded-xl">
+              <Send size={18} />
+            </span>
+            <div>
+              <h3 className="font-serif text-lg font-bold text-slate-900">Kirim Undangan via WhatsApp ke Buku Tamu</h3>
+              <p className="text-xs text-slate-600">Pilih tamu dari buku tamu untuk membuat tautan dengan nama tamu otomatis.</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="sm:col-span-1 space-y-2">
+              <label className="text-xs font-semibold text-slate-700 block">Pilih Tamu Undangan:</label>
+              <select
+                aria-label="Pilih Tamu Undangan"
+                value={selectedGuestId}
+                onChange={e => setSelectedGuestId(e.target.value)}
+                className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-emerald-500"
+              >
+                <option value="">-- Tamu Umum (Tanpa Nama Khusus) --</option>
+                {guests.map(g => (
+                  <option key={g.id} value={g.id}>
+                    {g.name} ({g.pax} pax) {g.phone ? `· ${g.phone}` : ''}
+                  </option>
+                ))}
+              </select>
+              <p className="text-[11px] text-slate-500">
+                Nama tamu akan otomatis disisipkan pada teks pembuka undangan dan URL khusus <code>?to=Nama</code>.
+              </p>
+            </div>
+
+            <div className="sm:col-span-2 space-y-2">
+              <label className="text-xs font-semibold text-slate-700 block">Preview Teks WhatsApp Siap Kirim:</label>
+              <div className="bg-white border border-emerald-200 rounded-xl p-3.5 text-xs text-slate-700 font-mono whitespace-pre-wrap max-h-40 overflow-y-auto leading-relaxed shadow-2xs">
+                {whatsappTemplate}
+              </div>
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition shadow-sm"
+                >
+                  <Share2 size={14} />
+                  Buka & Kirim di WhatsApp
+                </a>
+                <button
+                  type="button"
+                  onClick={() => handleCopyLink(guestPersonalUrl)}
+                  className="px-3.5 py-2.5 bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-50 rounded-xl text-xs font-medium flex items-center gap-1.5 transition"
+                >
+                  <Copy size={13} />
+                  Salin Link Personal
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
