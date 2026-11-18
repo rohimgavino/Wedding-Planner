@@ -12,6 +12,7 @@ class Handler(SimpleHTTPRequestHandler):
         if candidate.is_relative_to(ROOT.resolve()) and not candidate.exists() and candidate.with_suffix('.html').is_file():
             self.path = path + '.html'
         super().do_GET()
+    do_HEAD = do_GET
 if __name__ == '__main__':
     print('EverRae preview http://localhost:4190', flush=True)
     ThreadingHTTPServer(('0.0.0.0', 4190), Handler).serve_forever()
