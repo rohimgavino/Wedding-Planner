@@ -26,7 +26,7 @@ import {
   MessageCircle, Share2, Check, Trash2,
   Sparkles, Download, CheckCircle2, Copy,
   Search, ShieldCheck, Mail, Clock, Palette, Compass, Gift,
-  Menu, X, PanelLeftClose, PanelLeftOpen
+  Menu, X, PanelLeftClose, PanelLeftOpen, Lock, Crown
 } from "lucide-react";
 import { formatRupiah, calculateDaysRemaining, formatDateID } from "@/lib/utils";
 import { generateWhatsAppLink } from "@/lib/whatsapp";
@@ -144,6 +144,34 @@ export default function DashboardPage() {
 
   const daysRemaining = workspace ? calculateDaysRemaining(workspace.wedding_date) : 0;
   
+  // Entitlement tier flags
+  const hasPremium = entitlementActive(entitlements, 'premium') || entitlementActive(entitlements, 'wedding_pro') || developerTestAccess;
+  const hasPro = entitlementActive(entitlements, 'wedding_pro') || developerTestAccess;
+
+  const getTabTierBadge = (tabKey: string) => {
+    if (tabKey === 'moodboard' || tabKey === 'savings') {
+      if (!hasPremium) {
+        return (
+          <span className="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 flex items-center gap-1 shrink-0">
+            <Lock size={10} />
+            Premium
+          </span>
+        );
+      }
+    }
+    if (tabKey === 'engagement' || tabKey === 'honeymoon') {
+      if (!hasPro) {
+        return (
+          <span className="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 flex items-center gap-1 shrink-0">
+            <Crown size={10} />
+            Pro
+          </span>
+        );
+      }
+    }
+    return null;
+  };
+  
   // Aggregate Metrics
   const totalAllocatedBudget = budgets.reduce((acc, b) => acc + (b.allocated_amount || 0), 0);
   const totalSpentBudget = budgets.reduce((acc, b) => acc + (b.spent_amount || 0), 0);
@@ -237,9 +265,11 @@ export default function DashboardPage() {
                 setActiveTab(tab);
                 setMobileDrawerOpen(false);
               }}
+              className="flex items-center gap-2 w-full text-left"
             >
               <Icon size={18}/>
               <span>{label}</span>
+              {getTabTierBadge(tab)}
             </button>
           ))}
         </nav>
@@ -277,7 +307,37 @@ export default function DashboardPage() {
           {activeTab === 'pairing' && <EditableStarter />}
           <section className="planner-heading"><div><span className="planner-eyebrow">RENCANA PERNIKAHANMU</span><h1>Halo, {workspace.title.replace(/^Pernikahan\s+/i, '')}.</h1><p>Satu langkah lebih dekat ke hari bahagia.</p></div><div className="planner-date"><Calendar size={20}/><div><strong>{formatDateID(workspace.wedding_date)}</strong><span>{daysRemaining > 0 ? `${daysRemaining} hari lagi` : daysRemaining === 0 ? 'Hari pernikahanmu' : 'Tanggal pernikahan telah berlalu'}</span></div></div></section>
           <div className="planner-mobile-progress"><div><span>Progres persiapan</span><strong>{taskProgressPercent}%</strong></div><progress max="100" value={taskProgressPercent}/></div>
-          <nav className="planner-shortcuts" aria-label="Pintasan workspace">{([['overview','Ringkasan',Sparkles],['tasks','Timeline',CheckSquare],['rundown','Rundown',Clock],['moodboard','Moodboard',Palette],['engagement','Lamaran',Gift],['honeymoon','Honeymoon',Compass],['budget','Budget',Wallet],['guests','Tamu',Users],['invitation','Undangan',Mail],['savings','Tabungan',Wallet],['pairing','Pengaturan',Heart]] as const).map(([tab,label,Icon]) => <button key={tab} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => setActiveTab(tab)}><Icon size={19}/><span>{label}</span></button>)}</nav>
+          <nav className="planner-shortcuts" aria-label="Pintasan workspace">
+            {([
+              ['overview','Ringkasan',Sparkles],
+              ['tasks','Timeline',CheckSquare],
+              ['rundown','Rundown',Clock],
+              ['moodboard','Moodboard',Palette],
+              ['engagement','Lamaran',Gift],
+              ['honeymoon','Honeymoon',Compass],
+              ['budget','Budget',Wallet],
+              ['guests','Tamu',Users],
+              ['invitation','Undangan',Mail],
+              ['savings','Tabungan',Wallet],
+              ['pairing','Pengaturan',Heart]
+            ] as const).map(([tab,label,Icon]) => {
+              const isLocked = ((tab === 'moodboard' || tab === 'savings') && !hasPremium) || ((tab === 'engagement' || tab === 'honeymoon') && !hasPro);
+              return (
+                <button
+                  key={tab}
+                  aria-current={activeTab === tab ? 'page' : undefined}
+                  onClick={() => setActiveTab(tab)}
+                  className="relative"
+                >
+                  <Icon size={19}/>
+                  <span>{label}</span>
+                  {isLocked && (
+                    <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-amber-500 ring-2 ring-white" title="Fitur eksklusif paket lebih tinggi" />
+                  )}
+                </button>
+              );
+            })}
+          </nav>
           {activeTab === 'savings' && <SharedSavings />}
           {activeTab === 'invitation' && <DigitalInvitationManager />}
           {activeTab === 'rundown' && <RundownManager />}

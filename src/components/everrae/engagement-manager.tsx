@@ -343,7 +343,7 @@ export function EngagementManager() {
               </p>
             </div>
             <Link
-              href="/pricing"
+              href="/purchase"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-emerald-950 font-medium text-sm hover:bg-stone-50 transition shadow-md whitespace-nowrap"
             >
               Tingkatkan ke Wedding Pro
