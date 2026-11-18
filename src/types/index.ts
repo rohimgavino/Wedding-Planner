@@ -131,6 +131,9 @@ export interface WeddingInvitation {
   gift_account_holder?: string;
   gift_address?: string;
   music_url?: string;
+  cover_photo_url?: string;
+  groom_instagram?: string;
+  bride_instagram?: string;
   created_at?: string;
   updated_at?: string;
 }

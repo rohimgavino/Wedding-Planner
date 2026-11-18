@@ -1,0 +1,971 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Great+Vibes&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --font-serif: 'Playfair Display', serif;
+  --font-royal: 'Cinzel', serif;
+  --font-script: 'Great Vibes', cursive;
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* ========================================================
+   INVITATION VIEWPORT STAGE & SMARTPHONE CONTAINER
+   ======================================================== */
+.invitation-root-viewport {
+  font-family: var(--font-sans);
+  background: #080C0B;
+  color: #FAF7F5;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewport-stage {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 14px 40px;
+  perspective: 1600px;
+}
+
+.phone-container {
+  width: 100%;
+  max-width: 420px;
+  height: 840px;
+  max-height: 94vh;
+  position: relative;
+  border-radius: 46px;
+  overflow: hidden;
+  box-shadow: 
+    0 35px 90px -15px rgba(0, 0, 0, 0.9), 
+    0 0 0 2px rgba(223, 186, 115, 0.4);
+  background: #0D1612;
+  display: flex;
+  flex-direction: column;
+  transform-style: preserve-3d;
+  transition: all 0.5s ease;
+}
+
+@media (max-width: 480px) {
+  .viewport-stage {
+    padding: 0;
+  }
+  .phone-container {
+    max-width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+  }
+}
+
+/* ========================================================
+   CULTURAL THEME BACKGROUND PATTERNS & ATMOSPHERES
+   ======================================================== */
+.bg-pattern-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.16;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  transition: all 0.6s ease;
+}
+
+/* 1. BUGIS: Saqbe Walasoji Diamond Grid */
+.theme-bugis .phone-container {
+  background: radial-gradient(circle at 50% 20%, #173830 0%, #0E241E 50%, #071310 100%);
+}
+.theme-bugis .bg-pattern-layer {
+  background-image: 
+    linear-gradient(45deg, rgba(223, 186, 115, 0.2) 25%, transparent 25%), 
+    linear-gradient(-45deg, rgba(223, 186, 115, 0.2) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(223, 186, 115, 0.2) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(223, 186, 115, 0.2) 75%);
+  background-size: 30px 30px;
+}
+
+/* 2. JAWA: Batik Kawung Truntum */
+.theme-jawa .phone-container {
+  background: radial-gradient(circle at 50% 20%, #2B1D14 0%, #1A1009 50%, #0C0704 100%);
+}
+.theme-jawa .bg-pattern-layer {
+  background-image: url('/images/batik-kawung.svg');
+  background-size: 60px 60px;
+  opacity: 0.22;
+}
+
+/* 3. MINANG: Songket Pucuk Rebung Geometris */
+.theme-minang .phone-container {
+  background: radial-gradient(circle at 50% 20%, #541120 0%, #300610 50%, #150207 100%);
+}
+.theme-minang .bg-pattern-layer {
+  background-image: 
+    radial-gradient(circle, #DFBA73 1.5px, transparent 1.5px),
+    radial-gradient(circle, #DFBA73 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
+  opacity: 0.2;
+}
+
+/* 4. BALI: Prada Gold & Andesite Stone */
+.theme-bali .phone-container {
+  background: radial-gradient(circle at 50% 20%, #2A251D 0%, #171410 50%, #0A0907 100%);
+}
+.theme-bali .bg-pattern-layer {
+  background-image: radial-gradient(circle, #E6B800 1.2px, transparent 1.2px);
+  background-size: 20px 20px;
+  opacity: 0.18;
+}
+
+/* 5. SUNDA: Parahyangan Sage Bamboo */
+.theme-sunda .phone-container {
+  background: radial-gradient(circle at 50% 20%, #1A3A2D 0%, #0E241A 50%, #06120C 100%);
+}
+.theme-sunda .bg-pattern-layer {
+  background-image: linear-gradient(90deg, rgba(223, 186, 115, 0.12) 1px, transparent 1px),
+                    linear-gradient(rgba(223, 186, 115, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.2;
+}
+
+/* 6. BATAK: Gorga Sakral & Ulos */
+.theme-batak .phone-container {
+  background: radial-gradient(circle at 50% 20%, #3D1212 0%, #220808 50%, #100303 100%);
+}
+.theme-batak .bg-pattern-layer {
+  background-image: linear-gradient(45deg, rgba(220, 38, 38, 0.12) 25%, transparent 25%),
+                    linear-gradient(-45deg, rgba(223, 186, 115, 0.12) 25%, transparent 25%);
+  background-size: 28px 28px;
+  opacity: 0.22;
+}
+
+/* 7. ISLAMIC: Madinah Arabesque & Star Lattice */
+.theme-islamic .phone-container {
+  background: radial-gradient(circle at 50% 20%, #103828 0%, #092116 50%, #04120B 100%);
+}
+.theme-islamic .bg-pattern-layer {
+  background-image: 
+    radial-gradient(circle at 50% 50%, #DFBA73 1.5px, transparent 1.5px),
+    linear-gradient(45deg, transparent 40%, rgba(223,186,115,0.1) 40%, rgba(223,186,115,0.1) 60%, transparent 60%);
+  background-size: 32px 32px;
+  opacity: 0.22;
+}
+
+/* 8. IVORY: Classic French Baroque Filigree */
+.theme-ivory .phone-container {
+  background: radial-gradient(circle at 50% 20%, #332B22 0%, #1D1812 50%, #0D0A07 100%);
+}
+.theme-ivory .bg-pattern-layer {
+  background-image: radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.2) 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.25;
+}
+
+/* 9. SAGE: Eucalyptus Garden Botanical */
+.theme-sage .phone-container {
+  background: radial-gradient(circle at 50% 20%, #283C30 0%, #15241B 50%, #0A140E 100%);
+}
+.theme-sage .bg-pattern-layer {
+  background-image: radial-gradient(circle, rgba(167, 243, 208, 0.15) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+  opacity: 0.2;
+}
+
+/* 10. ROSE: Romantic Rose Peony */
+.theme-rose .phone-container {
+  background: radial-gradient(circle at 50% 20%, #441724 0%, #290B14 50%, #140409 100%);
+}
+.theme-rose .bg-pattern-layer {
+  background-image: radial-gradient(circle, rgba(251, 113, 133, 0.16) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  opacity: 0.22;
+}
+
+/* 11. MIDNIGHT: Celestial Sapphire & Star Clusters */
+.theme-midnight .phone-container {
+  background: radial-gradient(circle at 50% 20%, #0D2042 0%, #071024 50%, #02050D 100%);
+}
+.theme-midnight .bg-pattern-layer {
+  background-image: radial-gradient(circle, #FFE4A0 1px, transparent 1px),
+                    radial-gradient(circle, #FFFFFF 1.5px, transparent 1.5px);
+  background-size: 36px 36px, 72px 72px;
+  background-position: 0 0, 18px 18px;
+  opacity: 0.35;
+}
+
+/* 12. MONOCHROME: Architectural Editorial Minimal */
+.theme-monochrome .phone-container {
+  background: radial-gradient(circle at 50% 20%, #242424 0%, #141414 50%, #080808 100%);
+}
+.theme-monochrome .bg-pattern-layer {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.2;
+}
+
+/* ========================================================
+   3D DOORS WITH RADICALLY DIFFERENT CULTURAL CARVINGS
+   ======================================================== */
+.doors-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+  display: flex;
+  pointer-events: auto;
+  transition: visibility 0s 1.3s;
+}
+.is-opened .doors-wrapper {
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.door-leaf {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  box-shadow: 0 10px 45px rgba(0,0,0,0.85);
+  transition: transform 1.3s cubic-bezier(0.2, 0.85, 0.25, 1), box-shadow 1.3s ease;
+}
+.door-left {
+  transform-origin: left center;
+  border-right: 1px solid rgba(0, 0, 0, 0.7);
+}
+.door-right {
+  transform-origin: right center;
+  border-left: 1px solid rgba(223, 186, 115, 0.3);
+}
+
+.is-opened .door-left {
+  transform: rotateY(-115deg);
+  box-shadow: 20px 0 45px rgba(0,0,0,0.9);
+}
+.is-opened .door-right {
+  transform: rotateY(115deg);
+  box-shadow: -20px 0 45px rgba(0,0,0,0.9);
+}
+
+/* DOOR TEXTURES */
+.theme-bugis .door-leaf {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.16) 0%, transparent 65%),
+    linear-gradient(to bottom, #163830 0%, #0D221D 50%, #06120F 100%);
+}
+.theme-jawa .door-leaf {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.14) 0%, transparent 65%),
+    linear-gradient(to bottom, #442111 0%, #2B140A 50%, #150904 100%);
+}
+.theme-minang .door-leaf {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.18) 0%, transparent 65%),
+    linear-gradient(to bottom, #5A1221 0%, #350813 50%, #1A0208 100%);
+}
+.theme-bali .door-leaf {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.15) 0%, transparent 65%),
+    linear-gradient(to bottom, #3A3226 0%, #201B13 50%, #110E0A 100%);
+}
+.theme-sunda .door-leaf {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.15) 0%, transparent 65%),
+    linear-gradient(to bottom, #234E3C 0%, #143226 50%, #0A1A13 100%);
+}
+.theme-batak .door-leaf {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.15) 0%, transparent 65%),
+    linear-gradient(to bottom, #4D1818 0%, #2E0B0B 50%, #180404 100%);
+}
+.theme-islamic .door-leaf {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.2) 0%, transparent 65%),
+    linear-gradient(to bottom, #164833 0%, #0B2C1F 50%, #05160F 100%);
+}
+.theme-ivory .door-leaf {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.18) 0%, transparent 65%),
+    linear-gradient(to bottom, #42382C 0%, #292219 50%, #15110C 100%);
+}
+.theme-sage .door-leaf {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(167, 243, 208, 0.15) 0%, transparent 65%),
+    linear-gradient(to bottom, #2E4738 0%, #1C2E23 50%, #0D1711 100%);
+}
+.theme-rose .door-leaf {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(251, 113, 133, 0.18) 0%, transparent 65%),
+    linear-gradient(to bottom, #541E2D 0%, #350F1B 50%, #1A060C 100%);
+}
+.theme-midnight .door-leaf {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(223, 186, 115, 0.22) 0%, transparent 65%),
+    linear-gradient(to bottom, #122852 0%, #0A1732 50%, #040916 100%);
+}
+.theme-monochrome .door-leaf {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 65%),
+    linear-gradient(to bottom, #2E2E2E 0%, #1A1A1A 50%, #0D0D0D 100%);
+}
+
+.door-ornament-frame {
+  position: absolute;
+  inset: 22px 14px;
+  border: 2px solid #DFBA73;
+  border-radius: 14px;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.7), 0 0 12px rgba(223, 186, 115, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 8px;
+}
+.door-svg-emblem {
+  width: 100%;
+  max-width: 130px;
+  opacity: 0.9;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8));
+}
+
+.door-knocker {
+  position: absolute;
+  top: 52%;
+  width: 46px;
+  height: 46px;
+  z-index: 10;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #FFF2CC 0%, #DFBA73 50%, #8A6828 100%);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.7), inset 0 2px 4px rgba(255,255,255,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.door-left .door-knocker { right: 12px; }
+.door-right .door-knocker { left: 12px; }
+.knocker-ring {
+  width: 24px;
+  height: 24px;
+  border: 3.5px solid #5C4113;
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.6);
+}
+
+/* COVER CENTER BADGE */
+.cover-center-badge {
+  position: absolute;
+  top: 42%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 60;
+  width: 320px;
+  text-align: center;
+  pointer-events: auto;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.is-opened .cover-center-badge {
+  opacity: 0;
+  transform: translate(-50%, -85%) scale(0.8);
+  pointer-events: none;
+}
+
+.wax-seal-circle {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #FFF4CC 0%, #DFBA73 45%, #9E7A3E 85%, #4A3512 100%);
+  border: 3px solid #FFF8E7;
+  box-shadow: 
+    0 14px 35px rgba(0,0,0,0.75),
+    0 0 25px rgba(223, 186, 115, 0.45),
+    inset 0 3px 6px rgba(255,255,255,0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-royal);
+  color: #261706;
+  font-weight: 900;
+}
+.wax-seal-circle .initials { font-size: 28px; line-height: 1; letter-spacing: -1px; }
+.wax-seal-circle .subtitle { font-size: 8px; letter-spacing: 2px; margin-top: 2px; font-weight: 700; }
+
+.cover-guest-plaque {
+  background: rgba(14, 26, 21, 0.92);
+  border: 1px solid rgba(223, 186, 115, 0.6);
+  border-radius: 18px;
+  padding: 16px 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+  margin-bottom: 22px;
+  position: relative;
+}
+.cover-guest-plaque .eyebrow {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #DFBA73;
+  text-transform: uppercase;
+  font-family: var(--font-royal);
+  font-weight: 700;
+}
+.cover-guest-plaque .couple-title {
+  font-family: var(--font-script);
+  font-size: 44px;
+  line-height: 1.1;
+  color: #FFF;
+  margin: 4px 0 8px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 15px rgba(223, 186, 115, 0.4);
+}
+.cover-guest-plaque .guest-info {
+  font-size: 11px;
+  color: #C6AA78;
+  border-top: 1px dashed rgba(223, 186, 115, 0.35);
+  padding-top: 8px;
+}
+.cover-guest-plaque .guest-name {
+  font-weight: 700;
+  color: #FFF;
+  font-size: 15px;
+  margin-top: 2px;
+}
+
+.btn-open-grand {
+  background: linear-gradient(135deg, #FFF0B8 0%, #DFBA73 45%, #9E7A3E 100%);
+  color: #171107;
+  border: none;
+  font-family: var(--font-royal);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 15px 32px;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 
+    0 12px 28px rgba(0,0,0,0.65),
+    0 0 30px rgba(223, 186, 115, 0.6),
+    inset 0 1px 3px rgba(255,255,255,0.9);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255,255,255,0.6);
+}
+.btn-open-grand:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.75), 0 0 40px rgba(223, 186, 115, 0.8);
+}
+
+/* ========================================================
+   STAGE 2: SCROLLING INVITATION CONTENT
+   ======================================================== */
+.invitation-scroll-body {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 100px;
+  opacity: 0;
+  transform: scale(0.94) translateY(40px);
+  transition: all 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+  scroll-behavior: smooth;
+}
+.is-opened .invitation-scroll-body {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* HERO SECTION */
+.hero-arch-section {
+  position: relative;
+  padding: 50px 20px 40px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.floral-corner {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.85;
+}
+.floral-tl { top: 0; left: 0; }
+.floral-tr { top: 0; right: 0; transform: scaleX(-1); }
+
+/* THEME SPECIFIC ARCH PHOTO WRAPPER */
+.arch-photo-wrapper {
+  width: 220px;
+  height: 290px;
+  margin: 0 auto 24px;
+  position: relative;
+  padding: 6px;
+  background: linear-gradient(135deg, #FFE4A0 0%, #DFBA73 50%, #9E7A3E 100%);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.7), 0 0 25px rgba(223, 186, 115, 0.35);
+  transition: all 0.5s ease;
+}
+/* 1. BUGIS: Oval Arch */
+.theme-bugis .arch-photo-wrapper {
+  border-radius: 120px 120px 20px 20px;
+}
+.theme-bugis .arch-photo-inner {
+  border-radius: 115px 115px 16px 16px;
+}
+/* 2. JAWA: Gebyok Pointed Joglo Arch */
+.theme-jawa .arch-photo-wrapper {
+  border-radius: 30px;
+  border: 3px solid #DFBA73;
+}
+.theme-jawa .arch-photo-inner {
+  border-radius: 24px;
+}
+/* 3. MINANG: Pointed Gonjong Arch */
+.theme-minang .arch-photo-wrapper {
+  border-radius: 120px 20px 120px 20px;
+}
+.theme-minang .arch-photo-inner {
+  border-radius: 115px 16px 115px 16px;
+}
+/* 4. BALI: Candi Bentar Stepped Arch */
+.theme-bali .arch-photo-wrapper { border-radius: 60px 60px 14px 14px; border: 2.5px solid #DFBA73; }
+.theme-bali .arch-photo-inner { border-radius: 54px 54px 10px 10px; }
+/* 5. SUNDA: Parahyangan Soft Arch */
+.theme-sunda .arch-photo-wrapper { border-radius: 110px 110px 20px 20px; border: 2.5px solid #DFBA73; }
+.theme-sunda .arch-photo-inner { border-radius: 104px 104px 16px 16px; }
+/* 6. BATAK: Gable Roof Bolon Arch */
+.theme-batak .arch-photo-wrapper { border-radius: 36px 36px 10px 10px; border: 3px solid #D4A76A; }
+.theme-batak .arch-photo-inner { border-radius: 30px 30px 8px 8px; }
+/* 7. ISLAMIC: Moorish Horseshoe Arch */
+.theme-islamic .arch-photo-wrapper { border-radius: 125px 125px 14px 14px; border: 2.5px solid #DFBA73; }
+.theme-islamic .arch-photo-inner { border-radius: 120px 120px 10px 10px; }
+/* 8. IVORY: French Classical Arch */
+.theme-ivory .arch-photo-wrapper { border-radius: 115px 115px 22px 22px; border: 2.5px solid #DFBA73; }
+.theme-ivory .arch-photo-inner { border-radius: 110px 110px 18px 18px; }
+/* 9. SAGE: Natural Rustic Arch */
+.theme-sage .arch-photo-wrapper { border-radius: 95px 95px 18px 18px; border: 2.5px solid #CBDCD2; }
+.theme-sage .arch-photo-inner { border-radius: 90px 90px 14px 14px; }
+/* 10. ROSE: Romance Cathedral Arch */
+.theme-rose .arch-photo-wrapper { border-radius: 130px 130px 24px 24px; border: 2.5px solid #F4B8C5; }
+.theme-rose .arch-photo-inner { border-radius: 124px 124px 20px 20px; }
+/* 11. MIDNIGHT: Star Diamond Arch */
+.theme-midnight .arch-photo-wrapper { border-radius: 90px 90px 20px 20px; border: 2.5px solid #FFE4A0; box-shadow: 0 0 30px rgba(223, 186, 115, 0.45); }
+.theme-midnight .arch-photo-inner { border-radius: 85px 85px 16px 16px; }
+/* 12. MONOCHROME: Architectural Razor Square */
+.theme-monochrome .arch-photo-wrapper { border-radius: 0px; border: 2.5px solid #FFFFFF; }
+.theme-monochrome .arch-photo-inner { border-radius: 0px; }
+
+.arch-photo-inner {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background: #111;
+}
+.arch-photo-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.arch-watermark-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 30px 10px 12px;
+  background: linear-gradient(to top, rgba(13, 26, 21, 0.95), transparent);
+  text-align: center;
+  font-family: var(--font-royal);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #DFBA73;
+}
+
+.hero-script-names {
+  font-family: var(--font-script);
+  font-size: 58px;
+  line-height: 1.1;
+  color: #FFF;
+  margin: 10px 0 6px;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 25px rgba(223, 186, 115, 0.5);
+}
+.hero-wedding-date {
+  font-family: var(--font-royal);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #DFBA73;
+  margin-bottom: 24px;
+}
+
+/* COUNTDOWN */
+.countdown-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  max-width: 320px;
+  margin: 0 auto 30px;
+}
+.countdown-card {
+  background: rgba(18, 36, 29, 0.85);
+  border: 1px solid rgba(223, 186, 115, 0.45);
+  border-radius: 14px;
+  padding: 10px 6px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+}
+.countdown-num {
+  font-family: var(--font-royal);
+  font-size: 20px;
+  font-weight: 800;
+  color: #FFF;
+  line-height: 1;
+}
+.countdown-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #C6AA78;
+  margin-top: 4px;
+}
+
+/* BLESSING CARD */
+.blessing-section { padding: 0 20px 30px; }
+.blessing-card {
+  background: rgba(22, 42, 34, 0.85);
+  border: 1px solid rgba(223, 186, 115, 0.35);
+  border-radius: 22px;
+  padding: 26px 20px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
+}
+.blessing-card::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px dashed rgba(223, 186, 115, 0.3);
+  border-radius: 16px;
+  pointer-events: none;
+}
+.blessing-title {
+  font-family: var(--font-royal);
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  color: #DFBA73;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.blessing-quote {
+  font-size: 13px;
+  font-style: italic;
+  color: #E2ECE6;
+  line-height: 1.6;
+}
+.blessing-surah {
+  font-family: var(--font-royal);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: #DFBA73;
+  margin-top: 10px;
+  font-weight: 700;
+}
+
+/* PROFILES SECTION */
+.profiles-section { padding: 0 20px 30px; }
+.section-headline { text-align: center; margin-bottom: 24px; }
+.section-eyebrow {
+  font-family: var(--font-royal);
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: #DFBA73;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 700;
+  color: #FFF;
+  margin-top: 2px;
+}
+
+.profile-card {
+  background: rgba(18, 36, 29, 0.9);
+  border: 1px solid rgba(223, 186, 115, 0.4);
+  border-radius: 24px;
+  padding: 24px 18px;
+  text-align: center;
+  margin-bottom: 20px;
+  box-shadow: 0 14px 35px rgba(0,0,0,0.5);
+  position: relative;
+}
+.profile-avatar-frame {
+  width: 130px;
+  height: 165px;
+  margin: 0 auto 16px;
+  border-radius: 70px 70px 14px 14px;
+  padding: 4px;
+  background: linear-gradient(135deg, #FFE4A0, #DFBA73, #9E7A3E);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.6);
+}
+.profile-avatar-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 66px 66px 12px 12px;
+  overflow: hidden;
+  background: #111;
+}
+.profile-avatar-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.profile-name {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: #FFF;
+  margin-bottom: 4px;
+}
+.profile-parents {
+  font-size: 12px;
+  color: #CBDCD2;
+  line-height: 1.5;
+}
+.profile-parents strong { color: #DFBA73; }
+.btn-instagram {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(223, 186, 115, 0.15);
+  border: 1px solid rgba(223, 186, 115, 0.4);
+  color: #DFBA73;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* EVENTS TIMELINE */
+.events-section { padding: 0 20px 30px; }
+.event-card {
+  background: linear-gradient(135deg, rgba(22, 44, 35, 0.92) 0%, rgba(13, 27, 22, 0.92) 100%);
+  border: 1px solid rgba(223, 186, 115, 0.4);
+  border-radius: 22px;
+  padding: 24px 20px;
+  text-align: center;
+  margin-bottom: 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+}
+.event-badge {
+  display: inline-block;
+  font-family: var(--font-royal);
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 800;
+  color: #121A15;
+  background: linear-gradient(135deg, #FFE4A0, #DFBA73);
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+.event-date {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 700;
+  color: #FFF;
+  margin-bottom: 4px;
+}
+.event-time { font-size: 13px; color: #CBDCD2; margin-bottom: 12px; }
+.event-venue {
+  font-size: 13px;
+  font-weight: 600;
+  color: #DFBA73;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+/* VIP CASHLESS DIGITAL ENVELOPE */
+.gift-section { padding: 0 20px 30px; }
+.vip-card-box {
+  background: linear-gradient(135deg, #1C2B24 0%, #0F1A15 100%);
+  border: 1px solid rgba(223, 186, 115, 0.5);
+  border-radius: 20px;
+  padding: 20px 18px;
+  color: #FFF;
+  box-shadow: 0 14px 35px rgba(0,0,0,0.6);
+  position: relative;
+}
+.chip-micro {
+  width: 38px;
+  height: 28px;
+  background: linear-gradient(135deg, #FFE4A0 0%, #DFBA73 60%, #9E7A3E 100%);
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.3);
+  margin-bottom: 14px;
+}
+.card-number-gold {
+  font-family: monospace;
+  font-size: 17px;
+  letter-spacing: 2px;
+  color: #DFBA73;
+  margin: 6px 0 12px;
+  font-weight: 700;
+}
+.btn-copy-account {
+  background: linear-gradient(135deg, #FFE4A0, #DFBA73);
+  color: #121A15;
+  border: none;
+  font-family: var(--font-royal);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-copy-account:hover {
+  filter: brightness(1.1);
+}
+
+/* WISHES & RSVP */
+.wishes-section { padding: 0 20px 30px; }
+.wishes-box {
+  background: rgba(18, 36, 29, 0.9);
+  border: 1px solid rgba(223, 186, 115, 0.4);
+  border-radius: 22px;
+  padding: 22px 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+}
+.input-field {
+  width: 100%;
+  background: rgba(8, 16, 13, 0.75);
+  border: 1px solid rgba(223, 186, 115, 0.3);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: #FFF;
+  font-size: 13px;
+  margin-bottom: 12px;
+  outline: none;
+}
+.input-field:focus {
+  border-color: #DFBA73;
+}
+.btn-submit-wish {
+  width: 100%;
+  background: linear-gradient(135deg, #FFE4A0, #DFBA73);
+  color: #121A15;
+  border: none;
+  font-family: var(--font-royal);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-submit-wish:hover {
+  filter: brightness(1.1);
+}
+
+/* FLOATING BOTTOM DOCK */
+.bottom-dock {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: rgba(12, 24, 19, 0.92);
+  border: 1px solid rgba(223, 186, 115, 0.4);
+  padding: 6px 14px;
+  border-radius: 40px;
+  backdrop-filter: blur(12px);
+  display: flex;
+  gap: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.6s ease;
+}
+.is-opened .bottom-dock { opacity: 1; pointer-events: auto; }
+.dock-btn {
+  background: transparent;
+  border: none;
+  color: #C6AA78;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.dock-btn:hover { color: #FFE4A0; }
+.dock-btn svg { width: 16px; height: 16px; }
+
+/* RESET DOOR BUTTON */
+.btn-reset-doors {
+  position: fixed;
+  bottom: 24px;
+  left: 20px;
+  z-index: 999;
+  background: rgba(10, 18, 14, 0.92);
+  border: 1px solid #DFBA73;
+  color: #DFBA73;
+  padding: 9px 18px;
+  border-radius: 30px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: none;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+  transition: all 0.2s;
+}
+.btn-reset-doors:hover {
+  background: #DFBA73;
+  color: #121A15;
+}
+.is-opened .btn-reset-doors { display: block; }
+
+/* FLOATING MUSIC TOGGLE BUTTON */
+.btn-floating-music {
+  position: fixed;
+  top: 24px;
+  right: 20px;
+  z-index: 999;
+  background: rgba(10, 18, 14, 0.92);
+  border: 1px solid #DFBA73;
+  color: #DFBA73;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+  transition: all 0.2s;
+}
+.btn-floating-music:hover {
+  transform: scale(1.08);
+}

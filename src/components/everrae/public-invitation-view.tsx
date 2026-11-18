@@ -1,28 +1,14 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useEffect, useState, useMemo, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import { 
   Heart, 
-  Calendar, 
-  Clock, 
-  MapPin, 
-  ExternalLink, 
-  Copy, 
-  Check, 
-  Volume2, 
-  VolumeX, 
-  MailOpen, 
-  MessageSquareHeart, 
-  Send, 
   Sparkles, 
-  Gift, 
-  Music,
-  BookmarkCheck,
-  Share2,
-  ChevronDown
+  Music, 
+  VolumeX 
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { WeddingInvitation, InvitationWish, InvitationTheme } from '@/types';
@@ -31,21 +17,6 @@ import { getInvitationThemeConfig } from './invitation-theme-config';
 interface PublicInvitationViewProps {
   slug?: string;
 }
-
-const PREVIEW_THEME_LIST: { id: InvitationTheme; name: string; icon: string; category: string }[] = [
-  { id: 'minang-songket', name: 'Minang Rumah Gadang 3D', icon: '🏛️', category: 'Nusantara' },
-  { id: 'jawa-keraton', name: 'Jawa Gebyok Kayu 3D', icon: '🏛️', category: 'Nusantara' },
-  { id: 'bali-dewata', name: 'Bali Candi Bentar 3D', icon: '🏛️', category: 'Nusantara' },
-  { id: 'sunda-siger', name: 'Sunda Julang Ngapak 3D', icon: '🏛️', category: 'Nusantara' },
-  { id: 'bugis-pinisi', name: 'Bugis Perahu Pinisi 3D', icon: '🏛️', category: 'Nusantara' },
-  { id: 'batak-gorga', name: 'Batak Rumah Bolon 3D', icon: '🏛️', category: 'Nusantara' },
-  { id: 'islamic-arabesque', name: 'Madinah Kubah Emas 3D', icon: '🕌', category: 'Luxury' },
-  { id: 'midnight-gold', name: 'Midnight Starlight 3D', icon: '💎', category: 'Luxury' },
-  { id: 'classic-ivory', name: 'Classic Ivory & Gold', icon: '🌿', category: 'Modern' },
-  { id: 'sage-garden', name: 'Sage Botanical Garden', icon: '🌿', category: 'Modern' },
-  { id: 'romantic-rose', name: 'Romantic Rose Peony', icon: '🌿', category: 'Modern' },
-  { id: 'monochrome-editorial', name: 'Modern Editorial Vogue', icon: '💎', category: 'Luxury' },
-];
 
 // Helper to generate Google Calendar Link
 function makeGoogleCalendarUrl(title: string, dateStr?: string, timeStr?: string, venue?: string, address?: string): string {
@@ -71,11 +42,6 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
-  const isPreview = searchParams?.get('preview') === 'true';
-  const [previewThemeOverride, setPreviewThemeOverride] = useState<InvitationTheme | null>(
-    () => (searchParams?.get('theme') as InvitationTheme) || null
-  );
-
   // Cover opening state
   const [isOpened, setIsOpened] = useState(false);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
@@ -84,23 +50,14 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
   // RSVP Form states
   const [senderName, setSenderName] = useState(guestName);
   const [attendance, setAttendance] = useState<'attending' | 'not_attending' | 'tentative'>('attending');
-  const [pax, setPax] = useState(1);
+  const [pax] = useState(1);
   const [message, setMessage] = useState('');
   const [submittingWish, setSubmittingWish] = useState(false);
   const [wishSuccess, setWishSuccess] = useState(false);
   const [copiedBank, setCopiedBank] = useState(false);
-  const [copiedAddress, setCopiedAddress] = useState(false);
 
   // Countdown timer
   const [timeLeft, setTimeLeft] = useState<{ days: number; hours: number; minutes: number; seconds: number }>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
-  // Quick Greetings template chips
-  const quickWishes = [
-    "Barakallahu lakuma wa baraka 'alaikuma wa jama'a bainakuma fii khoir 🤲",
-    "Selamat menempuh hidup baru! Semoga sakinah, mawaddah, warahmah.",
-    "Happy wedding! Bahagia selalu dan saling menguatkan sampai surga ✨",
-    "Selamat atas pernikahannya! Semoga senantiasa dipenuhi keberkahan."
-  ];
 
   // Load invitation & wishes
   useEffect(() => {
@@ -108,11 +65,8 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
     const load = async () => {
       setLoading(true);
       const supabase = createClient();
-      
+      const isPreview = searchParams?.get('preview') === 'true';
       const themeFromQuery = (searchParams?.get('theme') as InvitationTheme) || null;
-      if (themeFromQuery) {
-        setPreviewThemeOverride(themeFromQuery);
-      }
 
       const { data: inv, error: invError } = await supabase
         .from('wedding_invitations')
@@ -122,7 +76,7 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
 
       if (invError || !inv || (!inv.is_published && !isPreview)) {
         if (slug === 'preview' || isPreview || slug === 'rohim-wiwit') {
-          const fallbackTheme = themeFromQuery || previewThemeOverride || 'minang-songket';
+          const fallbackTheme = themeFromQuery || 'bali-dewata';
           setInvitation({
             id: 'preview-id',
             workspace_id: 'preview-ws',
@@ -138,72 +92,85 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
             bride_nickname: 'Wiwit',
             bride_parents: 'Putri tercinta dari Bpk. Drs. H. Subagyo & Ibu Hj. Aminah',
             akad_date: '2027-06-17',
-            akad_time: '08:00 - 10:00 WIB',
+            akad_time: '08.00 - 10.00 WIB',
             akad_venue: "Masjid Raya Grand Mosque",
             akad_address: 'Jl. Malioboro No. 1, D.I. Yogyakarta',
             akad_maps_url: 'https://maps.google.com/?q=Yogyakarta',
             resepsi_date: '2027-06-17',
-            resepsi_time: '11:00 - 14:00 WIB',
+            resepsi_time: '11.00 - 14.00 WIB',
             resepsi_venue: 'The Grand Ballroom Palace',
             resepsi_address: 'Jl. Solo KM 9, Sleman, D.I. Yogyakarta',
             resepsi_maps_url: 'https://maps.google.com/?q=Yogyakarta',
-            gift_bank_name: 'BCA (Bank Central Asia)',
-            gift_account_number: '8020 9481 22',
-            gift_account_holder: 'Ahmad Nur Rohim',
-            gift_address: 'Gedung Graha Cinta, Jl. Kaliurang KM 9, Sleman, DIY 55581 (Penerima: Rohim & Wiwit - 081234567890)',
-            music_url: '/audio/wedding-acoustic.mp3'
+            gift_bank_name: 'Bank Central Asia (BCA)',
+            gift_account_number: '8910 4218 9210',
+            gift_account_holder: 'ROHIM SETIARAMA',
+            music_url: '/audio/wedding-acoustic.mp3',
+            cover_photo_url: '/images/wedding-flowers.jpg',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
           });
-          setLoading(false);
-          return;
+          setWishes([
+            {
+              id: '1',
+              invitation_id: 'preview-id',
+              guest_name: 'Budi Santoso',
+              attendance: 'attending',
+              pax: 2,
+              message: 'Selamat berbahagia Rohim & Wiwit! Semoga langgeng dan sakinah mawaddah warahmah selalu.',
+              created_at: new Date(Date.now() - 3600000 * 2).toISOString()
+            },
+            {
+              id: '2',
+              invitation_id: 'preview-id',
+              guest_name: 'Siti Aminah & Keluarga',
+              attendance: 'attending',
+              pax: 2,
+              message: 'Barakallahu lakuma, semoga perjalanan rumah tangga senantiasa dalam ridho Allah SWT.',
+              created_at: new Date(Date.now() - 3600000 * 5).toISOString()
+            }
+          ]);
+        } else {
+          setNotFound(true);
         }
-        setNotFound(true);
-        setLoading(false);
-        return;
+      } else {
+        // When theme query override is provided during preview, prioritize it
+        if (themeFromQuery) {
+          inv.theme = themeFromQuery;
+        }
+        setInvitation(inv as WeddingInvitation);
+
+        // Fetch wishes
+        const { data: wList } = await supabase
+          .from('invitation_wishes')
+          .select('*')
+          .eq('invitation_id', inv.id)
+          .order('created_at', { ascending: false });
+        if (wList) setWishes(wList as InvitationWish[]);
       }
-
-      setInvitation(inv as WeddingInvitation);
-
-      // Load wishes
-      const { data: wishList } = await supabase
-        .from('wedding_invitation_wishes')
-        .select('*')
-        .eq('invitation_id', inv.id)
-        .order('created_at', { ascending: false });
-
-      setWishes((wishList || []) as InvitationWish[]);
       setLoading(false);
     };
 
-    void load();
-  }, [slug, searchParams, isPreview, previewThemeOverride]);
+    load();
+  }, [slug, searchParams]);
 
-  // Update senderName when guestName query param loads
+  // Dynamic countdown timer
   useEffect(() => {
-    if (guestName && !senderName) {
-      setSenderName(guestName);
-    }
-  }, [guestName, senderName]);
-
-  // Countdown timer effect
-  useEffect(() => {
-    const rawDate = invitation?.resepsi_date || invitation?.akad_date;
-    const isOldMockDate = rawDate === '2027-03-24' || !rawDate;
-    const targetDateStr = isOldMockDate ? '2027-06-17' : rawDate;
-
-    const target = new Date(targetDateStr).getTime();
+    if (!invitation) return;
+    const targetDateStr = (invitation.resepsi_date === '2027-03-24' || !invitation.resepsi_date) 
+      ? '2027-06-17' 
+      : invitation.resepsi_date;
+    const targetTime = new Date(`${targetDateStr}T09:00:00`).getTime();
 
     const updateTimer = () => {
-      const now = Date.now();
-      const diff = target - now;
-      if (diff <= 0) {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        return;
-      }
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-      setTimeLeft({ days, hours, minutes, seconds });
+      const now = new Date().getTime();
+      const diff = Math.max(0, targetTime - now);
+
+      setTimeLeft({
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((diff % (1000 * 60)) / 1000),
+      });
     };
 
     updateTimer();
@@ -211,14 +178,14 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
     return () => clearInterval(interval);
   }, [invitation]);
 
+  // Handle invitation open
   const handleOpenInvitation = () => {
     setIsOpened(true);
-    // Play audio safely
     if (audioRef.current) {
       audioRef.current.play().then(() => {
         setIsPlayingMusic(true);
       }).catch(() => {
-        setIsPlayingMusic(false);
+        // Browser autoplay restriction
       });
     }
   };
@@ -235,16 +202,11 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
     }
   };
 
-  const handleCopy = async (text: string, isAddr = false) => {
+  const handleCopy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      if (isAddr) {
-        setCopiedAddress(true);
-        setTimeout(() => setCopiedAddress(false), 2000);
-      } else {
-        setCopiedBank(true);
-        setTimeout(() => setCopiedBank(false), 2000);
-      }
+      setCopiedBank(true);
+      setTimeout(() => setCopiedBank(false), 2000);
     } catch {}
   };
 
@@ -269,7 +231,6 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
         setWishSuccess(true);
         setTimeout(() => setWishSuccess(false), 3500);
       } else if (slug === 'rohim-wiwit' || slug === 'preview') {
-        // Local simulation fallback for preview
         const mockWish: InvitationWish = {
           id: Math.random().toString(),
           invitation_id: invitation.id,
@@ -300,12 +261,12 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FAF8F5] flex flex-col items-center justify-center p-4 text-center">
+      <div className="min-h-screen bg-[#080C0B] flex flex-col items-center justify-center p-4 text-center">
         <div className="relative">
-          <Heart size={40} className="text-amber-600 animate-pulse" />
-          <Sparkles size={20} className="text-amber-400 absolute -top-2 -right-2 animate-bounce" />
+          <Heart size={40} className="text-[#DFBA73] animate-pulse" />
+          <Sparkles size={20} className="text-[#FFE4A0] absolute -top-2 -right-2 animate-bounce" />
         </div>
-        <p className="font-serif text-slate-800 text-sm tracking-widest mt-4 uppercase">Membuka Kartu Undangan…</p>
+        <p className="font-serif text-[#DFBA73] text-sm tracking-widest mt-4 uppercase font-bold">Membuka Undangan Digital…</p>
         <p className="text-xs text-slate-400 mt-1">Mohon tunggu sebentar</p>
       </div>
     );
@@ -313,15 +274,15 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
 
   if (notFound || !invitation) {
     return (
-      <div className="min-h-screen bg-[#FAF8F5] flex flex-col items-center justify-center p-6 text-center max-w-md mx-auto">
-        <Heart size={44} className="text-slate-300 mb-3" />
-        <h1 className="font-serif text-2xl font-bold text-slate-800 mb-2">Undangan Belum Tersedia</h1>
-        <p className="text-sm text-slate-600 mb-6 leading-relaxed">
+      <div className="min-h-screen bg-[#080C0B] flex flex-col items-center justify-center p-6 text-center max-w-md mx-auto text-white">
+        <Heart size={44} className="text-slate-600 mb-3" />
+        <h1 className="font-serif text-2xl font-bold text-[#DFBA73] mb-2">Undangan Belum Tersedia</h1>
+        <p className="text-sm text-slate-400 mb-6 leading-relaxed">
           Tautan undangan ini tidak ditemukan atau belum dipublikasikan oleh kedua mempelai.
         </p>
         <Link 
           href="/"
-          className="px-5 py-2.5 rounded-full bg-slate-800 text-white text-xs font-semibold hover:bg-slate-900 transition"
+          className="px-5 py-2.5 rounded-full bg-[#DFBA73] text-[#121A15] text-xs font-bold hover:brightness-110 transition tracking-wider uppercase"
         >
           Kunjungi Pocket Wedding
         </Link>
@@ -329,69 +290,9 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
     );
   }
 
-  // Theme styling configurations (12 distinct options)
-  const currentTheme = (previewThemeOverride || (searchParams?.get('theme') as InvitationTheme) || invitation.theme || 'minang-songket') as InvitationTheme;
+  // Active theme configuration
+  const currentTheme = (searchParams?.get('theme') as string) || invitation.theme || 'bali-dewata';
   const themeConfig = getInvitationThemeConfig(currentTheme);
-
-  const themeClass = {
-    'classic-ivory': 'bg-[#FBF9F5] text-slate-800 font-sans',
-    'sage-garden': 'bg-[#F4F7F4] text-slate-800 font-sans',
-    'romantic-rose': 'bg-[#FDF6F7] text-slate-800 font-sans',
-    'midnight-gold': 'bg-[#0D1322] text-slate-100 font-sans',
-    'jawa-keraton': 'bg-[#F8F5EE] text-[#24170E] font-serif',
-    'bugis-pinisi': 'bg-[#F2F6F5] text-[#122B24] font-sans',
-    'minang-songket': 'bg-[#FDF7F8] text-[#3D0A14] font-serif',
-    'bali-dewata': 'bg-[#F9F7F2] text-[#2C261F] font-sans',
-    'sunda-siger': 'bg-[#F4F9F6] text-[#18362B] font-sans',
-    'batak-gorga': 'bg-[#F9F6F6] text-[#261515] font-serif',
-    'islamic-arabesque': 'bg-[#F4F8F5] text-[#0E291E] font-serif',
-    'monochrome-editorial': 'bg-[#F9F9F8] text-[#1A1A1A] font-sans',
-  }[currentTheme] || 'bg-[#FBF9F5] text-slate-800 font-sans';
-
-  const accentColor = {
-    'classic-ivory': 'text-amber-900 bg-[#FFFDF9] border-amber-200/90 shadow-sm',
-    'sage-garden': 'text-emerald-950 bg-[#F9FBF9] border-emerald-200/90 shadow-sm',
-    'romantic-rose': 'text-rose-950 bg-[#FFFDFD] border-rose-200/90 shadow-sm',
-    'midnight-gold': 'text-amber-200 bg-[#141C30] border-amber-400/30 shadow-sm',
-    'jawa-keraton': 'text-[#422616] bg-[#FFFDF9] border-[#DFBA73]/80 shadow-md',
-    'bugis-pinisi': 'text-[#0F2E25] bg-[#FFFFFF] border-[#2C5F51]/50 shadow-md',
-    'minang-songket': 'text-[#4A0D19] bg-[#FFFFFF] border-[#B3243D]/40 shadow-md',
-    'bali-dewata': 'text-[#362D1D] bg-[#FFFFFF] border-[#D4AF37]/70 shadow-md',
-    'sunda-siger': 'text-[#133A2D] bg-[#FFFFFF] border-[#2E6B54]/40 shadow-md',
-    'batak-gorga': 'text-[#3D1414] bg-[#FFFFFF] border-[#8B2626]/50 shadow-md',
-    'islamic-arabesque': 'text-[#0D3021] bg-[#FFFFFF] border-[#D4AF37]/70 shadow-md',
-    'monochrome-editorial': 'text-slate-900 bg-[#FFFFFF] border-slate-300 shadow-sm',
-  }[currentTheme] || 'text-amber-900 bg-[#FFFDF9] border-amber-200/90 shadow-sm';
-
-  const buttonAccent = {
-    'classic-ivory': 'bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-800 hover:to-amber-900 text-white',
-    'sage-garden': 'bg-gradient-to-r from-emerald-800 to-emerald-900 hover:from-emerald-900 hover:to-emerald-950 text-white',
-    'romantic-rose': 'bg-gradient-to-r from-rose-700 to-rose-800 hover:from-rose-800 hover:to-rose-900 text-white',
-    'midnight-gold': 'bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-bold',
-    'jawa-keraton': 'bg-gradient-to-r from-[#875525] via-[#B8863A] to-[#875525] hover:brightness-110 text-white font-serif shadow-amber-900/20',
-    'bugis-pinisi': 'bg-gradient-to-r from-[#17483C] to-[#0E2F26] hover:brightness-110 text-white font-serif shadow-emerald-900/20',
-    'minang-songket': 'bg-gradient-to-r from-[#7A1528] to-[#9E1E36] hover:brightness-110 text-white font-serif shadow-rose-900/20',
-    'bali-dewata': 'bg-gradient-to-r from-[#B8860B] to-[#DAA520] hover:brightness-110 text-[#1A1400] font-bold shadow-amber-900/20',
-    'sunda-siger': 'bg-gradient-to-r from-[#1E5C46] to-[#123E2F] hover:brightness-110 text-white font-serif shadow-teal-900/20',
-    'batak-gorga': 'bg-gradient-to-r from-[#701616] to-[#450C0C] hover:brightness-110 text-white font-serif shadow-red-900/20',
-    'islamic-arabesque': 'bg-gradient-to-r from-[#0E422C] via-[#1B6344] to-[#0E422C] hover:brightness-110 text-white font-serif shadow-emerald-900/20',
-    'monochrome-editorial': 'bg-gradient-to-r from-[#181818] to-[#2D2D2D] hover:from-black hover:to-[#181818] text-white font-sans tracking-widest uppercase shadow-slate-900/20',
-  }[currentTheme] || 'bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-800 hover:to-amber-900 text-white';
-
-  const themeCelebrationTag = {
-    'classic-ivory': 'THE WEDDING CELEBRATION & RESEPSI',
-    'sage-garden': 'INTIMATE GARDEN CELEBRATION',
-    'romantic-rose': 'THE WEDDING CELEBRATION',
-    'midnight-gold': 'MIDNIGHT STARLIGHT GALA',
-    'jawa-keraton': 'PAWIWAHAN & PANGGIH',
-    'bugis-pinisi': 'MAPPETTUADA & SOMPA',
-    'minang-songket': 'BARALEK GADANG',
-    'bali-dewata': 'PAWIWAHAN SUCI DEWATA',
-    'sunda-siger': 'WALIMATUL NIKAH & SAWER',
-    'batak-gorga': 'PAMASU-MASUON & ULAON UNJUK',
-    'islamic-arabesque': "WALIMATUL 'URSY",
-    'monochrome-editorial': 'CONTEMPORARY MATRIMONY',
-  }[currentTheme] || "WALIMATUL 'URSY";
 
   const rawDate = invitation.resepsi_date || invitation.akad_date;
   const isOldMockDate = rawDate === '2027-03-24' || !rawDate;
@@ -404,387 +305,173 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
   });
 
   return (
-    <div className={`min-h-screen ${themeClass} selection:bg-rose-100 relative overflow-x-hidden`}>
+    <div className={`invitation-root-viewport ${themeConfig.bodyClass}`}>
       {/* Background Audio Track */}
       <audio ref={audioRef} loop src={invitation.music_url || '/audio/wedding-acoustic.mp3'} preload="auto" />
 
-      {/* Floating Theme Simulator Toolbar (Active in Preview Mode) */}
-      {isPreview && (
-        <aside aria-label="Toolbar Simulator Tema" className="sticky top-0 inset-x-0 z-50 bg-slate-900/95 text-white backdrop-blur-md border-b border-amber-400/40 shadow-2xl px-4 py-2.5">
-          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-            {/* Top row / left side: status badge and buttons */}
-            <div className="flex flex-wrap items-center justify-between gap-2.5">
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-1 bg-amber-500/20 text-amber-300 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-amber-400/30 shrink-0">
-                  <Sparkles size={13} className="text-amber-400" />
-                  SIMULATOR 12 TEMA 3D
-                </span>
-                <span className="text-xs text-white/90">
-                  Tema: <strong className="text-amber-300 font-serif font-bold">{themeConfig.name}</strong>
-                </span>
-              </div>
-              
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setIsOpened(false)}
-                  className="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 text-xs font-semibold flex items-center gap-1.5 transition shadow-xs"
-                  title="Tutup pintu untuk menguji animasi buka pintu 3D lagi"
-                >
-                  <Sparkles size={12} />
-                  <span>Uji Buka Pintu 3D ↺</span>
-                </button>
-                <Link
-                  href="/dashboard"
-                  className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition border border-white/20"
-                >
-                  ← Dashboard
-                </Link>
-              </div>
-            </div>
-
-            {/* Horizontal theme pills selector */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-0.5 scrollbar-thin">
-              {PREVIEW_THEME_LIST.map(t => {
-                const isActive = currentTheme === t.id;
-                return (
-                  <button
-                    key={t.id}
-                    type="button"
-                    onClick={() => {
-                      setPreviewThemeOverride(t.id);
-                      setIsOpened(false); // Reset door so they can test the new theme's door animation!
-                      if (typeof window !== 'undefined') {
-                        const url = new URL(window.location.href);
-                        url.searchParams.set('preview', 'true');
-                        url.searchParams.set('theme', t.id);
-                        window.history.replaceState({}, '', url.toString());
-                      }
-                    }}
-                    className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition flex items-center gap-1.5 shrink-0 ${
-                      isActive
-                        ? 'bg-amber-400 text-slate-950 font-bold shadow-md shadow-amber-400/40 ring-2 ring-amber-300 scale-105'
-                        : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white'
-                    }`}
-                  >
-                    <span>{t.icon}</span>
-                    <span>{t.name.split(' (')[0]}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </aside>
-      )}
-
-      {/* ========================================================
-          DECORATIVE BACKGROUND TEXTURES, AURA & ROMANTIC PETALS
-          ======================================================== */}
-      {/* 1. Fine Linen Art Paper Grain Texture */}
-      <div 
-        className="pointer-events-none fixed inset-0 z-0 opacity-40 mix-blend-multiply"
-        style={{
-          backgroundImage: `radial-gradient(circle at 50% 50%, rgba(198, 170, 120, 0.05) 1px, transparent 1px), radial-gradient(circle at 0% 0%, rgba(160, 125, 75, 0.04) 1px, transparent 1px)`,
-          backgroundSize: '18px 18px, 28px 28px'
-        }}
-        aria-hidden="true"
-      />
-
-      {/* 2. Traditional Indonesian Batik Kawung Watermark Pattern */}
-      <div 
-        className="pointer-events-none fixed inset-0 z-0 opacity-[0.6] mix-blend-multiply"
-        style={{
-          backgroundImage: "url('/images/batik-kawung.svg')",
-          backgroundSize: "64px 64px",
-          backgroundRepeat: "repeat"
-        }}
-        aria-hidden="true"
-      />
-
-      {/* 2. Soft Radial Golden Ambient Glow Vignettes */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-        <div className="absolute -top-[10%] left-1/2 -translate-x-1/2 w-[720px] h-[720px] rounded-full bg-gradient-to-b from-amber-200/20 via-amber-100/10 to-transparent blur-3xl" />
-        <div className="absolute top-[35%] -left-[15%] w-[520px] h-[520px] rounded-full bg-gradient-to-tr from-amber-300/15 via-rose-200/10 to-transparent blur-3xl" />
-        <div className="absolute top-[65%] -right-[15%] w-[560px] h-[560px] rounded-full bg-gradient-to-bl from-amber-200/20 via-emerald-100/10 to-transparent blur-3xl" />
-        <div className="absolute bottom-[2%] left-1/2 -translate-x-1/2 w-[650px] h-[650px] rounded-full bg-gradient-to-t from-amber-300/15 via-amber-100/5 to-transparent blur-3xl" />
-      </div>
-
-      {/* 3. Luxury Cultural Corner Ornaments */}
-      <div className="pointer-events-none fixed inset-0 z-0 select-none overflow-hidden" aria-hidden="true">
-        <div className="absolute top-2 left-2 opacity-40">
-          {themeConfig.cornerTopLeft}
-        </div>
-        <div className="absolute top-2 right-2 opacity-40">
-          {themeConfig.cornerTopRight}
-        </div>
-      </div>
-
-      {/* 4. Falling Gentle Golden Rose Petals (Romantic Atmosphere) */}
-      {isOpened && (
-        <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-          {[
-            { left: '10%', delay: '0s', dur: '14s', size: 14, rot: 35 },
-            { left: '26%', delay: '4s', dur: '18s', size: 18, rot: 60 },
-            { left: '44%', delay: '7s', dur: '16s', size: 12, rot: 15 },
-            { left: '62%', delay: '2s', dur: '15s', size: 16, rot: 45 },
-            { left: '79%', delay: '9s', dur: '20s', size: 19, rot: 80 },
-            { left: '92%', delay: '5s', dur: '17s', size: 13, rot: 25 },
-          ].map((petal, idx) => (
-            <div
-              key={idx}
-              className="absolute top-[-40px] pointer-events-none opacity-40 animate-fall-petal"
-              style={{
-                left: petal.left,
-                animationDelay: petal.delay,
-                animationDuration: petal.dur,
-              }}
-            >
-              <svg
-                width={petal.size}
-                height={petal.size * 1.3}
-                viewBox="0 0 24 32"
-                fill="none"
-                style={{ transform: `rotate(${petal.rot}deg)` }}
-              >
-                <path
-                  d="M12,0 C20,8 24,18 20,26 C16,32 8,32 4,26 C0,18 4,8 12,0 Z"
-                  fill="currentColor"
-                  className="text-amber-300/40"
-                />
-              </svg>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Floating Audio Controller */}
+      {/* Floating Music Toggle Button */}
       {isOpened && (
         <button
+          type="button"
           onClick={toggleMusic}
           aria-label={isPlayingMusic ? 'Hentikan musik' : 'Putar musik'}
-          className="fixed top-5 right-5 z-40 p-3 rounded-full bg-white/90 backdrop-blur-md shadow-xl border border-amber-200/70 text-slate-800 hover:scale-105 active:scale-95 transition flex items-center justify-center"
+          className="btn-floating-music"
+          title={isPlayingMusic ? 'Hentikan Musik' : 'Putar Musik'}
         >
           {isPlayingMusic ? (
-            <div className="relative">
-              <Music size={18} className="text-amber-700 animate-spin" style={{ animationDuration: '4s' }} />
-              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white"></span>
-            </div>
+            <Music size={18} className="animate-spin" style={{ animationDuration: '4s' }} />
           ) : (
-            <VolumeX size={18} className="text-slate-400" />
+            <VolumeX size={18} />
           )}
         </button>
       )}
 
-      {/* Floating Bottom Sticky Navigation Pill */}
-      {isOpened && (
-        <nav 
-          aria-label="Navigasi bagian undangan"
-          className="fixed bottom-5 inset-x-0 z-40 flex justify-center px-4 pointer-events-none"
-        >
-          <div className="bg-slate-900/90 text-white backdrop-blur-lg border border-white/20 rounded-full px-5 py-2.5 shadow-2xl flex items-center gap-6 pointer-events-auto text-xs font-serif tracking-wider">
-            <button 
-              type="button"
-              onClick={() => scrollToSection('mempelai')} 
-              className="hover:text-amber-300 transition flex flex-col items-center gap-0.5"
-            >
-              <Heart size={14} />
-              <span className="text-[10px]">Mempelai</span>
-            </button>
-            <button 
-              type="button"
-              onClick={() => scrollToSection('acara')} 
-              className="hover:text-amber-300 transition flex flex-col items-center gap-0.5"
-            >
-              <Calendar size={14} />
-              <span className="text-[10px]">Acara</span>
-            </button>
-            <button 
-              type="button"
-              onClick={() => scrollToSection('kado')} 
-              className="hover:text-amber-300 transition flex flex-col items-center gap-0.5"
-            >
-              <Gift size={14} />
-              <span className="text-[10px]">Kado</span>
-            </button>
-            <button 
-              type="button"
-              onClick={() => scrollToSection('doa')} 
-              className="hover:text-amber-300 transition flex flex-col items-center gap-0.5"
-            >
-              <MessageSquareHeart size={14} />
-              <span className="text-[10px]">Doa</span>
-            </button>
-          </div>
-        </nav>
-      )}
+      {/* Reset Door Button (Active when opened) */}
+      <button
+        type="button"
+        className="btn-reset-doors"
+        onClick={() => {
+          setIsOpened(false);
+          const body = document.getElementById('invitationBody');
+          if (body) body.scrollTop = 0;
+        }}
+        title="Tutup pintu 3D untuk melihat animasi pembuka lagi"
+      >
+        🔄 Tutup Pintu &amp; Coba Lagi
+      </button>
 
-      {/* ========================================================
-          1. 3D DOORS ENTRANCE & ROYAL MONOGRAM WAX SEAL
-          ======================================================== */}
-      <div className={`pw-doors-wrapper ${isOpened ? 'opened' : ''}`}>
-        {/* Left Door Leaf */}
-        <div 
-          className="pw-door-leaf pw-door-left" 
-          style={{ background: themeConfig.doorBg }}
-        >
-          <div className="pw-door-ornament-frame">
-            <div className="w-full max-w-[120px] opacity-90 filter drop-shadow">
-              {themeConfig.doorSvg}
-            </div>
-            <span className="text-[10px] tracking-[3px] font-serif text-amber-200/90 font-bold uppercase">
-              {themeConfig.doorLabelLeft}
-            </span>
-          </div>
-          <div className="pw-door-knocker">
-            <div className="pw-knocker-ring" />
-          </div>
-        </div>
+      {/* Main Viewport Stage */}
+      <div className="viewport-stage">
+        {/* Smartphone Phone Container */}
+        <div id="phoneContainer" className={`phone-container ${isOpened ? 'is-opened' : ''}`}>
+          
+          {/* Theme Dynamic Cultural Background Pattern Overlay */}
+          <div className="bg-pattern-layer" aria-hidden="true" />
 
-        {/* Right Door Leaf */}
-        <div 
-          className="pw-door-leaf pw-door-right" 
-          style={{ background: themeConfig.doorBg }}
-        >
-          <div className="pw-door-ornament-frame">
-            <div className="w-full max-w-[120px] opacity-90 filter drop-shadow scale-x-[-1]">
-              {themeConfig.doorSvg}
-            </div>
-            <span className="text-[10px] tracking-[3px] font-serif text-amber-200/90 font-bold uppercase">
-              {themeConfig.doorLabelRight}
-            </span>
-          </div>
-          <div className="pw-door-knocker">
-            <div className="pw-knocker-ring" />
-          </div>
-        </div>
-
-        {/* Center Plaque with Royal Monogram Wax Seal */}
-        <div className="pw-cover-center-badge">
-          {/* Royal Wax Seal Monogram */}
-          <div className="mx-auto w-24 h-24 rounded-full bg-gradient-to-tr from-[#FFF4CC] via-[#DFBA73] to-[#8A6828] p-[3px] shadow-2xl mb-4 border border-[#FFF8E7] flex flex-col items-center justify-center text-[#261706] font-serif font-black">
-            <span className="text-3xl leading-none tracking-tighter">
-              {invitation.groom_nickname[0] || 'R'}&{invitation.bride_nickname[0] || 'W'}
-            </span>
-            <span className="text-[8px] tracking-[2px] mt-1 font-bold uppercase">
-              {themeConfig.sealSubtitle}
-            </span>
-          </div>
-
-          {/* Guest Greeting Box */}
-          <div className="bg-[#0E1A15]/95 border border-[#DFBA73]/60 rounded-3xl p-6 sm:p-7 backdrop-blur-md shadow-2xl text-center space-y-4">
-            <div className="space-y-1">
-              <span className="text-[10px] uppercase tracking-[0.25em] text-[#DFBA73] font-serif font-bold block">
-                {themeConfig.plaqueThemeTag}
-              </span>
-              <p className="text-[9px] tracking-widest text-white/60 font-sans uppercase">
-                THE WEDDING CELEBRATION OF
-              </p>
-              <h1 className="font-serif text-3xl sm:text-4xl font-normal text-white tracking-wide pt-1">
-                {invitation.groom_nickname} <span className="font-light italic text-amber-300">&</span> {invitation.bride_nickname}
-              </h1>
-              <p className="text-xs text-amber-100/80 font-serif tracking-widest pt-1">
-                {dateFormatted}
-              </p>
+          {/* ====================================================
+              STAGE 1: 3D DOORS WITH RADICAL CULTURAL ORNAMENTS
+              ==================================================== */}
+          <div className="doors-wrapper">
+            {/* Left Door Leaf */}
+            <div className="door-leaf door-left">
+              <div className="door-ornament-frame">
+                {themeConfig.doorSvg}
+                <span style={{ fontSize: '10px', letterSpacing: '3px', fontFamily: 'var(--font-royal)', color: '#DFBA73', fontWeight: 800, textTransform: 'uppercase' }}>
+                  {themeConfig.doorLabelLeft}
+                </span>
+              </div>
+              <div className="door-knocker">
+                <div className="knocker-ring" />
+              </div>
             </div>
 
-            <div className="py-3 px-3 rounded-2xl bg-black/50 border border-white/10 space-y-1">
-              <span className="text-[10px] uppercase tracking-widest text-amber-200/80 block">
-                Kepada Yth. Bapak/Ibu/Saudara/i:
-              </span>
-              <strong className="text-base sm:text-lg font-serif text-white block capitalize">
-                {guestName || 'Tamu Undangan Yang Berbahagia'}
-              </strong>
-              <span className="text-[10px] text-white/50 block">Di Tempat</span>
-              <p className="text-[9px] text-white/40 italic pt-1">
-                *Mohon maaf apabila ada kesalahan penulisan nama atau gelar
-              </p>
+            {/* Right Door Leaf */}
+            <div className="door-leaf door-right">
+              <div className="door-ornament-frame">
+                <div style={{ width: '100%', transform: 'scaleX(-1)' }}>
+                  {themeConfig.doorSvg}
+                </div>
+                <span style={{ fontSize: '10px', letterSpacing: '3px', fontFamily: 'var(--font-royal)', color: '#DFBA73', fontWeight: 800, textTransform: 'uppercase' }}>
+                  {themeConfig.doorLabelRight}
+                </span>
+              </div>
+              <div className="door-knocker">
+                <div className="knocker-ring" />
+              </div>
             </div>
 
-            {/* Buka Undangan CTA Button */}
-            <button
-              onClick={handleOpenInvitation}
-              className="w-full py-4 px-6 rounded-full bg-gradient-to-r from-[#FFE4A0] via-[#DFBA73] to-[#9E7A3E] hover:from-[#FFF0B8] hover:to-[#DFBA73] text-[#121A15] font-serif font-black text-xs tracking-[2px] uppercase transition shadow-2xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group border border-white/40"
-            >
-              <Sparkles size={16} className="text-[#121A15] transition-transform group-hover:rotate-12" />
-              <span>Buka Undangan</span>
-              <Sparkles size={16} className="text-[#121A15] transition-transform group-hover:-rotate-12" />
-            </button>
+            {/* Cover Center Badge (Wax Seal & Guest Plaque) */}
+            <div className="cover-center-badge">
+              <div className="wax-seal-circle">
+                <span className="initials">
+                  {(invitation.groom_nickname?.[0] || 'R')}&amp;{(invitation.bride_nickname?.[0] || 'W')}
+                </span>
+                <span className="subtitle">{themeConfig.sealSubtitle}</span>
+              </div>
+
+              <div className="cover-guest-plaque">
+                <p className="eyebrow">{themeConfig.plaqueThemeTag}</p>
+                <h1 className="couple-title">
+                  {invitation.groom_nickname || 'Rohim'} &amp; {invitation.bride_nickname || 'Wiwit'}
+                </h1>
+                <div className="guest-info">
+                  <span>Kepada Yth. Bapak/Ibu/Saudara/i:</span>
+                  <p className="guest-name">{guestName || 'Tamu Undangan Istimewa'}</p>
+                </div>
+              </div>
+
+              <button type="button" className="btn-open-grand" onClick={handleOpenInvitation}>
+                <span>✨</span>
+                <span>Buka Undangan</span>
+                <span>✨</span>
+              </button>
+            </div>
           </div>
-        </div>
-      </div>
 
-      {/* ========================================================
-          2. ISI UNDANGAN LENGKAP (MAIN CONTENT)
-          ======================================================== */}
-      <main className="max-w-2xl mx-auto px-4 py-12 sm:py-20 space-y-20 relative z-10">
-        
-        {/* ================= HERO SECTION ================= */}
-        <section className="text-center space-y-6 pt-4">
-          <div 
-            className={`relative rounded-[36px] overflow-hidden ${themeConfig.heroCardBorder} p-8 sm:p-12 shadow-2xl text-white`}
-            style={{ background: themeConfig.heroCardBg }}
-          >
-            {/* Cultural Background Texture Overlay */}
-            <div className="absolute inset-0 opacity-15 pointer-events-none flex items-center justify-center overflow-hidden">
-              {themeConfig.heroPatternSvg}
-            </div>
-            <div className="absolute inset-2.5 rounded-[30px] border border-amber-200/20 pointer-events-none" />
+          {/* ====================================================
+              STAGE 2: SCROLLING INVITATION (RICH & DISTINCT ORNAMENTS)
+              ==================================================== */}
+          <div className="invitation-scroll-body" id="invitationBody">
+            
+            {/* SECTION 1: HERO ARCH SECTION */}
+            <section className="hero-arch-section" id="secCover">
+              {/* Dynamic Corner Floral / Ornament Watermark */}
+              <div id="cornerOrnaments" aria-hidden="true">
+                {themeConfig.cornerTopLeft}
+                {themeConfig.cornerTopRight}
+              </div>
 
-            <div className="relative space-y-5">
-              {/* Theme Hero Cultural Emblem */}
-              <div className="drop-shadow-md">
+              {/* Dynamic Cultural Top Emblem */}
+              <div style={{ width: '80px', height: '60px', margin: '0 auto 12px' }}>
                 {themeConfig.heroEmblem}
               </div>
 
-              {/* Prewedding Arch Artwork Frame */}
-              <div className={`w-48 h-64 sm:w-56 sm:h-76 mx-auto relative overflow-hidden shadow-2xl p-1 bg-gradient-to-tr from-[#FFE4A0] via-[#DFBA73] to-[#9E7A3E] ${themeConfig.archClass}`}>
-                <div className="w-full h-full relative overflow-hidden bg-black/70 rounded-[inherit] flex items-center justify-center">
-                  {themeConfig.heroArtwork}
-                  <div className="absolute inset-x-0 bottom-0 py-2.5 bg-gradient-to-t from-black/95 via-black/70 to-transparent text-center z-10">
-                    <span className="text-[9px] uppercase tracking-[2px] font-serif text-amber-200 font-bold block">
-                      {themeConfig.archTag}
-                    </span>
+              <p style={{ fontFamily: 'var(--font-royal)', fontSize: '11px', letterSpacing: '3px', color: '#DFBA73', fontWeight: 800, textTransform: 'uppercase', margin: '6px 0 2px' }}>
+                {themeConfig.celebrationTag}
+              </p>
+
+              <h1 className="hero-script-names">
+                {invitation.groom_nickname || 'Rohim'} &amp; {invitation.bride_nickname || 'Wiwit'}
+              </h1>
+              <p className="hero-wedding-date">
+                {dateFormatted.toUpperCase()}
+              </p>
+
+              {/* Theme Distinct Arch Photo Wrapper */}
+              <div className="arch-photo-wrapper">
+                <div className="arch-photo-inner">
+                  <img 
+                    src={invitation.cover_photo_url || '/images/wedding-flowers.jpg'} 
+                    alt="Foto Pengantin" 
+                  />
+                  <div className="arch-watermark-overlay">
+                    {themeConfig.archTag}
                   </div>
                 </div>
               </div>
 
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-amber-300/30 bg-black/30 text-amber-200 text-[10px] font-serif tracking-[0.25em] uppercase">
-                <Sparkles size={12} className="text-amber-300" />
-                <span>{themeConfig.celebrationTag}</span>
-              </div>
-
-              <h2 className="font-serif text-4xl sm:text-6xl font-light tracking-tight text-white">
-                {invitation.groom_nickname} <span className="italic text-amber-300 font-normal">&</span> {invitation.bride_nickname}
-              </h2>
-
-              <p className="text-xs sm:text-sm font-serif tracking-widest text-amber-100/90 pt-1">
-                {dateFormatted}
-              </p>
-
-              {/* COUNTDOWN TIMER */}
-              <div className="pt-6">
-                <p className="text-[10px] uppercase font-serif tracking-widest text-amber-200/75 mb-3">
-                  Menghitung Hari Bahagia
-                </p>
-                <div className="grid grid-cols-4 gap-2 sm:gap-3 max-w-xs mx-auto">
-                  {[
-                    { label: 'Hari', value: timeLeft.days },
-                    { label: 'Jam', value: timeLeft.hours },
-                    { label: 'Menit', value: timeLeft.minutes },
-                    { label: 'Detik', value: timeLeft.seconds },
-                  ].map((box, i) => (
-                    <div key={i} className="p-2.5 sm:p-3 rounded-2xl bg-black/40 border border-amber-300/30 backdrop-blur text-center">
-                      <strong className="block text-xl sm:text-2xl font-serif text-amber-200 font-semibold font-variant-numeric:tabular-nums">
-                        {box.value}
-                      </strong>
-                      <span className="text-[9px] uppercase tracking-wider text-white/60">{box.label}</span>
-                    </div>
-                  ))}
+              {/* Countdown Timer Live 4 Pillars */}
+              <div className="countdown-container">
+                <div className="countdown-card">
+                  <div className="countdown-num">{timeLeft.days}</div>
+                  <div className="countdown-label">Hari</div>
+                </div>
+                <div className="countdown-card">
+                  <div className="countdown-num">{timeLeft.hours}</div>
+                  <div className="countdown-label">Jam</div>
+                </div>
+                <div className="countdown-card">
+                  <div className="countdown-num">{timeLeft.minutes}</div>
+                  <div className="countdown-label">Menit</div>
+                </div>
+                <div className="countdown-card">
+                  <div className="countdown-num">{timeLeft.seconds}</div>
+                  <div className="countdown-label">Detik</div>
                 </div>
               </div>
 
-              {/* SAVE THE DATE BUTTON */}
-              <div className="pt-4">
+              {/* Google Calendar Link */}
+              <div style={{ textAlign: 'center', marginBottom: '10px' }}>
                 <a
                   href={makeGoogleCalendarUrl(
                     `Pernikahan ${invitation.groom_nickname} & ${invitation.bride_nickname}`,
@@ -795,458 +482,290 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-serif font-bold tracking-wider uppercase transition shadow-md hover:scale-105"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    background: 'rgba(223, 186, 115, 0.16)',
+                    border: '1px solid rgba(223, 186, 115, 0.4)',
+                    color: '#DFBA73',
+                    padding: '7px 18px',
+                    borderRadius: '20px',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    textDecoration: 'none'
+                  }}
                 >
-                  <BookmarkCheck size={14} />
-                  <span>Simpan ke Google Calendar</span>
+                  <span>📅 Simpan ke Google Calendar</span>
                 </a>
               </div>
-            </div>
-          </div>
-        </section>
+            </section>
 
-        {/* ================= AYAT SUCI / DOA AR-RUM ================= */}
-        {invitation.quote_body && (
-          <section className="text-center max-w-xl mx-auto p-8 sm:p-10 rounded-[32px] border border-amber-200/80 bg-white/70 backdrop-blur shadow-sm space-y-4">
-            <p className="text-base font-serif text-amber-900 tracking-wide">
-              بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-            </p>
-            <div className="w-12 h-0.5 bg-amber-300 mx-auto rounded-full" />
-            <h3 className="font-serif text-xs font-bold tracking-widest uppercase text-amber-800">
-              {invitation.quote_title || 'Surat Ar-Rum : 21'}
-            </h3>
-            <p className="text-xs sm:text-sm font-serif italic leading-relaxed text-slate-700 max-w-md mx-auto">
-              &ldquo;{invitation.quote_body}&rdquo;
-            </p>
-          </section>
-        )}
-
-        {/* ================= PROFIL MEMPELAI (THE COUPLE) ================= */}
-        <section id="mempelai" className="space-y-10 text-center scroll-mt-20">
-          <div className="space-y-1.5">
-            <span className="text-[10px] uppercase font-serif tracking-[0.25em] text-amber-800 block">
-              PASANGAN MEMPELAI
-            </span>
-            <h3 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900">
-              Kedua Mempelai
-            </h3>
-            <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
-              Maha Suci Allah yang telah menciptakan makhluk-Nya berpasang-pasangan. Dengan memohon rahmat dan ridho-Nya, kami bermaksud mengikat janji suci:
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-xl mx-auto">
-            {/* Pengantin Pria */}
-            <div className={`p-8 rounded-[32px] border ${accentColor} space-y-4 text-center relative overflow-hidden group hover:shadow-md transition`}>
-              {/* Floral corner flourish accent */}
-              <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-tr from-amber-600 via-amber-400 to-amber-200 p-[2px] shadow-md">
-                <div className="w-full h-full rounded-full bg-[#FAF8F5] flex items-center justify-center font-serif text-2xl font-bold text-amber-900">
-                  {invitation.groom_nickname[0] || 'R'}
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <span className="text-[10px] uppercase tracking-widest text-amber-800 font-serif font-bold">
-                  Mempelai Pria
-                </span>
-                <h4 className="font-serif text-2xl font-bold text-slate-900">{invitation.groom_full_name}</h4>
-                <p className="text-xs text-slate-600 font-serif leading-relaxed pt-1">
-                  {invitation.groom_parents}
+            {/* SECTION 2: QURANIC BLESSING CARD */}
+            <section className="blessing-section">
+              <div className="blessing-card">
+                <p className="blessing-title">{invitation.quote_title || 'SURAT AR-RUM : 21'}</p>
+                <p className="blessing-quote">
+                  &ldquo;{invitation.quote_body || 'Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.'}&rdquo;
                 </p>
+                <p className="blessing-surah">Q.S AR-RUM AYAT 21</p>
               </div>
-            </div>
+            </section>
 
-            {/* Pengantin Wanita */}
-            <div className={`p-8 rounded-[32px] border ${accentColor} space-y-4 text-center relative overflow-hidden group hover:shadow-md transition`}>
-              <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-tr from-amber-600 via-amber-400 to-amber-200 p-[2px] shadow-md">
-                <div className="w-full h-full rounded-full bg-[#FAF8F5] flex items-center justify-center font-serif text-2xl font-bold text-amber-900">
-                  {invitation.bride_nickname[0] || 'W'}
+            {/* SECTION 3: BRIDE & GROOM PROFILES */}
+            <section className="profiles-section" id="secCouple">
+              <div className="section-headline">
+                <span className="section-eyebrow">MEMPELAI PENGANTIN</span>
+                <h2 className="section-title">Kedua Mempelai</h2>
+                <div style={{ color: '#DFBA73', marginTop: '4px' }}>✦ ❖ ✦</div>
+              </div>
+
+              {/* Mempelai Pria */}
+              <div className="profile-card">
+                <div className="profile-avatar-frame">
+                  <div className="profile-avatar-inner">
+                    <img src="/images/landscape-lake.jpg" alt="Mempelai Pria" />
+                  </div>
                 </div>
-              </div>
-
-              <div className="space-y-1">
-                <span className="text-[10px] uppercase tracking-widest text-amber-800 font-serif font-bold">
-                  Mempelai Wanita
-                </span>
-                <h4 className="font-serif text-2xl font-bold text-slate-900">{invitation.bride_full_name}</h4>
-                <p className="text-xs text-slate-600 font-serif leading-relaxed pt-1">
-                  {invitation.bride_parents}
+                <h3 className="profile-name">{invitation.groom_full_name || 'Ahmad Nur Rohim'}</h3>
+                <p className="profile-parents">
+                  {invitation.groom_parents || 'Putra tercinta dari Bpk. H. Ahmad & Ibu Hj. Siti'}
                 </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ================= DETAIL ACARA (AKAD & RESEPSI) ================= */}
-        <section id="acara" className="space-y-10 text-center scroll-mt-20">
-          <div className="space-y-1.5">
-            <span className="text-[10px] uppercase font-serif tracking-[0.25em] text-amber-800 block">
-              WAKTU & TEMPAT
-            </span>
-            <h3 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900">
-              Rangkaian Acara
-            </h3>
-            <p className="text-xs text-slate-500 max-w-md mx-auto">
-              Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir di acara kami:
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-xl mx-auto">
-            {/* Kartu Akad Nikah */}
-            <div className={`p-7 rounded-[32px] border ${accentColor} text-left space-y-5 flex flex-col justify-between`}>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between border-b pb-3 border-amber-200/60">
-                  <strong className="font-serif text-xl text-amber-950 font-bold">Akad Nikah</strong>
-                  <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-800">
-                    <Heart size={16} />
-                  </div>
-                </div>
-
-                <div className="space-y-2.5 text-xs text-slate-700">
-                  <div className="flex items-center gap-2.5 font-medium">
-                    <Calendar size={16} className="text-amber-800 shrink-0" />
-                    <span>{invitation.akad_date ? new Date(invitation.akad_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : '-'}</span>
-                  </div>
-                  <div className="flex items-center gap-2.5 font-medium">
-                    <Clock size={16} className="text-amber-800 shrink-0" />
-                    <span>{invitation.akad_time || '08:00 WIB - Selesai'}</span>
-                  </div>
-                  <div className="flex items-start gap-2.5 pt-1">
-                    <MapPin size={16} className="text-amber-800 shrink-0 mt-0.5" />
-                    <div>
-                      <strong className="block text-sm font-serif font-bold text-slate-900">{invitation.akad_venue}</strong>
-                      <span className="text-slate-500 block text-[11px] leading-relaxed pt-0.5">{invitation.akad_address}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {invitation.akad_maps_url && (
-                <div className="pt-3 border-t border-amber-100 flex flex-wrap gap-2">
-                  <a
-                    href={invitation.akad_maps_url}
-                    target="_blank"
+                {invitation.groom_instagram && (
+                  <a 
+                    href={`https://instagram.com/${invitation.groom_instagram.replace(/^@/, '')}`} 
+                    target="_blank" 
                     rel="noopener noreferrer"
-                    className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold ${buttonAccent} transition shadow-sm`}
+                    className="btn-instagram"
                   >
-                    <MapPin size={13} />
-                    <span>Petunjuk Lokasi (Maps)</span>
-                    <ExternalLink size={11} />
+                    <span>📷 @{invitation.groom_instagram.replace(/^@/, '')}</span>
                   </a>
-                </div>
-              )}
-            </div>
-
-            {/* Kartu Resepsi */}
-            <div className={`p-7 rounded-[32px] border ${accentColor} text-left space-y-5 flex flex-col justify-between`}>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between border-b pb-3 border-amber-200/60">
-                  <strong className="font-serif text-xl text-amber-950 font-bold">Resepsi Pernikahan</strong>
-                  <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-800">
-                    <Sparkles size={16} />
-                  </div>
-                </div>
-
-                <div className="space-y-2.5 text-xs text-slate-700">
-                  <div className="flex items-center gap-2.5 font-medium">
-                    <Calendar size={16} className="text-amber-800 shrink-0" />
-                    <span>{invitation.resepsi_date ? new Date(invitation.resepsi_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : '-'}</span>
-                  </div>
-                  <div className="flex items-center gap-2.5 font-medium">
-                    <Clock size={16} className="text-amber-800 shrink-0" />
-                    <span>{invitation.resepsi_time || '11:00 WIB - 14:00 WIB'}</span>
-                  </div>
-                  <div className="flex items-start gap-2.5 pt-1">
-                    <MapPin size={16} className="text-amber-800 shrink-0 mt-0.5" />
-                    <div>
-                      <strong className="block text-sm font-serif font-bold text-slate-900">{invitation.resepsi_venue}</strong>
-                      <span className="text-slate-500 block text-[11px] leading-relaxed pt-0.5">{invitation.resepsi_address}</span>
-                    </div>
-                  </div>
-                </div>
+                )}
               </div>
 
-              {invitation.resepsi_maps_url && (
-                <div className="pt-3 border-t border-amber-100 flex flex-wrap gap-2">
-                  <a
-                    href={invitation.resepsi_maps_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold ${buttonAccent} transition shadow-sm`}
-                  >
-                    <MapPin size={13} />
-                    <span>Petunjuk Lokasi (Maps)</span>
-                    <ExternalLink size={11} />
-                  </a>
+              {/* Mempelai Wanita */}
+              <div className="profile-card">
+                <div className="profile-avatar-frame">
+                  <div className="profile-avatar-inner">
+                    <img src="/images/wedding-flowers.jpg" alt="Mempelai Wanita" />
+                  </div>
                 </div>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* ================= LOVE STORY TIMELINE ================= */}
-        <section className="text-center max-w-lg mx-auto space-y-6">
-          <div className="space-y-1">
-            <span className="text-[10px] uppercase font-serif tracking-[0.25em] text-amber-800 block">
-              KISAH KAMI
-            </span>
-            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-slate-900">
-              Cerita Perjalanan Cinta
-            </h3>
-          </div>
-
-          <div className="space-y-4 text-left">
-            <div className="p-4 rounded-2xl bg-white border border-amber-200/70 shadow-xs space-y-1">
-              <span className="text-[10px] font-bold text-amber-800 uppercase tracking-wider font-serif">Pertemuan Pertama</span>
-              <h4 className="font-serif font-bold text-sm text-slate-900">Takdir Mempertemukan</h4>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Dipertemukan dalam sebuah momen sederhana yang membuka jalan komunikasi dan ketertarikan satu sama lain.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white border border-amber-200/70 shadow-xs space-y-1">
-              <span className="text-[10px] font-bold text-amber-800 uppercase tracking-wider font-serif">Keseriusan & Lamaran</span>
-              <h4 className="font-serif font-bold text-sm text-slate-900">Meminta Doa Restu</h4>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Dengan niat yang tulus dan restu kedua orang tua, kami mengikat janji untuk melangkah ke jenjang pernikahan.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-amber-50/50 border border-amber-300/80 shadow-xs space-y-1">
-              <span className="text-[10px] font-bold text-amber-800 uppercase tracking-wider font-serif">Hari Bahagia</span>
-              <h4 className="font-serif font-bold text-sm text-amber-950">Menuju Ikatan Suci</h4>
-              <p className="text-xs text-amber-900/80 leading-relaxed">
-                InsyaAllah kami akan mengikrarkan akad suci, menyatukan dua keluarga dalam naungan cinta dan ridho-Nya.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* ================= AMPLOP DIGITAL & KADO ================= */}
-        {invitation.gift_account_number && (
-          <section id="kado" className="text-center max-w-lg mx-auto space-y-6 scroll-mt-20">
-            <div className="space-y-1.5">
-              <span className="text-[10px] uppercase font-serif tracking-[0.25em] text-amber-800 block">
-                TANDA KASIH
-              </span>
-              <h3 className="font-serif text-3xl font-bold text-slate-900">
-                Amplop Digital & Kado
-              </h3>
-              <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
-                Doa restu Anda merupakan karunia terindah bagi kami. Bagi Anda yang bermaksud memberikan tanda kasih, dapat melalui:
-              </p>
-            </div>
-
-            {/* VIP Digital Bank Card */}
-            <div className="p-6 sm:p-7 rounded-[28px] bg-gradient-to-br from-[#241A18] via-[#1A1210] to-[#0F0B0A] text-white border border-amber-300/40 shadow-xl space-y-4 text-left relative overflow-hidden">
-              {/* Chip illustration */}
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-7 rounded-md bg-gradient-to-tr from-amber-400 to-amber-200 opacity-90 shadow-inner flex items-center justify-center">
-                  <div className="w-7 h-5 border border-amber-800/40 rounded-xs" />
-                </div>
-                <span className="font-serif text-xs uppercase tracking-widest text-amber-200 font-bold">
-                  {invitation.gift_bank_name || 'BANK BCA'}
-                </span>
-              </div>
-
-              <div className="space-y-1 pt-2">
-                <span className="text-[9px] uppercase tracking-wider text-white/50 block">NOMOR REKENING</span>
-                <div className="font-mono text-xl sm:text-2xl font-bold tracking-widest text-amber-200">
-                  {invitation.gift_account_number}
-                </div>
-                <p className="text-xs font-serif text-white/90 pt-1">
-                  Atas Nama: <strong className="text-amber-100">{invitation.gift_account_holder}</strong>
+                <h3 className="profile-name">{invitation.bride_full_name || 'Wiwit Nur Hidayah'}</h3>
+                <p className="profile-parents">
+                  {invitation.bride_parents || 'Putri tercinta dari Bpk. Drs. H. Subagyo & Ibu Hj. Aminah'}
                 </p>
+                {invitation.bride_instagram && (
+                  <a 
+                    href={`https://instagram.com/${invitation.bride_instagram.replace(/^@/, '')}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="btn-instagram"
+                  >
+                    <span>📷 @{invitation.bride_instagram.replace(/^@/, '')}</span>
+                  </a>
+                )}
+              </div>
+            </section>
+
+            {/* SECTION 4: EVENT TIMELINE & MAPS */}
+            <section className="events-section" id="secEvent">
+              <div className="section-headline">
+                <span className="section-eyebrow">WAKTU &amp; TEMPAT</span>
+                <h2 className="section-title">Rangkaian Acara</h2>
+                <div style={{ color: '#DFBA73', marginTop: '4px' }}>✦ ❖ ✦</div>
               </div>
 
-              <button
-                type="button"
-                onClick={() => handleCopy(invitation.gift_account_number || '', false)}
-                className="w-full py-2.5 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 border border-white/20 text-white transition flex items-center justify-center gap-2 shadow-sm"
-              >
-                {copiedBank ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-                <span>{copiedBank ? 'Nomor Rekening Tersalin!' : 'Salin Nomor Rekening'}</span>
-              </button>
-            </div>
+              {/* Event 1: Akad Nikah */}
+              <div className="event-card">
+                <span className="event-badge">{themeConfig.event1Badge}</span>
+                <h3 className="event-date">{dateFormatted}</h3>
+                <p className="event-time">⏰ Pukul {invitation.akad_time || '08.00 - 10.00 WIB'}</p>
+                <p className="event-venue">
+                  📍 {invitation.akad_venue || themeConfig.defaultVenue1}
+                  {invitation.akad_address && (
+                    <>
+                      <br />
+                      <span style={{ fontSize: '11px', color: '#A0B5AA' }}>{invitation.akad_address}</span>
+                    </>
+                  )}
+                </p>
+                {invitation.akad_maps_url && (
+                  <a 
+                    href={invitation.akad_maps_url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'inline-block',
+                      background: 'linear-gradient(135deg, #FFE4A0, #DFBA73)',
+                      border: 'none',
+                      color: '#121A15',
+                      padding: '8px 20px',
+                      borderRadius: '20px',
+                      fontSize: '11px',
+                      fontWeight: 800,
+                      textDecoration: 'none'
+                    }}
+                  >
+                    🗺️ Buka Panduan Google Maps
+                  </a>
+                )}
+              </div>
 
-            {/* Physical Gift Delivery Address */}
-            {invitation.gift_address && (
-              <div className="p-5 rounded-2xl bg-white border border-amber-200/70 text-left text-xs space-y-2 shadow-xs">
-                <div className="flex items-center gap-1.5 text-amber-800 font-bold">
-                  <Gift size={15} />
-                  <span>Kirim Kado Fisik ke Alamat:</span>
+              {/* Event 2: Resepsi */}
+              <div className="event-card">
+                <span className="event-badge">{themeConfig.event2Badge}</span>
+                <h3 className="event-date">{dateFormatted}</h3>
+                <p className="event-time">⏰ Pukul {invitation.resepsi_time || '11.00 - 14.00 WIB'}</p>
+                <p className="event-venue">
+                  📍 {invitation.resepsi_venue || themeConfig.defaultVenue2}
+                  {invitation.resepsi_address && (
+                    <>
+                      <br />
+                      <span style={{ fontSize: '11px', color: '#A0B5AA' }}>{invitation.resepsi_address}</span>
+                    </>
+                  )}
+                </p>
+                {invitation.resepsi_maps_url && (
+                  <a 
+                    href={invitation.resepsi_maps_url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'inline-block',
+                      background: 'linear-gradient(135deg, #FFE4A0, #DFBA73)',
+                      border: 'none',
+                      color: '#121A15',
+                      padding: '8px 20px',
+                      borderRadius: '20px',
+                      fontSize: '11px',
+                      fontWeight: 800,
+                      textDecoration: 'none'
+                    }}
+                  >
+                    🗺️ Buka Panduan Google Maps
+                  </a>
+                )}
+              </div>
+            </section>
+
+            {/* SECTION 5: VIP DIGITAL ENVELOPE */}
+            <section className="gift-section" id="secGift">
+              <div className="section-headline">
+                <span className="section-eyebrow">TANDA KASIH</span>
+                <h2 className="section-title">Amplop Digital</h2>
+                <div style={{ color: '#DFBA73', marginTop: '4px' }}>✦ ❖ ✦</div>
+              </div>
+
+              <div className="vip-card-box">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '11px', letterSpacing: '2px', color: '#DFBA73', fontWeight: 800 }}>VIP WEDDING GIFT CARD</span>
+                  <span style={{ fontSize: '16px' }}>💳</span>
                 </div>
-                <p className="text-slate-700 leading-relaxed">{invitation.gift_address}</p>
-                <button
-                  type="button"
-                  onClick={() => handleCopy(invitation.gift_address || '', true)}
-                  className="inline-flex items-center gap-1.5 text-xs text-amber-800 font-semibold hover:underline pt-1"
+                <div className="chip-micro" />
+                <p style={{ fontSize: '12px', color: '#CBDCD2' }}>{invitation.gift_bank_name || 'Bank Central Asia (BCA)'}</p>
+                <p className="card-number-gold">{invitation.gift_account_number || '8910 •••• •••• 421'}</p>
+                <p style={{ fontSize: '12px', color: '#FFF', fontWeight: 600, marginBottom: '14px' }}>
+                  a.n {invitation.gift_account_holder || 'ROHIM SETIARAMA'}
+                </p>
+                <button 
+                  type="button" 
+                  className="btn-copy-account" 
+                  onClick={() => handleCopy(invitation.gift_account_number || '89104218921')}
                 >
-                  {copiedAddress ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
-                  <span>{copiedAddress ? 'Alamat Tersalin!' : 'Salin Alamat Lengkap'}</span>
+                  {copiedBank ? '✓ Berhasil Disalin!' : '📋 Salin Nomor Rekening'}
                 </button>
               </div>
-            )}
-          </section>
-        )}
+            </section>
 
-        {/* ================= FORM RSVP & WISHES WALL ================= */}
-        <section id="doa" className="space-y-8 max-w-xl mx-auto scroll-mt-20">
-          <div className="text-center space-y-1.5">
-            <span className="text-[10px] uppercase font-serif tracking-[0.25em] text-amber-800 block">
-              RSVP & UCAPAN
-            </span>
-            <h3 className="font-serif text-3xl font-bold text-slate-900">
-              Konfirmasi & Doa Restu
-            </h3>
-            <p className="text-xs text-slate-500">
-              Mohon konfirmasi kehadiran serta kirimkan doa restu terbaik untuk kedua mempelai:
-            </p>
-          </div>
-
-          {/* Form RSVP */}
-          <form onSubmit={handleSubmitWish} className={`p-6 sm:p-7 rounded-[32px] border ${accentColor} space-y-4`}>
-            <div>
-              <label className="text-xs font-semibold text-slate-800 block mb-1">Nama Lengkap:</label>
-              <input
-                required
-                type="text"
-                value={senderName}
-                onChange={e => setSenderName(e.target.value)}
-                placeholder="Tuliskan nama Anda / keluarga"
-                className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-amber-600"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs font-semibold text-slate-800 block mb-1">Konfirmasi Kehadiran:</label>
-                <select
-                  aria-label="Konfirmasi Kehadiran"
-                  value={attendance}
-                  onChange={e => setAttendance(e.target.value as 'attending' | 'not_attending' | 'tentative')}
-                  className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-amber-600"
-                >
-                  <option value="attending">Hadir</option>
-                  <option value="not_attending">Tidak Dapat Hadir</option>
-                  <option value="tentative">Masih Ragu</option>
-                </select>
+            {/* SECTION 6: GUESTBOOK & RSVP */}
+            <section className="wishes-section" id="secWish">
+              <div className="section-headline">
+                <span className="section-eyebrow">BUKU TAMU</span>
+                <h2 className="section-title">Doa &amp; Restu</h2>
+                <div style={{ color: '#DFBA73', marginTop: '4px' }}>✦ ❖ ✦</div>
               </div>
 
-              <div>
-                <label className="text-xs font-semibold text-slate-800 block mb-1">Jumlah Tamu (Pax):</label>
-                <input
-                  type="number"
-                  min="1"
-                  max="10"
-                  value={pax}
-                  onChange={e => setPax(Number(e.target.value))}
-                  className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-amber-600"
-                />
-              </div>
-            </div>
-
-            {/* Quick Greeting Chips */}
-            <div>
-              <span className="text-[10px] text-slate-500 font-semibold block mb-1.5">
-                Template Ucapan Cepat:
-              </span>
-              <div className="flex flex-wrap gap-1.5">
-                {quickWishes.map((w, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => setMessage(w)}
-                    className="text-[10px] px-2.5 py-1 rounded-lg bg-amber-50 text-amber-900 border border-amber-200/80 hover:bg-amber-100 transition text-left"
+              <div className="wishes-box">
+                <form onSubmit={handleSubmitWish}>
+                  <input 
+                    type="text" 
+                    className="input-field" 
+                    placeholder="Nama Anda (Bapak/Ibu/Saudara/i)"
+                    value={senderName}
+                    onChange={(e) => setSenderName(e.target.value)}
+                    required
+                  />
+                  <select 
+                    className="input-field"
+                    value={attendance}
+                    onChange={(e) => setAttendance(e.target.value as any)}
                   >
-                    {w.slice(0, 36)}…
+                    <option value="attending">Konfirmasi: Ya, Saya Akan Hadir</option>
+                    <option value="tentative">Konfirmasi: Masih Ragu-ragu</option>
+                    <option value="not_attending">Konfirmasi: Maaf, Belum Bisa Hadir</option>
+                  </select>
+                  <textarea 
+                    className="input-field" 
+                    rows={3} 
+                    placeholder="Tuliskan untaian doa dan ucapan selamat untuk kedua mempelai..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    required
+                  />
+                  <button type="submit" className="btn-submit-wish" disabled={submittingWish}>
+                    {submittingWish ? 'MENGIRIM DOA...' : wishSuccess ? '✓ DOA RESTU TERKIRIM' : 'KIRIM DOA RESTU'}
                   </button>
-                ))}
-              </div>
-            </div>
+                </form>
 
-            <div>
-              <label className="text-xs font-semibold text-slate-800 block mb-1">Ucapan & Doa Restu:</label>
-              <textarea
-                required
-                rows={3}
-                value={message}
-                onChange={e => setMessage(e.target.value)}
-                placeholder="Tuliskan ucapan dan doa terbaik untuk kedua mempelai…"
-                className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 outline-none focus:border-amber-600"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={submittingWish}
-              className={`w-full py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 ${buttonAccent} transition shadow-md`}
-            >
-              <Send size={14} />
-              <span>{submittingWish ? 'Mengirimkan…' : 'Kirim Konfirmasi & Doa Restu'}</span>
-            </button>
-
-            {wishSuccess && (
-              <div className="p-3 bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs rounded-xl text-center">
-                Terima kasih! Ucapan dan doa restu Anda telah tersampaikan.
-              </div>
-            )}
-          </form>
-
-          {/* Wishes List */}
-          <div className="space-y-3 pt-2">
-            <h4 className="font-serif text-sm font-bold text-slate-900 uppercase tracking-wider border-b border-amber-200/60 pb-2">
-              Doa Restu dari Kerabat & Sahabat ({wishes.length})
-            </h4>
-
-            {wishes.length === 0 ? (
-              <p className="text-center py-8 text-xs text-slate-400 font-serif italic">
-                Jadilah yang pertama mengirimkan ucapan doa restu untuk kedua mempelai.
-              </p>
-            ) : (
-              <div className="space-y-3 max-h-96 overflow-y-auto pr-1">
-                {wishes.map(w => (
-                  <div key={w.id} className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-1.5 text-slate-800">
-                    <div className="flex items-center justify-between gap-2">
-                      <strong className="text-xs font-bold font-serif text-amber-950">{w.guest_name}</strong>
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
-                        w.attendance === 'attending' 
-                          ? 'bg-emerald-100 text-emerald-800' 
-                          : w.attendance === 'not_attending'
-                            ? 'bg-rose-100 text-rose-800'
-                            : 'bg-amber-100 text-amber-800'
-                      }`}>
-                        {w.attendance === 'attending' ? `Hadir (${w.pax} pax)` : w.attendance === 'not_attending' ? 'Tidak Hadir' : 'Ragu'}
-                      </span>
-                    </div>
-                    <p className="text-xs text-slate-600 leading-relaxed">{w.message}</p>
-                    <span className="text-[10px] text-slate-400 block pt-0.5">
-                      {new Date(w.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
-                    </span>
+                {/* Wishes Feed */}
+                {wishes.length > 0 && (
+                  <div style={{ marginTop: '18px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {wishes.slice(0, 5).map((w) => (
+                      <div key={w.id} style={{ background: 'rgba(8, 16, 13, 0.65)', border: '1px solid rgba(223, 186, 115, 0.25)', borderRadius: '12px', padding: '10px 12px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3px' }}>
+                          <strong style={{ fontSize: '12px', color: '#DFBA73' }}>{w.guest_name}</strong>
+                          <span style={{ fontSize: '9px', color: '#9BB8A9' }}>
+                            {w.attendance === 'attending' ? '✓ Hadir' : w.attendance === 'tentative' ? '? Ragu' : '✗ Izin'}
+                          </span>
+                        </div>
+                        <p style={{ fontSize: '12px', color: '#E2ECE6', fontStyle: 'italic', margin: 0, lineHeight: 1.4 }}>
+                          &ldquo;{w.message}&rdquo;
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
-            )}
-          </div>
-        </section>
+            </section>
 
-        {/* ================= FOOTER ================= */}
-        <footer className="text-center pt-12 pb-16 border-t border-amber-200/60 space-y-3 text-slate-600">
-          <p className="font-serif text-sm italic max-w-md mx-auto leading-relaxed">
-            Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.
-          </p>
-          <p className="font-serif font-bold text-lg text-slate-900 pt-2">
-            Kami yang berbahagia,<br />
-            {invitation.groom_nickname} & {invitation.bride_nickname}
-          </p>
-          <div className="pt-6">
-            <Link href="/" className="text-[11px] text-slate-400 hover:text-slate-700 transition">
-              Dibuat dengan cinta via Pocket Wedding
-            </Link>
           </div>
-        </footer>
 
-      </main>
+          {/* FLOATING BOTTOM DOCK NAVIGATION */}
+          <nav className="bottom-dock" aria-label="Navigasi Undangan">
+            <button type="button" className="dock-btn" onClick={() => scrollToSection('secCover')}>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+              <span>Sampul</span>
+            </button>
+            <button type="button" className="dock-btn" onClick={() => scrollToSection('secCouple')}>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              <span>Mempelai</span>
+            </button>
+            <button type="button" className="dock-btn" onClick={() => scrollToSection('secEvent')}>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
+              <span>Acara</span>
+            </button>
+            <button type="button" className="dock-btn" onClick={() => scrollToSection('secGift')}>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.1-.9-2-2-2z"/></svg>
+              <span>Hadiah</span>
+            </button>
+            <button type="button" className="dock-btn" onClick={() => scrollToSection('secWish')}>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+              <span>Ucapan</span>
+            </button>
+          </nav>
+
+        </div>
+      </div>
     </div>
   );
 }
