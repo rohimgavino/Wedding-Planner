@@ -375,9 +375,9 @@ export function getInvitationThemeConfig(theme: InvitationTheme): ThemeVisualCon
         doorLabelRight: 'ESTATE',
         sealSubtitle: 'ROYAL SEAL',
         plaqueThemeTag: 'CLASSIC IVORY & GOLD',
-        celebrationTag: 'HOLY MATRIMONY & RECEPTION',
+        celebrationTag: 'THE WEDDING CELEBRATION & RESEPSI',
         archClass: 'rounded-t-[115px] rounded-b-[22px] border-2 border-[#DFBA73]',
-        archTag: 'HOLY MATRIMONY',
+        archTag: 'THE WEDDING CELEBRATION',
         doorSvg: (
           <svg viewBox="0 0 100 220" fill="none" stroke="#DFBA73" strokeWidth="1.8" className="w-full">
             <rect x="25" y="20" width="60" height="180" rx="8" strokeWidth="2" />

@@ -102,7 +102,7 @@ const THEMES: ThemeOption[] = [
     badge: 'Wax Seal & Damask',
     desc: 'Broken white hangat dengan stempel lilin monogram emas, French rococo scroll, dan mewah abadi.',
     previewColor: 'bg-amber-100 border-amber-300',
-    culturalNote: 'Holy Matrimony & Reception'
+    culturalNote: 'The Wedding Celebration & Reception'
   },
   {
     id: 'sage-garden',
@@ -333,11 +333,11 @@ export function DigitalInvitationManager() {
               {copiedLink ? 'Tersalin!' : 'Salin Tautan'}
             </button>
             <Link
-              href={`/u/${sanitizedSlug || 'undangan'}?preview=true`}
+              href={`/u/${sanitizedSlug || 'undangan'}?preview=true&theme=${theme}`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold flex items-center gap-1.5 transition"
-              title="Lihat simulasi undangan sekarang tanpa harus melengkapi semua data"
+              title="Lihat simulasi undangan tema aktif sekarang tanpa harus melengkapi semua data"
             >
               <Sparkles size={14} className="text-amber-500" />
               Pratinjau Live
@@ -562,11 +562,11 @@ export function DigitalInvitationManager() {
                       )}
 
                       <Link
-                        href={`/u/${sanitizedSlug || 'undangan'}?preview=true`}
+                        href={`/u/${sanitizedSlug || 'undangan'}?preview=true&theme=${t.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="py-2 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium transition"
-                        title="Lihat Pratinjau Tema"
+                        title={`Lihat Pratinjau Tema ${t.name}`}
                       >
                         <ExternalLink size={13} />
                       </Link>

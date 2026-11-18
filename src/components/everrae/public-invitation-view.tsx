@@ -25,12 +25,27 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
-import { WeddingInvitation, InvitationWish } from '@/types';
+import { WeddingInvitation, InvitationWish, InvitationTheme } from '@/types';
 import { getInvitationThemeConfig } from './invitation-theme-config';
 
 interface PublicInvitationViewProps {
   slug?: string;
 }
+
+const PREVIEW_THEME_LIST: { id: InvitationTheme; name: string; icon: string; category: string }[] = [
+  { id: 'minang-songket', name: 'Minang Rumah Gadang 3D', icon: '🏛️', category: 'Nusantara' },
+  { id: 'jawa-keraton', name: 'Jawa Gebyok Kayu 3D', icon: '🏛️', category: 'Nusantara' },
+  { id: 'bali-dewata', name: 'Bali Candi Bentar 3D', icon: '🏛️', category: 'Nusantara' },
+  { id: 'sunda-siger', name: 'Sunda Julang Ngapak 3D', icon: '🏛️', category: 'Nusantara' },
+  { id: 'bugis-pinisi', name: 'Bugis Perahu Pinisi 3D', icon: '🏛️', category: 'Nusantara' },
+  { id: 'batak-gorga', name: 'Batak Rumah Bolon 3D', icon: '🏛️', category: 'Nusantara' },
+  { id: 'islamic-arabesque', name: 'Madinah Kubah Emas 3D', icon: '🕌', category: 'Luxury' },
+  { id: 'midnight-gold', name: 'Midnight Starlight 3D', icon: '💎', category: 'Luxury' },
+  { id: 'classic-ivory', name: 'Classic Ivory & Gold', icon: '🌿', category: 'Modern' },
+  { id: 'sage-garden', name: 'Sage Botanical Garden', icon: '🌿', category: 'Modern' },
+  { id: 'romantic-rose', name: 'Romantic Rose Peony', icon: '🌿', category: 'Modern' },
+  { id: 'monochrome-editorial', name: 'Modern Editorial Vogue', icon: '💎', category: 'Luxury' },
+];
 
 // Helper to generate Google Calendar Link
 function makeGoogleCalendarUrl(title: string, dateStr?: string, timeStr?: string, venue?: string, address?: string): string {
@@ -55,6 +70,11 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
   const [wishes, setWishes] = useState<InvitationWish[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+
+  const isPreview = searchParams?.get('preview') === 'true';
+  const [previewThemeOverride, setPreviewThemeOverride] = useState<InvitationTheme | null>(
+    () => (searchParams?.get('theme') as InvitationTheme) || null
+  );
 
   // Cover opening state
   const [isOpened, setIsOpened] = useState(false);
@@ -89,7 +109,11 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
       setLoading(true);
       const supabase = createClient();
       
-      const isPreview = searchParams?.get('preview') === 'true';
+      const themeFromQuery = (searchParams?.get('theme') as InvitationTheme) || null;
+      if (themeFromQuery) {
+        setPreviewThemeOverride(themeFromQuery);
+      }
+
       const { data: inv, error: invError } = await supabase
         .from('wedding_invitations')
         .select('*')
@@ -98,12 +122,13 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
 
       if (invError || !inv || (!inv.is_published && !isPreview)) {
         if (slug === 'preview' || isPreview || slug === 'rohim-wiwit') {
+          const fallbackTheme = themeFromQuery || previewThemeOverride || 'minang-songket';
           setInvitation({
             id: 'preview-id',
             workspace_id: 'preview-ws',
             slug: slug || 'rohim-wiwit',
             is_published: true,
-            theme: 'classic-ivory',
+            theme: fallbackTheme,
             quote_title: 'Surat Ar-Rum : 21',
             quote_body: 'Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.',
             groom_full_name: 'Ahmad Nur Rohim',
@@ -112,15 +137,15 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
             bride_full_name: 'Wiwit Nur Hidayah',
             bride_nickname: 'Wiwit',
             bride_parents: 'Putri tercinta dari Bpk. Drs. H. Subagyo & Ibu Hj. Aminah',
-            akad_date: '2027-03-24',
+            akad_date: '2027-06-17',
             akad_time: '08:00 - 10:00 WIB',
             akad_venue: "Masjid Raya Grand Mosque",
-            akad_address: 'Jl. Kaliurang KM 9, Sleman, D.I. Yogyakarta',
+            akad_address: 'Jl. Malioboro No. 1, D.I. Yogyakarta',
             akad_maps_url: 'https://maps.google.com/?q=Yogyakarta',
-            resepsi_date: '2027-03-24',
+            resepsi_date: '2027-06-17',
             resepsi_time: '11:00 - 14:00 WIB',
             resepsi_venue: 'The Grand Ballroom Palace',
-            resepsi_address: 'Jl. Gejayan No. 9, Sleman, D.I. Yogyakarta',
+            resepsi_address: 'Jl. Solo KM 9, Sleman, D.I. Yogyakarta',
             resepsi_maps_url: 'https://maps.google.com/?q=Yogyakarta',
             gift_bank_name: 'BCA (Bank Central Asia)',
             gift_account_number: '8020 9481 22',
@@ -150,7 +175,7 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
     };
 
     void load();
-  }, [slug, searchParams]);
+  }, [slug, searchParams, isPreview, previewThemeOverride]);
 
   // Update senderName when guestName query param loads
   useEffect(() => {
@@ -304,7 +329,7 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
   }
 
   // Theme styling configurations (12 distinct options)
-  const currentTheme = invitation.theme || 'classic-ivory';
+  const currentTheme = (previewThemeOverride || (searchParams?.get('theme') as InvitationTheme) || invitation.theme || 'minang-songket') as InvitationTheme;
   const themeConfig = getInvitationThemeConfig(currentTheme);
 
   const themeClass = {
@@ -353,7 +378,7 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
   }[currentTheme] || 'bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-800 hover:to-amber-900 text-white';
 
   const themeCelebrationTag = {
-    'classic-ivory': 'HOLY MATRIMONY & RECEPTION',
+    'classic-ivory': 'THE WEDDING CELEBRATION & RESEPSI',
     'sage-garden': 'INTIMATE GARDEN CELEBRATION',
     'romantic-rose': 'THE WEDDING CELEBRATION',
     'midnight-gold': 'MIDNIGHT STARLIGHT GALA',
@@ -377,6 +402,73 @@ export function PublicInvitationView({ slug: propSlug }: PublicInvitationViewPro
     <div className={`min-h-screen ${themeClass} selection:bg-rose-100 relative overflow-x-hidden`}>
       {/* Background Audio Track */}
       <audio ref={audioRef} loop src={invitation.music_url || '/audio/wedding-acoustic.mp3'} preload="auto" />
+
+      {/* Floating Theme Simulator Toolbar (Active in Preview Mode) */}
+      {isPreview && (
+        <aside aria-label="Toolbar Simulator Tema" className="sticky top-0 inset-x-0 z-50 bg-slate-900/95 text-white backdrop-blur-md border-b border-amber-400/40 shadow-2xl px-3 py-2.5">
+          <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-2.5">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 bg-amber-500/20 text-amber-300 rounded-lg text-xs font-bold flex items-center gap-1 shrink-0">
+                  <Sparkles size={13} className="text-amber-400" />
+                  SIMULATOR 12 TEMA 3D
+                </span>
+                <span className="text-xs text-white/90 hidden sm:inline">
+                  Tema Aktif: <strong className="text-amber-300 font-serif">{themeConfig.name}</strong>
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsOpened(false)}
+                  className="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-semibold flex items-center gap-1 transition"
+                  title="Tutup pintu untuk menguji animasi buka pintu 3D lagi"
+                >
+                  <Sparkles size={11} />
+                  <span>Uji Buka Pintu 3D ↺</span>
+                </button>
+                <Link
+                  href="/dashboard"
+                  className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white/90 text-xs font-semibold transition"
+                >
+                  ← Dashboard
+                </Link>
+              </div>
+            </div>
+
+            {/* Horizontal theme pills selector */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-0.5 scrollbar-thin">
+              {PREVIEW_THEME_LIST.map(t => {
+                const isActive = currentTheme === t.id;
+                return (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => {
+                      setPreviewThemeOverride(t.id);
+                      setIsOpened(false); // Reset door so they can test the new theme's door animation!
+                      if (typeof window !== 'undefined') {
+                        const url = new URL(window.location.href);
+                        url.searchParams.set('preview', 'true');
+                        url.searchParams.set('theme', t.id);
+                        window.history.replaceState({}, '', url.toString());
+                      }
+                    }}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition flex items-center gap-1.5 shrink-0 ${
+                      isActive
+                        ? 'bg-amber-400 text-slate-950 font-bold shadow-sm shadow-amber-400/30 ring-2 ring-amber-300'
+                        : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white'
+                    }`}
+                  >
+                    <span>{t.icon}</span>
+                    <span>{t.name.split(' (')[0]}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </aside>
+      )}
 
       {/* ========================================================
           DECORATIVE BACKGROUND TEXTURES, AURA & ROMANTIC PETALS
