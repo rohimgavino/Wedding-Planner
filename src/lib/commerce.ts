@@ -103,6 +103,48 @@ export interface SiteAdminEntry {
   created_at: string;
 }
 
+export interface VoucherValidationResult {
+  valid: boolean;
+  message: string;
+  code?: string;
+  title?: string;
+  discount_type?: 'fixed' | 'percentage';
+  discount_value?: number;
+  discount_amount_idr?: number;
+  base_price_idr?: number;
+  final_price_idr?: number;
+}
+
+export interface AdminVoucher {
+  id: string;
+  code: string;
+  title: string;
+  discount_type: 'fixed' | 'percentage';
+  discount_value: number;
+  max_discount_idr: number | null;
+  min_purchase_idr: number;
+  package_ids: string[] | null;
+  max_uses: number | null;
+  used_count: number;
+  starts_at: string;
+  expires_at: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateVoucherInput {
+  code: string;
+  title: string;
+  discountType: 'fixed' | 'percentage';
+  discountValue: number;
+  maxDiscountIdr?: number | null;
+  maxUses?: number | null;
+  expiresAt?: string | null;
+  isActive?: boolean;
+  packageIds?: string[] | null;
+}
+
 export function isValidSupportEmail(value: string): boolean {
   const email = value.trim();
   return (
@@ -213,7 +255,8 @@ export async function fetchWorkspaceBilling(accessToken: string, workspaceId: st
 export async function startDokuCheckout(
   accessToken: string,
   workspaceId: string,
-  packageId: string
+  packageId: string,
+  voucherCode?: string
 ): Promise<CheckoutResult> {
   const response = await fetch('/api/payments/checkout', {
     method: 'POST',
@@ -221,7 +264,11 @@ export async function startDokuCheckout(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify({ workspaceId, packageId }),
+    body: JSON.stringify({
+      workspaceId,
+      packageId,
+      voucherCode: voucherCode ? voucherCode.trim() : undefined,
+    }),
   });
   return parseApiJson<CheckoutResult>(response, 'Gagal membuat sesi pembayaran DOKU.');
 }
@@ -313,5 +360,58 @@ export class Commerce {
       .order('created_at', { ascending: false })
       .limit(100);
     return checked(data || [], error);
+  }
+
+  async validateVoucher(code: string, packageId: string, workspaceId: string): Promise<VoucherValidationResult> {
+    const { data, error } = await this.client.rpc('validate_voucher', {
+      p_code: code.trim(),
+      p_package_id: packageId,
+      p_workspace_id: workspaceId,
+    });
+    return checked(data as VoucherValidationResult, error);
+  }
+
+  async listVouchers(): Promise<AdminVoucher[]> {
+    const { data, error } = await this.client.rpc('admin_list_vouchers');
+    return checked((data as AdminVoucher[] | null) || [], error);
+  }
+
+  async createVoucher(input: CreateVoucherInput): Promise<AdminVoucher[]> {
+    const { data, error } = await this.client.rpc('admin_upsert_voucher', {
+      p_code: input.code.trim().toUpperCase(),
+      p_title: input.title.trim(),
+      p_discount_type: input.discountType,
+      p_discount_value: input.discountValue,
+      p_max_discount_idr: input.maxDiscountIdr || null,
+      p_max_uses: input.maxUses || null,
+      p_expires_at: input.expiresAt || null,
+      p_is_active: input.isActive ?? true,
+      p_package_ids: input.packageIds || null,
+    });
+    return checked((data as AdminVoucher[] | null) || [], error);
+  }
+
+  async toggleVoucher(id: string, active: boolean): Promise<AdminVoucher[]> {
+    const { data, error } = await this.client.rpc('admin_toggle_voucher', {
+      p_id: id,
+      p_active: active,
+    });
+    return checked((data as AdminVoucher[] | null) || [], error);
+  }
+
+  async deleteVoucher(id: string): Promise<AdminVoucher[]> {
+    const { data, error } = await this.client.rpc('admin_delete_voucher', {
+      p_id: id,
+    });
+    return checked((data as AdminVoucher[] | null) || [], error);
+  }
+
+  async updatePackagePrice(packageId: string, priceIdr: number, reason: string): Promise<void> {
+    const { error } = await this.client.rpc('admin_quick_update_price', {
+      p_package_id: packageId,
+      p_price_idr: priceIdr,
+      p_reason: reason.trim(),
+    });
+    if (error) throw new Error(error.message);
   }
 }

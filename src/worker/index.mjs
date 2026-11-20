@@ -448,6 +448,25 @@ async function handleCheckout(request, env, fetchImpl) {
     return jsonResponse({ error: 'RESERVE_UNEXPECTED' }, 502);
   }
 
+  const voucherCode = typeof body?.voucherCode === 'string' ? body.voucherCode.trim() : '';
+  if (voucherCode) {
+    const vRes = await callSupabaseRpc(
+      env,
+      'apply_voucher_to_order',
+      {
+        p_invoice: order.invoice,
+        p_code: voucherCode,
+        p_workspace_id: workspaceId,
+        p_package_id: packageId,
+      },
+      env.SUPABASE_SERVICE_ROLE_KEY,
+      fetchImpl
+    );
+    if (vRes.ok && vRes.data?.valid && Number(vRes.data?.final_price_idr) > 0) {
+      order.amount_idr = Number(vRes.data.final_price_idr);
+    }
+  }
+
   const origin = new URL(request.url).origin;
   const dokuConfigured = Boolean(env?.DOKU_CLIENT_ID && env?.DOKU_SECRET_KEY);
   const useMayar = env?.PAYMENT_GATEWAY === 'mayar' || (!dokuConfigured && isMayarConfigured(env));

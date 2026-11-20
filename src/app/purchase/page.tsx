@@ -6,10 +6,12 @@ import Link from 'next/link';
 import { useAuth } from '@/context/auth-context';
 import { useWorkspace } from '@/context/WorkspaceContext';
 import { isTesterBypassEmail } from '@/lib/auth-policy';
-import { createClient } from '@/lib/supabase/client';
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import {
+  Commerce,
   DokuOrderSummary,
   PaymentCatalog,
+  VoucherValidationResult,
   WorkspaceBillingStatus,
   fetchPaymentCatalog,
   fetchWorkspaceBilling,
@@ -19,6 +21,7 @@ import {
   startDokuCheckout,
 } from '@/lib/commerce';
 import { formatRupiah } from '@/lib/utils';
+import { Tag, CheckCircle2, X } from 'lucide-react';
 
 function hasActiveCoreAccess(billing: WorkspaceBillingStatus | null): boolean {
   if (!billing) return false;
@@ -48,6 +51,53 @@ export default function PurchasePage() {
   const [notice, setNotice] = useState('');
   const [busyPackageId, setBusyPackageId] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+
+  // Voucher State
+  const [voucherCodeInput, setVoucherCodeInput] = useState('');
+  const [voucherLoading, setVoucherLoading] = useState(false);
+  const [voucherError, setVoucherError] = useState('');
+  const [appliedVoucher, setAppliedVoucher] = useState<VoucherValidationResult | null>(null);
+
+  const handleApplyVoucher = async () => {
+    const code = voucherCodeInput.trim().toUpperCase();
+    if (!code) {
+      setVoucherError('Masukkan kode voucher.');
+      return;
+    }
+    if (!workspaceId) {
+      setVoucherError('Workspace belum siap.');
+      return;
+    }
+    if (!isSupabaseConfigured()) {
+      setVoucherError('Layanan login cloud belum dikonfigurasi.');
+      return;
+    }
+    setVoucherLoading(true);
+    setVoucherError('');
+    try {
+      const commerce = new Commerce(createClient());
+      const res = await commerce.validateVoucher(code, 'premium', workspaceId);
+      if (!res.valid) {
+        setVoucherError(res.message || 'Kode voucher tidak valid.');
+        setAppliedVoucher(null);
+      } else {
+        setAppliedVoucher(res);
+        setVoucherCodeInput(res.code || code);
+        setNotice(`Voucher ${res.code} berhasil diterapkan!`);
+      }
+    } catch (err) {
+      setVoucherError(err instanceof Error ? err.message : 'Gagal memvalidasi voucher.');
+      setAppliedVoucher(null);
+    } finally {
+      setVoucherLoading(false);
+    }
+  };
+
+  const handleRemoveVoucher = () => {
+    setAppliedVoucher(null);
+    setVoucherCodeInput('');
+    setVoucherError('');
+  };
 
   const loadBilling = useCallback(async () => {
     if (!workspaceId) {
@@ -129,7 +179,7 @@ export default function PurchasePage() {
     try {
       const token = await getAccessToken();
       if (!token) throw new Error('Sesi login tidak ditemukan. Silakan masuk kembali.');
-      const result = await startDokuCheckout(token, workspaceId, packageId);
+      const result = await startDokuCheckout(token, workspaceId, packageId, appliedVoucher?.code);
       if (result.status === 'already_active') {
         setNotice(result.message || 'Workspace ini sudah memiliki akses aktif.');
         await Promise.all([loadBilling(), reload()]);
@@ -253,13 +303,88 @@ export default function PurchasePage() {
           </div>
         )}
 
+        {/* Voucher Input Box */}
+        {catalog && !coreActive && (
+          <div className="rounded-2xl border border-rose-100 p-4 bg-rose-50/40 space-y-3">
+            <div className="flex items-center gap-2">
+              <Tag size={16} className="text-rose-700" />
+              <strong className="text-xs sm:text-sm font-semibold text-slate-900">Punya Kode Voucher Promo?</strong>
+            </div>
+
+            {!appliedVoucher ? (
+              <form
+                className="flex flex-col sm:flex-row gap-2"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  void handleApplyVoucher();
+                }}
+              >
+                <input
+                  type="text"
+                  value={voucherCodeInput}
+                  onChange={(e) => {
+                    setVoucherCodeInput(e.target.value.toUpperCase().replace(/[^A-Z0-9_-]/g, ''));
+                    setVoucherError('');
+                  }}
+                  placeholder="Contoh: NIKAHHEMAT"
+                  className="flex-1 rounded-xl border border-rose-200 bg-white px-3.5 py-2 text-xs sm:text-sm font-mono uppercase tracking-wider placeholder:normal-case placeholder:font-sans placeholder:tracking-normal focus:border-rose-400 focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  disabled={voucherLoading || !voucherCodeInput.trim()}
+                  className="px-5 py-2 rounded-xl bg-rose-700 hover:bg-rose-800 text-white text-xs sm:text-sm font-semibold transition disabled:opacity-50 active:scale-98 shrink-0"
+                >
+                  {voucherLoading ? 'Memeriksa…' : 'Terapkan Voucher'}
+                </button>
+              </form>
+            ) : (
+              <div className="flex items-center justify-between p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900">
+                <div className="flex items-center gap-2 text-xs sm:text-sm">
+                  <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                  <div>
+                    <span className="font-mono font-bold">{appliedVoucher.code}</span>
+                    <span className="text-emerald-700 ml-1.5 font-medium">
+                      (Potongan {formatRupiah(appliedVoucher.discount_amount_idr || 0)})
+                    </span>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleRemoveVoucher}
+                  className="text-xs text-rose-700 hover:text-rose-900 font-semibold p-1"
+                >
+                  Hapus
+                </button>
+              </div>
+            )}
+
+            {voucherError && (
+              <p role="alert" className="text-xs text-rose-700 font-medium">
+                {voucherError}
+              </p>
+            )}
+          </div>
+        )}
+
         {catalog && (
           <div className="grid sm:grid-cols-3 gap-4 pt-2">
             {catalog.packages.map((pkg) => {
               const packageId = pkg.id || (pkg as unknown as { package_id?: string }).package_id || '';
-              const packagePrice = Number(
+              const basePrice = Number(
                 pkg.price_idr ?? (pkg as unknown as { effective_amount_idr?: string | number }).effective_amount_idr ?? pkg.base_amount_idr ?? 0
               );
+              let finalPrice = basePrice;
+              let discountAmount = 0;
+              if (appliedVoucher && appliedVoucher.valid) {
+                if (appliedVoucher.discount_type === 'fixed') {
+                  discountAmount = appliedVoucher.discount_value || appliedVoucher.discount_amount_idr || 0;
+                } else if (appliedVoucher.discount_type === 'percentage') {
+                  discountAmount = Math.round((basePrice * (appliedVoucher.discount_value || 0)) / 100);
+                }
+                if (discountAmount >= basePrice) discountAmount = basePrice - 1000;
+                finalPrice = Math.max(1000, basePrice - discountAmount);
+              }
+
               const packageFeatures = Array.isArray(pkg.features) ? pkg.features : [];
 
               const disabled =
@@ -278,7 +403,19 @@ export default function PurchasePage() {
                 >
                   <div className="space-y-2">
                     <h2 className="font-serif text-xl text-slate-900">{pkg.name || packageId}</h2>
-                    <p className="text-lg font-semibold text-rose-800">{formatRupiah(packagePrice)}</p>
+                    {appliedVoucher && discountAmount > 0 ? (
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs line-through text-slate-400">{formatRupiah(basePrice)}</span>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-rose-100 text-rose-800">
+                            Hemat {formatRupiah(discountAmount)}
+                          </span>
+                        </div>
+                        <p className="text-xl font-bold text-rose-800">{formatRupiah(finalPrice)}</p>
+                      </div>
+                    ) : (
+                      <p className="text-lg font-semibold text-rose-800">{formatRupiah(basePrice)}</p>
+                    )}
                     <p className="text-xs text-slate-500">{pkg.duration_days ?? 365} hari sejak aktivasi</p>
                     {pkg.description && <p className="text-sm text-slate-600">{pkg.description}</p>}
                     <ul className="text-xs text-slate-700 space-y-1 pt-1 list-disc pl-4">
@@ -292,7 +429,7 @@ export default function PurchasePage() {
                     type="button"
                     disabled={disabled}
                     onClick={() => void handleCheckout(packageId)}
-                    className="w-full min-h-11 rounded-xl bg-rose-700 text-white px-4 py-2.5 text-sm font-medium disabled:opacity-50"
+                    className="w-full min-h-11 rounded-xl bg-rose-700 text-white px-4 py-2.5 text-sm font-medium disabled:opacity-50 transition active:scale-98"
                   >
                     {busyPackageId === packageId
                       ? 'Menyiapkan pembayaran…'

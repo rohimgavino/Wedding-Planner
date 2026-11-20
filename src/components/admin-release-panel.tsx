@@ -9,10 +9,12 @@ import { createClient } from '@/lib/supabase/client';
 import { isAdminEmail } from '@/lib/auth-policy';
 import {
   AdminDokuOrder,
+  AdminVoucher,
   AuditEntry,
   Commerce,
   PaymentCatalog,
   SiteAdminEntry,
+  TierPackage,
   fetchPaymentCatalog,
   formatOrderStatus,
 } from '@/lib/commerce';
@@ -26,6 +28,11 @@ import {
   CreditCard,
   ArrowRight,
   ShieldAlert,
+  Tag,
+  Plus,
+  Trash2,
+  Edit3,
+  Percent,
 } from 'lucide-react';
 import '../app/admin/admin.css';
 
@@ -66,6 +73,21 @@ function Panel() {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
+  // Vouchers & Pricing state
+  const [vouchers, setVouchers] = useState<AdminVoucher[]>([]);
+  const [editingPackage, setEditingPackage] = useState<TierPackage | null>(null);
+  const [editPriceInput, setEditPriceInput] = useState('');
+  const [editPriceReason, setEditPriceReason] = useState('');
+
+  const [voucherModalOpen, setVoucherModalOpen] = useState(false);
+  const [vCode, setVCode] = useState('');
+  const [vTitle, setVTitle] = useState('');
+  const [vType, setVType] = useState<'fixed' | 'percentage'>('fixed');
+  const [vValue, setVValue] = useState('');
+  const [vMaxUses, setVMaxUses] = useState('');
+  const [vMaxDiscount, setVMaxDiscount] = useState('');
+  const [vPackage, setVPackage] = useState('all');
+
   const commerce = useMemo(() => new Commerce(createClient()), []);
 
   const loadOperationalData = useCallback(async () => {
@@ -88,11 +110,12 @@ function Panel() {
         return;
       }
 
-      const [nextCatalog, nextOrders, nextAudit, nextAdmins] = await Promise.all([
+      const [nextCatalog, nextOrders, nextAudit, nextAdmins, nextVouchers] = await Promise.all([
         fetchPaymentCatalog().catch(() => null),
         commerce.dokuOrders(),
         commerce.audit(),
         nextRole === 'developer' ? commerce.admins() : Promise.resolve([]),
+        commerce.listVouchers().catch(() => []),
       ]);
 
       if (nextCatalog) {
@@ -103,6 +126,7 @@ function Panel() {
       setOrders(nextOrders);
       setAudit(nextAudit);
       setAdmins(nextAdmins);
+      setVouchers(nextVouchers);
       setState('allowed');
     } catch (err) {
       setRole(null);
@@ -885,22 +909,409 @@ function Panel() {
       )}
 
       {menu === 'Paket & Harga' && (
-        <section className="admin-panel space-y-4">
-          <h2 className="text-lg font-semibold">Katalog paket aktif (authoritative server)</h2>
-          <p className="text-xs text-slate-600">
-            Harga dan durasi paket diverifikasi langsung oleh Worker/server saat checkout dibuat. Tidak ada perubahan nominal dari sisi klien.
-          </p>
-          <div className="grid sm:grid-cols-3 gap-3">
-            {(catalog?.packages || []).map((pkg) => (
-              <article key={pkg.id} className="rounded-2xl border p-4 bg-white space-y-2">
-                <h3 className="font-semibold text-base">{pkg.name}</h3>
-                <p className="text-sm font-semibold text-emerald-900">{formatRupiah(pkg.price_idr)}</p>
-                <p className="text-xs text-slate-500">{pkg.duration_days} hari · ID: {pkg.id}</p>
-                <p className="text-xs text-slate-600">{pkg.description}</p>
-              </article>
-            ))}
-          </div>
-        </section>
+        <div className="space-y-8">
+          {/* Section 1: Paket & Edit Harga */}
+          <section className="admin-panel space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-3">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-900">Katalog Paket & Harga Aktif</h2>
+                <p className="text-xs text-slate-500">
+                  Harga paket diverifikasi langsung oleh database server saat checkout dibuat. Anda dapat mengubah harga nominal paket secara aman di bawah.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid sm:grid-cols-3 gap-4">
+              {(catalog?.packages || []).map((pkg) => (
+                <article key={pkg.id} className="rounded-2xl border border-slate-200 p-5 bg-white space-y-3 shadow-xs hover:border-slate-300 transition flex flex-col justify-between">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-bold text-slate-900 text-base">{pkg.name}</h3>
+                      <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 uppercase">
+                        {pkg.id}
+                      </span>
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-2xl font-bold text-emerald-900">{formatRupiah(pkg.price_idr)}</p>
+                      <p className="text-xs text-slate-500">{pkg.duration_days} hari masa aktif</p>
+                    </div>
+                    <p className="text-xs text-slate-600 line-clamp-2">{pkg.description}</p>
+                  </div>
+                  <div className="pt-3 border-t border-slate-100">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingPackage(pkg);
+                        setEditPriceInput(String(pkg.price_idr));
+                        setEditPriceReason('');
+                      }}
+                      className="w-full py-2 px-3 rounded-xl border border-emerald-700/30 text-emerald-900 hover:bg-emerald-50 text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-98"
+                    >
+                      <Edit3 size={14} />
+                      <span>Ubah Harga Paket</span>
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          {/* Section 2: Manajemen Kode Voucher Promo */}
+          <section className="admin-panel space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3">
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-lg font-semibold text-slate-900">Kode Voucher & Kupon Promo</h2>
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800">
+                    {vouchers.length} Kupon
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500">
+                  Buat kode promo khusus untuk calon pengantin. Pengantin dapat memasukkan kode saat checkout di halaman pembayaran.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setVCode('');
+                  setVTitle('');
+                  setVType('fixed');
+                  setVValue('');
+                  setVMaxUses('');
+                  setVMaxDiscount('');
+                  setVPackage('all');
+                  setVoucherModalOpen(true);
+                }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#163e33] hover:bg-[#12332a] text-white text-xs font-semibold shadow-xs transition active:scale-98 shrink-0"
+              >
+                <Plus size={15} />
+                <span>+ Buat Voucher Baru</span>
+              </button>
+            </div>
+
+            {!vouchers.length ? (
+              <div className="py-10 text-center text-slate-400 text-xs">
+                Belum ada kode voucher. Klik tombol di atas untuk membuat voucher pertama.
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="border-b border-slate-200 text-slate-500 uppercase tracking-wider text-[11px]">
+                      <th className="py-3 px-3">Kode Voucher</th>
+                      <th className="py-3 px-3">Judul Promo</th>
+                      <th className="py-3 px-3">Potongan</th>
+                      <th className="py-3 px-3">Kuota Terpakai</th>
+                      <th className="py-3 px-3">Paket</th>
+                      <th className="py-3 px-3">Status</th>
+                      <th className="py-3 px-3 text-right">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {vouchers.map((v) => (
+                      <tr key={v.id} className="hover:bg-slate-50/70 transition">
+                        <td className="py-3 px-3">
+                          <span className="font-mono font-bold text-rose-900 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-200/60">
+                            {v.code}
+                          </span>
+                        </td>
+                        <td className="py-3 px-3 font-medium text-slate-800">{v.title}</td>
+                        <td className="py-3 px-3 font-semibold text-emerald-900">
+                          {v.discount_type === 'fixed'
+                            ? formatRupiah(v.discount_value)
+                            : `${v.discount_value}%${v.max_discount_idr ? ` (Maks. ${formatRupiah(v.max_discount_idr)})` : ''}`}
+                        </td>
+                        <td className="py-3 px-3 text-slate-600">
+                          {v.max_uses ? `${v.used_count} / ${v.max_uses}` : `${v.used_count} (Tanpa Batas)`}
+                        </td>
+                        <td className="py-3 px-3 text-slate-600 capitalize">
+                          {v.package_ids && v.package_ids.length ? v.package_ids.join(', ') : 'Semua Paket'}
+                        </td>
+                        <td className="py-3 px-3">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              void runAction(async () => {
+                                const updated = await commerce.toggleVoucher(v.id, !v.is_active);
+                                setVouchers(updated);
+                              }, `Status voucher ${v.code} berhasil diperbarui.`);
+                            }}
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold transition ${
+                              v.is_active ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                            }`}
+                          >
+                            <span className={`w-1.5 h-1.5 rounded-full ${v.is_active ? 'bg-emerald-600' : 'bg-slate-400'}`} />
+                            {v.is_active ? 'Aktif' : 'Nonaktif'}
+                          </button>
+                        </td>
+                        <td className="py-3 px-3 text-right">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (confirm(`Yakin ingin menghapus voucher ${v.code}?`)) {
+                                void runAction(async () => {
+                                  const updated = await commerce.deleteVoucher(v.id);
+                                  setVouchers(updated);
+                                }, `Voucher ${v.code} berhasil dihapus.`);
+                              }
+                            }}
+                            className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition"
+                            title="Hapus Voucher"
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </section>
+
+          {/* Modal Edit Harga Paket */}
+          {editingPackage && (
+            <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+              <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-slate-100">
+                <div className="flex items-center justify-between border-b pb-3">
+                  <h3 className="font-bold text-slate-900 text-base">Ubah Harga Paket {editingPackage.name}</h3>
+                  <button
+                    type="button"
+                    onClick={() => setEditingPackage(null)}
+                    className="text-slate-400 hover:text-slate-600 text-sm font-semibold p-1"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <form
+                  className="space-y-4"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const newPriceNum = Number(editPriceInput);
+                    if (newPriceNum < 10000) {
+                      alert('Harga minimal Rp 10.000');
+                      return;
+                    }
+                    if (!editPriceReason.trim()) {
+                      alert('Alasan perubahan harga wajib diisi untuk jejak audit.');
+                      return;
+                    }
+                    void runAction(async () => {
+                      await commerce.updatePackagePrice(editingPackage.id, newPriceNum, editPriceReason.trim());
+                      setEditingPackage(null);
+                    }, `Harga paket ${editingPackage.name} berhasil diubah ke ${formatRupiah(newPriceNum)}.`);
+                  }}
+                >
+                  <label className="block text-xs space-y-1">
+                    <span className="font-semibold text-slate-700">Harga Baru (IDR)</span>
+                    <input
+                      type="number"
+                      required
+                      min={10000}
+                      step={100}
+                      value={editPriceInput}
+                      onChange={(e) => setEditPriceInput(e.target.value)}
+                      placeholder="Contoh: 79900"
+                      className="w-full rounded-xl border p-2.5 text-sm bg-white font-mono"
+                    />
+                    <span className="text-[11px] text-slate-400">
+                      Pratinjau: {formatRupiah(Number(editPriceInput) || 0)}
+                    </span>
+                  </label>
+                  <label className="block text-xs space-y-1">
+                    <span className="font-semibold text-slate-700">Alasan Perubahan (Jejak Audit)</span>
+                    <input
+                      type="text"
+                      required
+                      maxLength={500}
+                      value={editPriceReason}
+                      onChange={(e) => setEditPriceReason(e.target.value)}
+                      placeholder="Contoh: Penyesuaian tarif tahun 2026"
+                      className="w-full rounded-xl border p-2.5 text-sm bg-white"
+                    />
+                  </label>
+                  <div className="flex justify-end gap-2 pt-2 border-t">
+                    <button
+                      type="button"
+                      onClick={() => setEditingPackage(null)}
+                      className="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={busy}
+                      className="px-5 py-2 rounded-xl bg-emerald-800 text-white text-xs font-semibold hover:bg-emerald-900 disabled:opacity-50"
+                    >
+                      Simpan Harga Baru
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* Modal Buat Voucher Baru */}
+          {voucherModalOpen && (
+            <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+              <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 border border-slate-100 max-h-[90vh] overflow-y-auto">
+                <div className="flex items-center justify-between border-b pb-3">
+                  <h3 className="font-bold text-slate-900 text-base">Buat Kode Voucher Promo Baru</h3>
+                  <button
+                    type="button"
+                    onClick={() => setVoucherModalOpen(false)}
+                    className="text-slate-400 hover:text-slate-600 text-sm font-semibold p-1"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <form
+                  className="space-y-3"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const code = vCode.trim().toUpperCase();
+                    const title = vTitle.trim();
+                    const val = Number(vValue);
+                    if (code.length < 3) {
+                      alert('Kode voucher minimal 3 karakter.');
+                      return;
+                    }
+                    if (!val || val <= 0) {
+                      alert('Nilai diskon harus lebih dari 0.');
+                      return;
+                    }
+                    void runAction(async () => {
+                      const updated = await commerce.createVoucher({
+                        code,
+                        title,
+                        discountType: vType,
+                        discountValue: val,
+                        maxUses: vMaxUses ? Number(vMaxUses) : null,
+                        maxDiscountIdr: vMaxDiscount ? Number(vMaxDiscount) : null,
+                        packageIds: vPackage === 'all' ? null : [vPackage],
+                        isActive: true,
+                      });
+                      setVouchers(updated);
+                      setVoucherModalOpen(false);
+                    }, `Voucher ${code} berhasil dibuat.`);
+                  }}
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <label className="block text-xs space-y-1">
+                      <span className="font-semibold text-slate-700">Kode Voucher (Kapital)</span>
+                      <input
+                        type="text"
+                        required
+                        value={vCode}
+                        onChange={(e) => setVCode(e.target.value.toUpperCase().replace(/[^A-Z0-9_-]/g, ''))}
+                        placeholder="Contoh: NIKAHHEMAT"
+                        className="w-full rounded-xl border p-2.5 text-sm font-mono uppercase bg-white"
+                      />
+                    </label>
+                    <label className="block text-xs space-y-1">
+                      <span className="font-semibold text-slate-700">Judul / Keterangan Promo</span>
+                      <input
+                        type="text"
+                        required
+                        value={vTitle}
+                        onChange={(e) => setVTitle(e.target.value)}
+                        placeholder="Contoh: Diskon Wedding Fair 2026"
+                        className="w-full rounded-xl border p-2.5 text-sm bg-white"
+                      />
+                    </label>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <label className="block text-xs space-y-1">
+                      <span className="font-semibold text-slate-700">Tipe Potongan</span>
+                      <select
+                        value={vType}
+                        onChange={(e) => setVType(e.target.value as 'fixed' | 'percentage')}
+                        className="w-full rounded-xl border p-2.5 text-sm bg-white"
+                      >
+                        <option value="fixed">Potongan Tetap (Rupiah)</option>
+                        <option value="percentage">Persentase (%)</option>
+                      </select>
+                    </label>
+                    <label className="block text-xs space-y-1">
+                      <span className="font-semibold text-slate-700">
+                        {vType === 'fixed' ? 'Nominal Potongan (IDR)' : 'Persentase Diskon (%)'}
+                      </span>
+                      <input
+                        type="number"
+                        required
+                        min={1}
+                        max={vType === 'percentage' ? 100 : 10000000}
+                        value={vValue}
+                        onChange={(e) => setVValue(e.target.value)}
+                        placeholder={vType === 'fixed' ? 'Contoh: 20000' : 'Contoh: 20'}
+                        className="w-full rounded-xl border p-2.5 text-sm font-mono bg-white"
+                      />
+                    </label>
+                  </div>
+
+                  {vType === 'percentage' && (
+                    <label className="block text-xs space-y-1">
+                      <span className="font-semibold text-slate-700">Maksimal Diskon (IDR, Opsional)</span>
+                      <input
+                        type="number"
+                        min={1000}
+                        value={vMaxDiscount}
+                        onChange={(e) => setVMaxDiscount(e.target.value)}
+                        placeholder="Contoh: 50000 (Kosongkan jika tanpa batas)"
+                        className="w-full rounded-xl border p-2.5 text-sm bg-white font-mono"
+                      />
+                    </label>
+                  )}
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <label className="block text-xs space-y-1">
+                      <span className="font-semibold text-slate-700">Batas Kuota Penggunaan</span>
+                      <input
+                        type="number"
+                        min={1}
+                        value={vMaxUses}
+                        onChange={(e) => setVMaxUses(e.target.value)}
+                        placeholder="Contoh: 50 (Kosongkan jika tanpa batas)"
+                        className="w-full rounded-xl border p-2.5 text-sm bg-white font-mono"
+                      />
+                    </label>
+                    <label className="block text-xs space-y-1">
+                      <span className="font-semibold text-slate-700">Berlaku untuk Paket</span>
+                      <select
+                        value={vPackage}
+                        onChange={(e) => setVPackage(e.target.value)}
+                        className="w-full rounded-xl border p-2.5 text-sm bg-white"
+                      >
+                        <option value="all">Semua Paket</option>
+                        <option value="starter">Starter Saja</option>
+                        <option value="premium">Premium Saja</option>
+                        <option value="wedding_pro">Wedding Pro Saja</option>
+                      </select>
+                    </label>
+                  </div>
+
+                  <div className="flex justify-end gap-2 pt-3 border-t">
+                    <button
+                      type="button"
+                      onClick={() => setVoucherModalOpen(false)}
+                      className="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={busy}
+                      className="px-5 py-2 rounded-xl bg-[#163e33] text-white text-xs font-semibold hover:bg-[#12332a] disabled:opacity-50"
+                    >
+                      Simpan Voucher
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+        </div>
       )}
 
       {menu === 'Workspace & Masa Akses' && (
