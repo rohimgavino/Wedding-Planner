@@ -137,7 +137,8 @@ BEGIN
     'discount_value', v_rec.discount_value,
     'discount_amount_idr', v_discount,
     'base_price_idr', v_base_price,
-    'final_price_idr', v_final_price
+    'final_price_idr', v_final_price,
+    'expires_at', v_rec.expires_at
   );
 END $$;
 

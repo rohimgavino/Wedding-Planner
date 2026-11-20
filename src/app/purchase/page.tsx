@@ -342,16 +342,28 @@ export default function PurchasePage() {
                 <div className="flex items-center gap-2 text-xs sm:text-sm">
                   <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
                   <div>
-                    <span className="font-mono font-bold">{appliedVoucher.code}</span>
-                    <span className="text-emerald-700 ml-1.5 font-medium">
-                      (Potongan {formatRupiah(appliedVoucher.discount_amount_idr || 0)})
-                    </span>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="font-mono font-bold">{appliedVoucher.code}</span>
+                      <span className="text-emerald-700 font-medium">
+                        (Potongan {formatRupiah(appliedVoucher.discount_amount_idr || 0)})
+                      </span>
+                    </div>
+                    {appliedVoucher.expires_at && (
+                      <p className="text-[11px] text-emerald-800 mt-0.5">
+                        Masa aktif s.d.{' '}
+                        {new Date(appliedVoucher.expires_at).toLocaleDateString('id-ID', {
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric',
+                        })}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={handleRemoveVoucher}
-                  className="text-xs text-rose-700 hover:text-rose-900 font-semibold p-1"
+                  className="text-xs text-rose-700 hover:text-rose-900 font-semibold p-1 shrink-0"
                 >
                   Hapus
                 </button>

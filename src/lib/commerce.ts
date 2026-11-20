@@ -113,6 +113,7 @@ export interface VoucherValidationResult {
   discount_amount_idr?: number;
   base_price_idr?: number;
   final_price_idr?: number;
+  expires_at?: string | null;
 }
 
 export interface AdminVoucher {

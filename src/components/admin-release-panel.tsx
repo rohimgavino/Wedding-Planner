@@ -87,6 +87,7 @@ function Panel() {
   const [vMaxUses, setVMaxUses] = useState('');
   const [vMaxDiscount, setVMaxDiscount] = useState('');
   const [vPackage, setVPackage] = useState('all');
+  const [vExpiresAt, setVExpiresAt] = useState('');
 
   const commerce = useMemo(() => new Commerce(createClient()), []);
 
@@ -980,6 +981,7 @@ function Panel() {
                   setVMaxUses('');
                   setVMaxDiscount('');
                   setVPackage('all');
+                  setVExpiresAt('');
                   setVoucherModalOpen(true);
                 }}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#163e33] hover:bg-[#12332a] text-white text-xs font-semibold shadow-xs transition active:scale-98 shrink-0"
@@ -1003,6 +1005,7 @@ function Panel() {
                       <th className="py-3 px-3">Potongan</th>
                       <th className="py-3 px-3">Kuota Terpakai</th>
                       <th className="py-3 px-3">Paket</th>
+                      <th className="py-3 px-3">Masa Berlaku</th>
                       <th className="py-3 px-3">Status</th>
                       <th className="py-3 px-3 text-right">Aksi</th>
                     </tr>
@@ -1026,6 +1029,31 @@ function Panel() {
                         </td>
                         <td className="py-3 px-3 text-slate-600 capitalize">
                           {v.package_ids && v.package_ids.length ? v.package_ids.join(', ') : 'Semua Paket'}
+                        </td>
+                        <td className="py-3 px-3 text-slate-600">
+                          {v.expires_at ? (
+                            (() => {
+                              const expDate = new Date(v.expires_at);
+                              const isExpired = expDate.getTime() < Date.now();
+                              const formatted = expDate.toLocaleDateString('id-ID', {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric',
+                              });
+                              return (
+                                <div className="space-y-0.5">
+                                  <span>s.d. {formatted}</span>
+                                  {isExpired && (
+                                    <span className="block text-[10px] font-bold text-rose-600">
+                                      (Kedaluwarsa)
+                                    </span>
+                                  )}
+                                </div>
+                              );
+                            })()
+                          ) : (
+                            <span className="text-slate-400">Selamanya</span>
+                          )}
                         </td>
                         <td className="py-3 px-3">
                           <button
@@ -1181,6 +1209,13 @@ function Panel() {
                       return;
                     }
                     void runAction(async () => {
+                      let expiresAtIso: string | null = null;
+                      if (vExpiresAt) {
+                        const [y, m, d] = vExpiresAt.split('-').map(Number);
+                        if (y && m && d) {
+                          expiresAtIso = new Date(y, m - 1, d, 23, 59, 59).toISOString();
+                        }
+                      }
                       const updated = await commerce.createVoucher({
                         code,
                         title,
@@ -1189,6 +1224,7 @@ function Panel() {
                         maxUses: vMaxUses ? Number(vMaxUses) : null,
                         maxDiscountIdr: vMaxDiscount ? Number(vMaxDiscount) : null,
                         packageIds: vPackage === 'all' ? null : [vPackage],
+                        expiresAt: expiresAtIso,
                         isActive: true,
                       });
                       setVouchers(updated);
@@ -1277,19 +1313,32 @@ function Panel() {
                       />
                     </label>
                     <label className="block text-xs space-y-1">
-                      <span className="font-semibold text-slate-700">Berlaku untuk Paket</span>
-                      <select
-                        value={vPackage}
-                        onChange={(e) => setVPackage(e.target.value)}
+                      <span className="font-semibold text-slate-700">Masa Aktif Sampai (Opsional)</span>
+                      <input
+                        type="date"
+                        value={vExpiresAt}
+                        onChange={(e) => setVExpiresAt(e.target.value)}
                         className="w-full rounded-xl border p-2.5 text-sm bg-white"
-                      >
-                        <option value="all">Semua Paket</option>
-                        <option value="starter">Starter Saja</option>
-                        <option value="premium">Premium Saja</option>
-                        <option value="wedding_pro">Wedding Pro Saja</option>
-                      </select>
+                      />
+                      <span className="text-[11px] text-slate-400 block">
+                        {vExpiresAt ? 'Berlaku s.d. 23:59 pada tanggal ini' : 'Kosongkan jika aktif selamanya'}
+                      </span>
                     </label>
                   </div>
+
+                  <label className="block text-xs space-y-1">
+                    <span className="font-semibold text-slate-700">Berlaku untuk Paket</span>
+                    <select
+                      value={vPackage}
+                      onChange={(e) => setVPackage(e.target.value)}
+                      className="w-full rounded-xl border p-2.5 text-sm bg-white"
+                    >
+                      <option value="all">Semua Paket</option>
+                      <option value="starter">Starter Saja</option>
+                      <option value="premium">Premium Saja</option>
+                      <option value="wedding_pro">Wedding Pro Saja</option>
+                    </select>
+                  </label>
 
                   <div className="flex justify-end gap-2 pt-3 border-t">
                     <button
