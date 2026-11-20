@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Smartphone, Download, X, Share } from "lucide-react";
 
@@ -70,8 +71,14 @@ export function InstallPwaBanner() {
     return (
       <div className="pwa-install-banner fixed bottom-16 sm:bottom-4 left-4 right-4 max-w-md mx-auto bg-white/95 backdrop-blur-md text-slate-800 p-3.5 rounded-2xl shadow-xl border border-rose-200 z-50 flex items-center justify-between gap-3 animate-fade-up">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-500 to-amber-400 text-white flex items-center justify-center font-bold text-base shrink-0 shadow-sm">
-            💍
+          <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0 shadow-sm border border-rose-100">
+            <Image
+              src="/icons/icon-192.png"
+              alt="Pocket Planner"
+              width={40}
+              height={40}
+              className="w-full h-full object-cover"
+            />
           </div>
           <div>
             <h4 className="text-xs font-bold text-slate-900">Pasang Aplikasi di HP</h4>

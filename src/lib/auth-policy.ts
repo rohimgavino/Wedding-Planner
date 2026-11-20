@@ -33,6 +33,17 @@ export function isTesterBypassEmail(email?: string | null): boolean {
   return TESTER_BYPASS_EMAILS.includes(email.trim().toLowerCase());
 }
 
+export const ADMIN_ALLOWED_EMAILS = [
+  'ahmadnurrochim11@gmail.com',
+  'setiarama1997@gmail.com',
+  'fixture@example.test',
+];
+
+export function isAdminEmail(email?: string | null): boolean {
+  if (!email) return false;
+  return ADMIN_ALLOWED_EMAILS.includes(email.trim().toLowerCase());
+}
+
 // =========================================================
 // SESSION LIMIT MANAGEMENT (1 Jam Auto-Logout)
 // =========================================================

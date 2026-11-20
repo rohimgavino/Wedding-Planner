@@ -1,6 +1,8 @@
 "use client";
 
 import React, { Suspense } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useWorkspace } from "@/context/WorkspaceContext";
 import { Calendar, CheckCircle2, Sparkles } from "lucide-react";
@@ -20,6 +22,20 @@ function InviteContent() {
     <div className="min-h-screen bg-[#FAF7F5] flex flex-col justify-center items-center px-5 py-12">
       <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-rose-100 shadow-xl shadow-rose-900/10 text-center">
         
+        {/* Brand Header */}
+        <div className="mb-6">
+          <Link href="/" className="inline-flex items-center justify-center group" aria-label="Pocket Planner — Beranda">
+            <Image
+              src="/images/pocket-planner-logo.png"
+              alt="Pocket Planner"
+              width={132}
+              height={78}
+              priority
+              className="h-9 w-auto object-contain transition-transform group-hover:scale-105"
+            />
+          </Link>
+        </div>
+
         {/* Animated Rings Icon */}
         <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-rose-500 via-rose-400 to-amber-300 text-white flex items-center justify-center font-bold text-2xl mx-auto mb-4 shadow-lg shadow-rose-200">
           💍

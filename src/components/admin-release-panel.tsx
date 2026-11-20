@@ -1,10 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { AuthGate } from '@/components/auth-gate';
 import { AdminShell } from '@/components/admin-shell';
 import { useAuth } from '@/context/auth-context';
 import { createClient } from '@/lib/supabase/client';
+import { isAdminEmail } from '@/lib/auth-policy';
 import {
   AdminDokuOrder,
   AuditEntry,
@@ -23,11 +25,12 @@ import {
   Clock,
   CreditCard,
   ArrowRight,
+  ShieldAlert,
 } from 'lucide-react';
 import '../app/admin/admin.css';
 
 function Panel() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [menu, setMenu] = useState('Ringkasan');
   const [role, setRole] = useState<'operator' | 'developer' | null>(null);
   const [state, setState] = useState<'loading' | 'allowed' | 'denied'>('loading');
@@ -68,6 +71,15 @@ function Panel() {
   const loadOperationalData = useCallback(async () => {
     setState('loading');
     setError('');
+
+    const email = user?.email?.trim().toLowerCase();
+    if (!isAdminEmail(email)) {
+      setRole(null);
+      setState('denied');
+      setError('Akun tidak memiliki izin akses administrasi.');
+      return;
+    }
+
     try {
       const nextRole = await commerce.role();
       setRole(nextRole);
@@ -97,7 +109,7 @@ function Panel() {
       setState('denied');
       setError(err instanceof Error ? err.message : 'Hak admin gagal divalidasi.');
     }
-  }, [commerce]);
+  }, [commerce, user?.email]);
 
   useEffect(() => {
     void loadOperationalData();
@@ -287,11 +299,36 @@ function Panel() {
 
   if (state !== 'allowed') {
     return (
-      <section className="p-6 space-y-2">
-        <h1>Akses admin ditolak.</h1>
-        <p role="alert">
-          Identitas atau schema admin tidak dapat divalidasi. Login Google tidak memberi hak admin.
-        </p>
+      <section className="min-h-screen bg-[#FAF7F5] flex flex-col items-center justify-center p-6 text-center">
+        <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-rose-100 shadow-xl shadow-rose-900/10 space-y-4">
+          <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto">
+            <ShieldAlert className="w-6 h-6" />
+          </div>
+          <h1 className="text-xl font-serif font-bold text-slate-900">Akses admin ditolak.</h1>
+          <p role="alert" className="text-sm text-slate-600 leading-relaxed">
+            Halaman administrasi hanya dapat diakses oleh akun terdaftar (<strong>ahmadnurrochim11</strong> dan <strong>setiarama</strong>). Login Google umum tidak memberi hak admin.
+          </p>
+          {user?.email && (
+            <div className="p-3 bg-slate-50 rounded-xl text-xs text-slate-500 font-mono break-all border border-slate-100">
+              Akun aktif: {user.email}
+            </div>
+          )}
+          <div className="pt-2 flex flex-col sm:flex-row gap-2 justify-center">
+            <button
+              type="button"
+              onClick={() => void logout?.()}
+              className="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition"
+            >
+              Keluar / Ganti Akun
+            </button>
+            <Link
+              href="/dashboard"
+              className="px-4 py-2.5 rounded-xl bg-[#163e33] text-white text-xs font-semibold hover:bg-[#12332a] transition inline-flex items-center justify-center"
+            >
+              Ke Workspace Planner
+            </Link>
+          </div>
+        </div>
       </section>
     );
   }

@@ -877,6 +877,7 @@ export function DigitalInvitationManager() {
                   <span className="text-[11px] font-semibold text-slate-500 block mb-1.5">Pratinjau Foto Cover:</span>
                   <div className="relative w-full h-36 rounded-xl overflow-hidden bg-slate-200 border border-slate-300 flex items-center justify-center">
                     {coverPhotoUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={coverPhotoUrl}
                         alt="Pratinjau Cover"

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
@@ -41,13 +42,15 @@ export default function LoginPage() {
         
         {/* Brand Header */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2.5 mb-3 group">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-500 via-rose-400 to-amber-300 text-white flex items-center justify-center font-bold text-lg shadow-md shadow-rose-200">
-              💍
-            </div>
-            <span className="font-serif font-bold text-slate-900 tracking-tight text-xl">
-              Pocket Planner
-            </span>
+          <Link href="/" className="inline-flex items-center justify-center mb-3 group" aria-label="Pocket Planner — Beranda">
+            <Image
+              src="/images/pocket-planner-logo.png"
+              alt="Pocket Planner"
+              width={140}
+              height={83}
+              priority
+              className="h-10 w-auto object-contain transition-transform group-hover:scale-105"
+            />
           </Link>
           <h1 className="text-2xl font-serif font-bold text-slate-900">
             Masuk ke Workspace

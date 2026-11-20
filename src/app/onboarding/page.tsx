@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { FillingExample } from "@/components/everrae/filling-example";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -39,13 +40,15 @@ export default function OnboardingPage() {
         
         {/* Brand Header */}
         <div className="text-center mb-6">
-          <Link href="/" className="inline-flex items-center gap-2 mb-2.5 group">
-            <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-rose-500 via-rose-400 to-amber-300 text-white flex items-center justify-center font-bold text-base shadow-sm">
-              💍
-            </div>
-            <span className="font-serif font-bold text-slate-900 tracking-tight text-xl">
-              Pocket Planner
-            </span>
+          <Link href="/" className="inline-flex items-center justify-center mb-2.5 group" aria-label="Pocket Planner — Beranda">
+            <Image
+              src="/images/pocket-planner-logo.png"
+              alt="Pocket Planner"
+              width={140}
+              height={83}
+              priority
+              className="h-9 sm:h-10 w-auto object-contain transition-transform group-hover:scale-105"
+            />
           </Link>
           <h1 className="text-2xl font-serif font-bold text-slate-900 leading-tight">
             {step === 1 && "Siapa Nama Kedua Mempelai?"}
