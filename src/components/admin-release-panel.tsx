@@ -27,7 +27,6 @@ import {
   Clock,
   CreditCard,
   ArrowRight,
-  ShieldAlert,
   Tag,
   Plus,
   Trash2,
@@ -99,7 +98,7 @@ function Panel() {
     if (!isAdminEmail(email)) {
       setRole(null);
       setState('denied');
-      setError('Akun tidak memiliki izin akses administrasi.');
+      setError('');
       return;
     }
 
@@ -129,12 +128,18 @@ function Panel() {
       setAdmins(nextAdmins);
       setVouchers(nextVouchers);
       setState('allowed');
-    } catch (err) {
+    } catch {
       setRole(null);
       setState('denied');
-      setError(err instanceof Error ? err.message : 'Hak admin gagal divalidasi.');
+      setError('');
     }
   }, [commerce, user?.email]);
+
+  useEffect(() => {
+    if (state === 'denied') {
+      document.title = '404 NOT FOUND — Pocket Planner';
+    }
+  }, [state]);
 
   useEffect(() => {
     void loadOperationalData();
@@ -320,41 +325,35 @@ function Panel() {
     URL.revokeObjectURL(url);
   }, [financePaidOrders, financePeriod]);
 
-  if (state === 'loading') return <p role="status" className="p-6">Memvalidasi hak admin…</p>;
+  if (state === 'loading') {
+    return (
+      <div className="fixed inset-0 z-50 bg-[#FAF7F5] flex items-center justify-center">
+        <div className="w-6 h-6 border-2 border-slate-300 border-t-[#163e33] rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   if (state !== 'allowed') {
     return (
-      <section className="min-h-screen bg-[#FAF7F5] flex flex-col items-center justify-center p-6 text-center">
-        <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-rose-100 shadow-xl shadow-rose-900/10 space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto">
-            <ShieldAlert className="w-6 h-6" />
+      <div className="fixed inset-0 z-50 bg-[#FAF7F5] flex flex-col items-center justify-center p-6 text-center">
+        <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm space-y-4">
+          <div className="space-y-2">
+            <p className="text-6xl font-extrabold text-slate-800 tracking-tight font-mono">404</p>
+            <h1 className="text-xl font-serif font-bold text-slate-900">404 NOT FOUND</h1>
+            <p className="text-sm text-slate-500 leading-relaxed">
+              Halaman yang Anda tuju tidak ditemukan atau URL yang dimasukkan salah.
+            </p>
           </div>
-          <h1 className="text-xl font-serif font-bold text-slate-900">Akses admin ditolak.</h1>
-          <p role="alert" className="text-sm text-slate-600 leading-relaxed">
-            Halaman administrasi hanya dapat diakses oleh akun terdaftar (<strong>ahmadnurrochim11</strong> dan <strong>setiarama</strong>). Login Google umum tidak memberi hak admin.
-          </p>
-          {user?.email && (
-            <div className="p-3 bg-slate-50 rounded-xl text-xs text-slate-500 font-mono break-all border border-slate-100">
-              Akun aktif: {user.email}
-            </div>
-          )}
-          <div className="pt-2 flex flex-col sm:flex-row gap-2 justify-center">
-            <button
-              type="button"
-              onClick={() => void logout?.()}
-              className="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition"
-            >
-              Keluar / Ganti Akun
-            </button>
+          <div className="pt-3 flex flex-col sm:flex-row gap-2 justify-center">
             <Link
-              href="/dashboard"
-              className="px-4 py-2.5 rounded-xl bg-[#163e33] text-white text-xs font-semibold hover:bg-[#12332a] transition inline-flex items-center justify-center"
+              href="/"
+              className="px-5 py-2.5 rounded-xl bg-[#163e33] text-white text-xs font-semibold hover:bg-[#12332a] transition inline-flex items-center justify-center"
             >
-              Ke Workspace Planner
+              Kembali ke Beranda
             </Link>
           </div>
         </div>
-      </section>
+      </div>
     );
   }
 
