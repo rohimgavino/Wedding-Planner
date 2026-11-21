@@ -145,7 +145,7 @@ const faqs = [
   ],
   [
     "Apakah akun tersinkron antar perangkat?",
-    "Ya, workspace tersinkron melalui akun Google dan database cloud sehingga kamu dan pasangan dapat mengakses rencana yang sama secara aman.",
+    "Ya, workspace tersinkron melalui akun Google dan database cloud sehingga kamu dan pasangan dapat mengakses rencana yang sama secara aman di smartphone Android, iPhone, maupun laptop.",
   ],
   [
     "Bagaimana cara membeli paket?",
@@ -158,6 +158,14 @@ const faqs = [
   [
     "Bagaimana keamanan dan penyimpanan data?",
     "Data workspace tersimpan aman di database cloud Supabase dengan proteksi Row Level Security, sedangkan transaksi diproses secara terenkripsi melalui gateway pembayaran resmi tanpa menyimpan data perbankanmu di aplikasi.",
+  ],
+  [
+    "Apa keunggulan Pocket Planner dibanding spreadsheet atau catatan biasa?",
+    "Pocket Planner dirancang khusus untuk alur pernikahan Indonesia: menghitung pagu anggaran per kategori otomatis, checklist berkas KUA H-12 bulan, template pesan RSVP WhatsApp tanpa biaya API, dan 12 tema undangan digital 3D Nusantara yang terhubung langsung ke kalender tamu.",
+  ],
+  [
+    "Apakah satu paket bisa digunakan berdua bersama pasangan?",
+    "Ya. Cukup satu paket pembelian per workspace, kamu dan pasangan dapat saling terhubung melalui tautan pasangan resmi sehingga seluruh rencana tersinkronisasi real-time.",
   ],
 ];
 

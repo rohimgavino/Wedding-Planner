@@ -203,6 +203,21 @@ Tiap paket memiliki hak akses modul yang terisolasi secara ketat dan terverifika
 
 ---
 
+### 8. Arsitektur SEO, AI-SEO (GEO), & Schema Markup
+* **Robots.txt (public/robots.txt):** Mengizinkan perayap pencarian standar (Googlebot, Bingbot) serta bot pencarian AI (OAI-SearchBot, PerplexityBot, Claude-SearchBot, meta-webindexer) dengan memblokir rute internal privat (/dashboard/, /admin/, /auth/, /onboarding/, /invite/).
+* **Sitemap.xml (public/sitemap.xml):** Peta situs XML resmi memuat rute publik kanonikal (/, /purchase, /demo, /u, /u/rohim-wiwit, /legal, dll).
+* **AI Machine-Readable Context (public/llms.txt):** Dokumentasi spesifikasi standar LLMs.txt yang merangkum proposisi nilai, fitur utama, rincian paket harga, dan arsitektur teknis agar mudah dibaca oleh agen AI (ChatGPT, Perplexity, Claude).
+* **Machine-Readable Pricing (public/pricing.md):** Format harga terstruktur bebas JavaScript untuk autonomous buying agents.
+* **Schema.org Structured Data (src/components/JsonLd.tsx):**
+  - WebSite: Identitas situs dan nama brand (Pocket Planner / Pocket Wedding).
+  - Organization: Profil entitas pengelola resmi (Ahmad Nur Rochim).
+  - WebApplication: Kategori aplikasi perencana pernikahan, platform PWA, dan penawaran paket harga Starter, Premium, Wedding Pro.
+  - FAQPage: Struktur tanya jawab sesuai tampilan FAQ di halaman beranda.
+  - Event (src/app/u/[slug]/page.tsx): Struktur data acara pernikahan untuk halaman undangan digital.
+* **Metadata & Canonical URL Tagging:** Seluruh halaman memiliki tag canonical yang valid, OpenGraph lengkap, keywords relevan dengan pernikahan Indonesia, dan direktif obots: { index: false, follow: false } pada halaman private/autentikasi.
+
+---
+
 ## 5. Standar Verifikasi & Deployment
 Sebelum menyelesaikan sesi atau melakukan commit ke branch `main`, pastikan rangkaian verifikasi berikut lolos 100%:
 

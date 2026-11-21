@@ -30,6 +30,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title,
     description,
+    alternates: {
+      canonical: `/u/${slug}`,
+    },
     openGraph: {
       title,
       description,
@@ -56,13 +59,42 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
+  const slug = resolvedParams?.slug || '';
+
+  const eventName =
+    slug === 'rohim-wiwit'
+      ? 'The Wedding of Rohim & Wiwit'
+      : 'The Wedding of Romeo & Juliet';
+
+  const eventJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: eventName,
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    eventStatus: 'https://schema.org/EventScheduled',
+    description: `Undangan Pernikahan Digital ${eventName} di Pocket Wedding.`,
+    url: `https://pocketwedding.id/u/${slug}`,
+    image: ['https://pocketwedding.id/images/wedding-flowers.jpg'],
+    organizer: {
+      '@type': 'Organization',
+      name: 'Pocket Planner',
+      url: 'https://pocketwedding.id',
+    },
+  };
+
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-[#FAF7F5] text-slate-500 text-xs">
-        Memuat undangan digital...
-      </div>
-    }>
-      <PublicInvitationView slug={resolvedParams?.slug} />
-    </Suspense>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd) }}
+      />
+      <Suspense fallback={
+        <div className="min-h-screen flex items-center justify-center bg-[#FAF7F5] text-slate-500 text-xs">
+          Memuat undangan digital...
+        </div>
+      }>
+        <PublicInvitationView slug={resolvedParams?.slug} />
+      </Suspense>
+    </>
   );
 }

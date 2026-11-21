@@ -1,0 +1,50 @@
+# Pocket Planner (https://pocketwedding.id)
+# Robots.txt configuration for search engines and AI agents
+
+User-agent: *
+Allow: /
+Allow: /demo
+Allow: /purchase
+Allow: /legal
+Allow: /u
+Allow: /u/*
+Disallow: /dashboard
+Disallow: /dashboard/*
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /auth
+Disallow: /auth/*
+Disallow: /onboarding
+Disallow: /onboarding/*
+Disallow: /invite
+Disallow: /invite/*
+
+# AI Search & Retrieval Crawlers (explicitly allowed)
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+
+User-agent: meta-webindexer
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+
+# Sitemap location
+Sitemap: https://pocketwedding.id/sitemap.xml

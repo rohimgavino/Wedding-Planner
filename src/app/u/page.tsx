@@ -5,6 +5,9 @@ import { PublicInvitationView } from '@/components/everrae/public-invitation-vie
 export const metadata: Metadata = {
   title: 'The Wedding Invitation — Pocket Wedding',
   description: 'Undangan Pernikahan Digital. Buka undangan untuk melihat detail acara, lokasi akad & resepsi, dan kirim doa restu.',
+  alternates: {
+    canonical: '/u',
+  },
   openGraph: {
     title: 'The Wedding Invitation — Pocket Wedding',
     description: 'Undangan Pernikahan Digital. Buka undangan untuk melihat detail acara dan RSVP.',

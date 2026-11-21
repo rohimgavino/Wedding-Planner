@@ -1,0 +1,41 @@
+# Pocket Planner
+
+> Aplikasi Web & PWA Perencana Pernikahan Kolaboratif untuk Pasangan Calon Pengantin di Indonesia.
+
+Pocket Planner (pocketwedding.id) adalah platform perencanaan pernikahan modern (wedding planner PWA) yang menghubungkan calon mempelai pria dan wanita dalam satu ruang kerja bersama (shared workspace) yang tersinkron secara real-time. Platform ini dirancang ramah kuota (mobile-first PWA), terjangkau, dan disesuaikan khusus dengan tradisi pernikahan di Indonesia (termasuk berkas KUA, rundown hari H, seserahan, dan undangan digital 3D Nusantara).
+
+## Fitur Utama
+
+- **Shared Workspace Kolaborasi Pasangan:** Calon mempelai pria dan wanita memiliki akses bersama ke satu akun ruang kerja perencanaan yang tersinkron otomatis antar-perangkat (Android, iOS, laptop).
+- **Master Budget & Tracking Pengeluaran:** Manajemen anggaran pernikahan dengan 4 pilar KPI (Pagu Dialokasikan, Terpakai, Sisa Saldo, dan Selisih/Overbudget) serta pengatur arus kas (delay shifter).
+- **Timeline & Wedding Checklist:** Panduan tugas bertahap dari H-12 bulan hingga Hari H, dilengkapi daftar berkas persyaratan nikah resmi di Kantor Urusan Agama (KUA).
+- **Buku Tamu & RSVP WhatsApp:** Manajemen daftar tamu undangan, pencatatan jumlah pax, generate tautan konfirmasi WhatsApp instan tanpa biaya API pihak ketiga, dan fitur ekspor CSV.
+- **Undangan Digital 3D Luxury Nusantara:** 12 tema budaya dan modern eksklusif dengan efek buka pintu 3D (Door Swing Reveal 115°), vinyl turntable music player, amplop digital VIP bertombol salin nomor rekening, integrasi Google Calendar, dan rute Google Maps.
+- **Tabungan Bersama:** Catatan transparansi finansial dan target tabungan bersama untuk biaya pesta pernikahan.
+- **Engagement & Lamaran Planner (Wedding Pro):** Susunan acara lamaran/sangjit keluarga dan checklist hantaran seserahan adat.
+- **Honeymoon Planner (Wedding Pro):** Itinerary harian liburan bulan madu dan pencatatan pos biaya akomodasi/transportasi.
+
+## Pilihan Paket & Biaya (Aktivasi Workspace)
+
+Satu paket berlaku untuk satu workspace bersama (digunakan berdua bersama pasangan). Pembayaran resmi melalui QRIS, Virtual Account, dan e-Wallet (didukung oleh DOKU Checkout):
+
+- **Starter (Rp 49.900 · 6 Bulan Akses Cloud):** Workspace kolaborasi, Checklist & Berkas KUA, Rundown Hari H, Master Budget, Buku Tamu WhatsApp & Ekspor CSV, Undangan Digital 3D (12 tema).
+- **Premium (Rp 79.900 · 1 Tahun Akses Cloud):** Seluruh fitur Starter + Tabungan Bersama Pasangan + Moodboard Visual Dekorasi & Palet Warna + Prioritas Dukungan Teknis.
+- **Wedding Pro (Rp 99.900 · Akses Penuh Tanpa Batas / VIP):** Seluruh fitur Premium & Starter + Engagement & Lamaran Planner + Honeymoon Planner & Itinerary + Unlimited Export.
+
+## Spesifikasi Teknis & Keamanan
+
+- **Framework:** Next.js 15 (App Router, Static Export), React 18, Tailwind CSS.
+- **Infrastruktur Hosting:** Cloudflare Workers Edge Network (ultra-cepat, response time rendah).
+- **Basis Data & Keamanan:** Supabase PostgreSQL dengan proteksi Row Level Security (RLS) berbasis `workspace_id` dan role-based access (`owner`, `partner`, `collaborator`).
+- **Privasi:** Data tersimpan aman terenkripsi; transaksi diproses melalui gerbang pembayaran resmi tanpa menyimpan kredensial perbankan pengguna.
+- **Format:** Progressive Web Application (PWA) yang dapat diinstal langsung di layar beranda smartphone.
+
+## Tautan Penting
+
+- Beranda & Fitur: https://pocketwedding.id
+- Uji Coba Demo Interaktif: https://pocketwedding.id/demo
+- Katalog & Aktivasi Paket: https://pocketwedding.id/purchase
+- Contoh Undangan Digital: https://pocketwedding.id/u/rohim-wiwit
+- Kebijakan Privasi & Syarat Layanan: https://pocketwedding.id/legal
+- Spesifikasi Harga Mesin: https://pocketwedding.id/pricing.md
